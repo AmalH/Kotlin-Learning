@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <item android:id="@+id/action_profile"
+        android:title=""
+        android:icon="@drawable/ic_profile"
+        app:showAsAction="always" >
+    </item>
+    <item android:id="@+id/action_notifs"
+        android:title=""
+        android:icon="@drawable/ic_notifs"
+        app:showAsAction="always" >
+    </item>
+    <item android:id="@+id/action_settings"
+        android:title="Settings"
+        app:showAsAction="never">
+    </item>
+    </menu>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/main_background"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context=".activities.MainActivity">
+
+    <!-- Logo-->
+    <ImageView
+        android:layout_width="300px"
+        android:layout_height="0dp"
+        android:layout_weight="6.36"
+        android:src="@drawable/logohorizontal"
+        android:layout_marginTop="15dp"/>
+
+    <!-- ViewFlipper -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="65"
+        android:orientation="vertical">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vwpMain"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="80"/>
+        <me.relex.circleindicator.CircleIndicator
+            android:id="@+id/circlePageIndicator"
+            android:layout_width="match_parent"
+            app:ci_drawable="@color/base_color_1"
+            app:ci_width="6dp"
+            app:ci_height="6dp"
+            android:layout_height="48dp"/>
+
+    </LinearLayout>
+
+
+    <!-- login buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="25"
+        android:orientation="vertical"
+        android:gravity="bottom">
+        <com.rey.material.widget.Button
+            android:id="@+id/loginBtn"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:text="Login"
+            android:textSize="8pt"
+            android:textStyle="bold"
+            fontPath="fonts/graublau_slab.ttf"
+            android:textColor="@color/base_color_2"
+            android:background="@color/base_color_1"
+            android:onClick="onClick"/>
+        <com.rey.material.widget.Button
+            android:id="@+id/signupBtn"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:text="Create new account"
+            android:textSize="8pt"
+            android:textStyle="bold"
+            fontPath="fonts/graublau_slab.ttf"
+            android:textColor="@color/base_color_1"
+            android:background="@color/base_color_2"
+            android:onClick="onClick"/>
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/signupHeaderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Join iKotliners community"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/base_color_1"
+        android:gravity="center"
+        fontPath="fonts/graublau_slab.ttf"
+        android:textSize="40dp"
+        style="bold"
+        tools:ignore="MissingPrefix"/>
+    <!-- form -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+
+        <com.rey.material.widget.EditText
+            android:id="@+id/emailSignupTxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="35px"
+            app:et_labelEnable="true"
+            app:et_labelTextColor="@color/base_color_1"
+            app:et_dividerColor="@color/base_color_1"
+            app:et_labelTextSize="15dp"
+            app:et_dividerHeight="2dp"
+            android:hint=" E-mail" />
+        <com.rey.material.widget.EditText
+            android:id="@+id/fullNameTxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="50px"
+            app:et_labelEnable="true"
+            app:et_labelTextColor="@color/base_color_1"
+            app:et_dividerColor="@color/base_color_1"
+            app:et_labelTextSize="15dp"
+            app:et_dividerHeight="2dp"
+            android:hint=" Full name" />
+        <com.rey.material.widget.EditText
+            android:id="@+id/pswSignupTxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="50px"
+            app:et_labelEnable="true"
+            app:et_labelTextColor="@color/base_color_1"
+            app:et_dividerColor="@color/base_color_1"
+            app:et_labelTextSize="15dp"
+            app:et_dividerHeight="2dp"
+            android:hint=" Password"
+            android:password="true"/>
+
+        <com.rey.material.widget.Button
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="60px"
+            android:layout_marginRight="60px"
+            android:layout_marginTop="30px"
+            android:background="@color/base_color_2"
+            android:text="Sign up"
+            android:textColor="@color/base_color_1"
+            android:textSize="8pt"
+            android:textStyle="bold"
+            fontPath="fonts/graublau_slab.ttf"
+            android:onClick="signUp"/>
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/facebookLoginBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Log in with Facebook"
+            android:layout_marginBottom="5dp"
+            android:visibility="gone"
+            />
+
+        <!-- social media buttons -->
+        <com.rey.material.widget.Button
+            android:id="@+id/facebookLoginBtn_"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:background="#3B5998"
+            android:drawableLeft="@drawable/ic_facebook_login"
+            android:paddingLeft="10dp"
+            android:layout_marginBottom="5dp"
+            android:text="Sign up with Facebook"
+            android:textColor="#FFFFFF"
+            android:onClick="loginWithFacebook"
+            />
+        <com.rey.material.widget.Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#007bb6"
+            android:drawableLeft="@drawable/ic_linkedin_login"
+            android:paddingLeft="5dp"
+            android:text="Sign up with linkedin"
+            android:textColor="#FFFFFF"
+            android:onClick="signUpWithLinkedin"/>
+    </LinearLayout>
+
+
+</LinearLayout>
