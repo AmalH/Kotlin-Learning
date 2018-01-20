@@ -59,10 +59,13 @@ public class Statics {
                 (activity, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful())
+                        if (task.isSuccessful()){
+                            Toast.makeText(activity, "logged in", Toast.LENGTH_LONG).show();
+                            activity.startActivity(new Intent(activity, HomeActivity.class));
+                        }
+                        else {
                             Toast.makeText(activity, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        Toast.makeText(activity, "logged in", Toast.LENGTH_LONG).show();
-                        activity.startActivity(new Intent(activity, HomeActivity.class));
+                        }
                     }
                 });
     }

@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -103,7 +100,7 @@ public class SignupActivity extends Activity {
                 Gson gson = new Gson();
                 final User userFromLinkedIn = gson.fromJson(apiResponse.getResponseDataAsJson().toString(),User.class);
                 /** signup to firebase with that user **/
-                Statics.signUp(userFromLinkedIn.getEmailAddress(),userFromLinkedIn.getId(),null,SignupActivity.this);
+                Statics.signUp(userFromLinkedIn.getEmailAddress(),userFromLinkedIn.getId(),userFromLinkedIn.getFirstName()+" "+userFromLinkedIn.getLastName(),SignupActivity.this);
             }
 
             @Override

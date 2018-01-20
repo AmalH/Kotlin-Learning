@@ -53,7 +53,6 @@ public class SettingsActivity extends ListActivity {
         if(position==9){
             Statics.auth.signOut();
             startActivity(new Intent(this, MainActivity.class));
-            finish();
         }
     }
 
