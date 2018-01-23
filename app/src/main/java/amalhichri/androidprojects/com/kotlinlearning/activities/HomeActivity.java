@@ -9,14 +9,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
-import com.google.firebase.auth.FirebaseAuth;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.HomePageTabsAdapter;
@@ -37,7 +34,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Log.d("CURRENT USER", FirebaseAuth.getInstance().getCurrentUser().toString());
 
         fragmentManager =getSupportFragmentManager();
 
