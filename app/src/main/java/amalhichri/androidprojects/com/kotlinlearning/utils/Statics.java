@@ -3,6 +3,7 @@ package amalhichri.androidprojects.com.kotlinlearning.utils;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -10,8 +11,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Iterator;
 
 import amalhichri.androidprojects.com.kotlinlearning.activities.HomeActivity;
 import amalhichri.androidprojects.com.kotlinlearning.activities.LoginActivity;
@@ -34,6 +40,7 @@ public class Statics {
 
 
     public static void signUp(String email,String password,String fullName, final Activity activity){
+        // we'll use a fullName in signup ui we're not providing firstName / lastName editTexts
         //authenticate user through firebase
         Statics.auth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
@@ -69,4 +76,41 @@ public class Statics {
                     }
                 });
     }
-}
+
+    /** firebase methods **/
+    public static void findUserByEmail(String email) {
+        usersTable.orderByChild("emailAddress").equalTo(email).addChildEventListener(new ChildEventListener() {
+            @
+                    Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Iterable snapshotIterator = dataSnapshot.getChildren();
+                Iterator iterator = snapshotIterator.iterator();
+                while ((iterator.hasNext())) {
+                    Log.d("Item found: ", iterator.next().toString() + "---");
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    }

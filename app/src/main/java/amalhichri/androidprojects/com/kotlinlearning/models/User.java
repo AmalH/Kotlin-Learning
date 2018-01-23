@@ -20,6 +20,15 @@ public class User {
         this.lastName = lastName;
     }
 
+    public User(String emailAddress, String firstName, String lastName) {
+        this.emailAddress = emailAddress;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    /** for firebase signup/login **/
+
+
 
     public String getId() {
         return id;

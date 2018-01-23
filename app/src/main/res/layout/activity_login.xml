@@ -106,7 +106,6 @@
         />
 
     <com.rey.material.widget.Button
-        android:id="@+id/facebookLoginBtn_"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#3B5998"

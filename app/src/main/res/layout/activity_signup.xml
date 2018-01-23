@@ -44,7 +44,11 @@
             app:et_dividerColor="@color/base_color_1"
             app:et_labelTextSize="15dp"
             app:et_dividerHeight="2dp"
-            android:hint=" E-mail" />
+            app:et_supportMode="helperWithError"
+            app:et_helper="Enter password"
+            android:hint=" E-mail"
+            app:et_supportTextErrorColor="#F00"
+            app:et_dividerErrorColor="#F00"/>
         <com.rey.material.widget.EditText
             android:id="@+id/fullNameTxt"
             android:layout_width="match_parent"
@@ -84,7 +88,7 @@
             android:onClick="signUp"/>
 
         <com.facebook.login.widget.LoginButton
-            android:id="@+id/facebookLoginBtn"
+            android:id="@+id/facebookSignInBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Log in with Facebook"
@@ -94,7 +98,6 @@
 
         <!-- social media buttons -->
         <com.rey.material.widget.Button
-            android:id="@+id/facebookLoginBtn_"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="70dp"
@@ -104,7 +107,7 @@
             android:layout_marginBottom="5dp"
             android:text="Sign up with Facebook"
             android:textColor="#FFFFFF"
-            android:onClick="loginWithFacebook"
+            android:onClick="signUpWithFacebook"
             />
         <com.rey.material.widget.Button
             android:layout_width="match_parent"

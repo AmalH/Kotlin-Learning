@@ -3,8 +3,11 @@ package amalhichri.androidprojects.com.kotlinlearning.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,10 +17,15 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.linkedin.platform.APIHelper;
@@ -30,6 +38,9 @@ import com.linkedin.platform.listeners.AuthListener;
 import com.linkedin.platform.utils.Scope;
 import com.rey.material.widget.EditText;
 import com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -45,13 +56,25 @@ public class LoginActivity extends Activity {
     private CallbackManager mFacebookCallbackManager;
     private LoginManager mLoginManager;
     private AccessTokenTracker mAccessTokenTracker;
+    private SharedPreferences userPrefs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        facebookApiInit();
+
+
+        //to store logged user in shared preferences
+        userPrefs = getApplicationContext().getSharedPreferences("userPrefs",0);
+        Editor editor = userPrefs.edit();
+
         setContentView(R.layout.activity_login);
+
+        //initialize facebook sdk
+        facebookApiInit();
+
+        //mLoginManager.logOut();
 
     }
 
@@ -66,11 +89,6 @@ public class LoginActivity extends Activity {
       }
       if(((ShowHidePasswordEditText) findViewById(R.id.pswLoginTxt)).getText().toString().isEmpty()){
           ((ShowHidePasswordEditText)findViewById(R.id.pswLoginTxt)).setError("password missing");
-          (findViewById(R.id.pswLoginTxt)).requestFocus();
-          return;
-      }
-      if (!(((ShowHidePasswordEditText) findViewById(R.id.pswLoginTxt)).getText().toString().isEmpty())&&(((ShowHidePasswordEditText)findViewById(R.id.pswLoginTxt)).getText().toString().length()<6)) {
-          ((ShowHidePasswordEditText)findViewById(R.id.pswLoginTxt)).setError("Password should be at least 6 characters");
           (findViewById(R.id.pswLoginTxt)).requestFocus();
           return;
       }
@@ -106,24 +124,49 @@ public class LoginActivity extends Activity {
             mLoginManager.logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile"));
         }
     }
+    // to initialize facebook api + retrieve user info
     private void facebookApiInit() {
         FacebookSdk.sdkInitialize(getApplicationContext());
+        mLoginManager = LoginManager.getInstance();
         mAccessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken,AccessToken currentAccessToken) {
             }
         };
-        mLoginManager = LoginManager.getInstance();
+
+        final LoginButton loginButton = findViewById(R.id.facebookLoginBtn);
         mFacebookCallbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
+        loginButton.setReadPermissions("email","public_profile");
+        loginButton.registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                isFacebook=true;
+                Log.d("facebook_token", "handleFacebookAccessToken:" + loginResult.getAccessToken());
+                AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
+                Log.d("CREDENTIALS:",credential.toString());
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
+                                try {
+                                   // Statics.signIn(object.getString("first_name"),String.valueOf(object.getInt("id")), LoginActivity.this);
+                                    Statics.signIn("test.email@gmail.com",String.valueOf(object.getInt("id")), LoginActivity.this);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,first_name,last_name,email,picture");
+                request.setParameters(parameters);
+                request.executeAsync();
             }
-
             @Override
             public void onCancel() {
             }
-
             @Override
             public void onError(FacebookException error) {
 

@@ -26,6 +26,9 @@ public class MainActivity extends Activity implements View.OnClickListener   {
 
         setContentView(R.layout.activity_main);
 
+        // firebase offline data
+       // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
         /** if user is logged in --> homeActivity**/
         if(Statics.currentUser !=null){
           startActivity(new Intent(getApplicationContext(), HomeActivity.class));
