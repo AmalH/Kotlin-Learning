@@ -1,16 +1,14 @@
 package amalhichri.androidprojects.com.kotlinlearning.activities;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.google.firebase.auth.FirebaseAuth;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.ProfileTabsAdapter;
@@ -43,14 +41,14 @@ public class ProfileActivity extends AppCompatActivity {
         /** fields data **/
         Log.d("User: ","eee "+ Statics.auth.getCurrentUser().getDisplayName());
         //Log.d("picture url",Statics.auth.getCurrentUser().getPhotoUrl().toString());
-        ((TextView) findViewById(R.id.fullNameInProfile)).setText(Statics.currentUser.getDisplayName());
+        ((TextView) findViewById(R.id.fullNameInProfile)).setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         // ((TextView) findViewById(R.id.fullNameInProfile)).setText((user.getUsername().isEmpty()?user.getFirstName():user.getUsername()));
 
-        if(Statics.currentUser.getPhotoUrl()!=null){
-            Picasso.with(getApplicationContext()).load(Uri.parse(Statics.currentUser.getPhotoUrl().toString())).into((ImageView)findViewById(R.id.userImgProfile));
+       /* if(FirebaseAuth.getInstance().getCurrentUser().toString()!=null){
+            Picasso.with(getApplicationContext()).load(Uri.parse(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString())).into((ImageView)findViewById(R.id.userImgProfile));
         }
         else
-            ((ImageView)findViewById(R.id.userImgProfile)).setImageResource(R.drawable.backarrow);
+            ((ImageView)findViewById(R.id.userImgProfile)).setImageResource(R.drawable.backarrow);*/
     }
 
     /** for calligraphy lib usage **/

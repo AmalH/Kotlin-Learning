@@ -7,9 +7,10 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.MainUiPagerAdapter;
-import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import me.relex.circleindicator.CircleIndicator;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -23,14 +24,11 @@ public class MainActivity extends Activity implements View.OnClickListener   {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
-        // firebase offline data
-       // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         /** if user is logged in --> homeActivity**/
-        if(Statics.currentUser !=null){
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
           startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         }
 
