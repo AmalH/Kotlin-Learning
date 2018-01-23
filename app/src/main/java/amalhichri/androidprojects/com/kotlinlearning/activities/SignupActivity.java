@@ -19,8 +19,6 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.gson.Gson;
 import com.linkedin.platform.APIHelper;
 import com.linkedin.platform.LISessionManager;
@@ -158,14 +156,12 @@ public class SignupActivity extends Activity {
 
         final LoginButton loginButton = findViewById(R.id.facebookSignInBtn);
         mFacebookCallbackManager = CallbackManager.Factory.create();
+
         loginButton.setReadPermissions("email","public_profile");
         loginButton.registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 isFacebook=true;
-                Log.d("facebook_token", "handleFacebookAccessToken:" + loginResult.getAccessToken());
-                AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
-                Log.d("CREDENTIALS:",credential.toString());
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
@@ -174,8 +170,12 @@ public class SignupActivity extends Activity {
                                     JSONObject object,
                                     GraphResponse response) {
                                 try {
-                                    // Statics.signIn(object.getString("first_name"),String.valueOf(object.getInt("id")), LoginActivity.this);
-                                    Statics.signIn("test.email@gmail.com",String.valueOf(object.getInt("id")), SignupActivity.this);
+                                    //if(object.getString("email").isEmpty())
+                                        //Toast.makeText(getApplicationContext(), "No email adress linked to this facebook account !\nPlease use an account with email info.", Toast.LENGTH_LONG).show();
+                                   // else
+                                        // we would signup with object.getString("email") as an emaill,
+                                        // but I added "test.email@gmail.com" for test ( as am using a phone number base fb account for tests )
+                                        Statics.signUp("test.email@gmail.com",String.valueOf(object.getInt("id")),object.getString("first_name")+" "+object.getString("last_name"), SignupActivity.this);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -191,9 +191,11 @@ public class SignupActivity extends Activity {
             }
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(getApplicationContext(), "failed "+error.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("ERROR",error.toString());
             }
         });
+
+
     }
 
     /** onActivityResult **/

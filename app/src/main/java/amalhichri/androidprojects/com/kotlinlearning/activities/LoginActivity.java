@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -63,18 +62,10 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-        //to store logged user in shared preferences
-        userPrefs = getApplicationContext().getSharedPreferences("userPrefs",0);
-        Editor editor = userPrefs.edit();
-
         setContentView(R.layout.activity_login);
 
         //initialize facebook sdk
         facebookApiInit();
-
-        //mLoginManager.logOut();
 
     }
 

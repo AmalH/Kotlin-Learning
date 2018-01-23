@@ -114,8 +114,8 @@
             android:layout_height="wrap_content"
             android:background="#007bb6"
             android:drawableLeft="@drawable/ic_linkedin_login"
-            android:paddingLeft="5dp"
-            android:text="Sign up with linkedin"
+            android:paddingLeft="10dp"
+            android:text="Continue with linkedin"
             android:textColor="#FFFFFF"
             android:onClick="signUpWithLinkedin"/>
     </LinearLayout>

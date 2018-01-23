@@ -40,7 +40,7 @@ public class Statics {
 
 
     public static void signUp(String email,String password,String fullName, final Activity activity){
-        // we'll use a fullName in signup ui we're not providing firstName / lastName editTexts
+        // we'll use a fullName in signup ui we're not providing firstName / lastName editTe
         //authenticate user through firebase
         Statics.auth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
