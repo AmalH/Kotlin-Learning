@@ -6,14 +6,11 @@ package amalhichri.androidprojects.com.kotlinlearning.models;
 
 public class User {
 
-    private String id,emailAddress,pictureUrl,firstName,lastName,password;
+    private String id,emailAddress,pictureUrl,firstName,lastName,password;  //fields to match with LinkedIn API
+                                           // for facebook API we just read the json response object without switching it to a User object
 
     public User() {
     }
-
-    /** for firebase signup/login **/
-
-
 
     public String getId() {
         return id;

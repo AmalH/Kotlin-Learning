@@ -218,7 +218,8 @@ public class LoginActivity extends Activity {
         }
         else
             mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data);
-        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+        if(!(FirebaseAuth.getInstance().getCurrentUser()==null))
+            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
     }
 
     /** for calligraphy lib usage **/

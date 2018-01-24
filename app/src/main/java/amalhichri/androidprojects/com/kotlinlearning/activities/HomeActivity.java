@@ -55,7 +55,6 @@ public class HomeActivity extends AppCompatActivity {
                 SharedPreferences.Editor e=loggedUserPrefs.edit();
                 e.putString("user",loggedUser);
                 e.commit();
-               //Log.d("TT", "Test2 = " + loggedUser);
             }
 
             @Override

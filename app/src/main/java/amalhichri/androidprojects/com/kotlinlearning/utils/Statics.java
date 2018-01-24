@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -50,10 +51,21 @@ public class Statics {
                         userToAdd.setFirstName(splited[0]);
                         userToAdd.setLastName(splited[1]);
                         userToAdd.setPictureUrl(pictureUrl);
-                        usersTable.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userToAdd);
+                        usersTable.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userToAdd).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("Failure",e.getMessage());
+                            }
+                        });
                         Toast.makeText(activity, "added to database ", Toast.LENGTH_LONG).show();
                     }
-                });
+                }).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                Log.d("Test","Facebook ato firebase success");
+
+            }
+        });
     }
 
     public static void signIn(String email, String password, final Activity activity) {

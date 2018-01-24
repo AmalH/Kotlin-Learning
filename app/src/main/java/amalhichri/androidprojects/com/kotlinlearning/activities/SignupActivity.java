@@ -46,6 +46,8 @@ public class SignupActivity extends Activity {
     private LoginManager mLoginManager;
     private AccessTokenTracker mAccessTokenTracker;
     private CallbackManager mFacebookCallbackManager;
+    private User userFromLinkedIn;
+
 
 
     @Override
@@ -98,39 +100,38 @@ public class SignupActivity extends Activity {
 
     /** Sign up with linkedin **/
     public void signUpWithLinkedin(View v){
+        String url = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,picture-url,email-address)";
         // initializing connection to linkedin api
+        final APIHelper apiHelper = APIHelper.getInstance(getApplicationContext());
+        apiHelper.getRequest(this, url, new ApiListener() {
+            @Override
+            public void onApiSuccess(ApiResponse apiResponse) {
+                //Toast.makeText(getApplicationContext(), "api success", Toast.LENGTH_LONG).show();
+                /**  create User object from the linkedin profile**/
+                 Gson gson = new Gson();
+                 userFromLinkedIn = gson.fromJson(apiResponse.getResponseDataAsJson().toString(),User.class);
+            }
+            @Override
+            public void onApiError(LIApiError liApiError) {
+                Toast.makeText(getApplicationContext(), "cant connect to Linkedin", Toast.LENGTH_LONG).show();
+            }
+        });
+        // managing api response
         LISessionManager.getInstance(getApplicationContext()).init(this, buildScope(), new AuthListener() {
             @Override
             public void onAuthSuccess() {
                 //Toast.makeText(getApplicationContext(), "auth succeded ", Toast.LENGTH_LONG).show();
+                /** signup to firebase with that user **/
+                 Statics.signUp(userFromLinkedIn.getEmailAddress(),userFromLinkedIn.getId(),userFromLinkedIn.getFirstName()+" "+userFromLinkedIn.getLastName(),userFromLinkedIn.getPictureUrl(),SignupActivity.this);
             }
-
             @Override
             public void onAuthError(LIAuthError error) {
                 //Toast.makeText(getApplicationContext(), "failed " + error.toString(), Toast.LENGTH_LONG).show();
             }
         }, true);
 
-        // managing api responses
-        String url = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,picture-url,email-address)";
-        final APIHelper apiHelper = APIHelper.getInstance(getApplicationContext());
-        apiHelper.getRequest(this, url, new ApiListener() {
-            @Override
-            public void onApiSuccess(ApiResponse apiResponse) {
-                /**  create User object from the linkedin profile **/
-                Gson gson = new Gson();
-                final User userFromLinkedIn = gson.fromJson(apiResponse.getResponseDataAsJson().toString(),User.class);
-                /** signup to firebase with that user **/
-                Statics.signUp(userFromLinkedIn.getEmailAddress(),userFromLinkedIn.getId(),userFromLinkedIn.getFirstName()+" "+userFromLinkedIn.getLastName(),userFromLinkedIn.getPictureUrl(),SignupActivity.this);
-            }
-
-            @Override
-            public void onApiError(LIApiError liApiError) {
-                Toast.makeText(getApplicationContext(), "cant connect to Linkedin", Toast.LENGTH_LONG).show();
-            }
-        });
     }
-    // asking for linkedin account info retreive permission
+    // asking for permission to get Linkedin profile data
     private static Scope buildScope() {
         return Scope.build(Scope.R_BASICPROFILE, Scope.R_EMAILADDRESS);
     }
@@ -171,11 +172,11 @@ public class SignupActivity extends Activity {
                                 Log.d("Test","Just Before facebook registration");
                                 try {
                                     //if(object.getString("email").isEmpty())
-                                        //Toast.makeText(getApplicationContext(), "No email adress linked to this facebook account !\nPlease use an account with email info.", Toast.LENGTH_LONG).show();
+                                        //
                                    // else
                                         // we would signup with object.getString("email") as an emaill,
                                         // but I added "test.email@gmail.com" for test ( as am using a phone number base fb account for tests )
-                                        Statics.signUp("test.email@gmail.com",String.valueOf(object.getInt("id")),
+                                        Statics.signUp("amal.hichri@gmail.com",String.valueOf(object.getInt("id")),
                                                 object.getString("first_name")+" "+object.getString("last_name"),object.getJSONObject("picture").getJSONObject("data").getString("url") ,SignupActivity.this);
                                 } catch (JSONException e) {
                                    Log.d("ERROR",e.getMessage());
@@ -223,7 +224,8 @@ public class SignupActivity extends Activity {
         }
         else
             mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data);
-        startActivity(new Intent(SignupActivity.this, HomeActivity.class));
+        //if(!(FirebaseAuth.getInstance().getCurrentUser()==null))
+            //startActivity(new Intent(SignupActivity.this, HomeActivity.class));
     }
 
 
