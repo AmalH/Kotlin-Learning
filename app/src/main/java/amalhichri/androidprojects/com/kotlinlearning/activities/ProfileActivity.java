@@ -1,6 +1,7 @@
 package amalhichri.androidprojects.com.kotlinlearning.activities;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -8,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.ProfileTabsAdapter;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
+import de.hdodenhof.circleimageview.CircleImageView;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
@@ -38,14 +42,14 @@ public class ProfileActivity extends AppCompatActivity {
         /** populating ui with user data **/
         /** fields data **/
         //Log.d("picture url",Statics.auth.getCurrentUser().getPhotoUrl().toString());
-        ((TextView) findViewById(R.id.fullNameInProfile)).setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-        // ((TextView) findViewById(R.id.fullNameInProfile)).setText((user.getUsername().isEmpty()?user.getFirstName():user.getUsername()));
+        ((TextView) findViewById(R.id.fullNameInProfile)).setText(Statics.getLoggedUser(getApplicationContext()).getFirstName()+" "+
+        Statics.getLoggedUser(getApplicationContext()).getLastName());
 
-       /* if(FirebaseAuth.getInstance().getCurrentUser().toString()!=null){
-            Picasso.with(getApplicationContext()).load(Uri.parse(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString())).into((ImageView)findViewById(R.id.userImgProfile));
+        if(FirebaseAuth.getInstance().getCurrentUser().toString()!=null){
+            Picasso.with(getApplicationContext()).load(Uri.parse(Statics.getLoggedUser(getApplicationContext()).getPictureUrl())).into((CircleImageView)findViewById(R.id.userImgProfile));
         }
         else
-            ((ImageView)findViewById(R.id.userImgProfile)).setImageResource(R.drawable.backarrow);*/
+            ((CircleImageView)findViewById(R.id.userImgProfile)).setImageResource(R.drawable.backarrow);
     }
 
     /** for calligraphy lib usage **/

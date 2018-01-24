@@ -11,21 +11,6 @@ public class User {
     public User() {
     }
 
-    /** to get entity from linkedin api **/
-    public User(String id, String emailAddress, String pictureUrl, String firstName, String lastName) {
-        this.id = id;
-        this.emailAddress = emailAddress;
-        this.pictureUrl = pictureUrl;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    public User(String emailAddress, String firstName, String lastName) {
-        this.emailAddress = emailAddress;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
     /** for firebase signup/login **/
 
 

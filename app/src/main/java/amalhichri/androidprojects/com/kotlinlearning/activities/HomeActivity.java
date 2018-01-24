@@ -2,6 +2,7 @@ package amalhichri.androidprojects.com.kotlinlearning.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
@@ -9,7 +10,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.HomePageTabsAdapter;
@@ -49,13 +50,20 @@ public class HomeActivity extends AppCompatActivity {
         Statics.usersTable.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User currenUser = dataSnapshot.getValue(User.class);
-                Log.d("currentUser",currenUser.toString());
+                SharedPreferences loggedUserPrefs = getSharedPreferences("loggedUserPrefs",0);
+                String loggedUser = (new Gson()).toJson(dataSnapshot.getValue(User.class));
+                SharedPreferences.Editor e=loggedUserPrefs.edit();
+                e.putString("user",loggedUser);
+                e.commit();
+               //Log.d("TT", "Test2 = " + loggedUser);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                    }
-                });
+                throw databaseError.toException();
+            }
+        });
+
 
         /** will be used to change tab icons colors on select/deselect */
         matrix = new ColorMatrix();
