@@ -91,7 +91,7 @@ public class SignupActivity extends Activity {
         Statics.signUp(((EditText) findViewById(R.id.emailSignupTxt)).getText().toString(),
                 ((EditText) findViewById(R.id.pswSignupTxt)).getText().toString(),
                 ((EditText) findViewById(R.id.fullNameTxt)).getText().toString(),
-                null,
+                "",
                 SignupActivity.this);
     }
 
