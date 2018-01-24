@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -59,6 +60,21 @@ public class SignupActivity extends Activity {
         //initializing facebook api
         facebookApiInit();
 
+        // material editTexts error msg
+        ((EditText) findViewById(R.id.emailSignupTxt)).setOnKeyListener(new View.OnKeyListener(){
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP)
+                    ((EditText) findViewById(R.id.emailSignupTxt)).setError("Password is incorrect.");
+                return false;
+            }
+        });
+        ((EditText) findViewById(R.id.emailSignupTxt)).setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override public void onFocusChange(    View v,    boolean hasFocus){
+                if (hasFocus) ((EditText) findViewById(R.id.emailSignupTxt)).setError(null);
+            }
+        }
+        );
     }
 
 
@@ -169,6 +185,7 @@ public class SignupActivity extends Activity {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
                                 try {
+                                    Log.d("OBJECT",object.toString());
                                     //if facebook account is based on phone number / or containes no email
                                     if(object.isNull("email")){
                                         SignupActivity.this.runOnUiThread(new Runnable() {
@@ -248,6 +265,10 @@ public class SignupActivity extends Activity {
            return true;
         else
             return false;
+    }
+
+    private void setErrorText(EditText editText,String errorMsg){
+
     }
 
 

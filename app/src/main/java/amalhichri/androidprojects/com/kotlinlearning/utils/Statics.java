@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
+import com.rey.material.widget.EditText;
 
 import amalhichri.androidprojects.com.kotlinlearning.activities.HomeActivity;
 import amalhichri.androidprojects.com.kotlinlearning.models.User;
@@ -88,5 +91,24 @@ public class Statics {
         SharedPreferences prefs = context.getSharedPreferences("loggedUserPrefs", 0);
         User user = (new Gson()).fromJson(prefs.getString("user", null), User.class);
         return user;
+    }
+
+    // to set material editTexts focus listners / error messages
+    public static void setErrorText(final EditText editText, final String errorMsg){
+        editText.setOnKeyListener(new View.OnKeyListener(){
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP)
+                    editText.setError(errorMsg);
+                return false;
+            }
+        });
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override public void onFocusChange(    View v,    boolean hasFocus){
+                if (hasFocus) editText.setError(null);
+            }
+        }
+        );
     }
 }
