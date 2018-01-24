@@ -163,23 +163,24 @@ public class SignupActivity extends Activity {
         loginButton.registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d("Test","Before facebook registration");
                 isFacebook=true;
                 final GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
-                                Log.d("Test","Just Before facebook registration");
                                 try {
-                                    //if(object.getString("email").isEmpty())
-                                        //
-                                   // else
-                                        // we would signup with object.getString("email") as an emaill,
-                                        // but I added "test.email@gmail.com" for test ( as am using a phone number base fb account for tests )
-                                        Statics.signUp("amal.hichri@gmail.com",String.valueOf(object.getInt("id")),
+                                    //if facebook account is based on phone number / or containes no email
+                                    if(object.isNull("email")){
+                                        SignupActivity.this.runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                Toast.makeText(SignupActivity.this, "Sign up failed! \n Please provide a Facebook account with email!", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }else
+                                        Statics.signUp(object.getString("email"),String.valueOf(object.getInt("id")),
                                                 object.getString("first_name")+" "+object.getString("last_name"),object.getJSONObject("picture").getJSONObject("data").getString("url") ,SignupActivity.this);
                                 } catch (JSONException e) {
-                                   Log.d("ERROR",e.getMessage());
+                                  Log.d("ERROR",e.getMessage());
                                 }
                             }
                         });
