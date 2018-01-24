@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,7 +18,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
 import amalhichri.androidprojects.com.kotlinlearning.activities.HomeActivity;
-import amalhichri.androidprojects.com.kotlinlearning.activities.LoginActivity;
 import amalhichri.androidprojects.com.kotlinlearning.models.User;
 
 /**
@@ -38,15 +39,11 @@ public class Statics {
         // we'll use a fullName in signup ui we're not providing firstName / lastName editTe
         //authenticate user through firebase
         Statics.auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful())
-                            Toast.makeText(activity, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        else {
-                        }
-                        Toast.makeText(activity, "added to firebase ", Toast.LENGTH_LONG).show();
-                        activity.startActivity(new Intent(activity, LoginActivity.class));
+                    public void onSuccess(AuthResult authResult) {
+                        // add user to database
+                        Log.d("Test","Facebook to firebase success");
                         User userToAdd = new User();
                         userToAdd.setEmailAddress(email);
                         String[] splited = fullName.split("\\s+");
@@ -57,9 +54,6 @@ public class Statics {
                         Toast.makeText(activity, "added to database ", Toast.LENGTH_LONG).show();
                     }
                 });
-
-
-        // add user to firebase DB
     }
 
     public static void signIn(String email, String password, final Activity activity) {

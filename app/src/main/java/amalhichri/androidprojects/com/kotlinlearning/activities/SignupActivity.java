@@ -162,14 +162,13 @@ public class SignupActivity extends Activity {
         loginButton.registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                Log.d("Test","Before facebook registration");
                 isFacebook=true;
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
+                final GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
-                            public void onCompleted(
-                                    JSONObject object,
-                                    GraphResponse response) {
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                Log.d("Test","Just Before facebook registration");
                                 try {
                                     //if(object.getString("email").isEmpty())
                                         //Toast.makeText(getApplicationContext(), "No email adress linked to this facebook account !\nPlease use an account with email info.", Toast.LENGTH_LONG).show();
@@ -179,14 +178,26 @@ public class SignupActivity extends Activity {
                                         Statics.signUp("test.email@gmail.com",String.valueOf(object.getInt("id")),
                                                 object.getString("first_name")+" "+object.getString("last_name"),object.getJSONObject("picture").getJSONObject("data").getString("url") ,SignupActivity.this);
                                 } catch (JSONException e) {
-                                    e.printStackTrace();
+                                   Log.d("ERROR",e.getMessage());
                                 }
                             }
                         });
                 Bundle parameters = new Bundle();
                 parameters.putString("fields", "id,first_name,last_name,email,picture");
                 request.setParameters(parameters);
-                request.executeAsync();
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        GraphResponse gResponse =request.executeAndWait();
+                    }
+                });
+                t.start();
+                try {
+                    t.join();
+                } catch (InterruptedException e) {
+                    Log.d("ERROR",e.getMessage());
+                }
+                Log.d("Test",request.toString());
             }
             @Override
             public void onCancel() {
