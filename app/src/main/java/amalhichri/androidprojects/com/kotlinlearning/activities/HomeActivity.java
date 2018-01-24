@@ -9,14 +9,22 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.HomePageTabsAdapter;
+import amalhichri.androidprojects.com.kotlinlearning.models.User;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class HomeActivity extends AppCompatActivity {
@@ -36,6 +44,18 @@ public class HomeActivity extends AppCompatActivity {
 
 
         fragmentManager =getSupportFragmentManager();
+
+        /** adding current user to sharedPreferences **/
+        Statics.usersTable.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User currenUser = dataSnapshot.getValue(User.class);
+                Log.d("currentUser",currenUser.toString());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
 
         /** will be used to change tab icons colors on select/deselect */
         matrix = new ColorMatrix();

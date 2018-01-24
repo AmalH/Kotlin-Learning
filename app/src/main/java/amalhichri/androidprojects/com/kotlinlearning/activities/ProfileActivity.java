@@ -5,14 +5,12 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.ProfileTabsAdapter;
-import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
@@ -39,7 +37,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         /** populating ui with user data **/
         /** fields data **/
-        Log.d("User: ","eee "+ Statics.auth.getCurrentUser().getDisplayName());
         //Log.d("picture url",Statics.auth.getCurrentUser().getPhotoUrl().toString());
         ((TextView) findViewById(R.id.fullNameInProfile)).setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         // ((TextView) findViewById(R.id.fullNameInProfile)).setText((user.getUsername().isEmpty()?user.getFirstName():user.getUsername()));

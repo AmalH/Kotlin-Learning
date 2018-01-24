@@ -37,7 +37,7 @@ public class Statics {
     public  static DatabaseReference usersTable =  FirebaseDatabase.getInstance().getReference("users");
 
 
-    public static void signUp(final String email, String password, final String fullName, final Activity activity){
+    public static void signUp(final String email, String password, final String fullName, final String pictureUrl, final Activity activity){
         // we'll use a fullName in signup ui we're not providing firstName / lastName editTe
         //authenticate user through firebase
         Statics.auth.createUserWithEmailAndPassword(email,password)
@@ -46,17 +46,16 @@ public class Statics {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful())
                             Toast.makeText(activity, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        else{
-                            Toast.makeText(activity, "added to firebase ", Toast.LENGTH_LONG).show();
-                            activity.startActivity(new Intent(activity, LoginActivity.class));
-                            User userToAdd = new User();
-                            userToAdd.setEmailAddress(email);
-                            String[] splited =fullName.split("\\s+");
-                            userToAdd.setFirstName(splited[0]);userToAdd.setLastName(splited[1]);
-                            usersTable.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userToAdd);
-                            Toast.makeText(activity, "added to database ", Toast.LENGTH_LONG).show();
+                       else{
                         }
-
+                        Toast.makeText(activity, "added to firebase ", Toast.LENGTH_LONG).show();
+                        activity.startActivity(new Intent(activity, LoginActivity.class));
+                        User userToAdd = new User();
+                        userToAdd.setEmailAddress(email);
+                        String[] splited =fullName.split("\\s+");
+                        userToAdd.setFirstName(splited[0]);userToAdd.setLastName(splited[1]);userToAdd.setPictureUrl(pictureUrl);
+                        usersTable.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userToAdd);
+                        Toast.makeText(activity, "added to database ", Toast.LENGTH_LONG).show();
                     }
                 });
 

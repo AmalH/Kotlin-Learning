@@ -91,6 +91,7 @@ public class SignupActivity extends Activity {
         Statics.signUp(((EditText) findViewById(R.id.emailSignupTxt)).getText().toString(),
                 ((EditText) findViewById(R.id.pswSignupTxt)).getText().toString(),
                 ((EditText) findViewById(R.id.fullNameTxt)).getText().toString(),
+                null,
                 SignupActivity.this);
     }
 
@@ -120,7 +121,7 @@ public class SignupActivity extends Activity {
                 Gson gson = new Gson();
                 final User userFromLinkedIn = gson.fromJson(apiResponse.getResponseDataAsJson().toString(),User.class);
                 /** signup to firebase with that user **/
-                Statics.signUp(userFromLinkedIn.getEmailAddress(),userFromLinkedIn.getId(),userFromLinkedIn.getFirstName()+" "+userFromLinkedIn.getLastName(),SignupActivity.this);
+                Statics.signUp(userFromLinkedIn.getEmailAddress(),userFromLinkedIn.getId(),userFromLinkedIn.getFirstName()+" "+userFromLinkedIn.getLastName(),userFromLinkedIn.getPictureUrl(),SignupActivity.this);
             }
 
             @Override
@@ -175,7 +176,8 @@ public class SignupActivity extends Activity {
                                    // else
                                         // we would signup with object.getString("email") as an emaill,
                                         // but I added "test.email@gmail.com" for test ( as am using a phone number base fb account for tests )
-                                        Statics.signUp("test.email@gmail.com",String.valueOf(object.getInt("id")),object.getString("first_name")+" "+object.getString("last_name"), SignupActivity.this);
+                                        Statics.signUp("test.email@gmail.com",String.valueOf(object.getInt("id")),
+                                                object.getString("first_name")+" "+object.getString("last_name"),object.getJSONObject("picture").getJSONObject("data").getString("url") ,SignupActivity.this);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
