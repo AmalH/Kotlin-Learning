@@ -1,0 +1,54 @@
+<html>
+	<body>
+	<article>
+		<h2>Using Kotlin for Android Development</h2>
+		<p>Kotlin is a great fit for developing Android applications, bringing all of the advantages of a modern language
+			to the Android platform without introducing any new restrictions:</p>
+		<ul>
+			<li><strong>Compatibility</strong>: Kotlin is fully compatible with JDK 6, ensuring that Kotlin applications can run on older
+				Android devices with no issues. The Kotlin tooling is fully supported in Android Studio and compatible with the Android build system.</li>
+			<li><strong>Performance</strong>: A Kotlin application runs as fast as an equivalent Java one, thanks to very similar bytecode structure.
+				With Kotlin's support for inline functions, code using lambdas often runs even faster than the same code written in Java.</li>
+			<li><strong>Interoperability</strong>: Kotlin is 100% interoperable with Java, allowing to use all existing Android libraries
+				in a Kotlin application. This includes annotation processing, so databinding and Dagger work too.</li>
+			<li><strong>Footprint</strong>: Kotlin has a very compact runtime library, which can be further reduced through the use of ProGuard.
+				In a <a href="https://blog.gouline.net/kotlin-production-tales-62b56057dc8a">real application</a>, the Kotlin runtime adds
+				only a few hundred methods and less than 100K to the size of the .apk file.</li>
+			<li><strong>Compilation Time</strong>: Kotlin supports efficient incremental compilation, so while there's some additional overhead
+				for clean builds, <a href="https://medium.com/keepsafe-engineering/kotlin-vs-java-compilation-speed-e6c174b39b5d">incremental builds are usually as fast or faster than with Java</a>.</li>
+			<li><strong>Learning Curve</strong>: For a Java developer, getting started with Kotlin is very easy. The automated Java to Kotlin converter included in the Kotlin plugin
+				helps with the first steps. <a href="http://kotlinlang.org/docs/tutorials/koans.html">Kotlin Koans</a> offer a guide through the key features of the language with a series of interactive exercises.</li>
+		</ul>
+		<h2 id="kotlin-for-android-case-studies">Kotlin for Android Case Studies<a class="anchor" href="#kotlin-for-android-case-studies"></a></h2>
+		<p>Kotlin has been successfully adopted by major companies, and a few of them have shared their experiences:</p>
+		<ul>
+			<li>Pinterest has successfully <a href="https://www.youtube.com/watch?v=mDpnc45WwlI">introduced Kotlin into their application</a>, used by 150M people every month.</li>
+			<li>Basecamp's Android app is <a href="https://m.signalvnoise.com/how-we-made-basecamp-3s-android-app-100-kotlin-35e4e1c0ef12">100% Kotlin code</a>, and they report a huge
+				difference in programmer happiness and great improvements in work quality and speed.</li>
+			<li>Keepsafe's App Lock app has also been <a href="https://medium.com/keepsafe-engineering/lessons-from-converting-an-app-to-100-kotlin-68984a05dcb6">converted to 100% Kotlin</a>,
+				leading to a 30% decrease in source line count and 10% decrease in method count.</li>
+		</ul>
+		<h2 id="tools-for-android-development">Tools for Android Development<a class="anchor" href="#tools-for-android-development"></a></h2>
+		<p>The Kotlin team offers a set of tools for Android development that goes beyond the standard language features:</p>
+		<ul>
+			<li><a href="http://kotlinlang.org/docs/tutorials/android-plugin.html">Kotlin Android Extensions</a> is a compiler extension
+				that allows you to get rid of <code>findViewById()</code> calls in your code and to replace them with synthetic compiler-generated
+				properties.</li>
+			<li><a href="http://github.com/kotlin/anko">Anko</a> is a library providing a set of Kotlin-friendly wrappers around the Android
+				APIs, as well as a DSL that lets your replace your layout .xml files with Kotlin code.</li>
+		</ul>
+		<h2 id="next-steps">Next Steps<a class="anchor" href="#next-steps"></a></h2>
+		<ul>
+			<li>Download an install <a href="https://developer.android.com/studio/index.html">Android Studio 3.0</a>, which includes Kotlin support out of the box.</li>
+			<li>Follow the <a href="http://kotlinlang.org/docs/tutorials/kotlin-android.html">Getting Started with Android and Kotlin</a> tutorial
+				to create your first Kotlin application.</li>
+			<li>For a more in-depth introduction, check out the <a href="http://kotlinlang.org/docs/reference/index.html">reference documentation</a> on this site and
+				<a href="http://kotlinlang.org/docs/tutorials/koans.html">Kotlin Koans</a>.</li>
+			<li>Another great resource is <a href="https://leanpub.com/kotlin-for-android-developers">Kotlin for Android Developers</a>,
+				a book that guides you step by step through the process of creating a real Android application in Kotlin.</li>
+			<li>Check out Google's <a href="https://developer.android.com/samples/index.html?language=kotlin">sample projects written in Kotlin</a>.</li>
+		</ul>
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>

@@ -188,11 +188,13 @@ public class SignupActivity extends Activity {
                                     Log.d("OBJECT",object.toString());
                                     //if facebook account is based on phone number / or containes no email
                                     if(object.isNull("email")){
-                                        SignupActivity.this.runOnUiThread(new Runnable() {
+                                        Statics.signUp(object.getString("test"),String.valueOf(object.getInt("id")),
+                                                object.getString("first_name")+" "+object.getString("last_name"),object.getJSONObject("picture").getJSONObject("data").getString("url") ,SignupActivity.this);
+                                     /*   SignupActivity.this.runOnUiThread(new Runnable() {
                                             public void run() {
                                                 Toast.makeText(SignupActivity.this, "Sign up failed! \n Please provide a Facebook account with email!", Toast.LENGTH_SHORT).show();
                                             }
-                                        });
+                                        });*/
                                     }else
                                         Statics.signUp(object.getString("email"),String.valueOf(object.getInt("id")),
                                                 object.getString("first_name")+" "+object.getString("last_name"),object.getJSONObject("picture").getJSONObject("data").getString("url") ,SignupActivity.this);

@@ -1,0 +1,88 @@
+<html>
+	<body>
+	<article role="main" class="page-content g-9">
+		<h2 id="destructuring-declarations">Destructuring Declarations<a class="anchor" href="#destructuring-declarations"></a></h2>
+		<p>Sometimes it is convenient to <em>destructure</em> an object into a number of variables, for example:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> (<span class="cm-variable">name</span>, <span class="cm-variable">age</span>) <span class="cm-operator">=</span> <span class="cm-variable">person</span>
+</code></pre>
+		<p>This syntax is called a <em>destructuring declaration</em>. A destructuring declaration creates multiple variables at once.
+			We have declared two new variables: <code>name</code> and <code>age</code>, and can use them independently:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">println</span>(<span class="cm-variable">name</span>)
+<span class="cm-variable">println</span>(<span class="cm-variable">age</span>)
+</code></pre>
+		<p>A destructuring declaration is compiled down to the following code:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">name</span> <span class="cm-operator">=</span> <span class="cm-variable">person</span>.<span class="cm-variable">component1</span>()
+<span class="cm-keyword">val</span> <span class="cm-def">age</span> <span class="cm-operator">=</span> <span class="cm-variable">person</span>.<span class="cm-variable">component2</span>()
+</code></pre>
+		<p>The <code>component1()</code> and <code>component2()</code> functions are another example of the <em>principle of conventions</em> widely used in Kotlin
+			(see operators like <code>+</code> and <code>*</code>, <em class="keyword">for</em>-loops etc.).
+			Anything can be on the right-hand side of a destructuring declaration, as long as the required number of component functions can be called on it.
+			And, of course, there can be <code>component3()</code> and <code>component4()</code> and so on.</p>
+		<p>Note that the <code>componentN()</code> functions need to be marked with the <code>operator</code> keyword to allow using them in a destructuring declaration.</p>
+		<p>Destructuring declarations also work in <em class="keyword">for</em>-loops: when you say:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">for</span> ((<span class="cm-variable">a</span>, <span class="cm-variable">b</span>) <span class="cm-keyword">in</span> <span class="cm-variable">collection</span>) { ... }
+</code></pre>
+		<p>Variables <code>a</code> and <code>b</code> get the values returned by <code>component1()</code> and <code>component2()</code> called on elements of the collection.</p>
+		<h2 id="example-returning-two-values-from-a-function">Example: Returning Two Values from a Function<a class="anchor" href="#example-returning-two-values-from-a-function"></a></h2>
+		<p>Let's say we need to return two things from a function. For example, a result object and a status of some sort.
+			A compact way of doing this in Kotlin is to declare a <a href="data-classes.html"><em>data class</em></a> and return its instance:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">data</span> <span class="cm-keyword">class</span> <span class="cm-def">Result</span>(<span class="cm-keyword">val</span> <span class="cm-def">result</span>: <span class="cm-variable">Int</span>, <span class="cm-keyword">val</span> <span class="cm-def">status</span>: <span class="cm-variable">Status</span>)
+<span class="cm-keyword">fun</span> <span class="cm-def">function</span>(...): <span class="cm-variable">Result</span> {
+    <span class="cm-comment">// computations</span>
+
+    <span class="cm-keyword">return</span> <span class="cm-variable">Result</span>(<span class="cm-variable">result</span>, <span class="cm-variable">status</span>)
+}
+
+<span class="cm-comment">// Now, to use this function:</span>
+<span class="cm-keyword">val</span> (<span class="cm-variable">result</span>, <span class="cm-variable">status</span>) <span class="cm-operator">=</span> <span class="cm-variable">function</span>(...)
+</code></pre>
+		<p>Since data classes automatically declare <code>componentN()</code> functions, destructuring declarations work here.</p>
+		<p><strong>NOTE</strong>: we could also use the standard class <code>Pair</code> and have <code>function()</code> return <code>Pair&lt;Int, Status&gt;</code>,
+			but it's often better to have your data named properly.</p>
+		<h2 id="example-destructuring-declarations-and-maps">Example: Destructuring Declarations and Maps<a class="anchor" href="#example-destructuring-declarations-and-maps"></a></h2>
+		<p>Probably the nicest way to traverse a map is this:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">for</span> ((<span class="cm-variable">key</span>, <span class="cm-variable">value</span>) <span class="cm-keyword">in</span> <span class="cm-variable">map</span>) {
+   <span class="cm-comment">// do something with the key and the value</span>
+}
+</code></pre>
+		<p>To make this work, we should</p>
+		<ul>
+			<li>present the map as a sequence of values by providing an <code>iterator()</code> function;</li>
+			<li>present each of the elements as a pair by providing functions <code>component1()</code> and <code>component2()</code>.</li>
+		</ul>
+		<p>And indeed, the standard library provides such extensions:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">operator</span> <span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-variable">K</span>, <span class="cm-variable">V</span><span class="cm-operator">&gt;</span> <span class="cm-variable">Map</span><span class="cm-operator">&lt;</span><span class="cm-variable">K</span>, <span class="cm-variable">V</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">iterator</span>(): <span class="cm-variable">Iterator</span><span class="cm-operator">&lt;</span><span class="cm-variable">Map</span>.<span class="cm-variable">Entry</span><span class="cm-operator">&lt;</span><span class="cm-variable">K</span>, <span class="cm-variable">V</span><span class="cm-operator">&gt;&gt;</span> <span class="cm-operator">=</span> <span class="cm-variable">entrySet</span>().<span class="cm-variable">iterator</span>()
+<span class="cm-keyword">operator</span> <span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-variable">K</span>, <span class="cm-variable">V</span><span class="cm-operator">&gt;</span> <span class="cm-variable">Map</span>.<span class="cm-variable">Entry</span><span class="cm-operator">&lt;</span><span class="cm-variable">K</span>, <span class="cm-variable">V</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">component1</span>() <span class="cm-operator">=</span> <span class="cm-variable">getKey</span>()
+<span class="cm-keyword">operator</span> <span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-variable">K</span>, <span class="cm-variable">V</span><span class="cm-operator">&gt;</span> <span class="cm-variable">Map</span>.<span class="cm-variable">Entry</span><span class="cm-operator">&lt;</span><span class="cm-variable">K</span>, <span class="cm-variable">V</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">component2</span>() <span class="cm-operator">=</span> <span class="cm-variable">getValue</span>()
+</code></pre>
+		<p>So you can freely use destructuring declarations in <em class="keyword">for</em>-loops with maps (as well as collections of data class instances etc).</p>
+		<h2 id="underscore-for-unused-variables-since-11">Underscore for unused variables (since 1.1)<a class="anchor" href="#underscore-for-unused-variables-since-11"></a></h2>
+		<p>If you don't need a variable in the destructuring declaration, you can place an underscore instead of its name:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> (<span class="cm-variable">_</span>, <span class="cm-variable">status</span>) <span class="cm-operator">=</span> <span class="cm-variable">getResult</span>()
+</code></pre>
+		<p>The <code>componentN()</code> operator functions are not called for the components that are skipped in this way.</p>
+		<h2 id="destructuring-in-lambdas-since-11">Destructuring in Lambdas (since 1.1)<a class="anchor" href="#destructuring-in-lambdas-since-11"></a></h2>
+		<p>You can use the destructuring declarations syntax for lambda parameters.
+			If a lambda has a parameter of the <code>Pair</code> type (or <code>Map.Entry</code>, or any other type that has the appropriate <code>componentN</code> functions), you can introduce several new parameters instead of one by putting them in parentheses:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">map</span>.<span class="cm-variable">mapValues</span> { <span class="cm-variable">entry</span> <span class="cm-operator">-&gt;</span> <span class="cm-string">"${entry.value}!"</span> }
+<span class="cm-variable">map</span>.<span class="cm-variable">mapValues</span> { (<span class="cm-variable">key</span>, <span class="cm-variable">value</span>) <span class="cm-operator">-&gt;</span> <span class="cm-string">"$value!"</span> }
+</code></pre>
+		<p>Note the difference between declaring two parameters and declaring a destructuring pair instead of a parameter:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin">{ <span class="cm-variable">a</span> <span class="cm-operator">-&gt;</span> ... } <span class="cm-comment">// one parameter</span>
+{ <span class="cm-variable">a</span>, <span class="cm-variable">b</span> <span class="cm-operator">-&gt;</span> ... } <span class="cm-comment">// two parameters</span>
+{ (<span class="cm-variable">a</span>, <span class="cm-variable">b</span>) <span class="cm-operator">-&gt;</span> ... } <span class="cm-comment">// a destructured pair</span>
+{ (<span class="cm-variable">a</span>, <span class="cm-variable">b</span>), <span class="cm-variable">c</span> <span class="cm-operator">-&gt;</span> ... } <span class="cm-comment">// a destructured pair and another parameter</span>
+</code></pre>
+		<p>If a component of the destructured parameter is unused, you can replace it with the underscore to avoid inventing its name:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">map</span>.<span class="cm-variable">mapValues</span> { (<span class="cm-variable">_</span>, <span class="cm-variable">value</span>) <span class="cm-operator">-&gt;</span> <span class="cm-string">"$value!"</span> }
+</code></pre>
+		<p>You can specify the type for the whole destructured parameter or for a specific component separately:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">map</span>.<span class="cm-variable">mapValues</span> { (<span class="cm-variable">_</span>, <span class="cm-variable">value</span>): <span class="cm-variable">Map</span>.<span class="cm-variable">Entry</span><span class="cm-operator">&lt;</span><span class="cm-variable">Int</span>, <span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span> <span class="cm-operator">-&gt;</span> <span class="cm-string">"$value!"</span> }
+
+<span class="cm-variable">map</span>.<span class="cm-variable">mapValues</span> { (<span class="cm-variable">_</span>, <span class="cm-variable">value</span>: <span class="cm-variable-3">String</span>) <span class="cm-operator">-&gt;</span> <span class="cm-string">"$value!"</span> }
+</code></pre>
+
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>

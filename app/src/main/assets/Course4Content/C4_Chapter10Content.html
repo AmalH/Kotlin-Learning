@@ -1,0 +1,66 @@
+<html>
+	<body>
+	<article role="main" class="page-content g-9">
+		<h2 id="enum-classes">Enum Classes<a class="anchor" href="#enum-classes"></a></h2>
+		<p>The most basic usage of enum classes is implementing type-safe enums:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">enum</span> <span class="cm-keyword">class</span> <span class="cm-def">Direction</span> {
+    <span class="cm-variable">NORTH</span>, <span class="cm-variable">SOUTH</span>, <span class="cm-variable">WEST</span>, <span class="cm-variable">EAST</span>
+}
+</code></pre>
+		<p>Each enum constant is an object. Enum constants are separated with commas.</p>
+		<h2 id="initialization">Initialization<a class="anchor" href="#initialization"></a></h2>
+		<p>Since each enum is an instance of the enum class, they can be initialized as:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">enum</span> <span class="cm-keyword">class</span> <span class="cm-def">Color</span>(<span class="cm-keyword">val</span> <span class="cm-def">rgb</span>: <span class="cm-variable">Int</span>) {
+        <span class="cm-variable">RED</span>(<span class="cm-number">0xFF0000</span>),
+        <span class="cm-variable">GREEN</span>(<span class="cm-number">0x00FF00</span>),
+        <span class="cm-variable">BLUE</span>(<span class="cm-number">0x0000FF</span>)
+}
+</code></pre>
+		<h2 id="anonymous-classes">Anonymous Classes<a class="anchor" href="#anonymous-classes"></a></h2>
+		<p>Enum constants can also declare their own anonymous classes:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">enum</span> <span class="cm-keyword">class</span> <span class="cm-def">ProtocolState</span> {
+    <span class="cm-variable">WAITING</span> {
+        <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">signal</span>() <span class="cm-operator">=</span> <span class="cm-variable">TALKING</span>
+    },
+
+    <span class="cm-variable">TALKING</span> {
+        <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">signal</span>() <span class="cm-operator">=</span> <span class="cm-variable">WAITING</span>
+    };
+
+    <span class="cm-keyword">abstract</span> <span class="cm-keyword">fun</span> <span class="cm-def">signal</span>(): <span class="cm-variable">ProtocolState</span>
+}
+</code></pre>
+		<p>with their corresponding methods, as well as overriding base methods. Note that if the enum class defines any
+			members, you need to separate the enum constant definitions from the member definitions with a semicolon, just like
+			in Java.</p>
+		<p>Enum entries cannot contain nested types other than inner classes (deprecated in Kotlin 1.2).</p>
+		<h2 id="working-with-enum-constants">Working with Enum Constants<a class="anchor" href="#working-with-enum-constants"></a></h2>
+		<p>Just like in Java, enum classes in Kotlin have synthetic methods allowing to list
+			the defined enum constants and to get an enum constant by its name. The signatures
+			of these methods are as follows (assuming the name of the enum class is <code>EnumClass</code>):</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">EnumClass</span>.<span class="cm-variable">valueOf</span>(<span class="cm-variable">value</span>: <span class="cm-variable-3">String</span>): <span class="cm-variable">EnumClass</span>
+<span class="cm-variable">EnumClass</span>.<span class="cm-variable">values</span>(): <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-variable">EnumClass</span><span class="cm-operator">&gt;</span>
+</code></pre>
+		<p>The <code>valueOf()</code> method throws an <code>IllegalArgumentException</code> if the specified name does
+			not match any of the enum constants defined in the class.</p>
+		<p>Since Kotlin 1.1, it's possible to access the constants in an enum class in a generic way, using
+			the <code>enumValues&lt;T&gt;()</code> and <code>enumValueOf&lt;T&gt;()</code> functions:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">enum</span> <span class="cm-keyword">class</span> <span class="cm-def">RGB</span> { <span class="cm-variable">RED</span>, <span class="cm-variable">GREEN</span>, <span class="cm-variable">BLUE</span> }
+
+<span class="cm-keyword">inline</span> <span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-keyword">reified</span> <span class="cm-variable">T</span> : <span class="cm-variable">Enum</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;&gt;</span> <span class="cm-variable">printAllValues</span>() {
+    <span class="cm-variable">print</span>(<span class="cm-variable">enumValues</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span>().<span class="cm-variable">joinToString</span> { <span class="cm-variable">it</span>.<span class="cm-variable">name</span> })
+}
+
+<span class="cm-variable">printAllValues</span><span class="cm-operator">&lt;</span><span class="cm-variable">RGB</span><span class="cm-operator">&gt;</span>() <span class="cm-comment">// prints RED, GREEN, BLUE</span>
+</code></pre>
+		<p>Every enum constant has properties to obtain its name and position in the enum class declaration:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">name</span>: <span class="cm-variable-3">String</span>
+<span class="cm-keyword">val</span> <span class="cm-def">ordinal</span>: <span class="cm-variable">Int</span>
+</code></pre>
+		<p>The enum constants also implement the <a href="http://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-comparable/index.html">Comparable</a> interface,
+			with the natural order being the order in which they are defined in the enum class.</p>
+
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>

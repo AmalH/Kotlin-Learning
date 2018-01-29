@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import amalhichri.androidprojects.com.kotlinlearning.fragments.FirstFragmet;
 import amalhichri.androidprojects.com.kotlinlearning.fragments.FourthFragmet;
+import amalhichri.androidprojects.com.kotlinlearning.fragments.RootFragment_learn;
 import amalhichri.androidprojects.com.kotlinlearning.fragments.SecondFragmet;
 import amalhichri.androidprojects.com.kotlinlearning.fragments.ThirdFragmet;
 
@@ -31,7 +31,7 @@ public class ProfileTabsAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new FirstFragmet();
+                return new RootFragment_learn();
             case 1:
                 return new SecondFragmet();
             case 2:

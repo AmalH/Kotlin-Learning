@@ -1,0 +1,206 @@
+<html>
+	<body>
+	<article role="main" class="page-content g-9">
+
+		<h2 id="generics">Generics<a class="anchor" href="#generics"></a></h2>
+		<p>As in Java, classes in Kotlin may have type parameters:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Box</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span>(<span class="cm-variable">t</span>: <span class="cm-variable">T</span>) {
+    <span class="cm-keyword">var</span> <span class="cm-def">value</span> <span class="cm-operator">=</span> <span class="cm-variable">t</span>
+}
+</code></pre>
+		<p>In general, to create an instance of such a class, we need to provide the type arguments:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">box</span>: <span class="cm-variable">Box</span><span class="cm-operator">&lt;</span><span class="cm-variable">Int</span><span class="cm-operator">&gt;</span> <span class="cm-operator">=</span> <span class="cm-variable">Box</span><span class="cm-operator">&lt;</span><span class="cm-variable">Int</span><span class="cm-operator">&gt;</span>(<span class="cm-number">1</span>)
+</code></pre>
+		<p>But if the parameters may be inferred, e.g. from the constructor arguments or by some other means, one is allowed to omit the type arguments:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">box</span> <span class="cm-operator">=</span> <span class="cm-variable">Box</span>(<span class="cm-number">1</span>) <span class="cm-comment">// 1 has type Int, so the compiler figures out that we are talking about Box&lt;Int&gt;</span>
+</code></pre>
+		<h2 id="variance">Variance<a class="anchor" href="#variance"></a></h2>
+		<p>One of the most tricky parts of Java's type system is wildcard types (see <a href="http://www.angelikalanger.com/GenericsFAQ/JavaGenericsFAQ.html">Java Generics FAQ</a>).
+			And Kotlin doesn't have any. Instead, it has two other things: declaration-site variance and type projections.</p>
+		<p>First, let's think about why Java needs those mysterious wildcards. The problem is explained in <a href="http://www.oracle.com/technetwork/java/effectivejava-136174.html">Effective Java</a>, Item 28: <em>Use bounded wildcards to increase API flexibility</em>.
+			First, generic types in Java are <strong>invariant</strong>, meaning that <code>List&lt;String&gt;</code> is <strong>not</strong> a subtype of <code>List&lt;Object&gt;</code>.
+			Why so? If List was not <strong>invariant</strong>, it would have been no
+			better than Java's arrays, since the following code would have compiled and caused an exception at runtime:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-comment">// Java</span>
+<span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span> <span class="cm-variable">strs</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">ArrayList</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>();
+<span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">Object</span><span class="cm-operator">&gt;</span> <span class="cm-variable">objs</span> <span class="cm-operator">=</span> <span class="cm-variable">strs</span>; <span class="cm-comment">// !!! The cause of the upcoming problem sits here. Java prohibits this!</span>
+<span class="cm-variable">objs</span>.<span class="cm-variable">add</span>(<span class="cm-number">1</span>); <span class="cm-comment">// Here we put an Integer into a list of Strings</span>
+<span class="cm-variable-3">String</span> <span class="cm-variable">s</span> <span class="cm-operator">=</span> <span class="cm-variable">strs</span>.<span class="cm-variable">get</span>(<span class="cm-number">0</span>); <span class="cm-comment">// !!! ClassCastException: Cannot cast Integer to String</span>
+</code></pre>
+		<p>So, Java prohibits such things in order to guarantee run-time safety. But this has some implications. For example, consider the <code>addAll()</code> method from <code>Collection</code>
+			interface. What's the signature of this method? Intuitively, we'd put it this way:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-comment">// Java</span>
+<span class="cm-keyword">interface</span> <span class="cm-def">Collection</span><span class="cm-operator">&lt;</span><span class="cm-variable">E</span><span class="cm-operator">&gt;</span> ... {
+  <span class="cm-variable-3">void</span> <span class="cm-variable">addAll</span>(<span class="cm-variable">Collection</span><span class="cm-operator">&lt;</span><span class="cm-variable">E</span><span class="cm-operator">&gt;</span> <span class="cm-variable">items</span>);
+}
+</code></pre>
+		<p>But then, we would not be able to do the following simple thing (which is perfectly safe):</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-comment">// Java</span>
+<span class="cm-variable-3">void</span> <span class="cm-def">copyAll</span>(<span class="cm-variable">Collection</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">Object</span><span class="cm-operator">&gt;</span> <span class="cm-variable">to</span>, <span class="cm-variable">Collection</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span> <span class="cm-variable">from</span>) {
+  <span class="cm-variable">to</span>.<span class="cm-variable">addAll</span>(<span class="cm-variable">from</span>); <span class="cm-comment">// !!! Would not compile with the naive declaration of addAll:</span>
+                   <span class="cm-comment">//       Collection&lt;String&gt; is not a subtype of Collection&lt;Object&gt;</span>
+}
+</code></pre>
+		<p>(In Java, we learned this lesson the hard way, see <a href="http://www.oracle.com/technetwork/java/effectivejava-136174.html">Effective Java</a>, Item 25: <em>Prefer lists to arrays</em>)</p>
+		<p>That's why the actual signature of <code>addAll()</code> is the following:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-comment">// Java</span>
+<span class="cm-keyword">interface</span> <span class="cm-def">Collection</span><span class="cm-operator">&lt;</span><span class="cm-variable">E</span><span class="cm-operator">&gt;</span> ... {
+  <span class="cm-variable-3">void</span> <span class="cm-variable">addAll</span>(<span class="cm-variable">Collection</span><span class="cm-operator">&lt;?</span> <span class="cm-keyword">extends</span> <span class="cm-variable">E</span><span class="cm-operator">&gt;</span> <span class="cm-variable">items</span>);
+}
+</code></pre>
+		<p>The <strong>wildcard type argument</strong> <code>? extends E</code> indicates that this method accepts a collection of objects of <code>E</code> <em>or some subtype of</em> <code>E</code>, not just <code>E</code> itself.
+			This means that we can safely <strong>read</strong> <code>E</code>'s from items (elements of this collection are instances of a subclass of E), but <strong>cannot write</strong> to
+			it since we do not know what objects comply to that unknown subtype of <code>E</code>.
+			In return for this limitation, we have the desired behaviour: <code>Collection&lt;String&gt;</code> <em>is</em> a subtype of <code>Collection&lt;? extends Object&gt;</code>.
+			In "clever words", the wildcard with an <strong>extends</strong>-bound (<strong>upper</strong> bound) makes the type <strong>covariant</strong>.</p>
+		<p>The key to understanding why this trick works is rather simple: if you can only <strong>take</strong> items from a collection, then using a collection of <code>String</code>s
+			and reading <code>Object</code>s from it is fine. Conversely, if you can only <em>put</em> items into the collection, it's OK to take a collection of
+			<code>Object</code>s and put <code>String</code>s into it: in Java we have <code>List&lt;? super String&gt;</code> a <strong>supertype</strong> of <code>List&lt;Object&gt;</code>.</p>
+		<p>The latter is called <strong>contravariance</strong>, and you can only call methods that take String as an argument on <code>List&lt;? super String&gt;</code>
+			(e.g., you can call <code>add(String)</code> or <code>set(int, String)</code>), while
+			if you call something that returns <code>T</code> in <code>List&lt;T&gt;</code>, you don't get a <code>String</code>, but an <code>Object</code>.</p>
+		<p>Joshua Bloch calls those objects you only <strong>read</strong> from <strong>Producers</strong>, and those you only <strong>write</strong> to <strong>Consumers</strong>. He recommends: "<em>For maximum flexibility, use wildcard types on input parameters that represent producers or consumers</em>", and proposes the following mnemonic:</p>
+		<p><em>PECS stands for Producer-Extends, Consumer-Super.</em></p>
+		<p><em>NOTE</em>: if you use a producer-object, say, <code>List&lt;? extends Foo&gt;</code>, you are not allowed to call <code>add()</code> or <code>set()</code> on this object, but this does not mean
+			that this object is <strong>immutable</strong>: for example, nothing prevents you from calling <code>clear()</code> to remove all items from the list, since <code>clear()</code>
+			does not take any parameters at all. The only thing guaranteed by wildcards (or other types of variance) is <strong>type safety</strong>. Immutability is a completely different story.</p>
+		<h2 id="declaration-site-variance">Declaration-site variance<a class="anchor" href="#declaration-site-variance"></a></h2>
+		<p>Suppose we have a generic interface <code>Source&lt;T&gt;</code> that does not have any methods that take <code>T</code> as a parameter, only methods that return <code>T</code>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-comment">// Java</span>
+<span class="cm-keyword">interface</span> <span class="cm-def">Source</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> {
+  <span class="cm-variable">T</span> <span class="cm-variable">nextT</span>();
+}
+</code></pre>
+		<p>Then, it would be perfectly safe to store a reference to an instance of <code>Source&lt;String&gt;</code> in a variable of type <code>Source&lt;Object&gt;</code> – there are no consumer-methods to call. But Java does not know this, and still prohibits it:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-comment">// Java</span>
+<span class="cm-variable-3">void</span> <span class="cm-def">demo</span>(<span class="cm-variable">Source</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span> <span class="cm-variable">strs</span>) {
+  <span class="cm-variable">Source</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">Object</span><span class="cm-operator">&gt;</span> <span class="cm-variable">objects</span> <span class="cm-operator">=</span> <span class="cm-variable">strs</span>; <span class="cm-comment">// !!! Not allowed in Java</span>
+  <span class="cm-comment">// ...</span>
+}
+</code></pre>
+		<p>To fix this, we have to declare objects of type <code>Source&lt;? extends Object&gt;</code>, which is sort of meaningless, because we can call all the same methods on such a variable as before, so there's no value added by the more complex type. But the compiler does not know that.</p>
+		<p>In Kotlin, there is a way to explain this sort of thing to the compiler. This is called <strong>declaration-site variance</strong>: we can annotate the <strong>type parameter</strong> <code>T</code> of Source to make sure that it is only <strong>returned</strong> (produced) from members of <code>Source&lt;T&gt;</code>, and never consumed.
+			To do this we provide the <strong>out</strong> modifier:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">abstract</span> <span class="cm-keyword">class</span> <span class="cm-def">Source</span><span class="cm-operator">&lt;</span><span class="cm-keyword">out</span> <span class="cm-variable">T</span><span class="cm-operator">&gt;</span> {
+    <span class="cm-keyword">abstract</span> <span class="cm-keyword">fun</span> <span class="cm-def">nextT</span>(): <span class="cm-variable">T</span>
+}
+
+<span class="cm-keyword">fun</span> <span class="cm-def">demo</span>(<span class="cm-variable">strs</span>: <span class="cm-variable">Source</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>) {
+    <span class="cm-keyword">val</span> <span class="cm-def">objects</span>: <span class="cm-variable">Source</span><span class="cm-operator">&lt;</span><span class="cm-variable">Any</span><span class="cm-operator">&gt;</span> <span class="cm-operator">=</span> <span class="cm-variable">strs</span> <span class="cm-comment">// This is OK, since T is an out-parameter</span>
+    <span class="cm-comment">// ...</span>
+}
+</code></pre>
+		<p>The general rule is: when a type parameter <code>T</code> of a class <code>C</code> is declared <strong>out</strong>, it may occur only in <strong>out</strong>-position in the members of <code>C</code>, but in return <code>C&lt;Base&gt;</code> can safely be a supertype
+			of <code>C&lt;Derived&gt;</code>.</p>
+		<p>In "clever words" they say that the class <code>C</code> is <strong>covariant</strong> in the parameter <code>T</code>, or that <code>T</code> is a <strong>covariant</strong> type parameter.
+			You can think of <code>C</code> as being a <strong>producer</strong> of <code>T</code>'s, and NOT a <strong>consumer</strong> of <code>T</code>'s.</p>
+		<p>The <strong>out</strong> modifier is called a <strong>variance annotation</strong>, and  since it is provided at the type parameter declaration site, we talk about <strong>declaration-site variance</strong>.
+			This is in contrast with Java's <strong>use-site variance</strong> where wildcards in the type usages make the types covariant.</p>
+		<p>In addition to <strong>out</strong>, Kotlin provides a complementary variance annotation: <strong>in</strong>. It makes a type parameter <strong>contravariant</strong>: it can only be consumed and never
+			produced. A good example of a contravariant class is <code>Comparable</code>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">abstract</span> <span class="cm-keyword">class</span> <span class="cm-variable-3">Comparable</span><span class="cm-operator">&lt;</span><span class="cm-keyword">in</span> <span class="cm-variable">T</span><span class="cm-operator">&gt;</span> {
+    <span class="cm-keyword">abstract</span> <span class="cm-keyword">fun</span> <span class="cm-def">compareTo</span>(<span class="cm-variable">other</span>: <span class="cm-variable">T</span>): <span class="cm-variable">Int</span>
+}
+
+<span class="cm-keyword">fun</span> <span class="cm-def">demo</span>(<span class="cm-variable">x</span>: <span class="cm-variable-3">Comparable</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">Number</span><span class="cm-operator">&gt;</span>) {
+    <span class="cm-variable">x</span>.<span class="cm-variable">compareTo</span>(<span class="cm-number">1.0</span>) <span class="cm-comment">// 1.0 has type Double, which is a subtype of Number</span>
+    <span class="cm-comment">// Thus, we can assign x to a variable of type Comparable&lt;Double&gt;</span>
+    <span class="cm-keyword">val</span> <span class="cm-def">y</span>: <span class="cm-variable-3">Comparable</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">Double</span><span class="cm-operator">&gt;</span> <span class="cm-operator">=</span> <span class="cm-variable">x</span> <span class="cm-comment">// OK!</span>
+}
+</code></pre>
+		<p>We believe that the words <strong>in</strong> and <strong>out</strong> are self-explaining (as they were successfully used in C# for quite some time already),
+			thus the mnemonic mentioned above is not really needed, and one can rephrase it for a higher purpose:</p>
+		<p><strong><a href="http://en.wikipedia.org/wiki/Existentialism">The Existential</a> Transformation: Consumer in, Producer out!</strong> :-)</p>
+		<h2 id="type-projections">Type projections<a class="anchor" href="#type-projections"></a></h2>
+		<h2 id="use-site-variance-type-projections">Use-site variance: Type projections<a class="anchor" href="#use-site-variance-type-projections"></a></h2>
+		<p>It is very convenient to declare a type parameter T as <em>out</em> and avoid trouble with subtyping on the use site, but some classes <strong>can't</strong> actually be restricted to only return <code>T</code>'s!
+			A good example of this is Array:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Array</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span>(<span class="cm-keyword">val</span> <span class="cm-def">size</span>: <span class="cm-variable">Int</span>) {
+    <span class="cm-keyword">fun</span> <span class="cm-keyword">get</span>(<span class="cm-variable">index</span>: <span class="cm-variable">Int</span>): <span class="cm-variable">T</span> { <span class="cm-comment">/* ... */</span> }
+    <span class="cm-keyword">fun</span> <span class="cm-keyword">set</span>(<span class="cm-variable">index</span>: <span class="cm-variable">Int</span>, <span class="cm-variable">value</span>: <span class="cm-variable">T</span>) { <span class="cm-comment">/* ... */</span> }
+}
+</code></pre>
+		<p>This class cannot be either co- or contravariant in <code>T</code>. And this imposes certain inflexibilities. Consider the following function:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">copy</span>(<span class="cm-variable">from</span>: <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-variable">Any</span><span class="cm-operator">&gt;</span>, <span class="cm-variable">to</span>: <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-variable">Any</span><span class="cm-operator">&gt;</span>) {
+    <span class="cm-variable">assert</span>(<span class="cm-variable">from</span>.<span class="cm-variable">size</span> <span class="cm-operator">==</span> <span class="cm-variable">to</span>.<span class="cm-variable">size</span>)
+    <span class="cm-keyword">for</span> (<span class="cm-variable">i</span> <span class="cm-keyword">in</span> <span class="cm-variable">from</span>.<span class="cm-variable">indices</span>)
+        <span class="cm-variable">to</span>[<span class="cm-variable">i</span>] <span class="cm-operator">=</span> <span class="cm-variable">from</span>[<span class="cm-variable">i</span>]
+}
+</code></pre>
+		<p>This function is supposed to copy items from one array to another. Let's try to apply it in practice:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">ints</span>: <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-variable">Int</span><span class="cm-operator">&gt;</span> <span class="cm-operator">=</span> <span class="cm-variable">arrayOf</span>(<span class="cm-number">1</span>, <span class="cm-number">2</span>, <span class="cm-number">3</span>)
+<span class="cm-keyword">val</span> <span class="cm-def">any</span> <span class="cm-operator">=</span> <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-variable">Any</span><span class="cm-operator">&gt;</span>(<span class="cm-number">3</span>) { <span class="cm-string">""</span> }
+<span class="cm-variable">copy</span>(<span class="cm-variable">ints</span>, <span class="cm-variable">any</span>) <span class="cm-comment">// Error: expects (Array&lt;Any&gt;, Array&lt;Any&gt;)</span>
+</code></pre>
+		<p>Here we run into the same familiar problem: <code>Array&lt;T&gt;</code> is <strong>invariant</strong> in <code>T</code>, thus neither of <code>Array&lt;Int&gt;</code> and <code>Array&lt;Any&gt;</code>
+			is a subtype of the other. Why? Again, because copy <strong>might</strong> be doing bad things, i.e. it might attempt to <strong>write</strong>, say, a String to <code>from</code>,
+			and if we actually passed an array of <code>Int</code> there, a <code>ClassCastException</code> would have been thrown sometime later.</p>
+		<p>Then, the only thing we want to ensure is that <code>copy()</code> does not do any bad things. We want to prohibit it from <strong>writing</strong> to <code>from</code>, and we can:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">copy</span>(<span class="cm-variable">from</span>: <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-keyword">out</span> <span class="cm-variable">Any</span><span class="cm-operator">&gt;</span>, <span class="cm-variable">to</span>: <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-variable">Any</span><span class="cm-operator">&gt;</span>) {
+ <span class="cm-comment">// ...</span>
+}
+</code></pre>
+		<p>What has happened here is called <strong>type projection</strong>: we said that <code>from</code> is not simply an array, but a restricted (<strong>projected</strong>) one: we can only call those methods that return the type parameter
+			<code>T</code>, in this case it means that we can only call <code>get()</code>. This is our approach to <strong>use-site variance</strong>, and corresponds to Java's <code>Array&lt;? extends Object&gt;</code>,
+			but in a slightly simpler way.</p>
+		<p>You can project a type with <strong>in</strong> as well:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">fill</span>(<span class="cm-variable">dest</span>: <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-keyword">in</span> <span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>, <span class="cm-variable">value</span>: <span class="cm-variable-3">String</span>) {
+    <span class="cm-comment">// ...</span>
+}
+</code></pre>
+		<p><code>Array&lt;in String&gt;</code> corresponds to Java's <code>Array&lt;? super String&gt;</code>, i.e. you can pass an array of <code>CharSequence</code> or an array of <code>Object</code> to the <code>fill()</code> function.</p>
+		<h2 id="star-projections">Star-projections<a class="anchor" href="#star-projections"></a></h2>
+		<p>Sometimes you want to say that you know nothing about the type argument, but still want to use it in a safe way.
+			The safe way here is to define such a projection of the generic type, that every concrete instantiation of that generic type would be a subtype of that projection.</p>
+		<p>Kotlin provides so called <strong>star-projection</strong> syntax for this:</p>
+		<ul>
+			<li>For <code>Foo&lt;out T&gt;</code>, where <code>T</code> is a covariant type parameter with the upper bound <code>TUpper</code>, <code>Foo&lt;*&gt;</code> is equivalent to <code>Foo&lt;out TUpper&gt;</code>. It means that when the <code>T</code> is unknown you can safely <em>read</em> values of <code>TUpper</code> from <code>Foo&lt;*&gt;</code>.</li>
+			<li>For <code>Foo&lt;in T&gt;</code>, where <code>T</code> is a contravariant type parameter, <code>Foo&lt;*&gt;</code> is equivalent to <code>Foo&lt;in Nothing&gt;</code>. It means there is nothing you can <em>write</em> to <code>Foo&lt;*&gt;</code> in a safe way when <code>T</code> is unknown.</li>
+			<li>For <code>Foo&lt;T&gt;</code>, where <code>T</code> is an invariant type parameter with the upper bound <code>TUpper</code>, <code>Foo&lt;*&gt;</code> is equivalent to <code>Foo&lt;out TUpper&gt;</code> for reading values and to <code>Foo&lt;in Nothing&gt;</code> for writing values.</li>
+		</ul>
+		<p>If a generic type has several type parameters each of them can be projected independently.
+			For example, if the type is declared as <code>interface Function&lt;in T, out U&gt;</code> we can imagine the following star-projections:</p>
+		<ul>
+			<li><code>Function&lt;*, String&gt;</code> means <code>Function&lt;in Nothing, String&gt;</code>;</li>
+			<li><code>Function&lt;Int, *&gt;</code> means <code>Function&lt;Int, out Any?&gt;</code>;</li>
+			<li><code>Function&lt;*, *&gt;</code> means <code>Function&lt;in Nothing, out Any?&gt;</code>.</li>
+		</ul>
+		<p><em>Note</em>: star-projections are very much like Java's raw types, but safe.</p>
+		<h2 id="generic-functions">Generic functions<a class="anchor" href="#generic-functions"></a></h2>
+		<p>Not only classes can have type parameters. Functions can, too. Type parameters are placed before the name of the function:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> <span class="cm-variable">singletonList</span>(<span class="cm-variable">item</span>: <span class="cm-variable">T</span>): <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> {
+    <span class="cm-comment">// ...</span>
+}
+
+<span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> <span class="cm-variable">T</span>.<span class="cm-variable">basicToString</span>() : <span class="cm-variable-3">String</span> {  <span class="cm-comment">// extension function</span>
+    <span class="cm-comment">// ...</span>
+}
+</code></pre>
+		<p>To call a generic function, specify the type arguments at the call site <strong>after</strong> the name of the function:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">l</span> <span class="cm-operator">=</span> <span class="cm-variable">singletonList</span><span class="cm-operator">&lt;</span><span class="cm-variable">Int</span><span class="cm-operator">&gt;</span>(<span class="cm-number">1</span>)
+</code></pre>
+		<h2 id="generic-constraints">Generic constraints<a class="anchor" href="#generic-constraints"></a></h2>
+		<p>The set of all possible types that can be substituted for a given type parameter may be restricted by <strong>generic constraints</strong>.</p>
+		<h2 id="upper-bounds">Upper bounds<a class="anchor" href="#upper-bounds"></a></h2>
+		<p>The most common type of constraint is an <strong>upper bound</strong> that corresponds to Java's <em>extends</em> keyword:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-variable">T</span> : <span class="cm-variable-3">Comparable</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;&gt;</span> <span class="cm-variable">sort</span>(<span class="cm-variable">list</span>: <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span>) {
+    <span class="cm-comment">// ...</span>
+}
+</code></pre>
+		<p>The type specified after a colon is the <strong>upper bound</strong>: only a subtype of <code>Comparable&lt;T&gt;</code> may be substituted for <code>T</code>. For example:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">sort</span>(<span class="cm-variable">listOf</span>(<span class="cm-number">1</span>, <span class="cm-number">2</span>, <span class="cm-number">3</span>)) <span class="cm-comment">// OK. Int is a subtype of Comparable&lt;Int&gt;</span>
+<span class="cm-variable">sort</span>(<span class="cm-variable">listOf</span>(<span class="cm-variable">HashMap</span><span class="cm-operator">&lt;</span><span class="cm-variable">Int</span>, <span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>())) <span class="cm-comment">// Error: HashMap&lt;Int, String&gt; is not a subtype of Comparable&lt;HashMap&lt;Int, String&gt;&gt;</span>
+</code></pre>
+		<p>The default upper bound (if none specified) is <code>Any?</code>. Only one upper bound can be specified inside the angle brackets.
+			If the same type parameter needs more than one upper bound, we need a separate <strong>where</strong>-clause:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> <span class="cm-variable">copyWhenGreater</span>(<span class="cm-variable">list</span>: <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span>, <span class="cm-variable">threshold</span>: <span class="cm-variable">T</span>): <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>
+    <span class="cm-keyword">where</span> <span class="cm-variable">T</span> : <span class="cm-variable-3">CharSequence</span>,
+          <span class="cm-variable">T</span> : <span class="cm-variable-3">Comparable</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> {
+    <span class="cm-keyword">return</span> <span class="cm-variable">list</span>.<span class="cm-variable">filter</span> { <span class="cm-variable">it</span> <span class="cm-operator">&gt;</span> <span class="cm-variable">threshold</span> }.<span class="cm-variable">map</span> { <span class="cm-variable">it</span>.<span class="cm-variable">toString</span>() }
+}
+</code></pre>
+
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>

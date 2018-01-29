@@ -1,0 +1,80 @@
+<html>
+	<body>
+	<article role="main" class="page-content g-9">
+		<h2 id="interfaces">Interfaces<a class="anchor" href="#interfaces"></a></h2>
+		<p>Interfaces in Kotlin are very similar to Java 8. They can contain declarations of abstract methods, as well as method
+			implementations. What makes them different from abstract classes is that interfaces cannot store state. They can have
+			properties but these need to be abstract or to provide accessor implementations.</p>
+		<p>An interface is defined using the keyword <em class="keyword">interface</em></p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">interface</span> <span class="cm-def">MyInterface</span> {
+    <span class="cm-keyword">fun</span> <span class="cm-def">bar</span>()
+    <span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() {
+      <span class="cm-comment">// optional body</span>
+    }
+}
+</code></pre>
+		<h2 id="implementing-interfaces">Implementing Interfaces<a class="anchor" href="#implementing-interfaces"></a></h2>
+		<p>A class or object can implement one or more interfaces</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Child</span> : <span class="cm-variable">MyInterface</span> {
+    <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">bar</span>() {
+        <span class="cm-comment">// body</span>
+    }
+}
+</code></pre>
+		<h2 id="properties-in-interfaces">Properties in Interfaces<a class="anchor" href="#properties-in-interfaces"></a></h2>
+		<p>You can declare properties in interfaces. A property declared in an interface can either be abstract, or it can provide
+			implementations for accessors. Properties declared in interfaces can't have backing fields, and therefore accessors
+			declared in interfaces can't reference them.</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">interface</span> <span class="cm-def">MyInterface</span> {
+    <span class="cm-keyword">val</span> <span class="cm-def">prop</span>: <span class="cm-variable">Int</span> <span class="cm-comment">// abstract</span>
+
+    <span class="cm-keyword">val</span> <span class="cm-def">propertyWithImplementation</span>: <span class="cm-variable-3">String</span>
+        <span class="cm-keyword">get</span>() <span class="cm-operator">=</span> <span class="cm-string">"foo"</span>
+
+    <span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() {
+        <span class="cm-variable">print</span>(<span class="cm-variable">prop</span>)
+    }
+}
+
+<span class="cm-keyword">class</span> <span class="cm-def">Child</span> : <span class="cm-variable">MyInterface</span> {
+    <span class="cm-keyword">override</span> <span class="cm-keyword">val</span> <span class="cm-def">prop</span>: <span class="cm-variable">Int</span> <span class="cm-operator">=</span> <span class="cm-number">29</span>
+}
+</code></pre>
+		<h2 id="resolving-overriding-conflicts">Resolving overriding conflicts<a class="anchor" href="#resolving-overriding-conflicts"></a></h2>
+		<p>When we declare many types in our supertype list, it may appear that we inherit more than one implementation of the same method. For example</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">interface</span> <span class="cm-def">A</span> {
+    <span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() { <span class="cm-variable">print</span>(<span class="cm-string">"A"</span>) }
+    <span class="cm-keyword">fun</span> <span class="cm-def">bar</span>()
+}
+
+<span class="cm-keyword">interface</span> <span class="cm-def">B</span> {
+    <span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() { <span class="cm-variable">print</span>(<span class="cm-string">"B"</span>) }
+    <span class="cm-keyword">fun</span> <span class="cm-def">bar</span>() { <span class="cm-variable">print</span>(<span class="cm-string">"bar"</span>) }
+}
+
+<span class="cm-keyword">class</span> <span class="cm-def">C</span> : <span class="cm-variable">A</span> {
+    <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">bar</span>() { <span class="cm-variable">print</span>(<span class="cm-string">"bar"</span>) }
+}
+
+<span class="cm-keyword">class</span> <span class="cm-def">D</span> : <span class="cm-variable">A</span>, <span class="cm-variable">B</span> {
+    <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() {
+        <span class="cm-keyword">super</span><span class="cm-operator">&lt;</span><span class="cm-variable">A</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">foo</span>()
+        <span class="cm-keyword">super</span><span class="cm-operator">&lt;</span><span class="cm-variable">B</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">foo</span>()
+    }
+
+    <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">bar</span>() {
+        <span class="cm-keyword">super</span><span class="cm-operator">&lt;</span><span class="cm-variable">B</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">bar</span>()
+    }
+}
+</code></pre>
+		<p>Interfaces <em>A</em> and <em>B</em> both declare functions <em>foo()</em> and <em>bar()</em>. Both of them implement <em>foo()</em>, but only <em>B</em> implements <em>bar()</em> (<em>bar()</em> is not marked abstract in <em>A</em>,
+			because this is the default for interfaces, if the function has no body). Now, if we derive a concrete class <em>C</em> from <em>A</em>, we, obviously, have to override <em>bar()</em> and provide
+			an implementation.</p>
+		<p>However, if we derive <em>D</em> from <em>A</em> and <em>B</em>, we need to implement all the methods which we have
+			inherited from multiple interfaces, and to specify how exactly <em>D</em> should implement them. This rule applies
+			both to methods for which we've inherited a single implementation (<em>bar()</em>) and multiple implementations (<em>foo()</em>).</p>
+
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>

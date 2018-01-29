@@ -1,0 +1,149 @@
+<html>
+	<body>
+	<article role="main" class="page-content g-9">
+		<h2 id="inline-functions">Inline Functions<a class="anchor" href="#inline-functions"></a></h2>
+		<p>Using <a href="lambdas.html">higher-order functions</a> imposes certain runtime penalties: each function is an object, and it captures a closure,
+			i.e. those variables that are accessed in the body of the function.
+			Memory allocations (both for function objects and classes) and virtual calls introduce runtime overhead.</p>
+		<p>But it appears that in many cases this kind of overhead can be eliminated by inlining the lambda expressions.
+			The functions shown below are good examples of this situation. I.e., the <code>lock()</code> function could be easily inlined at call-sites.
+			Consider the following case:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">lock</span>(<span class="cm-variable">l</span>) { <span class="cm-variable">foo</span>() }
+</code></pre>
+		<p>Instead of creating a function object for the parameter and generating a call, the compiler could emit the following code:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">l</span>.<span class="cm-variable">lock</span>()
+<span class="cm-keyword">try</span> {
+    <span class="cm-variable">foo</span>()
+}
+<span class="cm-keyword">finally</span> {
+    <span class="cm-variable">l</span>.<span class="cm-variable">unlock</span>()
+}
+</code></pre>
+		<p>Isn't it what we wanted from the very beginning?</p>
+		<p>To make the compiler do this, we need to mark the <code>lock()</code> function with the <code>inline</code> modifier:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">inline</span> <span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> <span class="cm-variable">lock</span>(<span class="cm-variable">lock</span>: <span class="cm-variable">Lock</span>, <span class="cm-variable">body</span>: () <span class="cm-operator">-&gt;</span> <span class="cm-variable">T</span>): <span class="cm-variable">T</span> {
+    <span class="cm-comment">// ...</span>
+}
+</code></pre>
+		<p>The <code>inline</code> modifier affects both the function itself and the lambdas passed to it: all of those will be inlined
+			into the call site.</p>
+		<p>Inlining may cause the generated code to grow; however, if we do it in a reasonable way (i.e. avoiding inlining large functions), it will pay off in performance, especially at "megamorphic" call-sites inside loops.</p>
+		<h2 id="noinline">noinline<a class="anchor" href="#noinline"></a></h2>
+		<p>In case you want only some of the lambdas passed to an inline function to be inlined, you can mark some of your function
+			parameters with the <code>noinline</code> modifier:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">inline</span> <span class="cm-keyword">fun</span> <span class="cm-def">foo</span>(<span class="cm-variable">inlined</span>: () <span class="cm-operator">-&gt;</span> <span class="cm-variable">Unit</span>, <span class="cm-keyword">noinline</span> <span class="cm-variable">notInlined</span>: () <span class="cm-operator">-&gt;</span> <span class="cm-variable">Unit</span>) {
+    <span class="cm-comment">// ...</span>
+}
+</code></pre>
+		<p>Inlinable lambdas can only be called inside the inline functions or passed as inlinable arguments,
+			but <code>noinline</code> ones can be manipulated in any way we like: stored in fields, passed around etc.</p>
+		<p>Note that if an inline function has no inlinable function parameters and no
+			<a href="#reified-type-parameters">reified type parameters</a>, the compiler will issue a warning, since inlining such functions is
+			very unlikely to be beneficial (you can suppress the warning if you are sure the inlining is needed using the annotation <code>@Suppress("NOTHING_TO_INLINE")</code>).</p>
+		<h2 id="non-local-returns">Non-local returns<a class="anchor" href="#non-local-returns"></a></h2>
+		<p>In Kotlin, we can only use a normal, unqualified <code>return</code> to exit a named function or an anonymous function.
+			This means that to exit a lambda, we have to use a <a href="returns.html#return-at-labels">label</a>, and a bare <code>return</code> is forbidden
+			inside a lambda, because a lambda can not make the enclosing function return:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() {
+    <span class="cm-variable">ordinaryFunction</span> {
+        <span class="cm-keyword">return</span> <span class="cm-comment">// ERROR: can not make `foo` return here</span>
+    }
+}
+</code></pre>
+		<p>But if the function the lambda is passed to is inlined, the return can be inlined as well, so it is allowed:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() {
+    <span class="cm-variable">inlineFunction</span> {
+        <span class="cm-keyword">return</span> <span class="cm-comment">// OK: the lambda is inlined</span>
+    }
+}
+</code></pre>
+		<p>Such returns (located in a lambda, but exiting the enclosing function) are called <em>non-local</em> returns. We are used to
+			this sort of construct in loops, which inline functions often enclose:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">hasZeros</span>(<span class="cm-variable">ints</span>: <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable">Int</span><span class="cm-operator">&gt;</span>): <span class="cm-variable-3">Boolean</span> {
+    <span class="cm-variable">ints</span>.<span class="cm-variable">forEach</span> {
+        <span class="cm-keyword">if</span> (<span class="cm-variable">it</span> <span class="cm-operator">==</span> <span class="cm-number">0</span>) <span class="cm-keyword">return</span> <span class="cm-atom">true</span> <span class="cm-comment">// returns from hasZeros</span>
+    }
+    <span class="cm-keyword">return</span> <span class="cm-atom">false</span>
+}
+</code></pre>
+		<p>Note that some inline functions may call the lambdas passed to them as parameters not directly from the function body,
+			but from another execution context, such as a local object or a nested function. In such cases, non-local control flow
+			is also not allowed in the lambdas. To indicate that, the lambda parameter needs to be marked with
+			the <code>crossinline</code> modifier:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">inline</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>(<span class="cm-keyword">crossinline</span> <span class="cm-variable">body</span>: () <span class="cm-operator">-&gt;</span> <span class="cm-variable">Unit</span>) {
+    <span class="cm-keyword">val</span> <span class="cm-def">f</span> <span class="cm-operator">=</span> <span class="cm-keyword">object</span>: <span class="cm-variable-3">Runnable</span> {
+        <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">run</span>() <span class="cm-operator">=</span> <span class="cm-variable">body</span>()
+    }
+    <span class="cm-comment">// ...</span>
+}
+</code></pre>
+		<blockquote>
+			<p><code>break</code> and <code>continue</code> are not yet available in inlined lambdas, but we are planning to support them too.</p>
+		</blockquote>
+		<h2 id="reified-type-parameters">Reified type parameters<a class="anchor" href="#reified-type-parameters"></a></h2>
+		<p>Sometimes we need to access a type passed to us as a parameter:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> <span class="cm-variable">TreeNode</span>.<span class="cm-variable">findParentOfType</span>(<span class="cm-variable">clazz</span>: <span class="cm-variable-3">Class</span><span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span>): <span class="cm-variable">T</span><span class="cm-operator">?</span> {
+    <span class="cm-keyword">var</span> <span class="cm-def">p</span> <span class="cm-operator">=</span> <span class="cm-variable">parent</span>
+    <span class="cm-keyword">while</span> (<span class="cm-variable">p</span> <span class="cm-operator">!=</span> <span class="cm-atom">null</span> <span class="cm-operator">&amp;&amp;</span> <span class="cm-operator">!</span><span class="cm-variable">clazz</span>.<span class="cm-variable">isInstance</span>(<span class="cm-variable">p</span>)) {
+        <span class="cm-variable">p</span> <span class="cm-operator">=</span> <span class="cm-variable">p</span>.<span class="cm-variable">parent</span>
+    }
+    <span class="cm-variable">@Suppress</span>(<span class="cm-string">"UNCHECKED_CAST"</span>)
+    <span class="cm-keyword">return</span> <span class="cm-variable">p</span> <span class="cm-keyword">as</span> <span class="cm-variable">T</span><span class="cm-operator">?</span>
+}
+</code></pre>
+		<p>Here, we walk up a tree and use reflection to check if a node has a certain type.
+			It’s all fine, but the call site is not very pretty:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">treeNode</span>.<span class="cm-variable">findParentOfType</span>(<span class="cm-variable">MyTreeNode</span>::<span class="cm-keyword">class</span>.<span class="cm-variable">java</span>)
+</code></pre>
+		<p>What we actually want is simply pass a type to this function, i.e. call it like this:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">treeNode</span>.<span class="cm-variable">findParentOfType</span><span class="cm-operator">&lt;</span><span class="cm-variable">MyTreeNode</span><span class="cm-operator">&gt;</span>()
+</code></pre>
+		<p>To enable this, inline functions support <em>reified type parameters</em>, so we can write something like this:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">inline</span> <span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-keyword">reified</span> <span class="cm-variable">T</span><span class="cm-operator">&gt;</span> <span class="cm-variable">TreeNode</span>.<span class="cm-variable">findParentOfType</span>(): <span class="cm-variable">T</span><span class="cm-operator">?</span> {
+    <span class="cm-keyword">var</span> <span class="cm-def">p</span> <span class="cm-operator">=</span> <span class="cm-variable">parent</span>
+    <span class="cm-keyword">while</span> (<span class="cm-variable">p</span> <span class="cm-operator">!=</span> <span class="cm-atom">null</span> <span class="cm-operator">&amp;&amp;</span> <span class="cm-variable">p</span> <span class="cm-operator">!</span><span class="cm-keyword">is</span> <span class="cm-variable">T</span>) {
+        <span class="cm-variable">p</span> <span class="cm-operator">=</span> <span class="cm-variable">p</span>.<span class="cm-variable">parent</span>
+    }
+    <span class="cm-keyword">return</span> <span class="cm-variable">p</span> <span class="cm-keyword">as</span> <span class="cm-variable">T</span><span class="cm-operator">?</span>
+}
+</code></pre>
+		<p>We qualified the type parameter with the <code>reified</code> modifier, now it’s accessible inside the function,
+			almost as if it were a normal class. Since the function is inlined, no reflection is needed, normal operators like <code>!is</code>
+			and <code>as</code> are working now. Also, we can call it as mentioned above: <code>myTree.findParentOfType&lt;MyTreeNodeType&gt;()</code>.</p>
+		<p>Though reflection may not be needed in many cases, we can still use it with a reified type parameter:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">inline</span> <span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-keyword">reified</span> <span class="cm-variable">T</span><span class="cm-operator">&gt;</span> <span class="cm-variable">membersOf</span>() <span class="cm-operator">=</span> <span class="cm-variable">T</span>::<span class="cm-keyword">class</span>.<span class="cm-variable">members</span>
+
+<span class="cm-keyword">fun</span> <span class="cm-def">main</span>(<span class="cm-variable">s</span>: <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>) {
+    <span class="cm-variable">println</span>(<span class="cm-variable">membersOf</span><span class="cm-operator">&lt;</span><span class="cm-variable">StringBuilder</span><span class="cm-operator">&gt;</span>().<span class="cm-variable">joinToString</span>(<span class="cm-string">"\n"</span>))
+}
+</code></pre>
+		<p>Normal functions (not marked as inline) can not have reified parameters.
+			A type that does not have a run-time representation (e.g. a non-reified type parameter or a fictitious type like <code>Nothing</code>)
+			can not be used as an argument for a reified type parameter.</p>
+		<p>For a low-level description, see the <a href="https://github.com/JetBrains/kotlin/blob/master/spec-docs/reified-type-parameters.md">spec document</a>.</p>
+		<h2 id="inline-properties">Inline properties (since 1.1)<a class="anchor" href="#inline-properties"></a></h2>
+		<p>The <code>inline</code> modifier can be used on accessors of properties that don't have a backing field.
+			You can annotate individual property accessors:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">foo</span>: <span class="cm-variable">Foo</span>
+    <span class="cm-keyword">inline</span> <span class="cm-keyword">get</span>() <span class="cm-operator">=</span> <span class="cm-variable">Foo</span>()
+
+<span class="cm-keyword">var</span> <span class="cm-def">bar</span>: <span class="cm-variable">Bar</span>
+    <span class="cm-keyword">get</span>() <span class="cm-operator">=</span> ...
+    <span class="cm-keyword">inline</span> <span class="cm-keyword">set</span>(<span class="cm-variable">v</span>) { ... }
+</code></pre>
+		<p>You can also annotate an entire property, which marks both of its accessors as inline:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">inline</span> <span class="cm-keyword">var</span> <span class="cm-def">bar</span>: <span class="cm-variable">Bar</span>
+    <span class="cm-keyword">get</span>() <span class="cm-operator">=</span> ...
+    <span class="cm-keyword">set</span>(<span class="cm-variable">v</span>) { ... }
+</code></pre>
+		<p>At the call site, inline accessors are inlined as regular inline functions.</p>
+		<h2 id="public-inline-restrictions">Restrictions for public API inline functions<a class="anchor" href="#public-inline-restrictions"></a></h2>
+		<p>When an inline function is <code>public</code> or <code>protected</code> and is not a part of a <code>private</code> or <code>internal</code> declaration, it is considered a <a href="visibility-modifiers.html#modules">module</a>'s public API. It can be called in other modules and is inlined at such call sites as well.</p>
+		<p>This imposes certain risks of binary incompatibility caused by changes in the module that declares an inline function in case the calling module is not re-compiled after the change.</p>
+		<p>To eliminate the risk of such incompatibility being introduced by a change in <strong>non</strong>-public API of a module, the public API inline functions are not allowed to use non-public-API declarations, i.e. <code>private</code> and <code>internal</code> declarations and their parts, in their bodies.</p>
+		<p>An <code>internal</code> declaration can be annotated with <code>@PublishedApi</code>, which allows its use in public API inline functions. When an <code>internal</code> inline function is marked as <code>@PublishedApi</code>, its body is checked too, as if it were public.</p>
+
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>

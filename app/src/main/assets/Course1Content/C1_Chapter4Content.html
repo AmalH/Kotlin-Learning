@@ -1,0 +1,45 @@
+<html>
+	<body>
+	<article>
+		<h2>Kotlin/Native</h2>
+		<p><a href="https://github.com/JetBrains/kotlin-native/">Kotlin/Native</a> is a technology for compiling Kotlin to native binaries that run without any VM.
+			It comprises a LLVM-based backend for the Kotlin compiler and a native implementation of the Kotlin runtime
+			library. Kotlin/Native is primarily designed to allow compilation for platforms where virtual machines
+			are not desirable or possible (such as iOS, embedded targets), or where a developer needs to produce
+			a reasonably-sized self-contained program that does not require an additional runtime.</p>
+		<p>Kotlin/Native fully supports interoperability with native code. For platform libraries, the corresponding
+			interop libraries are available out of the box. For other libraries, we provide a
+			<a href="https://github.com/JetBrains/kotlin-native/blob/master/INTEROP.md">tool to generate an interop library</a>
+			from a C header file, with full support for all C language features.
+			On macOS and iOS, interoperability with Objective/C code is also supported.</p>
+		<p>Kotlin/Native is currently in development; preview releases are available for you to try. IDE support
+			for Kotlin/Native is available as plugins for <a href="https://www.jetbrains.com/clion/">CLion</a>.</p>
+		<h2 id="target-platforms">Target Platforms<a class="anchor" href="#target-platforms"></a></h2>
+		<p>Kotlin/Native currently supports the following platforms:</p>
+		<ul>
+			<li>Windows (x86_64 only at the moment)</li>
+			<li>Linux (x86_64, arm32, MIPS, MIPS little endian)</li>
+			<li>MacOS (x86_64)</li>
+			<li>iOS (arm64 only)</li>
+			<li>Android (arm32 and arm64)</li>
+			<li>WebAssembly (wasm32 only)</li>
+		</ul>
+		<h2 id="sample-projects">Sample Projects<a class="anchor" href="#sample-projects"></a></h2>
+		<p>We've built a number of sample projects to showcase the possibilities of Kotlin/Native:</p>
+		<ul>
+			<li>The <a href="https://github.com/JetBrains/kotlin-native/tree/master/samples">Kotlin/Native GitHub repository</a> contains a number of sample projects;</li>
+			<li>The <a href="https://github.com/jetbrains/kotlinconf-spinner">KotlinConf Spinner app</a> is a simple cross-platform
+				mobile multiplayer game fully built in Kotlin/Native, consisting of the following components:
+				<ul>
+					<li>a backend, using SQLite for data storage and exposing a REST/JSON API;</li>
+					<li>mobile clients for iOS and Android, using OpenGL;</li>
+					<li>a WebAssembly-based browser frontend for viewing the game scores.</li>
+				</ul>Z
+			</li>
+			<li>The <a href="https://github.com/JetBrains/kotlinconf-app/tree/master/ios">KotlinConf app</a> is an iOS app
+				with a UIKit-based UI, showcasing the Objective/C interop facilities of Kotlin/Native.</li>
+		</ul>
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>

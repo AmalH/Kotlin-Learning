@@ -1,0 +1,20 @@
+<style>
+/** fonts **/
+			@font-face {
+			  font-family: "titlesFont";
+			  src: url('file:///android_asset/fonts/open_sans_regular.ttf');
+			}
+			@font-face {
+			  font-family: "contentFont";
+			  src: url('file:///android_asset/fonts/open_sans_regular.ttf');
+			}
+/** all chapters **/
+			h2 { font-family:"titlesFont";font-size:14pt;color:#e99631}
+			p,ul { font-family:"contentFont";text-align: justify;text-justify: inter-word;color:#808080}
+			li+strong {color:#424242}
+			a {color:#3b5670;font-weight: bold;}
+/** specific **/
+            .keyword {color:#3b5670;}  /*in c3_c2*/
+/** code sections **/
+            .cm-keyword {color:#3F5991;font-weight: bold;}
+		</style>

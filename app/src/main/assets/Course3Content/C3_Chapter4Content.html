@@ -1,0 +1,79 @@
+<html>
+	<body>
+	<article role="main" class="page-content g-9">
+		<h2 id="returns-and-jumps">Returns and Jumps<a class="anchor" href="#returns-and-jumps"></a></h2>
+		<p>Kotlin has three structural jump expressions:</p>
+		<ul>
+			<li><em class="keyword">return</em>. By default returns from the nearest enclosing function or <a href="http://kotlinlang.org/docs/reference/lambdas.html#anonymous-functions">anonymous function</a>.</li>
+			<li><em class="keyword">break</em>. Terminates the nearest enclosing loop.</li>
+			<li><em class="keyword">continue</em>. Proceeds to the next step of the nearest enclosing loop.</li>
+		</ul>
+		<p>All of these expressions can be used as part of larger expressions:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">s</span> <span class="cm-operator">=</span> <span class="cm-variable">person</span>.<span class="cm-variable">name</span> <span class="cm-operator">?</span>: <span class="cm-keyword">return</span>
+</code></pre>
+		<p>The type of these expressions is the <a href="http://kotlinlang.org/docs/reference/exceptions.html#the-nothing-type">Nothing type</a>.</p>
+		<h2 id="break-and-continue-labels">Break and Continue Labels<a class="anchor" href="#break-and-continue-labels"></a></h2>
+		<p>Any expression in Kotlin may be marked with a <em class="keyword">label</em>.
+			Labels have the form of an identifier followed by the <code>@</code> sign, for example: <code>abc@</code>, <code>fooBar@</code> are valid labels (see the <a href="http://kotlinlang.org/docs/reference/grammar.html#labelReference">grammar</a>).
+			To label an expression, we just put a label in front of it</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">loop</span><span class="cm-variable">@</span> <span class="cm-keyword">for</span> (<span class="cm-variable">i</span> <span class="cm-keyword">in</span> <span class="cm-number">1.</span>.<span class="cm-number">100</span>) {
+    <span class="cm-comment">// ...</span>
+}
+</code></pre>
+		<p>Now, we can qualify a <em class="keyword">break</em> or a <em class="keyword">continue</em> with a label:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">loop</span><span class="cm-variable">@</span> <span class="cm-keyword">for</span> (<span class="cm-variable">i</span> <span class="cm-keyword">in</span> <span class="cm-number">1.</span>.<span class="cm-number">100</span>) {
+    <span class="cm-keyword">for</span> (<span class="cm-variable">j</span> <span class="cm-keyword">in</span> <span class="cm-number">1.</span>.<span class="cm-number">100</span>) {
+        <span class="cm-keyword">if</span> (...) <span class="cm-keyword">break</span><span class="cm-variable">@loop</span>
+    }
+}
+</code></pre>
+		<p>A <em class="keyword">break</em> qualified with a label jumps to the execution point right after the loop marked with that label.
+			A <em class="keyword">continue</em> proceeds to the next iteration of that loop.</p>
+		<h2 id="return-at-labels">Return at Labels<a class="anchor" href="#return-at-labels"></a></h2>
+		<p>With function literals, local functions and object expression, functions can be nested in Kotlin.
+			Qualified <em class="keyword">return</em>s allow us to return from an outer function.
+			The most important use case is returning from a lambda expression. Recall that when we write this:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() {
+    <span class="cm-variable">ints</span>.<span class="cm-variable">forEach</span> {
+        <span class="cm-keyword">if</span> (<span class="cm-variable">it</span> <span class="cm-operator">==</span> <span class="cm-number">0</span>) <span class="cm-keyword">return</span>  <span class="cm-comment">// nonlocal return from inside lambda directly to the caller of foo()</span>
+        <span class="cm-variable">print</span>(<span class="cm-variable">it</span>)
+    }
+}
+</code></pre>
+		<p>The <em class="keyword">return</em>-expression returns from the nearest enclosing function, i.e. <code>foo</code>.
+			(Note that such non-local returns are supported only for lambda expressions passed to <a href="http://kotlinlang.org/docs/reference/lambdas.html#anonymous-functions">inline functions</a>.)
+			If we need to return from a lambda expression, we have to label it and qualify the <em class="keyword">return</em>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() {
+    <span class="cm-variable">ints</span>.<span class="cm-variable">forEach</span> <span class="cm-variable">lit</span><span class="cm-variable">@</span> {
+        <span class="cm-keyword">if</span> (<span class="cm-variable">it</span> <span class="cm-operator">==</span> <span class="cm-number">0</span>) <span class="cm-keyword">return</span><span class="cm-variable">@lit</span>
+        <span class="cm-variable">print</span>(<span class="cm-variable">it</span>)
+    }
+}
+</code></pre>
+		<p>Now, it returns only from the lambda expression. Oftentimes it is more convenient to use implicits labels:
+			such a label has the same name as the function to which the lambda is passed.</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() {
+    <span class="cm-variable">ints</span>.<span class="cm-variable">forEach</span> {
+        <span class="cm-keyword">if</span> (<span class="cm-variable">it</span> <span class="cm-operator">==</span> <span class="cm-number">0</span>) <span class="cm-keyword">return</span><span class="cm-variable">@forEach</span>
+        <span class="cm-variable">print</span>(<span class="cm-variable">it</span>)
+    }
+}
+</code></pre>
+		<p>Alternatively, we can replace the lambda expression with an <a href="http://kotlinlang.org/docs/reference/lambdas.html#anonymous-functions">anonymous function</a>.
+			A <em class="keyword">return</em> statement in an anonymous function will return from the anonymous function itself.</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() {
+    <span class="cm-variable">ints</span>.<span class="cm-variable">forEach</span>(<span class="cm-keyword">fun</span>(<span class="cm-variable">value</span>: <span class="cm-variable">Int</span>) {
+        <span class="cm-keyword">if</span> (<span class="cm-variable">value</span> <span class="cm-operator">==</span> <span class="cm-number">0</span>) <span class="cm-keyword">return</span>  <span class="cm-comment">// local return to the caller of the anonymous fun, i.e. the forEach loop</span>
+        <span class="cm-variable">print</span>(<span class="cm-variable">value</span>)
+    })
+}
+</code></pre>
+		<p>When returning a value, the parser gives preference to the qualified return, i.e.</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">return</span><span class="cm-variable">@a</span> <span class="cm-number">1</span>
+</code></pre>
+		<p>means "return <code>1</code> at label <code>@a</code>" and not "return a labeled expression <code>(@a 1)</code>".</p>
+
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>
