@@ -47,12 +47,10 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     // circular imageView
     compile 'de.hdodenhof:circleimageview:2.2.0'
-    // number progress
+    // list item : used in courses listView | will be used in other listItem uis
+    compile 'com.lucasurbas:listitemview:1.0.5'
+    // number progress bar
     compile 'com.daimajia.numberprogressbar:library:1.4@aar'
-    // parallax scroll bar
-    compile 'com.github.AmalLibs:Paralloid:1.0.0'
-    //  alert
-    compile 'com.tapadoo.android:alerter:2.0.2'
 
     /********** for user regsitration || database ***********/
     // firebase core
