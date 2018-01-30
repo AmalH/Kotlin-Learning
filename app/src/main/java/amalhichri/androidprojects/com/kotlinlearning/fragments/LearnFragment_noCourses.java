@@ -1,4 +1,4 @@
-package com.androidprojects.esprit.ikotlin.fragments;
+package amalhichri.androidprojects.com.kotlinlearning.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,9 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.androidprojects.esprit.ikotlin.R;
-import com.androidprojects.esprit.ikotlin.utils.AllCourses;
-import com.androidprojects.esprit.ikotlin.utils.Statics;
+import amalhichri.androidprojects.com.kotlinlearning.R;
+import amalhichri.androidprojects.com.kotlinlearning.utils.AllCourses;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
 
 public class LearnFragment_noCourses extends Fragment {
@@ -27,7 +27,7 @@ public class LearnFragment_noCourses extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_learn_nocourses, container, false);
       /*  ArrayList<Integer> coursesPositions = new ArrayList<>();
          coursesPositions.add(0);coursesPositions.add(1);coursesPositions.add(2);*/

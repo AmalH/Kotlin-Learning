@@ -110,9 +110,6 @@ public class Statics {
                 R.drawable.ic_functions,R.drawable.ic_others,R.drawable.ic_java,R.drawable.ic_javascript};
         dialog.setContentView(R.layout.listcourses_view);
         ExpandableListView lvCourses=dialog.findViewById(R.id.expandableLvw);
-        /*ArrayList<Integer> coursesPositions = new ArrayList<>();
-        coursesPositions.add(0);coursesPositions.add(1);coursesPositions.add(2);
-        getCoursesListData(coursesPositions);*/
         prepareCoursesListData();
         lvCourses.setAdapter(new CoursesListAdapter(context,courses,chapters,icons));
         return dialog;

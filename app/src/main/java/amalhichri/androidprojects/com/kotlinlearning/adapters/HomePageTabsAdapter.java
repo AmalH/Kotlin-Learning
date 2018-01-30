@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import amalhichri.androidprojects.com.kotlinlearning.fragments.FourthFragmet;
-import amalhichri.androidprojects.com.kotlinlearning.fragments.LearnFragment_noCourses;
+import amalhichri.androidprojects.com.kotlinlearning.fragments.RootFragment_learn;
 import amalhichri.androidprojects.com.kotlinlearning.fragments.SecondFragmet;
 import amalhichri.androidprojects.com.kotlinlearning.fragments.ThirdFragmet;
 
@@ -29,7 +29,7 @@ public class HomePageTabsAdapter extends FragmentPagerAdapter {
             case 0:
                 /** because to switch fragments inside a tab we need a root FrameLayout,
                  in which we load fragments in each time ( getFragmentManager.replce(root,newFrag) )**/
-                return new LearnFragment_noCourses();
+                return new RootFragment_learn();
             case 1:
                 return new SecondFragmet();
             case 2:
