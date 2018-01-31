@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
+import amalhichri.androidprojects.com.kotlinlearning.fragments.LearnFragment_currentUserCourses;
 import amalhichri.androidprojects.com.kotlinlearning.fragments.LearnFragment_noCourses;
 
 public class CoursesListAdapter extends BaseExpandableListAdapter {
@@ -120,7 +121,13 @@ public class CoursesListAdapter extends BaseExpandableListAdapter {
                         coursesPrefsEditor.putString("takenCourses", str.toString());
                         coursesPrefsEditor.commit();
                         /** switch fragments to display courses list **/
-                        LearnFragment_noCourses.switchFragments(groupPosition, context);
+                        SharedPreferences listShownFromPrefs = context.getSharedPreferences("listShownFromPrefs", 0);
+                        // if it's for noCourses fragments
+                        if(listShownFromPrefs.contains("fromNoCourses"))
+                            LearnFragment_noCourses.switchFragments(groupPosition);
+                        // if it's from currentUserCourses fragmentfromCurrentUserCourses
+                        else if(listShownFromPrefs.contains("fromCurrentUserCourses"))
+                            LearnFragment_currentUserCourses.switchFragments(groupPosition);
                     } else {
                         /** will change later on to snackbar or smthin gpresentable **/
                         Toast toast = Toast.makeText(context, "You are already took this course. You are at 40% advancement !", Toast.LENGTH_SHORT);

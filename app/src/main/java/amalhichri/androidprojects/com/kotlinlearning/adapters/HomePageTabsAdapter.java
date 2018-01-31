@@ -26,15 +26,16 @@ public class HomePageTabsAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
+            /** because to switch fragments inside a tab we need a root FrameLayout,
+             in which we load fragments in each time ( getFragmentManager.replce(root,newFrag) )**/
             case 0:
-                /** because to switch fragments inside a tab we need a root FrameLayout,
-                 in which we load fragments in each time ( getFragmentManager.replce(root,newFrag) )**/
                 return new RootFragment_learn();
             case 1:
                 return new SecondFragmet();
             case 2:
                 return new ThirdFragmet();
             case 3:
+                /** in this case we're not gonna switch fragments in this tab **/
                 return new FourthFragmet();
             default:
                 return null;
