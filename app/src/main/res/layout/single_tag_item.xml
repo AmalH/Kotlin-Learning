@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<me.originqiu.library.MEditText
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:drawablePadding="2dp"
+    android:padding="2dp"
+    android:paddingLeft="4dp"
+    android:layout_marginLeft="3dp"
+    android:layout_marginRight="3dp"
+    android:layout_marginBottom="2dp"
+    android:background="@color/base_color_1"
+    android:textColor="@color/comment_background"
+    android:text=""
+    android:textSize="15sp"/>

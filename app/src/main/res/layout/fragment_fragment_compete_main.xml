@@ -1,0 +1,183 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.androidprojects.esprit.ikotlin.fragments.FragmentCompeteMain">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="100"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="8"
+            android:layout_gravity="start|top"
+            android:layout_marginBottom="3dp"
+            >
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent">
+            </View>
+            <org.honorato.multistatetogglebutton.MultiStateToggleButton
+                android:id="@+id/compete_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                app:values="@array/compete_toogle"
+                app:mstbColorPressedBackground="@color/base_color_2"
+                app:mstbColorNotPressedBackground="@color/material_blue_grey_80"
+                app:mstbColorPressedText="@color/comment_background"
+                app:mstbColorNotPressedText="@color/liv_gray_active_icon"
+
+                />
+            <Spinner
+                android:id="@+id/compete_orderby"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:entries="@array/compete_orderby"
+                android:layout_marginLeft="5dp"
+                >
+
+            </Spinner>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="91"
+            android:orientation="horizontal"
+            android:weightSum="100"
+            >
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="10"
+                android:orientation="vertical"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="20dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Levels"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="11dp"
+                    />
+                <Button
+                    android:id="@+id/compete_level_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/material_blue_grey_80"
+                    android:textColor="@color/comment_background"
+                    android:text="1"
+
+                    android:layout_marginBottom="2dp"
+                    />
+                <Button
+                    android:id="@+id/compete_level_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/material_blue_grey_80"
+                    android:textColor="@color/comment_background"
+                    android:text="2"
+
+                    android:layout_marginBottom="2dp"
+                    />
+                <Button
+                    android:id="@+id/compete_level_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/material_blue_grey_80"
+                    android:textColor="@color/comment_background"
+                    android:text="3"
+
+                    android:layout_marginBottom="2dp"
+                    />
+                <Button
+                    android:id="@+id/compete_level_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/material_blue_grey_80"
+                    android:textColor="@color/comment_background"
+                    android:text="4"
+
+                    android:layout_marginBottom="2dp"
+                    />
+                <Button
+                    android:id="@+id/compete_level_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/material_blue_grey_80"
+                    android:textColor="@color/comment_background"
+                    android:text="5"
+
+                    android:layout_marginBottom="2dp"
+                    />
+                <Button
+                    android:id="@+id/compete_level_6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/material_blue_grey_80"
+                    android:textColor="@color/comment_background"
+                    android:text="6"
+
+                    android:layout_marginBottom="2dp"
+                    />
+
+
+            </LinearLayout>
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/compete_swipeRefresh"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="88"
+                >
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/compete_competitions"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/competeanswer_swipeRefresh"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="88"
+                >
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/compete_answers"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"/>
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/compete_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:elevation="9dp"
+        android:src="@drawable/ic_action_add_forum"
+        app:layout_anchorGravity="left|right|end"
+        android:layout_gravity="end|bottom"
+        />
+
+</FrameLayout>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <com.lucasurbas.listitemview.ListItemView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/userCoursesListItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="7dp"
+    android:paddingBottom="7dp">
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/userCourseIcon"
+            android:layout_width="70px"
+            android:layout_height="70px"
+            android:src="@drawable/ic_start"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:id="@+id/userCourseTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/userCourseIcon"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20px"
+            android:textColor="#212121"
+            android:textSize="16dip"/>
+        <com.daimajia.numberprogressbar.NumberProgressBar
+            android:id="@+id/userCourseProgress"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/userCourseIcon"
+            android:layout_below="@id/userCourseTitle"
+            app:progress_reached_color="#7DA7C8"
+            app:progress_text_color="#7DA7C8"
+            app:progress_current="20"
+            app:progress_max="100"
+            app:progress_reached_bar_height="3dp"
+            app:progress_unreached_bar_height="3dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20px"
+            android:progress="20"
+            android:max="100"/>
+    </RelativeLayout>
+
+</com.lucasurbas.listitemview.ListItemView>

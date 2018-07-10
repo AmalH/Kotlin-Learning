@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">Kotlin Learning</string>
+    <string name="facebook_app_id">1664966250256124</string>
+
+    <!-- ******************************************
+     questions/answers for FAQs fragment
+     *********************************************** -->
+    <!-- QUESTIONS -->
+    <string name="question1">Is Kotlin an object-oriented language or a functional one?</string>
+    <string name="question2">What advantages does Kotlin give me over the Java programming language?</string>
+    <string name="question3">Is Kotlin compatible with the Java programming language?</string>
+    <string name="question4">What can I use Kotlin for?</string>
+    <string name="question5">What IDEs support Kotlin?</string>
+    <string name="question6">What build tools support Kotlin?</string>
+    <string name="question7">Is Kotlin hard?</string>
+    <!-- ANSWERS -->
+    <string name="answer1">
+        Kotlin has both object-oriented and functional constructs.
+        You can use it in both OO and FP styles, or mix elements of the two. With first-class support for features such as higher-order functions, function types and lambdas, Kotlin is a great choice if you’re doing or exploring functional programming.
+    </string>
+    <string name="answer2">Kotlin is more concise. Rough estimates indicate approximately a 40% cut in the number of lines of code. It’s also more type-safe, e.g. support for non-nullable types makes applications less prone to NPE’s. Other features including smart casting, higher-order functions, extension functions and lambdas with receivers provide the ability to write expressive code as well as facilitating creation of DSL.</string>
+    <string name="answer3">Yes. Kotlin is 100% interoperable with the Java programming language and major emphasis has been placed on making sure that your existing codebase can interact properly with Kotlin. You can easily call Kotlin code from Java and Java code from Kotlin. This makes adoption much easier and lower-risk. There’s also an automated Java-to-Kotlin converter built into the IDE that simplifies migration of existing code.</string>
+    <string name="answer4">Kotlin can be used for any kind of development, be it server-side, client-side web and Android. With Kotlin/Native currently in the works, support for other platforms such as embedded systems, macOS and iOS is coming. People are using Kotlin for mobile and server-side applications, client-side with JavaScript or JavaFX, and data science, just to name a few possibilities.</string>
+    <string name="answer5">Kotlin is supported by all major Java IDEs including IntelliJ IDEA, Android Studio, Eclipse and NetBeans. In addition, a command line compiler is available and provides straightforward support for compiling and running applications.</string>
+    <string name="answer6">On the JVM side, the main build tools include Gradle, Maven, Ant, and Kobalt. There are also some build tools available that target client-side JavaScript.</string>
+    <string name="answer7">Kotlin is inspired by existing languages such as Java, C#, JavaScript, Scala and Groovy. We\'ve tried to ensure that Kotlin is easy to learn, so that people can easily jump on board, reading and writing Kotlin in a matter of days. Learning idiomatic Kotlin and using some more of its advanced features can take a little longer, but overall it is not a complicated language.</string>
+
+    <!-- ***********************
+              Arrays
+    *****************************-->
+    <string-array name="forum_orderby">
+        <item>Rating</item>
+        <item>Views</item>
+        <item>Date</item>
+    </string-array>
+    <string-array name="compete_toogle">
+        <item>Competitions </item>
+        <item>My answers </item>
+    </string-array>
+
+    <string-array name="compete_orderby">
+        <item>Date</item>
+        <item>Solved</item>
+    </string-array>
+
+    <string-array name="compete_levels">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+</resources>

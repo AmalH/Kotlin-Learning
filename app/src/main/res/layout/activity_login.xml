@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/loginHeaderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Follow up with iKotliners"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/base_color_1"
+        android:gravity="center"
+        fontPath="fonts/graublau_slab.ttf"
+        android:textSize="40dp"
+        style="bold"
+        tools:ignore="MissingPrefix" />
+
+    <!-- form -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="60"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="20dp">
+
+        <com.rey.material.widget.EditText
+            android:id="@+id/emailLoginTxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="50px"
+            android:hint=" E-mail"
+            app:et_dividerColor="@color/base_color_1"
+            app:et_dividerHeight="2dp"
+            app:et_labelEnable="true"
+            app:et_labelTextColor="@color/base_color_1"
+            app:et_labelTextSize="15dp"/>
+
+        <com.scottyab.showhidepasswordedittext.ShowHidePasswordEditText
+            android:id="@+id/pswLoginTxt"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="50px"
+            android:backgroundTint="@color/base_color_1"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textSize="15dp" />
+
+        <com.rey.material.widget.Button
+            android:id="@+id/confirmLogin_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="70px"
+            android:layout_marginRight="70px"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/button_background"
+            android:onClick="login"
+            android:text="Log in"
+            fontPath="fonts/graublau_slab.ttf"
+            android:textColor="@color/base_color_1"
+            android:textSize="8pt"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/recoverTxtVw"
+            style="bold"
+            fontPath="fonts/graublau_slab.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30px"
+            android:onClick="resetPassword"
+            android:text="Forgot password?"
+            android:textColor="@color/base_color_1"
+            android:textSize="8pt"
+            tools:ignore="MissingPrefix" />
+
+        <!-- progress bar -->
+        <ProgressBar
+            android:id="@+id/login_progress"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="100dp"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <!-- social media btns -->
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/facebookLoginBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log in with Facebook"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.rey.material.widget.Button
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fb_btn_background"
+            android:drawableLeft="@drawable/ic_facebook_login"
+            android:paddingLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:text="Continue with Facebook"
+            android:textColor="#FFFFFF"
+            android:onClick="loginWithFacebook"
+            />
+
+        <com.rey.material.widget.Button
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/lkdin_btn_background"
+            android:drawableLeft="@drawable/ic_linkedin_login"
+            android:paddingLeft="10dp"
+            android:text="Continue with linkedin"
+            android:textColor="#FFFFFF"
+            android:onClick="loginWithLinkedin"
+            />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

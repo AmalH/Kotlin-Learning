@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    card_view:cardCornerRadius="3dp"
+    card_view:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/compete_postedBy_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_profile_placeholder"
+            />
+
+        <TextView
+            android:id="@+id/compete_postTile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="How to build android app in 1 month"
+            android:layout_toRightOf="@id/compete_postedBy_img"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="@fonts/graublau_slab"
+            android:textSize="15dp"/>
+        <TextView
+            android:id="@+id/postedby_passive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/compete_postedBy_name"
+            android:layout_alignStart="@+id/compete_postTile"
+            android:text="Posted by: "
+            android:fontFamily="@fonts/graublau_slab"
+            android:textSize="11.5dp"
+            android:layout_marginLeft="2dp"/>
+
+        <TextView
+            android:id="@+id/compete_postedBy_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/compete_postTile"
+            android:layout_marginStart="1dp"
+            android:layout_toEndOf="@+id/postedby_passive"
+            android:text="username"
+            android:textColor="#696969"
+            android:fontFamily="@fonts/graublau_slab"
+            android:textSize="12dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/postedby_passive"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@id/compete_postedBy_img"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_briefcase" />
+
+            <TextView
+                android:id="@+id/compete_nbsolve"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="3"
+                android:textSize="14dp"
+                android:fontFamily="@fonts/graublau_slab"/>
+
+
+            <ImageView
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/ic_calendar" />
+
+            <TextView
+                android:id="@+id/compete_created"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4 days"
+                android:textSize="10dp"
+                android:fontFamily="@fonts/graublau_slab"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

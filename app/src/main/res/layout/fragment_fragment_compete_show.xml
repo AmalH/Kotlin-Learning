@@ -1,0 +1,308 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.androidprojects.esprit.ikotlin.fragments.FragmentCompeteShow">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="100"
+            android:layout_margin="8dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/backtocompeteFromCompete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:src="@drawable/ic_action_back_to"
+                    android:layout_marginRight="-50dp"
+                    android:scaleType="fitCenter"
+                    android:background="@color/float_transparent"
+                    />
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Problemset"
+                    android:textSize="18dp"
+                    android:textColor="@color/base_color_1"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardCornerRadius="4dp"
+                android:layout_marginBottom="10dp"
+                card_view:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="100"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="98"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginBottom="3dp"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="100"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginBottom="5dp"
+                            >
+                            <TextView
+                                android:id="@+id/compete_subject"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text="subject..."
+                                android:textSize="15dp"
+                                android:layout_weight="75"
+                                />
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_briefcase"
+                                android:layout_gravity="center"/>
+                            <TextView
+                                android:id="@+id/compete_solved_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="13dp"
+                                android:text="0"
+                                android:layout_gravity="center"
+                                tools:ignore="MissingPrefix"
+                                />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/compete_show_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="content"
+                            android:layout_marginBottom="5dp"
+                            />
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="end|bottom">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                >
+                                <TextView
+                                    android:id="@+id/compete_show_username"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="name"
+                                    android:textSize="12dp"
+                                    android:layout_gravity="end"
+                                    tools:ignore="MissingPrefix"
+                                    />
+                                <TextView
+                                    android:id="@+id/compete_show_created"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="created"
+                                    android:textSize="11dp"
+                                    android:layout_gravity="end"
+                                    tools:ignore="MissingPrefix"
+                                    />
+                            </LinearLayout>
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/compete_show_user_picture"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginLeft="5dp"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/compete_myanswer"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardCornerRadius="4dp"
+                card_view:cardUseCompatPadding="true"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+
+
+                <LinearLayout
+                    android:id="@+id/compete_layout_answerd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Answered "
+                        android:layout_margin="10dp"
+                        />
+                    <com.rey.material.widget.ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="80dp"
+                        android:src="@drawable/ic_calendar"
+                        />
+                    <TextView
+                        android:id="@+id/answer_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        
+                        android:text="date"
+                        />
+                    <ImageButton
+                        android:id="@+id/compete_edit_answer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_action_edit"
+                        android:background="@color/float_transparent"
+                        android:layout_marginLeft="20dp"
+                        />
+
+                </LinearLayout>
+
+                <io.github.kbiakov.codeview.CodeView
+                    android:id="@+id/compete_answer_code_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    >
+                </io.github.kbiakov.codeview.CodeView>
+                <EditText
+                    android:id="@+id/compete_add_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ems="10"
+                    android:inputType="textMultiLine"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"
+                    />
+                <Button
+                    android:id="@+id/compete_add_answer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Save"
+                    android:layout_gravity="end"
+                    android:visibility="gone"
+                    android:background="@color/float_transparent"
+                    />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Arguments "
+                    android:layout_margin="4dp"
+                    android:textSize="13dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(Arguments must be separated with spaces)"
+                    android:layout_margin="3dp"
+                    
+                    android:textColor="@color/liv_gray_active_icon"
+                    android:textSize="11dp"
+                    />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/compete_args"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint=" Args..."
+                android:layout_margin="4dp"
+                android:textSize="14sp"
+                android:padding="10dp"
+                android:background="@color/paper_background"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10"
+                android:gravity="end"
+                >
+                <Button
+                    android:id="@+id/compete_run"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Run on server"
+                    android:layout_weight="4"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+            <TextView
+                android:id="@+id/compete_response"
+                android:gravity="left"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:layout_margin="6dp"
+                android:editable="false"
+                android:textSize="14sp"
+                android:background="@color/paper_background"
+                android:visibility="gone"
+                />
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</FrameLayout>

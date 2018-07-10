@@ -1,0 +1,264 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/comment_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            >
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:weightSum="100">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <ImageButton
+                            android:id="@+id/backtoForumFromComment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:src="@drawable/ic_action_back_to"
+                            android:layout_marginRight="-50dp"
+                            android:scaleType="fitCenter"
+                            android:background="@color/float_transparent"
+                            />
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Ikotlin Q&amp;A"
+                            android:textSize="18dp"
+                            android:textColor="@color/base_color_1"
+                            android:gravity="center"
+                            android:fontFamily="@fonts/graublau_slab"/>
+                    </LinearLayout>
+
+
+                <android.support.v7.widget.CardView
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    card_view:cardCornerRadius="4dp"
+                    android:layout_marginBottom="10dp"
+                    card_view:cardUseCompatPadding="true">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="100"
+                            >
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="15"
+                                android:layout_marginTop="5dp"
+                                android:orientation="vertical">
+
+
+                                <ImageButton
+                                    android:id="@+id/forum_up_arrow"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_arrow_up"
+                                    android:background="@color/float_transparent"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/forum_rating_show"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="0" />
+
+                                <ImageButton
+                                    android:id="@+id/forum_down_arrow"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_arrow_down"
+                                    android:background="@color/float_transparent"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="82"
+                                android:orientation="vertical"
+                                android:layout_marginLeft="2dp"
+                                android:layout_marginBottom="3dp"
+                                >
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:weightSum="100"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginBottom="5dp"
+                                    >
+                                    <TextView
+                                        android:id="@+id/forum_subject"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="subject..."
+                                        android:textSize="15dp"
+                                        android:layout_weight="75"
+                                        android:fontFamily="@fonts/graublau_slab"
+                                        />
+                                    <ImageView
+                                        android:id="@+id/imageView"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
+                                        android:src="@drawable/ic_views_share"
+                                        android:layout_gravity="center"/>
+                                    <TextView
+                                        android:id="@+id/forum_views_txt"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textSize="13dp"
+                                        android:text="0"
+                                        android:layout_gravity="center"
+                                        fontPath="fonts/graublau_slab.ttf"
+                                        tools:ignore="MissingPrefix"
+                                        />
+                                    <ImageButton
+                                        android:id="@+id/forum_edit_button"
+                                        android:layout_width="25dp"
+                                        android:layout_height="29dp"
+                                        android:layout_gravity="end"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_marginRight="-30dp"
+                                        android:src="@drawable/ic_action_edit"
+                                        android:background="@color/float_transparent"
+                                        android:visibility="gone"
+                                        />
+
+                                </LinearLayout>
+
+
+                                <me.originqiu.library.FlowLayout
+                                    android:id="@+id/forum_tags"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginTop="2dp"
+                                    android:orientation="horizontal">
+
+                                </me.originqiu.library.FlowLayout>
+
+                                <TextView
+                                    android:id="@+id/forum_content"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="content"
+                                    android:fontFamily="@fonts/graublau_slab"
+                                    android:layout_marginBottom="5dp"
+                                    />
+                                <io.github.kbiakov.codeview.CodeView
+                                    android:id="@+id/code_view"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginBottom="8dp"
+                                    />
+
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_gravity="end|bottom">
+                                    <TextView
+                                        android:id="@+id/forum_show_edited"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textSize="11dp"
+                                        android:text="Edited 2/2/2"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_marginBottom="2dp"
+                                        android:layout_gravity="bottom"
+                                        android:visibility="gone"
+                                        />
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical"
+                                        >
+                                        <TextView
+                                            android:id="@+id/forum_username"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="name"
+                                            android:textSize="12dp"
+                                            android:layout_gravity="end"
+                                            fontPath="fonts/graublau_slab.ttf"
+                                            tools:ignore="MissingPrefix"
+                                            />
+                                        <TextView
+                                            android:id="@+id/forum_created"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="created"
+                                            android:textSize="11dp"
+                                            android:layout_gravity="end"
+                                            fontPath="fonts/graublau_slab.ttf"
+                                            tools:ignore="MissingPrefix"
+                                            />
+                                    </LinearLayout>
+                                    <de.hdodenhof.circleimageview.CircleImageView
+                                        android:id="@+id/forum_user_picture"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:layout_marginLeft="5dp"
+                                        />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/comments_container_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="80"
+                    android:scrollbars="vertical"
+                    />
+
+                    <com.rey.material.widget.TextView
+                        android:id="@+id/no_comments_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="No comments."
+                        android:visibility="gone" />
+
+
+                </LinearLayout>
+    </ScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_Comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:elevation="9dp"
+        android:src="@drawable/ic_action_add_comment"
+        app:layout_anchorGravity="left|right|end"
+        android:layout_gravity="end|bottom"
+        />
+</FrameLayout>

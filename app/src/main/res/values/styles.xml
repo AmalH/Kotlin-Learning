@@ -1,0 +1,36 @@
+<resources>
+
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/base_color_1</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="android:actionOverflowButtonStyle">@style/MyCustomTheme.OverFlow</item>
+    </style>
+
+    <!-- a solution for menu dots color, but not optimised ! will chack it later  -->
+    <style name="MyCustomTheme" parent="Theme.AppCompat.Light">
+        <item name="android:actionOverflowButtonStyle">@style/MyCustomTheme.OverFlow</item>
+    </style>
+    <style name="MyCustomTheme.OverFlow">
+        <item name="android:src">@drawable/ic_main_menu</item>
+    </style>
+
+    <!-- Settings activity theme . -->
+    <style name="SettingsTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/SettingsActionBar</item>
+    </style>
+    <style name="SettingsActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">#3b5670</item>
+        <item name="android:logo">@android:color/transparent</item>
+    </style>
+
+
+    <!-- facebook login button style -->
+    <style name="FacebookLoginButton">
+        <item name="android:height">100px</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:text">Continue with Facebook ddd</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:background">#007bb6</item>
+    </style>
+
+</resources>
