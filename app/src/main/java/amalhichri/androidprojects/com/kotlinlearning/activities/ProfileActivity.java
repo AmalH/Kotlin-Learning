@@ -2,17 +2,24 @@ package amalhichri.androidprojects.com.kotlinlearning.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.ProfileTabsAdapter;
+import amalhichri.androidprojects.com.kotlinlearning.services.UserProfileServices;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
+import de.hdodenhof.circleimageview.CircleImageView;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
@@ -43,11 +50,13 @@ public class ProfileActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.fullNameInProfile)).setText(Statics.getLoggedUser(getApplicationContext()).getFirstName()+" "+
         Statics.getLoggedUser(getApplicationContext()).getLastName());
 
-       /* if(FirebaseAuth.getInstance().getCurrentUser().toString()!=null){
+        if(FirebaseAuth.getInstance().getCurrentUser().toString()!=null){
             Picasso.with(getApplicationContext()).load(Uri.parse(Statics.getLoggedUser(getApplicationContext()).getPictureUrl())).into((CircleImageView)findViewById(R.id.userImgProfile));
         }
         else
-            ((CircleImageView)findViewById(R.id.userImgProfile)).setImageResource(R.drawable.backarrow);*/
+            ((ImageView) findViewById(R.id.userImgProfile)).setImageDrawable(UserProfileServices.getInstance().getEmptyProfimePicture(Statics.getLoggedUser(getApplicationContext()).getFirstName()+" "+
+                    Statics.getLoggedUser(getApplicationContext()).getLastName()));
+
 
         (findViewById(R.id.logoutBtn)).setOnClickListener(new View.OnClickListener() {
             @Override

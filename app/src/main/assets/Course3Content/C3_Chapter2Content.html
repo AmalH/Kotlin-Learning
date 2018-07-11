@@ -1,0 +1,68 @@
+<html>
+	<body>
+	<article>
+		<h2 >Packages<a class="anchor" href="#packages"></a></h2>
+		<p>A source file may start with a package declaration:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">package</span> <span class="cm-def">foo</span>.<span class="cm-variable">bar</span>
+
+<span class="cm-keyword">fun</span> <span class="cm-def">baz</span>() {}
+
+<span class="cm-keyword">class</span> <span class="cm-def">Goo</span> {}
+
+<span class="cm-comment">// ...</span>
+</code></pre>
+		<p>All the contents (such as classes and functions) of the source file are contained by the package declared.
+			So, in the example above, the full name of <code>baz()</code> is <code>foo.bar.baz</code>, and the full name of <code>Goo</code> is <code>foo.bar.Goo</code>.</p>
+		<p>If the package is not specified, the contents of such a file belong to "default" package that has no name.</p>
+		<h2 id="default-imports">Default Imports<a class="anchor" href="#default-imports"></a></h2>
+		<p>A number of packages are imported into every Kotlin file by default:</p>
+		<ul>
+			<li><a href="http://kotlinlang.org/api/latest/jvm/stdlib/kotlin/index.html">kotlin.*</a></li>
+			<li><a href="http://kotlinlang.org/api/latest/jvm/stdlib/kotlin.annotation/index.html">kotlin.annotation.*</a></li>
+			<li><a href="http://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/index.html">kotlin.collections.*</a></li>
+			<li><a href="http://kotlinlang.org/api/latest/jvm/stdlib/kotlin.comparisons/index.html">kotlin.comparisons.*</a>  (since 1.1)</li>
+			<li><a href="http://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/index.html">kotlin.io.*</a></li>
+			<li><a href="http://kotlinlang.org/api/latest/jvm/stdlib/kotlin.ranges/index.html">kotlin.ranges.*</a></li>
+			<li><a href="http://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/index.html">kotlin.sequences.*</a></li>
+			<li><a href="http://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/index.html">kotlin.text.*</a></li>
+		</ul>
+		<p>Additional packages are imported depending on the target platform:</p>
+		<ul>
+			<li>JVM:
+				<ul>
+					<li>java.lang.*</li>
+					<li><a href="http://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/index.html">kotlin.jvm.*</a></li>
+				</ul>
+			</li>
+			<li>JS:
+				<ul>
+					<li><a href="http://kotlinlang.org/api/latest/jvm/stdlib/kotlin.js/index.html">kotlin.js.*</a></li>
+				</ul>
+			</li>
+		</ul>
+		<h2 id="imports">Imports<a class="anchor" href="#imports"></a></h2>
+		<p>Apart from the default imports, each file may contain its own import directives.
+			Syntax for imports is described in the <a href="http://kotlinlang.org/docs/reference/grammar.html#import">grammar</a>.</p>
+		<p>We can import either a single name, e.g.</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">import</span> <span class="cm-variable">foo</span>.<span class="cm-variable">Bar</span> <span class="cm-comment">// Bar is now accessible without qualification</span>
+</code></pre>
+		<p>or all the accessible contents of a scope (package, class, object etc):</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">import</span> <span class="cm-variable">foo</span>.<span class="cm-operator">*</span> <span class="cm-comment">// everything in 'foo' becomes accessible</span>
+</code></pre>
+		<p>If there is a name clash, we can disambiguate by using <em class="keyword">as</em> keyword to locally rename the clashing entity:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">import</span> <span class="cm-variable">foo</span>.<span class="cm-variable">Bar</span> <span class="cm-comment">// Bar is accessible</span>
+<span class="cm-keyword">import</span> <span class="cm-variable">bar</span>.<span class="cm-variable">Bar</span> <span class="cm-keyword">as</span> <span class="cm-variable">bBar</span> <span class="cm-comment">// bBar stands for 'bar.Bar'</span>
+</code></pre>
+		<p>The <code>import</code> keyword is not restricted to importing classes; you can also use it to import other declarations:</p>
+		<ul>
+			<li>top-level functions and properties;</li>
+			<li>functions and properties declared in <a href="http://kotlinlang.org/docs/reference/object-declarations.html#object-declarations">object declarations</a>;</li>
+			<li><a href="http://kotlinlang.org/docs/reference/enum-classes.html">enum constants</a>.</li>
+		</ul>
+		<p>Unlike Java, Kotlin does not have a separate <a href="http://kotlinlang.org/docs/reference/enum-classes.html">"import static"</a> syntax; all of these declarations are imported using the regular <code>import</code> keyword.</p>
+		<h2 id="visibility-of-top-level-declarations">Visibility of Top-level Declarations<a class="anchor" href="#visibility-of-top-level-declarations"></a></h2>
+		<p>If a top-level declaration is marked <em class="keyword">private</em>, it is private to the file it's declared in (see <a href="http://kotlinlang.org/docs/reference/visibility-modifiers.html">Visibility Modifiers</a>).</p>
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>

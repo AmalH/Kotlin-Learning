@@ -3,7 +3,6 @@ package amalhichri.androidprojects.com.kotlinlearning.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -55,18 +54,14 @@ public class LoginActivity extends Activity {
     private CallbackManager mFacebookCallbackManager;
     private LoginManager mLoginManager;
     private AccessTokenTracker mAccessTokenTracker;
-    private SharedPreferences userPrefs;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-
         //initialize facebook sdk
         facebookApiInit();
-
     }
 
     /** Firebase login **/
@@ -86,8 +81,7 @@ public class LoginActivity extends Activity {
       Statics.signIn(((EditText) findViewById(R.id.emailLoginTxt)).getText().toString(), ((ShowHidePasswordEditText) findViewById(R.id.pswLoginTxt)).getText().toString(),LoginActivity.this);
   }
 
-
-    /** password recovery **/
+    /** Password recovery **/
     public void resetPassword(View v) {
         if (((EditText)findViewById(R.id.emailLoginTxt)).getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(), "Please provide your email\nto send you password recovery info.", Toast.LENGTH_LONG).show();
@@ -165,9 +159,9 @@ public class LoginActivity extends Activity {
         });
     }
 
-
     /** Linkedin login **/
     public void loginWithLinkedin(View v){
+        String url = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,picture-url,email-address)";
         // initializing connection to linkedin api
         LISessionManager.getInstance(getApplicationContext()).init(this, buildScope(), new AuthListener() {
             @Override
@@ -182,7 +176,6 @@ public class LoginActivity extends Activity {
         }, true);
 
         // managing api responses
-        String url = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,picture-url,email-address)";
         final APIHelper apiHelper = APIHelper.getInstance(getApplicationContext());
         apiHelper.getRequest(this, url, new ApiListener() {
             @Override
@@ -200,7 +193,6 @@ public class LoginActivity extends Activity {
             }
         });
     }
-
     // asking for linkedin account info retreive permission
     private static Scope buildScope() {
         return Scope.build(Scope.R_BASICPROFILE, Scope.R_EMAILADDRESS);

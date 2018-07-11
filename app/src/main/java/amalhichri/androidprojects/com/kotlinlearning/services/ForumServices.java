@@ -23,8 +23,6 @@ import amalhichri.androidprojects.com.kotlinlearning.models.Answer;
 import amalhichri.androidprojects.com.kotlinlearning.models.ForumQuestion;
 import amalhichri.androidprojects.com.kotlinlearning.utils.AppSingleton;
 
-//import com.androidprojects.esprit.ikotlin.models.ForumPost;
-
 /**
  * Created by Amal on 26/11/2017.
  */

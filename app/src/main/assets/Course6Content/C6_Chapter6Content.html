@@ -1,0 +1,29 @@
+<html>
+	<body>
+	<article role="main" class="page-content g-9">
+
+		<h2 id="equality">Equality<a class="anchor" href="#equality"></a></h2>
+		<p>In Kotlin there are two types of equality:</p>
+		<ul>
+			<li>Referential equality (two references point to the same object);</li>
+			<li>Structural equality (a check for <code>equals()</code>).</li>
+		</ul>
+		<h2 id="referential-equality">Referential equality<a class="anchor" href="#referential-equality"></a></h2>
+		<p>Referential equality is checked by the <code>===</code> operation (and its negated counterpart <code>!==</code>). <code>a === b</code> evaluates to
+			true if and only if <code>a</code> and <code>b</code> point to the same object.</p>
+		<h2 id="structural-equality">Structural equality<a class="anchor" href="#structural-equality"></a></h2>
+		<p>Structural equality is checked by the <code>==</code> operation (and its negated counterpart <code>!=</code>). By convention, an expression like <code>a == b</code> is translated to:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">a</span><span class="cm-operator">?</span>.<span class="cm-variable">equals</span>(<span class="cm-variable">b</span>) <span class="cm-operator">?</span>: (<span class="cm-variable">b</span> <span class="cm-operator">===</span> <span class="cm-atom">null</span>)
+</code></pre>
+		<p>I.e. if <code>a</code> is not <code>null</code>, it calls the <code>equals(Any?)</code> function, otherwise (i.e. <code>a</code> is <code>null</code>) it checks that <code>b</code> is referentially equal to <code>null</code>.</p>
+		<p>Note that there's no point in optimizing your code when comparing to <code>null</code> explicitly: <code>a == null</code> will be automatically translated to <code>a === null</code>.</p>
+		<h2 id="floating-point-numbers-equality">Floating point numbers equality<a class="anchor" href="#floating-point-numbers-equality"></a></h2>
+		<p>When an equality check operands are statically known to be <code>Float</code> or <code>Double</code> (nullable or not), the check follows the IEEE 754
+			Standard for Floating-Point Arithmetic.</p>
+		<p>Otherwise, the structural equality is used, which disagrees with the standard so that <code>NaN</code> is equal to itself, and <code>-0.0</code> is not equal to <code>0.0</code>.</p>
+		<p>See: <a href="basic-types.html#floating-point-numbers-comparison">Floating Point Numbers Comparison</a>.</p>
+
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>

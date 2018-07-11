@@ -48,20 +48,22 @@ public class Statics {
 
     public static FirebaseAuth auth = FirebaseAuth.getInstance();
     public static DatabaseReference usersTable = FirebaseDatabase.getInstance().getReference("users");
+    public static DatabaseReference takenCoursesTable = FirebaseDatabase.getInstance().getReference().child("takenCourses");
+    public static DatabaseReference startedChaptersTable = FirebaseDatabase.getInstance().getReference().child("startedChapters");
     static List<String> courses=new ArrayList<>();
     static HashMap<String,List> chapters= new HashMap<>();
 
 
     /** user signup **/
     public static void signUp(final String email, String password, final String fullName, final String pictureUrl, final Activity activity) {
-        // we'll use a fullName in signup ui we're not providing firstName / lastName editTe
+        // we'll use a fullName in signup ui we're not providing firstName / lastName editTexts
         //authenticate user through firebase
         Statics.auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         // add user to database
-                        Log.d("Test","Facebook to firebase success");
+                        //Log.d("Test","Facebook to firebase success");
                         User userToAdd = new User();
                         userToAdd.setEmailAddress(email);
                         String[] splited = fullName.split("\\s+");

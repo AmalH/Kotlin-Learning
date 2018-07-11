@@ -1,0 +1,339 @@
+<html>
+	<body>
+	</body>
+	<article role="main" class="page-content g-9">
+		<h2 id="calling-kotlin-from-java">Calling Kotlin from Java<a class="anchor" href="#calling-kotlin-from-java"></a></h2>
+		<p>Kotlin code can be called from Java easily.</p>
+		<h2 id="properties">Properties<a class="anchor" href="#properties"></a></h2>
+		<p>A Kotlin property is compiled to the following Java elements:</p>
+		<ul>
+			<li>A getter method, with the name calculated by prepending the <code>get</code> prefix;</li>
+			<li>A setter method, with the name calculated by prepending the <code>set</code> prefix (only for <code>var</code> properties);</li>
+			<li>A private field, with the same name as the property name (only for properties with backing fields).</li>
+		</ul>
+		<p>For example, <code>var firstName: String</code> gets compiled to the following Java declarations:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-keyword">private</span> <span class="cm-variable-3">String</span> <span class="cm-variable">firstName</span>;
+
+<span class="cm-keyword">public</span> <span class="cm-variable-3">String</span> <span class="cm-def">getFirstName</span>() {
+    <span class="cm-keyword">return</span> <span class="cm-variable">firstName</span>;
+}
+
+<span class="cm-keyword">public</span> <span class="cm-variable-3">void</span> <span class="cm-def">setFirstName</span>(<span class="cm-variable-3">String</span> <span class="cm-variable">firstName</span>) {
+    <span class="cm-keyword">this</span>.<span class="cm-variable">firstName</span> <span class="cm-operator">=</span> <span class="cm-variable">firstName</span>;
+}
+</code></pre>
+		<p>If the name of the property starts with <code>is</code>, a different name mapping rule is used: the name of the getter will be
+			the same as the property name, and the name of the setter will be obtained by replacing <code>is</code> with <code>set</code>.
+			For example, for a property <code>isOpen</code>, the getter will be called <code>isOpen()</code> and the setter will be called <code>setOpen()</code>.
+			This rule applies for properties of any type, not just <code>Boolean</code>.</p>
+		<h2 id="package-level-functions">Package-Level Functions<a class="anchor" href="#package-level-functions"></a></h2>
+		<p>All the functions and properties declared in a file <code>example.kt</code> inside a package <code>org.foo.bar</code>, including extension functions,
+			are compiled into static methods of a Java class named <code>org.foo.bar.ExampleKt</code>.</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-comment">// example.kt</span>
+<span class="cm-keyword">package</span> <span class="cm-def">demo</span>
+
+<span class="cm-keyword">class</span> <span class="cm-def">Foo</span>
+
+<span class="cm-keyword">fun</span> <span class="cm-def">bar</span>() {
+}
+
+</code></pre>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-comment">// Java</span>
+<span class="cm-keyword">new</span> <span class="cm-variable">demo</span>.<span class="cm-variable">Foo</span>();
+<span class="cm-variable">demo</span>.<span class="cm-variable">ExampleKt</span>.<span class="cm-variable">bar</span>();
+</code></pre>
+		<p>The name of the generated Java class can be changed using the <code>@JvmName</code> annotation:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">@file</span>:<span class="cm-variable">JvmName</span>(<span class="cm-string">"DemoUtils"</span>)
+
+<span class="cm-keyword">package</span> <span class="cm-def">demo</span>
+
+<span class="cm-keyword">class</span> <span class="cm-def">Foo</span>
+
+<span class="cm-keyword">fun</span> <span class="cm-def">bar</span>() {
+}
+
+</code></pre>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-comment">// Java</span>
+<span class="cm-keyword">new</span> <span class="cm-variable">demo</span>.<span class="cm-variable">Foo</span>();
+<span class="cm-variable">demo</span>.<span class="cm-variable">DemoUtils</span>.<span class="cm-variable">bar</span>();
+</code></pre>
+		<p>Having multiple files which have the same generated Java class name (the same package and the same name or the same
+			@JvmName annotation) is normally an error. However, the compiler has the ability to generate a single Java facade
+			class which has the specified name and contains all the declarations from all the files which have that name.
+			To enable the generation of such a facade, use the @JvmMultifileClass annotation in all of the files.</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-comment">// oldutils.kt</span>
+<span class="cm-variable">@file</span>:<span class="cm-variable">JvmName</span>(<span class="cm-string">"Utils"</span>)
+<span class="cm-variable">@file</span>:<span class="cm-variable">JvmMultifileClass</span>
+
+<span class="cm-keyword">package</span> <span class="cm-def">demo</span>
+
+<span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() {
+}
+</code></pre>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-comment">// newutils.kt</span>
+<span class="cm-variable">@file</span>:<span class="cm-variable">JvmName</span>(<span class="cm-string">"Utils"</span>)
+<span class="cm-variable">@file</span>:<span class="cm-variable">JvmMultifileClass</span>
+
+<span class="cm-keyword">package</span> <span class="cm-def">demo</span>
+
+<span class="cm-keyword">fun</span> <span class="cm-def">bar</span>() {
+}
+</code></pre>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-comment">// Java</span>
+<span class="cm-variable">demo</span>.<span class="cm-variable">Utils</span>.<span class="cm-variable">foo</span>();
+<span class="cm-variable">demo</span>.<span class="cm-variable">Utils</span>.<span class="cm-variable">bar</span>();
+</code></pre>
+		<h2 id="instance-fields">Instance Fields<a class="anchor" href="#instance-fields"></a></h2>
+		<p>If you need to expose a Kotlin property as a field in Java, you need to annotate it with the <code>@JvmField</code> annotation.
+			The field will have the same visibility as the underlying property. You can annotate a property with <code>@JvmField</code>
+			if it has a backing field, is not private, does not have <code>open</code>, <code>override</code> or <code>const</code> modifiers, and is not a delegated property.</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">C</span>(<span class="cm-variable">id</span>: <span class="cm-variable-3">String</span>) {
+    <span class="cm-variable">@JvmField</span> <span class="cm-keyword">val</span> <span class="cm-def">ID</span> <span class="cm-operator">=</span> <span class="cm-variable">id</span>
+}
+</code></pre>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-comment">// Java</span>
+<span class="cm-keyword">class</span> <span class="cm-def">JavaClient</span> {
+    <span class="cm-keyword">public</span> <span class="cm-variable-3">String</span> <span class="cm-variable">getID</span>(<span class="cm-variable">C</span> <span class="cm-variable">c</span>) {
+        <span class="cm-keyword">return</span> <span class="cm-variable">c</span>.<span class="cm-variable">ID</span>;
+    }
+}
+</code></pre>
+		<p><a href="properties.html#late-initialized-properties-and-variables">Late-Initialized</a> properties are also exposed as fields.
+			The visibility of the field will be the same as the visibility of <code>lateinit</code> property setter.</p>
+		<h2 id="static-fields">Static Fields<a class="anchor" href="#static-fields"></a></h2>
+		<p>Kotlin properties declared in a named object or a companion object will have static backing fields
+			either in that named object or in the class containing the companion object.</p>
+		<p>Usually these fields are private but they can be exposed in one of the following ways:</p>
+		<ul>
+			<li><code>@JvmField</code> annotation;</li>
+			<li><code>lateinit</code> modifier;</li>
+			<li><code>const</code> modifier.</li>
+		</ul>
+		<p>Annotating such a property with <code>@JvmField</code> makes it a static field with the same visibility as the property itself.</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Key</span>(<span class="cm-keyword">val</span> <span class="cm-def">value</span>: <span class="cm-variable">Int</span>) {
+    <span class="cm-keyword">companion</span> <span class="cm-keyword">object</span> {
+        <span class="cm-variable">@JvmField</span>
+        <span class="cm-keyword">val</span> <span class="cm-def">COMPARATOR</span>: <span class="cm-variable">Comparator</span><span class="cm-operator">&lt;</span><span class="cm-variable">Key</span><span class="cm-operator">&gt;</span> <span class="cm-operator">=</span> <span class="cm-variable">compareBy</span><span class="cm-operator">&lt;</span><span class="cm-variable">Key</span><span class="cm-operator">&gt;</span> { <span class="cm-variable">it</span>.<span class="cm-variable">value</span> }
+    }
+}
+</code></pre>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-comment">// Java</span>
+<span class="cm-variable">Key</span>.<span class="cm-variable">COMPARATOR</span>.<span class="cm-variable">compare</span>(<span class="cm-variable">key1</span>, <span class="cm-variable">key2</span>);
+<span class="cm-comment">// public static final field in Key class</span>
+</code></pre>
+		<p>A <a href="properties.html#late-initialized-properties-and-variables">late-initialized</a> property in an object or a companion object
+			has a static backing field with the same visibility as the property setter.</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">object</span> <span class="cm-def">Singleton</span> {
+    <span class="cm-keyword">lateinit</span> <span class="cm-keyword">var</span> <span class="cm-def">provider</span>: <span class="cm-variable">Provider</span>
+}
+</code></pre>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-comment">// Java</span>
+<span class="cm-variable">Singleton</span>.<span class="cm-variable">provider</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">Provider</span>();
+<span class="cm-comment">// public static non-final field in Singleton class</span>
+</code></pre>
+		<p>Properties annotated with <code>const</code> (in classes as well as at the top level) are turned into static fields in Java:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-comment">// file example.kt</span>
+
+<span class="cm-keyword">object</span> <span class="cm-def">Obj</span> {
+    <span class="cm-keyword">const</span> <span class="cm-keyword">val</span> <span class="cm-def">CONST</span> <span class="cm-operator">=</span> <span class="cm-number">1</span>
+}
+
+<span class="cm-keyword">class</span> <span class="cm-def">C</span> {
+    <span class="cm-keyword">companion</span> <span class="cm-keyword">object</span> {
+        <span class="cm-keyword">const</span> <span class="cm-keyword">val</span> <span class="cm-def">VERSION</span> <span class="cm-operator">=</span> <span class="cm-number">9</span>
+    }
+}
+
+<span class="cm-keyword">const</span> <span class="cm-keyword">val</span> <span class="cm-def">MAX</span> <span class="cm-operator">=</span> <span class="cm-number">239</span>
+</code></pre>
+		<p>In Java:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-variable-3">int</span> <span class="cm-variable">c</span> <span class="cm-operator">=</span> <span class="cm-variable">Obj</span>.<span class="cm-variable">CONST</span>;
+<span class="cm-variable-3">int</span> <span class="cm-variable">d</span> <span class="cm-operator">=</span> <span class="cm-variable">ExampleKt</span>.<span class="cm-variable">MAX</span>;
+<span class="cm-variable-3">int</span> <span class="cm-variable">v</span> <span class="cm-operator">=</span> <span class="cm-variable">C</span>.<span class="cm-variable">VERSION</span>;
+</code></pre>
+		<h2 id="static-methods">Static Methods<a class="anchor" href="#static-methods"></a></h2>
+		<p>As mentioned above, Kotlin represents package-level functions as static methods.
+			Kotlin can also generate static methods for functions defined in named objects or companion objects if you annotate those functions as <code>@JvmStatic</code>.
+			If you use this annotation, the compiler will generate both a static method in the enclosing class of the object and an instance method in the object itself.
+			For example:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">C</span> {
+    <span class="cm-keyword">companion</span> <span class="cm-keyword">object</span> {
+        <span class="cm-variable">@JvmStatic</span> <span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() {}
+        <span class="cm-keyword">fun</span> <span class="cm-def">bar</span>() {}
+    }
+}
+</code></pre>
+		<p>Now, <code>foo()</code> is static in Java, while <code>bar()</code> is not:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-variable">C</span>.<span class="cm-variable">foo</span>(); <span class="cm-comment">// works fine</span>
+<span class="cm-variable">C</span>.<span class="cm-variable">bar</span>(); <span class="cm-comment">// error: not a static method</span>
+<span class="cm-variable">C</span>.<span class="cm-variable">Companion</span>.<span class="cm-variable">foo</span>(); <span class="cm-comment">// instance method remains</span>
+<span class="cm-variable">C</span>.<span class="cm-variable">Companion</span>.<span class="cm-variable">bar</span>(); <span class="cm-comment">// the only way it works</span>
+</code></pre>
+		<p>Same for named objects:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">object</span> <span class="cm-def">Obj</span> {
+    <span class="cm-variable">@JvmStatic</span> <span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() {}
+    <span class="cm-keyword">fun</span> <span class="cm-def">bar</span>() {}
+}
+</code></pre>
+		<p>In Java:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-variable">Obj</span>.<span class="cm-variable">foo</span>(); <span class="cm-comment">// works fine</span>
+<span class="cm-variable">Obj</span>.<span class="cm-variable">bar</span>(); <span class="cm-comment">// error</span>
+<span class="cm-variable">Obj</span>.<span class="cm-variable">INSTANCE</span>.<span class="cm-variable">bar</span>(); <span class="cm-comment">// works, a call through the singleton instance</span>
+<span class="cm-variable">Obj</span>.<span class="cm-variable">INSTANCE</span>.<span class="cm-variable">foo</span>(); <span class="cm-comment">// works too</span>
+</code></pre>
+		<p><code>@JvmStatic</code> annotation can also be applied on a property of an object or a companion object
+			making its getter and setter methods be static members in that object or the class containing the companion object.</p>
+		<h2 id="visibility">Visibility<a class="anchor" href="#visibility"></a></h2>
+		<p>The Kotlin visibilities are mapped to Java in the following way:</p>
+		<ul>
+			<li><code>private</code> members are compiled to <code>private</code> members;</li>
+			<li><code>private</code> top-level declarations are compiled to package-local declarations;</li>
+			<li><code>protected</code> remains <code>protected</code> (note that Java allows accessing protected members from other classes in the same package
+				and Kotlin doesn't, so Java classes will have broader access to the code);</li>
+			<li><code>internal</code> declarations become <code>public</code> in Java. Members of <code>internal</code> classes go through name mangling, to make
+				it harder to accidentally use them from Java and to allow overloading for members with the same signature that don't see
+				each other according to Kotlin rules;</li>
+			<li><code>public</code> remains <code>public</code>.</li>
+		</ul>
+		<h2 id="kclass">KClass<a class="anchor" href="#kclass"></a></h2>
+		<p>Sometimes you need to call a Kotlin method with a parameter of type <code>KClass</code>.
+			There is no automatic conversion from <code>Class</code> to <code>KClass</code>, so you have to do it manually by invoking the equivalent of
+			the <code>Class&lt;T&gt;.kotlin</code> extension property:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">kotlin</span>.<span class="cm-variable">jvm</span>.<span class="cm-variable">JvmClassMappingKt</span>.<span class="cm-variable">getKotlinClass</span>(<span class="cm-variable">MainView</span>.<span class="cm-keyword">class</span>)
+</code></pre>
+		<h2 id="handling-signature-clashes-with-jvmname">Handling signature clashes with @JvmName<a class="anchor" href="#handling-signature-clashes-with-jvmname"></a></h2>
+		<p>Sometimes we have a named function in Kotlin, for which we need a different JVM name the byte code.
+			The most prominent example happens due to <em>type erasure</em>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">List</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">filterValid</span>(): <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>
+<span class="cm-keyword">fun</span> <span class="cm-def">List</span><span class="cm-operator">&lt;</span><span class="cm-variable">Int</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">filterValid</span>(): <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable">Int</span><span class="cm-operator">&gt;</span>
+</code></pre>
+		<p>These two functions can not be defined side-by-side, because their JVM signatures are the same: <code>filterValid(Ljava/util/List;)Ljava/util/List;</code>.
+			If we really want them to have the same name in Kotlin, we can annotate one (or both) of them with <code>@JvmName</code> and specify a different name as an argument:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">List</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">filterValid</span>(): <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>
+
+<span class="cm-variable">@JvmName</span>(<span class="cm-string">"filterValidInt"</span>)
+<span class="cm-keyword">fun</span> <span class="cm-def">List</span><span class="cm-operator">&lt;</span><span class="cm-variable">Int</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">filterValid</span>(): <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable">Int</span><span class="cm-operator">&gt;</span>
+</code></pre>
+		<p>From Kotlin they will be accessible by the same name <code>filterValid</code>, but from Java it will be <code>filterValid</code> and <code>filterValidInt</code>.</p>
+		<p>The same trick applies when we need to have a property <code>x</code> alongside with a function <code>getX()</code>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">x</span>: <span class="cm-variable">Int</span>
+    <span class="cm-variable">@JvmName</span>(<span class="cm-string">"getX_prop"</span>)
+    <span class="cm-keyword">get</span>() <span class="cm-operator">=</span> <span class="cm-number">15</span>
+
+<span class="cm-keyword">fun</span> <span class="cm-def">getX</span>() <span class="cm-operator">=</span> <span class="cm-number">10</span>
+</code></pre>
+		<h2 id="overloads-generation">Overloads Generation<a class="anchor" href="#overloads-generation"></a></h2>
+		<p>Normally, if you write a Kotlin function with default parameter values, it will be visible in Java only as a full
+			signature, with all parameters present. If you wish to expose multiple overloads to Java callers, you can use the
+			<code>@JvmOverloads</code> annotation.</p>
+		<p>The annotation also works for constructors, static methods etc. It can't be used on abstract methods, including methods
+			defined in interfaces.</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Foo</span> <span class="cm-def">@JvmOverloads</span> <span class="cm-keyword">constructor</span>(<span class="cm-variable">x</span>: <span class="cm-variable">Int</span>, <span class="cm-variable">y</span>: <span class="cm-variable-3">Double</span> <span class="cm-operator">=</span> <span class="cm-number">0.0</span>) {
+    <span class="cm-variable">@JvmOverloads</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>(<span class="cm-variable">a</span>: <span class="cm-variable-3">String</span>, <span class="cm-variable">b</span>: <span class="cm-variable">Int</span> <span class="cm-operator">=</span> <span class="cm-number">0</span>, <span class="cm-variable">c</span>: <span class="cm-variable-3">String</span> <span class="cm-operator">=</span> <span class="cm-string">"abc"</span>) {
+        ...
+    }
+}
+</code></pre>
+		<p>For every parameter with a default value, this will generate one additional overload, which has this parameter and
+			all parameters to the right of it in the parameter list removed. In this example, the following will be
+			generated:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-comment">// Constructors:</span>
+<span class="cm-variable">Foo</span>(<span class="cm-variable-3">int</span> <span class="cm-variable">x</span>, <span class="cm-variable-3">double</span> <span class="cm-variable">y</span>)
+<span class="cm-variable">Foo</span>(<span class="cm-variable-3">int</span> <span class="cm-variable">x</span>)
+
+<span class="cm-comment">// Methods</span>
+<span class="cm-variable-3">void</span> <span class="cm-def">f</span>(<span class="cm-variable-3">String</span> <span class="cm-variable">a</span>, <span class="cm-variable-3">int</span> <span class="cm-variable">b</span>, <span class="cm-variable-3">String</span> <span class="cm-variable">c</span>) { }
+<span class="cm-variable-3">void</span> <span class="cm-def">f</span>(<span class="cm-variable-3">String</span> <span class="cm-variable">a</span>, <span class="cm-variable-3">int</span> <span class="cm-variable">b</span>) { }
+<span class="cm-variable-3">void</span> <span class="cm-def">f</span>(<span class="cm-variable-3">String</span> <span class="cm-variable">a</span>) { }
+</code></pre>
+		<p>Note that, as described in <a href="classes.html#secondary-constructors">Secondary Constructors</a>, if a class has default
+			values for all constructor parameters, a public no-argument constructor will be generated for it. This works even
+			if the <code>@JvmOverloads</code> annotation is not specified.</p>
+		<h2 id="checked-exceptions">Checked Exceptions<a class="anchor" href="#checked-exceptions"></a></h2>
+		<p>As we mentioned above, Kotlin does not have checked exceptions.
+			So, normally, the Java signatures of Kotlin functions do not declare exceptions thrown.
+			Thus if we have a function in Kotlin like this:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-comment">// example.kt</span>
+<span class="cm-keyword">package</span> <span class="cm-def">demo</span>
+
+<span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() {
+    <span class="cm-keyword">throw</span> <span class="cm-variable">IOException</span>()
+}
+</code></pre>
+		<p>And we want to call it from Java and catch the exception:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-comment">// Java</span>
+<span class="cm-keyword">try</span> {
+  <span class="cm-variable">demo</span>.<span class="cm-variable">Example</span>.<span class="cm-variable">foo</span>();
+}
+<span class="cm-keyword">catch</span> (<span class="cm-variable">IOException</span> <span class="cm-variable">e</span>) { <span class="cm-comment">// error: foo() does not declare IOException in the throws list</span>
+  <span class="cm-comment">// ...</span>
+}
+</code></pre>
+		<p>we get an error message from the Java compiler, because <code>foo()</code> does not declare <code>IOException</code>.
+			To work around this problem, use the <code>@Throws</code> annotation in Kotlin:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">@Throws</span>(<span class="cm-variable">IOException</span>::<span class="cm-keyword">class</span>)
+<span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() {
+    <span class="cm-keyword">throw</span> <span class="cm-variable">IOException</span>()
+}
+</code></pre>
+		<h2 id="null-safety">Null-safety<a class="anchor" href="#null-safety"></a></h2>
+		<p>When calling Kotlin functions from Java, nobody prevents us from passing <em class="keyword">null</em> as a non-null parameter.
+			That's why Kotlin generates runtime checks for all public functions that expect non-nulls.
+			This way we get a <code>NullPointerException</code> in the Java code immediately.</p>
+		<h2 id="variant-generics">Variant generics<a class="anchor" href="#variant-generics"></a></h2>
+		<p>When Kotlin classes make use of <a href="generics.html#declaration-site-variance">declaration-site variance</a>, there are two
+			options of how their usages are seen from the Java code. Let's say we have the following class and two functions that use it:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Box</span><span class="cm-operator">&lt;</span><span class="cm-keyword">out</span> <span class="cm-variable">T</span><span class="cm-operator">&gt;</span>(<span class="cm-keyword">val</span> <span class="cm-def">value</span>: <span class="cm-variable">T</span>)
+
+<span class="cm-keyword">interface</span> <span class="cm-def">Base</span>
+<span class="cm-keyword">class</span> <span class="cm-def">Derived</span> : <span class="cm-variable">Base</span>
+
+<span class="cm-keyword">fun</span> <span class="cm-def">boxDerived</span>(<span class="cm-variable">value</span>: <span class="cm-variable">Derived</span>): <span class="cm-variable">Box</span><span class="cm-operator">&lt;</span><span class="cm-variable">Derived</span><span class="cm-operator">&gt;</span> <span class="cm-operator">=</span> <span class="cm-variable">Box</span>(<span class="cm-variable">value</span>)
+<span class="cm-keyword">fun</span> <span class="cm-def">unboxBase</span>(<span class="cm-variable">box</span>: <span class="cm-variable">Box</span><span class="cm-operator">&lt;</span><span class="cm-variable">Base</span><span class="cm-operator">&gt;</span>): <span class="cm-variable">Base</span> <span class="cm-operator">=</span> <span class="cm-variable">box</span>.<span class="cm-variable">value</span>
+</code></pre>
+		<p>A naive way of translating these functions into Java would be this:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-variable">Box</span><span class="cm-operator">&lt;</span><span class="cm-variable">Derived</span><span class="cm-operator">&gt;</span> <span class="cm-def">boxDerived</span>(<span class="cm-variable">Derived</span> <span class="cm-variable">value</span>) { ... }
+<span class="cm-variable">Base</span> <span class="cm-def">unboxBase</span>(<span class="cm-variable">Box</span><span class="cm-operator">&lt;</span><span class="cm-variable">Base</span><span class="cm-operator">&gt;</span> <span class="cm-variable">box</span>) { ... }
+</code></pre>
+		<p>The problem is that in Kotlin we can say <code>unboxBase(boxDerived("s"))</code>, but in Java that would be impossible, because in Java
+			the class <code>Box</code> is <em>invariant</em> in its parameter <code>T</code>, and thus <code>Box&lt;Derived&gt;</code> is not a subtype of <code>Box&lt;Base&gt;</code>.
+			To make it work in Java we'd have to define <code>unboxBase</code> as follows:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-variable">Base</span> <span class="cm-def">unboxBase</span>(<span class="cm-variable">Box</span><span class="cm-operator">&lt;?</span> <span class="cm-keyword">extends</span> <span class="cm-variable">Base</span><span class="cm-operator">&gt;</span> <span class="cm-variable">box</span>) { ... }
+</code></pre>
+		<p>Here we make use of Java's <em>wildcards types</em> (<code>? extends Base</code>) to emulate declaration-site variance through use-site
+			variance, because it is all Java has.</p>
+		<p>To make Kotlin APIs work in Java we generate <code>Box&lt;Super&gt;</code> as <code>Box&lt;? extends Super&gt;</code> for covariantly defined <code>Box</code>
+			(or <code>Foo&lt;? super Bar&gt;</code> for contravariantly defined <code>Foo</code>) when it appears <em>as a parameter</em>. When it's a return value,
+			we don't generate wildcards, because otherwise Java clients will have to deal with them (and it's against the common
+			Java coding style). Therefore, the functions from our example are actually translated as follows:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-java"><span class="cm-comment">// return type - no wildcards</span>
+<span class="cm-variable">Box</span><span class="cm-operator">&lt;</span><span class="cm-variable">Derived</span><span class="cm-operator">&gt;</span> <span class="cm-def">boxDerived</span>(<span class="cm-variable">Derived</span> <span class="cm-variable">value</span>) { ... }
+
+<span class="cm-comment">// parameter - wildcards </span>
+<span class="cm-variable">Base</span> <span class="cm-def">unboxBase</span>(<span class="cm-variable">Box</span><span class="cm-operator">&lt;?</span> <span class="cm-keyword">extends</span> <span class="cm-variable">Base</span><span class="cm-operator">&gt;</span> <span class="cm-variable">box</span>) { ... }
+</code></pre>
+		<p>NOTE: when the argument type is final, there's usually no point in generating the wildcard, so <code>Box&lt;String&gt;</code> is always
+			<code>Box&lt;String&gt;</code>, no matter what position it takes.</p>
+		<p>If we need wildcards where they are not generated by default, we can use the <code>@JvmWildcard</code> annotation:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">boxDerived</span>(<span class="cm-variable">value</span>: <span class="cm-variable">Derived</span>): <span class="cm-variable">Box</span><span class="cm-operator">&lt;</span><span class="cm-variable">@JvmWildcard</span> <span class="cm-variable">Derived</span><span class="cm-operator">&gt;</span> <span class="cm-operator">=</span> <span class="cm-variable">Box</span>(<span class="cm-variable">value</span>)
+<span class="cm-comment">// is translated to </span>
+<span class="cm-comment">// Box&lt;? extends Derived&gt; boxDerived(Derived value) { ... }</span>
+</code></pre>
+		<p>On the other hand, if we don't need wildcards where they are generated, we can use <code>@JvmSuppressWildcards</code>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">unboxBase</span>(<span class="cm-variable">box</span>: <span class="cm-variable">Box</span><span class="cm-operator">&lt;</span><span class="cm-variable">@JvmSuppressWildcards</span> <span class="cm-variable">Base</span><span class="cm-operator">&gt;</span>): <span class="cm-variable">Base</span> <span class="cm-operator">=</span> <span class="cm-variable">box</span>.<span class="cm-variable">value</span>
+<span class="cm-comment">// is translated to </span>
+<span class="cm-comment">// Base unboxBase(Box&lt;Base&gt; box) { ... }</span>
+</code></pre>
+		<p>NOTE: <code>@JvmSuppressWildcards</code> can be used not only on individual type arguments, but on entire declarations, such as
+			functions or classes, causing all wildcards inside them to be suppressed.</p>
+		<h2 id="translation-of-type-nothing">Translation of type Nothing<a class="anchor" href="#translation-of-type-nothing"></a></h2>
+		<p>The type <a href="exceptions.html#the-nothing-type"><code>Nothing</code></a> is special, because it has no natural counterpart in Java. Indeed, every Java reference type, including
+			<code>java.lang.Void</code>, accepts <code>null</code> as a value, and <code>Nothing</code> doesn't accept even that. So, this type cannot be accurately
+			represented in the Java world. This is why Kotlin generates a raw type where an argument of type <code>Nothing</code> is used:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">emptyList</span>(): <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable">Nothing</span><span class="cm-operator">&gt;</span> <span class="cm-operator">=</span> <span class="cm-variable">listOf</span>()
+<span class="cm-comment">// is translated to</span>
+<span class="cm-comment">// List emptyList() { ... }</span>
+</code></pre>
+
+	</article>
+</html>

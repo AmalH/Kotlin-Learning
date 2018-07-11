@@ -1,14 +1,14 @@
 package amalhichri.androidprojects.com.kotlinlearning.fragments;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.rey.material.app.Dialog;
 
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.CurrentUserCoursesList_Adapter;
 import amalhichri.androidprojects.com.kotlinlearning.models.Course;
-import amalhichri.androidprojects.com.kotlinlearning.utils.AllCourses;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
 
@@ -27,12 +26,6 @@ public class LearnFragment_currentUserCourses extends Fragment {
     public static ArrayList<Course> currentUserCourses = new ArrayList<>();
     public static CurrentUserCoursesList_Adapter listAdapter;
     private Dialog coursesListDialog;
-    static private FragmentActivity activity;
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        activity=getActivity();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,16 +40,22 @@ public class LearnFragment_currentUserCourses extends Fragment {
         final View view= inflater.inflate(R.layout.fragment_learn_currentusercourses, container, false);
         ((ListView)view.findViewById(R.id.myCoursesLv)).setAdapter(listAdapter);
 
+        /** open course Learn_Fragment ui on list item click **/
+       ((ListView)view.findViewById(R.id.myCoursesLv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.root_learFragment, LearnFragment_course.newInstance(courseTitleToCoursePosition(((TextView)view.findViewById(R.id.userCourseTitle)).getText().toString())))
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
         /** addCoursesBtn click**/
         view.findViewById(R.id.moreCoursesBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* saving from where the list was clicked to diffrentiate in adapter **/
-                SharedPreferences listShownFromPrefs = getContext().getSharedPreferences("listShownFromPrefs", 0);
-                SharedPreferences.Editor coursesPrefsEditor = listShownFromPrefs.edit();
-                coursesPrefsEditor.clear();
-                coursesPrefsEditor.putString("fromCurrentUserCourses","fromCurrentUserCourses");
-                coursesPrefsEditor.commit();
+                // new coursesPoisitions list ..
                 coursesListDialog.show();
             }
         });
@@ -64,14 +63,36 @@ public class LearnFragment_currentUserCourses extends Fragment {
         return view;
     }
 
-    public static void switchFragments(int courseNb){ /** to be called when user clicks " Add to my courses " on courses list**/
-      //  LearnFragment_currentUserCourses currentUserCourses = new LearnFragment_currentUserCourses();
+    /** used to get clicked course's position **/
+    private int courseTitleToCoursePosition(String title){
+        int pos=-1 ;
+        switch(title){
+            case "Overview":
+                pos=0;
+                break;
+            case "Getting started":
+                pos=1;
+                break;
+            case "Basics":
+                pos=2;
+                break;
+            case "Classes and objects":
+                pos=3;
+                break;
+            case "Functions and Lambdas":
+                pos=4;
+                break;
+            case "Others":
+                pos=5;
+                break;
+            case "Java Interop":
+                pos=6;
+                break;
+            case "Javascript":
+                pos=7;
+                break;
+        }
+        return pos;
 
-        /** the call to switchFragment(int) in CoursesListAdapter
-         passes the clicked item position to be used in calling addCourse method
-         **/
-       currentUserCourses.add(AllCourses.getCourse(courseNb));
-       listAdapter.notifyDataSetChanged();
-       // activity.getSupportFragmentManager().beginTransaction().replace(R.id.root_learFragment,currentUserCourses).addToBackStack(null).commit();
     }
 }

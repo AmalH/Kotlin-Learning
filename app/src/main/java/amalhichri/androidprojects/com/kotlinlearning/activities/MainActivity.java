@@ -26,7 +26,6 @@ public class MainActivity extends Activity implements View.OnClickListener   {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         /** if user is logged in --> homeActivity**/
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
           startActivity(new Intent(getApplicationContext(), HomeActivity.class));

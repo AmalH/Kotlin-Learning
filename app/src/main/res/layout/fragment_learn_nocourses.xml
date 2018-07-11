@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="@color/main_background"
-    tools:context="amalhichri.androidprojects.com.kotlinlearning.fragments.LearnFragment_noCourses">
+    android:background="@color/main_background">
 
     <TextView
         android:layout_width="wrap_content"

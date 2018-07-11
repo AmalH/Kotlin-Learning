@@ -7,16 +7,23 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.android.volley.VolleyError;
+import com.google.firebase.auth.FirebaseAuth;
+
+import org.json.JSONObject;
+
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.models.ForumQuestion;
+import amalhichri.androidprojects.com.kotlinlearning.services.ForumServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
+import amalhichri.androidprojects.com.kotlinlearning.services.UserProfileServices;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Configuration;
 import me.originqiu.library.EditTag;
 
 public class AddForumFragment extends Fragment {
@@ -25,7 +32,6 @@ public class AddForumFragment extends Fragment {
     TextView content;
     EditTag tags;
     Button submitButton;
-    ImageButton backButton;
     ToggleButton toggleCode;
     TextView code_content;
     TextView static_code_contetnt;
@@ -54,7 +60,6 @@ public class AddForumFragment extends Fragment {
         content=getActivity().findViewById(R.id.add_forum_content);
         tags=getActivity().findViewById(R.id.add_forum_tags_input);
         submitButton=getActivity().findViewById(R.id.add_forum_submit);
-        backButton=getActivity().findViewById(R.id.add_forum_back);
         toggleCode=getActivity().findViewById(R.id.forum_add_tooggle_code);
         code_content=getActivity().findViewById(R.id.forum_add_code_editor);
         static_code_contetnt=getActivity().findViewById(R.id.forum_add_code_static);
@@ -84,8 +89,8 @@ public class AddForumFragment extends Fragment {
                     }
                 }
 
-              /*  if(!isCodeEmpty && !f.getContent().isEmpty() && !f.getTags().isEmpty() && !f.getSubject().isEmpty()){
-                    if(Configuration.isOnline(getContext()) && UserServices.getInstance().is_verified(getContext()))
+               if(!isCodeEmpty && !f.getContent().isEmpty() && !f.getTags().isEmpty() && !f.getSubject().isEmpty()){
+                    if(Configuration.isOnline(getContext()) && UserProfileServices.getInstance().is_verified(getContext()))
                         ForumServices.getInstance().addForum(getContext(), f, FirebaseAuth.getInstance().getCurrentUser().getUid(), new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {
@@ -125,19 +130,7 @@ public class AddForumFragment extends Fragment {
                         progressDialog.dismiss();
                     }
                     Toast.makeText(getContext(),"Empty fields", Toast.LENGTH_LONG).show();
-                }*/
-            }
-        });
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                View v = getActivity().getCurrentFocus();
-                if (v != null) {
-                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(getContext().INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
-                getFragmentManager().popBackStack();
             }
         });
     }

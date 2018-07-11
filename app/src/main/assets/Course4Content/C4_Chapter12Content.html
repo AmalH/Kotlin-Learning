@@ -1,0 +1,30 @@
+<html>
+	<body>
+	<article role="main" class="page-content g-9">
+		<h2 id="class-delegation">Class Delegation<a class="anchor" href="#class-delegation"></a></h2>
+		<p>The <a href="https://en.wikipedia.org/wiki/Delegation_pattern">Delegation pattern</a> has proven to be a good alternative to implementation inheritance,
+			and Kotlin supports it natively requiring zero boilerplate code.
+			A class <code>Derived</code> can inherit from an interface <code>Base</code> and delegate all of its public methods to a specified object:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">interface</span> <span class="cm-def">Base</span> {
+    <span class="cm-keyword">fun</span> <span class="cm-def">print</span>()
+}
+
+<span class="cm-keyword">class</span> <span class="cm-def">BaseImpl</span>(<span class="cm-keyword">val</span> <span class="cm-def">x</span>: <span class="cm-variable">Int</span>) : <span class="cm-variable">Base</span> {
+    <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">print</span>() { <span class="cm-variable">print</span>(<span class="cm-variable">x</span>) }
+}
+
+<span class="cm-keyword">class</span> <span class="cm-def">Derived</span>(<span class="cm-variable">b</span>: <span class="cm-variable">Base</span>) : <span class="cm-variable">Base</span> <span class="cm-keyword">by</span> <span class="cm-variable">b</span>
+
+<span class="cm-keyword">fun</span> <span class="cm-def">main</span>(<span class="cm-variable">args</span>: <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>) {
+    <span class="cm-keyword">val</span> <span class="cm-def">b</span> <span class="cm-operator">=</span> <span class="cm-variable">BaseImpl</span>(<span class="cm-number">10</span>)
+    <span class="cm-variable">Derived</span>(<span class="cm-variable">b</span>).<span class="cm-variable">print</span>() <span class="cm-comment">// prints 10</span>
+}
+</code></pre>
+		<p>The <em class="keyword">by</em>-clause in the supertype list for <code>Derived</code> indicates that <code>b</code> will be stored internally in objects of <code>Derived</code>
+			and the compiler will generate all the methods of <code>Base</code> that forward to <code>b</code>.</p>
+		<p>Note that overrides work as you might expect: The compiler will use your <code>override</code> implementations instead of those in the delegate object. If we were to add <code>override fun print() { print("abc") }</code> to <code>Derived</code>, the program would print "abc" instead of "10".</p>
+
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>

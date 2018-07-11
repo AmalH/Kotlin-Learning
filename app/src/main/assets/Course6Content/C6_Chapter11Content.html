@@ -1,0 +1,166 @@
+<html>
+	<body>
+    <article role="main" class="page-content g-9">
+        <h2 id="reflection">Reflection<a class="anchor" href="#reflection"></a></h2>
+        <p>Reflection is a set of language and library features that allows for introspecting the structure of your own program at runtime.
+            Kotlin makes functions and properties first-class citizens in the language, and introspecting them (i.e. learning a name or
+            a type of a property or function at runtime) is closely intertwined with simply using a functional or reactive style.</p>
+        <blockquote class="note">
+            <p>On the Java platform, the runtime component required for using the reflection features is distributed as a separate
+                JAR file (<code>kotlin-reflect.jar</code>). This is done to reduce the required size of the runtime library for applications
+                that do not use reflection features. If you do use reflection, please make sure that the .jar file is added to the
+                classpath of your project.</p>
+        </blockquote>
+        <h2 id="class-references">Class References<a class="anchor" href="#class-references"></a></h2>
+        <p>The most basic reflection feature is getting the runtime reference to a Kotlin class. To obtain the reference to a
+            statically known Kotlin class, you can use the <em>class literal</em> syntax:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">c</span> <span class="cm-operator">=</span> <span class="cm-variable">MyClass</span>::<span class="cm-keyword">class</span>
+</code></pre>
+        <p>The reference is a value of type <a href="/api/latest/jvm/stdlib/kotlin.reflect/-k-class/index.html">KClass</a>.</p>
+        <p>Note that a Kotlin class reference is not the same as a Java class reference. To obtain a Java class reference,
+            use the <code>.java</code> property on a <code>KClass</code> instance.</p>
+        <h2 id="bound-class-references-since-11">Bound Class References (since 1.1)<a class="anchor" href="#bound-class-references-since-11"></a></h2>
+        <p>You can get the reference to a class of a specific object with the same <code>::class</code> syntax by using the object as a receiver:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">widget</span>: <span class="cm-variable">Widget</span> <span class="cm-operator">=</span> ...
+<span class="cm-variable">assert</span>(<span class="cm-variable">widget</span> <span class="cm-keyword">is</span> <span class="cm-variable">GoodWidget</span>) { <span class="cm-string">"Bad widget: ${widget::class.qualifiedName}"</span> }
+</code></pre>
+        <p>You obtain the reference to an exact class of an object, for instance <code>GoodWidget</code> or <code>BadWidget</code>, despite the type of the receiver expression (<code>Widget</code>).</p>
+        <h2 id="function-references">Function References<a class="anchor" href="#function-references"></a></h2>
+        <p>When we have a named function declared like this:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">isOdd</span>(<span class="cm-variable">x</span>: <span class="cm-variable">Int</span>) <span class="cm-operator">=</span> <span class="cm-variable">x</span> <span class="cm-operator">%</span> <span class="cm-number">2</span> <span class="cm-operator">!=</span> <span class="cm-number">0</span>
+</code></pre>
+        <p>We can easily call it directly (<code>isOdd(5)</code>), but we can also pass it as a value, e.g. to another function.
+            To do this, we use the <code>::</code> operator:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">numbers</span> <span class="cm-operator">=</span> <span class="cm-variable">listOf</span>(<span class="cm-number">1</span>, <span class="cm-number">2</span>, <span class="cm-number">3</span>)
+<span class="cm-variable">println</span>(<span class="cm-variable">numbers</span>.<span class="cm-variable">filter</span>(::<span class="cm-variable">isOdd</span>)) <span class="cm-comment">// prints [1, 3]</span>
+</code></pre>
+        <p>Here <code>::isOdd</code> is a value of function type <code>(Int) -&gt; Boolean</code>.</p>
+        <p><code>::</code> can be used with overloaded functions when the expected type is known from the context.
+            For example:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">isOdd</span>(<span class="cm-variable">x</span>: <span class="cm-variable">Int</span>) <span class="cm-operator">=</span> <span class="cm-variable">x</span> <span class="cm-operator">%</span> <span class="cm-number">2</span> <span class="cm-operator">!=</span> <span class="cm-number">0</span>
+<span class="cm-keyword">fun</span> <span class="cm-def">isOdd</span>(<span class="cm-variable">s</span>: <span class="cm-variable-3">String</span>) <span class="cm-operator">=</span> <span class="cm-variable">s</span> <span class="cm-operator">==</span> <span class="cm-string">"brillig"</span> <span class="cm-operator">||</span> <span class="cm-variable">s</span> <span class="cm-operator">==</span> <span class="cm-string">"slithy"</span> <span class="cm-operator">||</span> <span class="cm-variable">s</span> <span class="cm-operator">==</span> <span class="cm-string">"tove"</span>
+
+<span class="cm-keyword">val</span> <span class="cm-def">numbers</span> <span class="cm-operator">=</span> <span class="cm-variable">listOf</span>(<span class="cm-number">1</span>, <span class="cm-number">2</span>, <span class="cm-number">3</span>)
+<span class="cm-variable">println</span>(<span class="cm-variable">numbers</span>.<span class="cm-variable">filter</span>(::<span class="cm-variable">isOdd</span>)) <span class="cm-comment">// refers to isOdd(x: Int)</span>
+</code></pre>
+        <p>Alternatively, you can provide the necessary context by storing the method reference in a variable with an explicitly specified type:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">predicate</span>: (<span class="cm-variable-3">String</span>) <span class="cm-operator">-&gt;</span> <span class="cm-variable-3">Boolean</span> <span class="cm-operator">=</span> ::<span class="cm-variable">isOdd</span>   <span class="cm-comment">// refers to isOdd(x: String)</span>
+</code></pre>
+        <p>If we need to use a member of a class, or an extension function, it needs to be qualified.
+            e.g. <code>String::toCharArray</code> gives us an extension function for type <code>String</code>: <code>String.() -&gt; CharArray</code>.</p>
+        <h2 id="example-function-composition">Example: Function Composition<a class="anchor" href="#example-function-composition"></a></h2>
+        <p>Consider the following function:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-variable">A</span>, <span class="cm-variable">B</span>, <span class="cm-variable">C</span><span class="cm-operator">&gt;</span> <span class="cm-variable">compose</span>(<span class="cm-variable">f</span>: (<span class="cm-variable">B</span>) <span class="cm-operator">-&gt;</span> <span class="cm-variable">C</span>, <span class="cm-variable">g</span>: (<span class="cm-variable">A</span>) <span class="cm-operator">-&gt;</span> <span class="cm-variable">B</span>): (<span class="cm-variable">A</span>) <span class="cm-operator">-&gt;</span> <span class="cm-variable">C</span> {
+    <span class="cm-keyword">return</span> { <span class="cm-variable">x</span> <span class="cm-operator">-&gt;</span> <span class="cm-variable">f</span>(<span class="cm-variable">g</span>(<span class="cm-variable">x</span>)) }
+}
+</code></pre>
+        <p>It returns a composition of two functions passed to it: <code>compose(f, g) = f(g(*))</code>.
+            Now, you can apply it to callable references:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">length</span>(<span class="cm-variable">s</span>: <span class="cm-variable-3">String</span>) <span class="cm-operator">=</span> <span class="cm-variable">s</span>.<span class="cm-variable">length</span>
+
+<span class="cm-keyword">val</span> <span class="cm-def">oddLength</span> <span class="cm-operator">=</span> <span class="cm-variable">compose</span>(::<span class="cm-variable">isOdd</span>, ::<span class="cm-variable">length</span>)
+<span class="cm-keyword">val</span> <span class="cm-def">strings</span> <span class="cm-operator">=</span> <span class="cm-variable">listOf</span>(<span class="cm-string">"a"</span>, <span class="cm-string">"ab"</span>, <span class="cm-string">"abc"</span>)
+
+<span class="cm-variable">println</span>(<span class="cm-variable">strings</span>.<span class="cm-variable">filter</span>(<span class="cm-variable">oddLength</span>)) <span class="cm-comment">// Prints "[a, abc]"</span>
+</code></pre>
+        <h2 id="property-references">Property References<a class="anchor" href="#property-references"></a></h2>
+        <p>To access properties as first-class objects in Kotlin, we can also use the <code>::</code> operator:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">x</span> <span class="cm-operator">=</span> <span class="cm-number">1</span>
+
+<span class="cm-keyword">fun</span> <span class="cm-def">main</span>(<span class="cm-variable">args</span>: <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>) {
+    <span class="cm-variable">println</span>(::<span class="cm-variable">x</span>.<span class="cm-keyword">get</span>()) <span class="cm-comment">// prints "1"</span>
+    <span class="cm-variable">println</span>(::<span class="cm-variable">x</span>.<span class="cm-variable">name</span>)  <span class="cm-comment">// prints "x"</span>
+}
+</code></pre>
+        <p>The expression <code>::x</code> evaluates to a property object of type <code>KProperty&lt;Int&gt;</code>, which allows us to read its
+            value using <code>get()</code> or retrieve the property name using the <code>name</code> property. For more information, please refer to
+            the <a href="/api/latest/jvm/stdlib/kotlin.reflect/-k-property/index.html">docs on the <code>KProperty</code> class</a>.</p>
+        <p>For a mutable property, e.g. <code>var y = 1</code>, <code>::y</code> returns a value of type <a href="/api/latest/jvm/stdlib/kotlin.reflect/-k-mutable-property/index.html"><code>KMutableProperty&lt;Int&gt;</code></a>,
+            which has a <code>set()</code> method:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">var</span> <span class="cm-def">y</span> <span class="cm-operator">=</span> <span class="cm-number">1</span>
+
+<span class="cm-keyword">fun</span> <span class="cm-def">main</span>(<span class="cm-variable">args</span>: <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>) {
+    ::<span class="cm-variable">y</span>.<span class="cm-keyword">set</span>(<span class="cm-number">2</span>)
+    <span class="cm-variable">println</span>(<span class="cm-variable">y</span>) <span class="cm-comment">// prints "2"</span>
+}
+</code></pre>
+        <p>A property reference can be used where a function with no parameters is expected:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">strs</span> <span class="cm-operator">=</span> <span class="cm-variable">listOf</span>(<span class="cm-string">"a"</span>, <span class="cm-string">"bc"</span>, <span class="cm-string">"def"</span>)
+<span class="cm-variable">println</span>(<span class="cm-variable">strs</span>.<span class="cm-variable">map</span>(<span class="cm-variable-3">String</span>::<span class="cm-variable">length</span>)) <span class="cm-comment">// prints [1, 2, 3]</span>
+</code></pre>
+        <p>To access a property that is a member of a class, we qualify it:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">A</span>(<span class="cm-keyword">val</span> <span class="cm-def">p</span>: <span class="cm-variable">Int</span>)
+
+<span class="cm-keyword">fun</span> <span class="cm-def">main</span>(<span class="cm-variable">args</span>: <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>) {
+    <span class="cm-keyword">val</span> <span class="cm-def">prop</span> <span class="cm-operator">=</span> <span class="cm-variable">A</span>::<span class="cm-variable">p</span>
+    <span class="cm-variable">println</span>(<span class="cm-variable">prop</span>.<span class="cm-keyword">get</span>(<span class="cm-variable">A</span>(<span class="cm-number">1</span>))) <span class="cm-comment">// prints "1"</span>
+}
+</code></pre>
+        <p>For an extension property:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-variable-3">String</span>.<span class="cm-variable">lastChar</span>: <span class="cm-variable">Char</span>
+    <span class="cm-keyword">get</span>() <span class="cm-operator">=</span> <span class="cm-keyword">this</span>[<span class="cm-variable">length</span> <span class="cm-operator">-</span> <span class="cm-number">1</span>]
+
+<span class="cm-keyword">fun</span> <span class="cm-def">main</span>(<span class="cm-variable">args</span>: <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>) {
+    <span class="cm-variable">println</span>(<span class="cm-variable-3">String</span>::<span class="cm-variable">lastChar</span>.<span class="cm-keyword">get</span>(<span class="cm-string">"abc"</span>)) <span class="cm-comment">// prints "c"</span>
+}
+</code></pre>
+        <h2 id="interoperability-with-java-reflection">Interoperability With Java Reflection<a class="anchor" href="#interoperability-with-java-reflection"></a></h2>
+        <p>On the Java platform, standard library contains extensions for reflection classes that provide a mapping to and from Java
+            reflection objects (see package <code>kotlin.reflect.jvm</code>).
+            For example, to find a backing field or a Java method that serves as a getter for a Kotlin property, you can say something like this:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">import</span> <span class="cm-variable">kotlin</span>.<span class="cm-variable">reflect</span>.<span class="cm-variable">jvm</span>.<span class="cm-operator">*</span>
+
+<span class="cm-keyword">class</span> <span class="cm-def">A</span>(<span class="cm-keyword">val</span> <span class="cm-def">p</span>: <span class="cm-variable">Int</span>)
+
+<span class="cm-keyword">fun</span> <span class="cm-def">main</span>(<span class="cm-variable">args</span>: <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>) {
+    <span class="cm-variable">println</span>(<span class="cm-variable">A</span>::<span class="cm-variable">p</span>.<span class="cm-variable">javaGetter</span>) <span class="cm-comment">// prints "public final int A.getP()"</span>
+    <span class="cm-variable">println</span>(<span class="cm-variable">A</span>::<span class="cm-variable">p</span>.<span class="cm-variable">javaField</span>)  <span class="cm-comment">// prints "private final int A.p"</span>
+}
+</code></pre>
+        <p>To get the Kotlin class corresponding to a Java class, use the <code>.kotlin</code> extension property:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">getKClass</span>(<span class="cm-variable">o</span>: <span class="cm-variable">Any</span>): <span class="cm-variable">KClass</span><span class="cm-operator">&lt;</span><span class="cm-variable">Any</span><span class="cm-operator">&gt;</span> <span class="cm-operator">=</span> <span class="cm-variable">o</span>.<span class="cm-variable">javaClass</span>.<span class="cm-variable">kotlin</span>
+</code></pre>
+        <h2 id="constructor-references">Constructor References<a class="anchor" href="#constructor-references"></a></h2>
+        <p>Constructors can be referenced just like methods and properties. They can be used wherever an object of function type
+            is expected that takes the same parameters as the constructor and returns an object of the appropriate type.
+            Constructors are referenced by using the <code>::</code> operator and adding the class name. Consider the following function
+            that expects a function parameter with no parameters and return type <code>Foo</code>:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Foo</span>
+
+<span class="cm-keyword">fun</span> <span class="cm-def">function</span>(<span class="cm-variable">factory</span>: () <span class="cm-operator">-&gt;</span> <span class="cm-variable">Foo</span>) {
+    <span class="cm-keyword">val</span> <span class="cm-def">x</span>: <span class="cm-variable">Foo</span> <span class="cm-operator">=</span> <span class="cm-variable">factory</span>()
+}
+</code></pre>
+        <p>Using <code>::Foo</code>, the zero-argument constructor of the class Foo, we can simply call it like this:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">function</span>(::<span class="cm-variable">Foo</span>)
+</code></pre>
+        <h2 id="bound-function-and-property-references-since-11">Bound Function and Property References (since 1.1)<a class="anchor" href="#bound-function-and-property-references-since-11"></a></h2>
+        <p>You can refer to an instance method of a particular object:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">numberRegex</span> <span class="cm-operator">=</span> <span class="cm-string">"\\d+"</span>.<span class="cm-variable">toRegex</span>()
+<span class="cm-variable">println</span>(<span class="cm-variable">numberRegex</span>.<span class="cm-variable">matches</span>(<span class="cm-string">"29"</span>)) <span class="cm-comment">// prints "true"</span>
+
+<span class="cm-keyword">val</span> <span class="cm-def">isNumber</span> <span class="cm-operator">=</span> <span class="cm-variable">numberRegex</span>::<span class="cm-variable">matches</span>
+<span class="cm-variable">println</span>(<span class="cm-variable">isNumber</span>(<span class="cm-string">"29"</span>)) <span class="cm-comment">// prints "true"</span>
+</code></pre>
+        <p>Instead of calling the method <code>matches</code> directly we are storing a reference to it.
+            Such reference is bound to its receiver.
+            It can be called directly (like in the example above) or used whenever an expression of function type is expected:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">strings</span> <span class="cm-operator">=</span> <span class="cm-variable">listOf</span>(<span class="cm-string">"abc"</span>, <span class="cm-string">"124"</span>, <span class="cm-string">"a70"</span>)
+<span class="cm-variable">println</span>(<span class="cm-variable">strings</span>.<span class="cm-variable">filter</span>(<span class="cm-variable">numberRegex</span>::<span class="cm-variable">matches</span>)) <span class="cm-comment">// prints "[124]"</span>
+</code></pre>
+        <p>Compare the types of bound and the corresponding unbound references.
+            Bound callable reference has its receiver "attached" to it, so the type of the receiver is no longer a parameter:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">isNumber</span>: (<span class="cm-variable-3">CharSequence</span>) <span class="cm-operator">-&gt;</span> <span class="cm-variable-3">Boolean</span> <span class="cm-operator">=</span> <span class="cm-variable">numberRegex</span>::<span class="cm-variable">matches</span>
+
+<span class="cm-keyword">val</span> <span class="cm-def">matches</span>: (<span class="cm-variable">Regex</span>, <span class="cm-variable-3">CharSequence</span>) <span class="cm-operator">-&gt;</span> <span class="cm-variable-3">Boolean</span> <span class="cm-operator">=</span> <span class="cm-variable">Regex</span>::<span class="cm-variable">matches</span>
+</code></pre>
+        <p>Property reference can be bound as well:</p>
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">prop</span> <span class="cm-operator">=</span> <span class="cm-string">"abc"</span>::<span class="cm-variable">length</span>
+<span class="cm-variable">println</span>(<span class="cm-variable">prop</span>.<span class="cm-keyword">get</span>())   <span class="cm-comment">// prints "3"</span>
+</code></pre>
+        <p>Since Kotlin 1.2, explicitly specifying <code>this</code> as the receiver is not necessary: <code>this::foo</code> and <code>::foo</code> are equivalent.</p>
+
+    </article>
+    </body>
+    <link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>

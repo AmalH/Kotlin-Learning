@@ -2,7 +2,7 @@ package amalhichri.androidprojects.com.kotlinlearning.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.lucasurbas.listitemview.ListItemView;
 
 import java.util.ArrayList;
@@ -21,18 +22,18 @@ import java.util.List;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.fragments.LearnFragment_currentUserCourses;
-import amalhichri.androidprojects.com.kotlinlearning.fragments.LearnFragment_noCourses;
+import amalhichri.androidprojects.com.kotlinlearning.utils.AllCourses;
+import amalhichri.androidprojects.com.kotlinlearning.utils.DataBaseHandler;
 
 public class CoursesListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
 
-    // could've used an ArrayList<Course> but this list's data isnt dynamic it wont change !
+    // could've user an ArrayList<Course> but this list's data isnt dynamic it wont change !
     private List listTitles;
     private HashMap<String, List> listData;
     private int[] icons;
     final ArrayList<Integer> takenCoursesNbs=new ArrayList<>();
-
 
 
     public CoursesListAdapter(Context context, List listTitles, HashMap<String, List> listData, int[]icons) {
@@ -53,11 +54,6 @@ public class CoursesListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
         final String childText = (String) getChild(groupPosition, childPosition);
@@ -65,11 +61,6 @@ public class CoursesListAdapter extends BaseExpandableListAdapter {
             convertView = ((LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.courseslist_item_expanded, null);
         ((TextView) convertView.findViewById(R.id.listItem_text)).setText(childText);
         return convertView;
-    }
-
-    @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
     }
 
     @Override
@@ -96,90 +87,129 @@ public class CoursesListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
         String title = (String) getGroup(groupPosition);
-        final int courseIcon = icons[groupPosition];
+        final int  courseIcon = icons[groupPosition];
 
         if (convertView == null)
             convertView = ((LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.courseslist_item, null);
         ((TextView) convertView.findViewById(R.id.listTitle_text)).setText(title);
-        ((ImageView) convertView.findViewById(R.id.courseIcon)).setImageResource(courseIcon);
+        ((ImageView)convertView.findViewById(R.id.courseIcon)).setImageResource(courseIcon);
         /** if a courses list item is clicked
          * switch LearnFragment_noCourses with LearnFragment_currentUserCourse
+         * and update the takenCoursesPrefs
          * **/
-        ((ListItemView) convertView.findViewById(R.id.coursesListItem)).setOnMenuItemClickListener(new ListItemView.OnMenuItemClickListener() {
+
+        final StringBuilder str = new StringBuilder();
+        final ArrayList<String>  takenCourses = new ArrayList<>();
+        ((ListItemView) convertView. findViewById(R.id.coursesListItem )).setOnMenuItemClickListener(new ListItemView.OnMenuItemClickListener() {
             @Override
             public void onActionMenuItemSelected(final MenuItem item) {
-                if (item.getItemId() == R.id.action_startcourse) {
-                    /** store this course in sharedPref to display ot later on **/
-                    SharedPreferences coursesPrefs = context.getSharedPreferences("takenCoursesPrefs", 0);
-                    SharedPreferences.Editor coursesPrefsEditor = coursesPrefs.edit();
-                    StringBuilder str = new StringBuilder();
-                    if (!takenCoursesNbs.contains(groupPosition)) {
-                        takenCoursesNbs.add(groupPosition);
-                        for (int i = 0; i < takenCoursesNbs.size(); i++) {
-                            str.append(takenCoursesNbs.get(i)).append(",");
-                        }
-                        coursesPrefsEditor.putString("takenCourses", str.toString());
-                        coursesPrefsEditor.commit();
+                if(item.getItemId()== R.id.action_startcourse){
+
+                    if(!DataBaseHandler.getInstance(context).courseExist(FirebaseAuth.getInstance().getCurrentUser().getUid(),groupPosition)){
+                        DataBaseHandler.getInstance(context).addCourse(FirebaseAuth.getInstance().getCurrentUser().getUid(),groupPosition);
                         /** switch fragments to display courses list **/
-                        SharedPreferences listShownFromPrefs = context.getSharedPreferences("listShownFromPrefs", 0);
-                        // if it's for noCourses fragments
-                        if(listShownFromPrefs.contains("fromNoCourses"))
-                            LearnFragment_noCourses.switchFragments(groupPosition);
-                        // if it's from currentUserCourses fragmentfromCurrentUserCourses
-                        else if(listShownFromPrefs.contains("fromCurrentUserCourses"))
-                            LearnFragment_currentUserCourses.switchFragments(groupPosition);
-                    } else {
+                        AppCompatActivity activity=(AppCompatActivity) context;
+                        LearnFragment_currentUserCourses currentUserCourses = new LearnFragment_currentUserCourses();
+                        currentUserCourses.currentUserCourses.add(AllCourses.getCourse(groupPosition));
+                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.root_learFragment,currentUserCourses).addToBackStack(null).commit();
+                    }else{
+                        //DataBaseHandler.getInstance(context).deleteCourse(FirebaseAuth.getInstance().getCurrentUser().getUid(),groupPosition);
                         /** will change later on to snackbar or smthin gpresentable **/
-                        Toast toast = Toast.makeText(context, "You are already took this course. You are at 40% advancement !", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText( context, "You already started this course.", Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
-                       /*LinearLayout linearLayout = (((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.fragment_learn_currentusercourses, null)).findViewById(R.id.currentCoursesContainer);
-                        Snackbar snackbar = Snackbar.make(linearLayout, "You are already at 40% advancement in this course!", Snackbar.LENGTH_LONG);
-                        snackbar.show();**/
                     }
+
+                    /** search for course in coursesTable **/
+                    /*Statics.takenCoursesTable.orderByChild("userId").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                           .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            //Log.d("COUNT++","bbb "+snapshot.getChildren().toString());
+                           //Log.d("COUNT",String.valueOf(snapshot.getChildrenCount()));
+
+                            // if user has courses already
+                            if(snapshot.getChildrenCount()>0){
+                                for (DataSnapshot course: snapshot.getChildren()) {
+                                    Log.d("FCourse", course.toString());
+                                    Log.d("FCourse nb", course.child("courseNb").getValue().toString());
+                                    takenCourses.add(course.child("courseNb").getValue().toString());
+                                }
+                                Toast toast = Toast.makeText(context, "Taken Courses are: "+takenCourses.size(), Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+                                if(!takenCourses.contains(String.valueOf(groupPosition))){
+                                    String courseId = Statics.takenCoursesTable.push().getKey();
+                                    Statics.takenCoursesTable.child(courseId).child("userId").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                    Statics.takenCoursesTable.child(courseId).child("courseNb").setValue(String.valueOf(groupPosition));
+                                    LearnFragment_noCourses.switchFragments(groupPosition,context);
+                                }
+                            }
+                            else {
+                                String courseId = Statics.takenCoursesTable.push().getKey();
+                                Statics.takenCoursesTable.child(courseId).child("userId").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                Statics.takenCoursesTable.child(courseId).child("courseNb").setValue(String.valueOf(groupPosition));
+                                LearnFragment_noCourses.switchFragments(groupPosition,context);
+                            }
+
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.w("FOUND 1", "getUser:onCancelled", databaseError.toException());
+                        }
+                    });*/
                 }
-                if (item.getItemId() == R.id.action_share) {
+                if(item.getItemId()== R.id.action_share){
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                     shareIntent.setType("text/plain");
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, courseLinkFromCourseNb(groupPosition));
+                    shareIntent.putExtra(Intent.EXTRA_TEXT,courseLinkFromCourseNb(groupPosition));
                     context.startActivity(Intent.createChooser(shareIntent, " share "));
                 }
-
             }
         });
         return convertView;
     }
 
-    /** helper methods **/
-    private String courseLinkFromCourseNb(int courseNb){
-                String courseLink = "https://kotlinlang.org/docs/reference/";
-                switch (courseNb){
-                    case 0:
-                        courseLink+="server-overview.html";
-                        break;
-                    case 1:
-                        courseLink+="basic-syntax.html";
-                        break;
-                    case 2:
-                        courseLink+="basic-types.html";
-                        break;
-                    case 3:
-                        courseLink+="classes.html";
-                        break;
-                    case 4:
-                        courseLink+="functions.html";
-                        break;
-                    case 5:
-                        courseLink+="multi-declarations.html";
-                        break;
-                    case 6:
-                        courseLink+="java-interop.html";
-                        break;
-                    case 7:
-                        courseLink+="dynamic-type.html";
-                        break;
-                }
-                return courseLink;
-            }
 
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+
+
+    private String courseLinkFromCourseNb(int courseNb){
+        String courseLink = "https://kotlinlang.org/docs/reference/";
+        switch (courseNb){
+            case 0:
+                courseLink+="server-overview.html";
+                break;
+            case 1:
+                courseLink+="basic-syntax.html";
+                break;
+            case 2:
+                courseLink+="basic-types.html";
+                break;
+            case 3:
+                courseLink+="classes.html";
+                break;
+            case 4:
+                courseLink+="functions.html";
+                break;
+            case 5:
+                courseLink+="multi-declarations.html";
+                break;
+            case 6:
+                courseLink+="java-interop.html";
+                break;
+            case 7:
+                courseLink+="dynamic-type.html";
+                break;
+        }
+        return courseLink;
+    }
 }

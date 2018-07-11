@@ -1,0 +1,64 @@
+<html>
+	<body>
+	<article role="main" class="page-content g-9">
+
+		<h2 id="data-classes">Data Classes<a class="anchor" href="#data-classes"></a></h2>
+		<p>We frequently create classes whose main purpose is to hold data.
+			In such a class some standard functionality and utility functions are often mechanically
+			derivable from the data. In Kotlin, this is called a <em>data class</em> and is marked as <code>data</code>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">data</span> <span class="cm-keyword">class</span> <span class="cm-def">User</span>(<span class="cm-keyword">val</span> <span class="cm-def">name</span>: <span class="cm-variable-3">String</span>, <span class="cm-keyword">val</span> <span class="cm-def">age</span>: <span class="cm-variable">Int</span>)
+</code></pre>
+		<p>The compiler automatically derives the following members from all properties declared in the primary constructor:</p>
+		<ul>
+			<li><code>equals()</code>/<code>hashCode()</code> pair;</li>
+			<li><code>toString()</code> of the form <code>"User(name=John, age=42)"</code>;</li>
+			<li><a href="http://kotlinlang.org/docs/reference/multi-declarations.html"><code>componentN()</code> functions</a> corresponding to the properties in their order of declaration;</li>
+			<li><code>copy()</code> function (see below).</li>
+		</ul>
+		<p>To ensure consistency and meaningful behavior of the generated code, data classes have to fulfill the following requirements:</p>
+		<ul>
+			<li>The primary constructor needs to have at least one parameter;</li>
+			<li>All primary constructor parameters need to be marked as <code>val</code> or <code>var</code>;</li>
+			<li>Data classes cannot be abstract, open, sealed or inner;</li>
+			<li>(before 1.1) Data classes may only implement interfaces.</li>
+		</ul>
+		<p>Additionally, the members generation follows these rules with regard to the members inheritance:</p>
+		<ul>
+			<li>If there are explicit implementations of <code>equals()</code>, <code>hashCode()</code> or <code>toString()</code> in the data class body or
+				<em class="keyword">final</em> implementations in a superclass, then these functions are not generated, and the existing
+				implementations are used;</li>
+			<li>If a supertype has the <code>componentN()</code> functions that are <em class="keyword">open</em> and return compatible types, the
+				corresponding functions are generated for the data class and override those of the supertype. If the functions of the
+				supertype cannot be overridden due to incompatible signatures or being final, an error is reported;</li>
+			<li>Deriving a data class from a type that already has a <code>copy(...)</code> function with a matching signature is deprecated in
+				Kotlin 1.2 and will be prohibited in Kotlin 1.3.</li>
+			<li>Providing explicit implementations for the <code>componentN()</code> and <code>copy()</code> functions is not allowed.</li>
+		</ul>
+		<p>Since 1.1, data classes may extend other classes (see <a href="http://kotlinlang.org/docs/reference/sealed-classes.html">Sealed classes</a> for examples).</p>
+		<p>On the JVM, if the generated class needs to have a parameterless constructor, default values for all properties have to be specified
+			(see <a href="http://kotlinlang.org/docs/reference/classes.html#constructors">Constructors</a>).</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">data</span> <span class="cm-keyword">class</span> <span class="cm-def">User</span>(<span class="cm-keyword">val</span> <span class="cm-def">name</span>: <span class="cm-variable-3">String</span> <span class="cm-operator">=</span> <span class="cm-string">""</span>, <span class="cm-keyword">val</span> <span class="cm-def">age</span>: <span class="cm-variable">Int</span> <span class="cm-operator">=</span> <span class="cm-number">0</span>)
+</code></pre>
+		<h2 id="copying">Copying<a class="anchor" href="#copying"></a></h2>
+		<p>It's often the case that we need to copy an object altering <em>some</em> of its properties, but keeping the rest unchanged.
+			This is what <code>copy()</code> function is generated for. For the <code>User</code> class above, its implementation would be as follows:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">copy</span>(<span class="cm-variable">name</span>: <span class="cm-variable-3">String</span> <span class="cm-operator">=</span> <span class="cm-keyword">this</span>.<span class="cm-variable">name</span>, <span class="cm-variable">age</span>: <span class="cm-variable">Int</span> <span class="cm-operator">=</span> <span class="cm-keyword">this</span>.<span class="cm-variable">age</span>) <span class="cm-operator">=</span> <span class="cm-variable">User</span>(<span class="cm-variable">name</span>, <span class="cm-variable">age</span>)
+</code></pre>
+		<p>This allows us to write:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">jack</span> <span class="cm-operator">=</span> <span class="cm-variable">User</span>(<span class="cm-variable">name</span> <span class="cm-operator">=</span> <span class="cm-string">"Jack"</span>, <span class="cm-variable">age</span> <span class="cm-operator">=</span> <span class="cm-number">1</span>)
+<span class="cm-keyword">val</span> <span class="cm-def">olderJack</span> <span class="cm-operator">=</span> <span class="cm-variable">jack</span>.<span class="cm-variable">copy</span>(<span class="cm-variable">age</span> <span class="cm-operator">=</span> <span class="cm-number">2</span>)
+</code></pre>
+		<h2 id="data-classes-and-destructuring-declarations">Data Classes and Destructuring Declarations<a class="anchor" href="#data-classes-and-destructuring-declarations"></a></h2>
+		<p><em>Component functions</em> generated for data classes enable their use in <a href="There's Nothing Holdin' Me Back">destructuring declarations</a>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">jane</span> <span class="cm-operator">=</span> <span class="cm-variable">User</span>(<span class="cm-string">"Jane"</span>, <span class="cm-number">35</span>)
+<span class="cm-keyword">val</span> (<span class="cm-variable">name</span>, <span class="cm-variable">age</span>) <span class="cm-operator">=</span> <span class="cm-variable">jane</span>
+<span class="cm-variable">println</span>(<span class="cm-string">"$name, $age years of age"</span>) <span class="cm-comment">// prints "Jane, 35 years of age"</span>
+</code></pre>
+		<h2 id="standard-data-classes">Standard Data Classes<a class="anchor" href="#standard-data-classes"></a></h2>
+		<p>The standard library provides <code>Pair</code> and <code>Triple</code>. In most cases, though, named data classes are a better design choice,
+			because they make the code more readable by providing meaningful names for properties.</p>
+
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>

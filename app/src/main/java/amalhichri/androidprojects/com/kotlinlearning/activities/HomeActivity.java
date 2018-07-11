@@ -2,6 +2,7 @@ package amalhichri.androidprojects.com.kotlinlearning.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
@@ -15,8 +16,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.HomePageTabsAdapter;
+import amalhichri.androidprojects.com.kotlinlearning.models.User;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class HomeActivity extends AppCompatActivity {
@@ -37,7 +46,7 @@ public class HomeActivity extends AppCompatActivity {
 
         fragmentManager =getSupportFragmentManager();
 
-        /** adding current user to sharedPreferences
+        //adding current user to sharedPreferences
         Statics.usersTable.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -51,7 +60,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
                 throw databaseError.toException();
             }
-        });**/
+        });
 
 
         /** will be used to change tab icons colors on select/deselect */

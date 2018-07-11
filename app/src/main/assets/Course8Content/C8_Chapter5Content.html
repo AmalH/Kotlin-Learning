@@ -1,0 +1,33 @@
+<html>
+	<body>
+	<article role="main" class="page-content g-9">
+		<h2 id="javascript-reflection">JavaScript Reflection<a class="anchor" href="#javascript-reflection"></a></h2>
+		<p>At this time, JavaScript does not support the full Kotlin reflection API. The only supported part of the API
+			is the <code>::class</code> syntax which allows you to refer to the class of an instance, or the class corresponding to the given type.
+			The value of a <code>::class</code> expression is a stripped-down <a href="/api/latest/jvm/stdlib/kotlin.reflect/-k-class/">KClass</a>
+			implementation that only supports the <a href="/api/latest/jvm/stdlib/kotlin.reflect/-k-class/simple-name.html">simpleName</a> and
+			<a href="/api/latest/jvm/stdlib/kotlin.reflect/-k-class/is-instance.html">isInstance</a> members.</p>
+		<p>In addition to that, you can use <a href="/api/latest/jvm/stdlib/kotlin.js/js.html">KClass.js</a> to access the
+			<a href="/api/latest/jvm/stdlib/kotlin.js/-js-class/index.html">JsClass</a> instance corresponding to the class.
+			The <code>JsClass</code> instance itself is a reference to the constructor function.
+			This can be used to interoperate with JS functions that expect a reference to a constructor.</p>
+		<p>Examples:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">A</span>
+<span class="cm-keyword">class</span> <span class="cm-def">B</span>
+<span class="cm-keyword">class</span> <span class="cm-def">C</span>
+
+<span class="cm-keyword">inline</span> <span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-keyword">reified</span> <span class="cm-variable">T</span><span class="cm-operator">&gt;</span> <span class="cm-variable">foo</span>() {
+    <span class="cm-variable">println</span>(<span class="cm-variable">T</span>::<span class="cm-keyword">class</span>.<span class="cm-variable">simpleName</span>)
+}
+
+<span class="cm-keyword">val</span> <span class="cm-def">a</span> <span class="cm-operator">=</span> <span class="cm-variable">A</span>()
+<span class="cm-variable">println</span>(<span class="cm-variable">a</span>::<span class="cm-keyword">class</span>.<span class="cm-variable">simpleName</span>)  <span class="cm-comment">// Obtains class for an instance; prints "A"</span>
+<span class="cm-variable">println</span>(<span class="cm-variable">B</span>::<span class="cm-keyword">class</span>.<span class="cm-variable">simpleName</span>)  <span class="cm-comment">// Obtains class for a type; prints "B"</span>
+<span class="cm-variable">println</span>(<span class="cm-variable">B</span>::<span class="cm-keyword">class</span>.<span class="cm-variable">js</span>.<span class="cm-variable">name</span>)     <span class="cm-comment">// prints "B"</span>
+<span class="cm-variable">foo</span><span class="cm-operator">&lt;</span><span class="cm-variable">C</span><span class="cm-operator">&gt;</span>()                      <span class="cm-comment">// prints "C"</span>
+</code></pre>
+
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>

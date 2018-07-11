@@ -1,0 +1,100 @@
+<html>
+	<body>
+	<article role="main" class="page-content g-9">
+		<h2 id="null-safety">Null Safety<a class="anchor" href="#null-safety"></a></h2>
+		<h2 id="nullable-types-and-non-null-types">Nullable types and Non-Null Types<a class="anchor" href="#nullable-types-and-non-null-types"></a></h2>
+		<p>Kotlin's type system is aimed at eliminating the danger of null references from code, also known as the <a href="http://en.wikipedia.org/wiki/Tony_Hoare#Apologies_and_retractions">The Billion Dollar Mistake</a>.</p>
+		<p>One of the most common pitfalls in many programming languages, including Java, is that accessing a member of a null reference will result in a null reference exception. In Java this would be the equivalent of a <code>NullPointerException</code> or NPE for short.</p>
+		<p>Kotlin's type system is aimed to eliminate <code>NullPointerException</code>'s from our code. The only possible causes of NPE's may be</p>
+		<ul>
+			<li>An explicit call to <code>throw NullPointerException()</code>;</li>
+			<li>Usage of the <code>!!</code> operator that is described below;</li>
+			<li>External Java code has caused it;</li>
+			<li>There's some data inconsistency with regard to initialization (an uninitialized <em>this</em> available in a constructor is used somewhere).</li>
+		</ul>
+		<p>In Kotlin, the type system distinguishes between references that can hold <em class="keyword">null</em> (nullable references) and those that can not (non-null references).
+			For example, a regular variable of type <code>String</code> can not hold <em class="keyword">null</em>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">var</span> <span class="cm-def">a</span>: <span class="cm-variable-3">String</span> <span class="cm-operator">=</span> <span class="cm-string">"abc"</span>
+<span class="cm-variable">a</span> <span class="cm-operator">=</span> <span class="cm-atom">null</span> <span class="cm-comment">// compilation error</span>
+</code></pre>
+		<p>To allow nulls, we can declare a variable as nullable string, written <code>String?</code>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">var</span> <span class="cm-def">b</span>: <span class="cm-variable-3">String</span><span class="cm-operator">?</span> <span class="cm-operator">=</span> <span class="cm-string">"abc"</span>
+<span class="cm-variable">b</span> <span class="cm-operator">=</span> <span class="cm-atom">null</span> <span class="cm-comment">// ok</span>
+</code></pre>
+		<p>Now, if you call a method or access a property on <code>a</code>, it's guaranteed not to cause an NPE, so you can safely say:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">l</span> <span class="cm-operator">=</span> <span class="cm-variable">a</span>.<span class="cm-variable">length</span>
+</code></pre>
+		<p>But if you want to access the same property on <code>b</code>, that would not be safe, and the compiler reports an error:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">l</span> <span class="cm-operator">=</span> <span class="cm-variable">b</span>.<span class="cm-variable">length</span> <span class="cm-comment">// error: variable 'b' can be null</span>
+</code></pre>
+		<p>But we still need to access that property, right? There are a few ways of doing that.</p>
+		<h2 id="checking-for-null-in-conditions">Checking for <em class="keyword">null</em> in conditions<a class="anchor" href="#checking-for-null-in-conditions"></a></h2>
+		<p>First, you can explicitly check if <code>b</code> is <em class="keyword">null</em>, and handle the two options separately:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">l</span> <span class="cm-operator">=</span> <span class="cm-keyword">if</span> (<span class="cm-variable">b</span> <span class="cm-operator">!=</span> <span class="cm-atom">null</span>) <span class="cm-variable">b</span>.<span class="cm-variable">length</span> <span class="cm-keyword">else</span> <span class="cm-operator">-</span><span class="cm-number">1</span>
+</code></pre>
+		<p>The compiler tracks the information about the check you performed, and allows the call to <code>length</code> inside the <em class="keyword">if</em>.
+			More complex conditions are supported as well:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">if</span> (<span class="cm-variable">b</span> <span class="cm-operator">!=</span> <span class="cm-atom">null</span> <span class="cm-operator">&amp;&amp;</span> <span class="cm-variable">b</span>.<span class="cm-variable">length</span> <span class="cm-operator">&gt;</span> <span class="cm-number">0</span>) {
+    <span class="cm-variable">print</span>(<span class="cm-string">"String of length ${b.length}"</span>)
+} <span class="cm-keyword">else</span> {
+    <span class="cm-variable">print</span>(<span class="cm-string">"Empty string"</span>)
+}
+</code></pre>
+		<p>Note that this only works where <code>b</code> is immutable (i.e. a local variable which is not modified between the check and the
+			usage or a member <em class="keyword">val</em> which has a backing field and is not overridable), because otherwise it might
+			happen that <code>b</code> changes to <em class="keyword">null</em> after the check.</p>
+		<h2 id="safe-calls">Safe Calls<a class="anchor" href="#safe-calls"></a></h2>
+		<p>Your second option is the safe call operator, written <code>?.</code>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">b</span><span class="cm-operator">?</span>.<span class="cm-variable">length</span>
+</code></pre>
+		<p>This returns <code>b.length</code> if <code>b</code> is not null, and <em class="keyword">null</em> otherwise. The type of this expression is <code>Int?</code>.</p>
+		<p>Safe calls are useful in chains. For example, if Bob, an Employee, may be assigned to a Department (or not),
+			that in turn may have another Employee as a department head, then to obtain the name of Bob's department head (if any), we write the following:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">bob</span><span class="cm-operator">?</span>.<span class="cm-variable">department</span><span class="cm-operator">?</span>.<span class="cm-variable">head</span><span class="cm-operator">?</span>.<span class="cm-variable">name</span>
+</code></pre>
+		<p>Such a chain returns <em class="keyword">null</em> if any of the properties in it is null.</p>
+		<p>To perform a certain operation only for non-null values, you can use the safe call operator together with <a href="/api/latest/jvm/stdlib/kotlin/let.html"><code>let</code></a>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">listWithNulls</span>: <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">?&gt;</span> <span class="cm-operator">=</span> <span class="cm-variable">listOf</span>(<span class="cm-string">"A"</span>, <span class="cm-atom">null</span>)
+<span class="cm-keyword">for</span> (<span class="cm-variable">item</span> <span class="cm-keyword">in</span> <span class="cm-variable">listWithNulls</span>) {
+     <span class="cm-variable">item</span><span class="cm-operator">?</span>.<span class="cm-variable">let</span> { <span class="cm-variable">println</span>(<span class="cm-variable">it</span>) } <span class="cm-comment">// prints A and ignores null</span>
+}
+</code></pre>
+		<h2 id="elvis-operator">Elvis Operator<a class="anchor" href="#elvis-operator"></a></h2>
+		<p>When we have a nullable reference <code>r</code>, we can say "if <code>r</code> is not null, use it, otherwise use some non-null value <code>x</code>":</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">l</span>: <span class="cm-variable">Int</span> <span class="cm-operator">=</span> <span class="cm-keyword">if</span> (<span class="cm-variable">b</span> <span class="cm-operator">!=</span> <span class="cm-atom">null</span>) <span class="cm-variable">b</span>.<span class="cm-variable">length</span> <span class="cm-keyword">else</span> <span class="cm-operator">-</span><span class="cm-number">1</span>
+</code></pre>
+		<p>Along with the complete <em class="keyword">if</em>-expression, this can be expressed with the Elvis operator, written <code>?:</code>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">l</span> <span class="cm-operator">=</span> <span class="cm-variable">b</span><span class="cm-operator">?</span>.<span class="cm-variable">length</span> <span class="cm-operator">?</span>: <span class="cm-operator">-</span><span class="cm-number">1</span>
+</code></pre>
+		<p>If the expression to the left of <code>?:</code> is not null, the elvis operator returns it, otherwise it returns the expression to the right.
+			Note that the right-hand side expression is evaluated only if the left-hand side is null.</p>
+		<p>Note that, since <em class="keyword">throw</em> and <em class="keyword">return</em> are expressions in Kotlin, they can also be used on
+			the right hand side of the elvis operator. This can be very handy, for example, for checking function arguments:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">foo</span>(<span class="cm-variable">node</span>: <span class="cm-variable">Node</span>): <span class="cm-variable-3">String</span><span class="cm-operator">?</span> {
+    <span class="cm-keyword">val</span> <span class="cm-def">parent</span> <span class="cm-operator">=</span> <span class="cm-variable">node</span>.<span class="cm-variable">getParent</span>() <span class="cm-operator">?</span>: <span class="cm-keyword">return</span> <span class="cm-atom">null</span>
+    <span class="cm-keyword">val</span> <span class="cm-def">name</span> <span class="cm-operator">=</span> <span class="cm-variable">node</span>.<span class="cm-variable">getName</span>() <span class="cm-operator">?</span>: <span class="cm-keyword">throw</span> <span class="cm-variable">IllegalArgumentException</span>(<span class="cm-string">"name expected"</span>)
+    <span class="cm-comment">// ...</span>
+}
+</code></pre>
+		<h2 id="the--operator">The <code>!!</code> Operator<a class="anchor" href="#the--operator"></a></h2>
+		<p>The third option is for NPE-lovers: the not-null assertion operator (<code>!!</code>) converts any value to a non-null
+			type and throws an exception if the value is null. We can write <code>b!!</code>, and this will return a non-null value of <code>b</code>
+			(e.g., a <code>String</code> in our example) or throw an NPE if <code>b</code> is null:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">l</span> <span class="cm-operator">=</span> <span class="cm-variable">b</span><span class="cm-operator">!!</span>.<span class="cm-variable">length</span>
+</code></pre>
+		<p>Thus, if you want an NPE, you can have it, but you have to ask for it explicitly, and it does not appear out of the blue.</p>
+		<h2 id="safe-casts">Safe Casts<a class="anchor" href="#safe-casts"></a></h2>
+		<p>Regular casts may result into a <code>ClassCastException</code> if the object is not of the target type.
+			Another option is to use safe casts that return <em class="keyword">null</em> if the attempt was not successful:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">aInt</span>: <span class="cm-variable">Int</span><span class="cm-operator">?</span> <span class="cm-operator">=</span> <span class="cm-variable">a</span> <span class="cm-keyword">as</span><span class="cm-operator">?</span> <span class="cm-variable">Int</span>
+</code></pre>
+		<h2 id="collections-of-nullable-type">Collections of Nullable Type<a class="anchor" href="#collections-of-nullable-type"></a></h2>
+		<p>If you have a collection of elements of a nullable type and want to filter non-null elements, you can do so by using <code>filterNotNull</code>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">nullableList</span>: <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable">Int</span><span class="cm-operator">?&gt;</span> <span class="cm-operator">=</span> <span class="cm-variable">listOf</span>(<span class="cm-number">1</span>, <span class="cm-number">2</span>, <span class="cm-atom">null</span>, <span class="cm-number">4</span>)
+<span class="cm-keyword">val</span> <span class="cm-def">intList</span>: <span class="cm-variable">List</span><span class="cm-operator">&lt;</span><span class="cm-variable">Int</span><span class="cm-operator">&gt;</span> <span class="cm-operator">=</span> <span class="cm-variable">nullableList</span>.<span class="cm-variable">filterNotNull</span>()
+</code></pre>
+
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>

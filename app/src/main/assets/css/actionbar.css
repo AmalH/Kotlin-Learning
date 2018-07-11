@@ -1,0 +1,8 @@
+<style>
+/** fonts **/
+			@font-face {
+			  font-family: "actionbarTextFont";
+			  src: url('file:///android_asset/fonts/open_sans_regular.ttf');
+			}
+			p { font-family:"actionbarTextFont";font-size:14pt;color:#e99631}
+</style>

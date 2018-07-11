@@ -20,6 +20,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.linkedin.platform.APIHelper;
 import com.linkedin.platform.LISessionManager;
@@ -43,24 +44,24 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SignupActivity extends Activity {
 
-    static boolean isFacebook= false;
+    private static boolean isFacebook= false;
     private LoginManager mLoginManager;
     private AccessTokenTracker mAccessTokenTracker;
     private CallbackManager mFacebookCallbackManager;
     private User userFromLinkedIn;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         setContentView(R.layout.activity_signup);
 
         //initializing facebook api
         facebookApiInit();
 
-        // material editTexts error msg
-        ((EditText) findViewById(R.id.emailSignupTxt)).setOnKeyListener(new View.OnKeyListener(){
+        // material editTexts error msgs
+        (findViewById(R.id.emailSignupTxt)).setOnKeyListener(new View.OnKeyListener(){
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP)
@@ -68,7 +69,7 @@ public class SignupActivity extends Activity {
                 return false;
             }
         });
-        ((EditText) findViewById(R.id.emailSignupTxt)).setOnFocusChangeListener(new View.OnFocusChangeListener(){
+        (findViewById(R.id.emailSignupTxt)).setOnFocusChangeListener(new View.OnFocusChangeListener(){
             @Override public void onFocusChange(    View v,    boolean hasFocus){
                 if (hasFocus) ((EditText) findViewById(R.id.emailSignupTxt)).setError(null);
             }
@@ -76,8 +77,7 @@ public class SignupActivity extends Activity {
         );
     }
 
-
-    /** Sign up  **/
+    /** Firebase Sign up  **/
     public void signUp(View v) {
 
 
@@ -104,7 +104,7 @@ public class SignupActivity extends Activity {
             ((EditText) findViewById(R.id.fullNameTxt)).setError("Please provide your full name");
             return;
         }
-        //authenticate user + add it to firebase DB ..
+        /**authenticate user + add it to DB **/
         Statics.signUp(((EditText) findViewById(R.id.emailSignupTxt)).getText().toString(),
                 ((EditText) findViewById(R.id.pswSignupTxt)).getText().toString(),
                 ((EditText) findViewById(R.id.fullNameTxt)).getText().toString(),
@@ -112,7 +112,7 @@ public class SignupActivity extends Activity {
                 SignupActivity.this);
     }
 
-    /** Sign up with linkedin **/
+    /** Linkedin signup **/
     public void signUpWithLinkedin(View v){
         String url = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,picture-url,email-address)";
         // initializing connection to linkedin api
@@ -120,21 +120,18 @@ public class SignupActivity extends Activity {
         apiHelper.getRequest(this, url, new ApiListener() {
             @Override
             public void onApiSuccess(ApiResponse apiResponse) {
-                //Toast.makeText(getApplicationContext(), "api success", Toast.LENGTH_LONG).show();
                 /**  create User object from the linkedin profile**/
-                 Gson gson = new Gson();
-                 userFromLinkedIn = gson.fromJson(apiResponse.getResponseDataAsJson().toString(),User.class);
+                 userFromLinkedIn = (new Gson()).fromJson(apiResponse.getResponseDataAsJson().toString(),User.class);
             }
             @Override
             public void onApiError(LIApiError liApiError) {
-                Toast.makeText(getApplicationContext(), "cant connect to Linkedin", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error! "+liApiError.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
         // managing api response
         LISessionManager.getInstance(getApplicationContext()).init(this, buildScope(), new AuthListener() {
             @Override
             public void onAuthSuccess() {
-                //Toast.makeText(getApplicationContext(), "auth succeded ", Toast.LENGTH_LONG).show();
                 /** signup to firebase with that user **/
                  Statics.signUp(userFromLinkedIn.getEmailAddress(),userFromLinkedIn.getId(),userFromLinkedIn.getFirstName()+" "+userFromLinkedIn.getLastName(),userFromLinkedIn.getPictureUrl(),SignupActivity.this);
             }
@@ -150,7 +147,7 @@ public class SignupActivity extends Activity {
         return Scope.build(Scope.R_BASICPROFILE, Scope.R_EMAILADDRESS);
     }
 
-    /** sign up with facebook **/
+    /** Facebook signup **/
     public void signUpWithFacebook(View v) {
         isFacebook = true;
         if (AccessToken.getCurrentAccessToken() != null) {
@@ -240,8 +237,8 @@ public class SignupActivity extends Activity {
         }
         else
             mFacebookCallbackManager.onActivityResult(requestCode, resultCode, data);
-        //if(!(FirebaseAuth.getInstance().getCurrentUser()==null))
-            //startActivity(new Intent(SignupActivity.this, HomeActivity.class));
+        if(!(FirebaseAuth.getInstance().getCurrentUser()==null))
+            startActivity(new Intent(SignupActivity.this, LoginActivity.class));
     }
 
     /** for calligraphy lib usage **/

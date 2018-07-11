@@ -1,0 +1,31 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/courseHeaderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="197dp"
+        android:orientation="vertical"/>
+
+    <com.tn.amalhichri.library.views.ParallaxScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/courseChaptersLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingRight="7dp"
+                android:paddingLeft="7dp"
+                android:paddingTop="192dp"/>
+        </FrameLayout>
+    </com.tn.amalhichri.library.views.ParallaxScrollView>
+</FrameLayout>
+

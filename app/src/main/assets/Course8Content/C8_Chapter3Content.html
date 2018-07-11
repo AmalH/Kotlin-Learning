@@ -1,0 +1,98 @@
+<html>
+	<body>
+	<article role="main" class="page-content g-9">
+		<h2 id="calling-kotlin-from-javascript">Calling Kotlin from JavaScript<a class="anchor" href="#calling-kotlin-from-javascript"></a></h2>
+		<p>Kotlin compiler generates normal JavaScript classes, functions and properties you can freely use from
+			JavaScript code. Nevertheless, there are some subtle things you should remember.</p>
+		<h2 id="isolating-declarations-in-a-separate-javascript-object">Isolating declarations in a separate JavaScript object<a class="anchor" href="#isolating-declarations-in-a-separate-javascript-object"></a></h2>
+		<p>To prevent spoiling the global object, Kotlin creates an object that contains all Kotlin declarations
+			from the current module. So if you name your module as <code>myModule</code>, all declarations are available to JavaScript
+			via <code>myModule</code> object. For example:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() <span class="cm-operator">=</span> <span class="cm-string">"Hello"</span>
+</code></pre>
+		<p>Can be called from JavaScript like this:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/javascript"><span class="cm-variable">alert</span>(<span class="cm-variable">myModule</span>.<span class="cm-property">foo</span>());
+</code></pre>
+		<p>This is not applicable when you compile your Kotlin module to JavaScript module (see <a href="js-modules.html">JavaScript Modules</a> for more information on this).
+			In this case there won't be a wrapper object, instead, declarations will be exposed as a JavaScript module of a corresponding kind. For example,
+			in case of CommonJS you should write:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/javascript"><span class="cm-variable">alert</span>(<span class="cm-variable">require</span>(<span class="cm-string">'myModule'</span>).<span class="cm-property">foo</span>());
+</code></pre>
+		<h2 id="package-structure">Package structure<a class="anchor" href="#package-structure"></a></h2>
+		<p>Kotlin exposes its package structure to JavaScript, so unless you define your declarations in the root package,
+			you have to use fully-qualified names in JavaScript. For example:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">package</span> <span class="cm-def">my</span>.<span class="cm-variable">qualified</span>.<span class="cm-variable">packagename</span>
+
+<span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() <span class="cm-operator">=</span> <span class="cm-string">"Hello"</span>
+</code></pre>
+		<p>Can be called from JavaScript like this:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/javascript"><span class="cm-variable">alert</span>(<span class="cm-variable">myModule</span>.<span class="cm-property">my</span>.<span class="cm-property">qualified</span>.<span class="cm-property">packagename</span>.<span class="cm-property">foo</span>());
+</code></pre>
+		<h2 id="jsname-annotation"><code>@JsName</code> annotation<a class="anchor" href="#jsname-annotation"></a></h2>
+		<p>In some cases (for example, to support overloads), Kotlin compiler mangles names of generated functions and attributes
+			in JavaScript code. To control the generated names, you can use the <code>@JsName</code> annotation:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-comment">// Module 'kjs'</span>
+<span class="cm-keyword">class</span> <span class="cm-def">Person</span>(<span class="cm-keyword">val</span> <span class="cm-def">name</span>: <span class="cm-variable-3">String</span>) {
+    <span class="cm-keyword">fun</span> <span class="cm-def">hello</span>() {
+        <span class="cm-variable">println</span>(<span class="cm-string">"Hello $name!"</span>)
+    }
+
+    <span class="cm-variable">@JsName</span>(<span class="cm-string">"helloWithGreeting"</span>)
+    <span class="cm-keyword">fun</span> <span class="cm-def">hello</span>(<span class="cm-variable">greeting</span>: <span class="cm-variable-3">String</span>) {
+        <span class="cm-variable">println</span>(<span class="cm-string">"$greeting $name!"</span>)
+    }
+}
+</code></pre>
+		<p>Now you can use this class from JavaScript in the following way:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/javascript"><span class="cm-keyword">var</span> <span class="cm-def">person</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">kjs</span>.<span class="cm-property">Person</span>(<span class="cm-string">"Dmitry"</span>);   <span class="cm-comment">// refers to module 'kjs'</span>
+<span class="cm-variable">person</span>.<span class="cm-property">hello</span>();                          <span class="cm-comment">// prints "Hello Dmitry!"</span>
+<span class="cm-variable">person</span>.<span class="cm-property">helloWithGreeting</span>(<span class="cm-string">"Servus"</span>);      <span class="cm-comment">// prints "Servus Dmitry!"</span>
+</code></pre>
+		<p>If we didn't specify the <code>@JsName</code> annotation, the name of the corresponding function would contain a suffix
+			calculated from the function signature, for example <code>hello_61zpoe$</code>.</p>
+		<p>Note that Kotlin compiler does not apply such mangling to <code>external</code> declarations, so you don't have to
+			use <code>@JsName</code> on them. Another case worth noticing is inheriting non-external classes from external classes.
+			In this case any overridden functions won't be mangled as well.</p>
+		<p>The parameter of <code>@JsName</code> is required to be a constant string literal which is a valid identifier.
+			The compiler will report an error on any attempt to pass non-identifier string to <code>@JsName</code>.
+			The following example produces a compile-time error:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">@JsName</span>(<span class="cm-string">"new C()"</span>)   <span class="cm-comment">// error here</span>
+<span class="cm-keyword">external</span> <span class="cm-keyword">fun</span> <span class="cm-def">newC</span>()
+</code></pre>
+		<h2 id="representing-kotlin-types-in-javascript">Representing Kotlin types in JavaScript<a class="anchor" href="#representing-kotlin-types-in-javascript"></a></h2>
+		<ul>
+			<li>Kotlin numeric types, except for <code>kotlin.Long</code> are mapped to JavaScript Number.</li>
+			<li><code>kotlin.Char</code> is mapped to JavaScript Number representing character code.</li>
+			<li>
+				<p>Kotlin can't distinguish between numeric types at run time (except for <code>kotlin.Long</code>), i.e. the following code works:</p>
+				<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">f</span>() {
+    <span class="cm-keyword">val</span> <span class="cm-def">x</span>: <span class="cm-variable">Int</span> <span class="cm-operator">=</span> <span class="cm-number">23</span>
+    <span class="cm-keyword">val</span> <span class="cm-def">y</span>: <span class="cm-variable">Any</span> <span class="cm-operator">=</span> <span class="cm-variable">x</span>
+    <span class="cm-variable">println</span>(<span class="cm-variable">y</span> <span class="cm-keyword">as</span> <span class="cm-variable-3">Float</span>)
+}
+</code></pre>
+			</li>
+			<li>Kotlin preserves overflow semantics for <code>kotlin.Int</code>, <code>kotlin.Byte</code>, <code>kotlin.Short</code>, <code>kotlin.Char</code> and <code>kotlin.Long</code>.</li>
+			<li>There's no 64 bit integer number in JavaScript, so <code>kotlin.Long</code> is not mapped to any JavaScript object,
+				it's emulated by a Kotlin class.</li>
+			<li><code>kotlin.String</code> is mapped to JavaScript String.</li>
+			<li><code>kotlin.Any</code> is mapped to JavaScript Object (i.e. <code>new Object()</code>, <code>{}</code>, etc).</li>
+			<li><code>kotlin.Array</code> is mapped to JavaScript Array.</li>
+			<li>Kotlin collections (i.e. <code>List</code>, <code>Set</code>, <code>Map</code>, etc) are not mapped to any specific JavaScript type.</li>
+			<li><code>kotlin.Throwable</code> is mapped to JavaScript Error.</li>
+			<li>Kotlin preserves lazy object initialization in JavaScript.</li>
+			<li>Kotlin does not implement lazy initialization of top-level properties in JavaScript.</li>
+		</ul>
+		<p>Starting with version 1.1.50 primitive array translation utilizes JavaScript TypedArray:</p>
+		<ul>
+			<li><code>kotlin.ByteArray</code>, <code>-.ShortArray</code>, <code>-.IntArray</code>, <code>-.FloatArray</code>, and <code>-.DoubleArray</code> are mapped to
+				JavaScript Int8Array, Int16Array, Int32Array, Float32Array, and Float64Array correspondingly.</li>
+			<li><code>kotlin.BooleanArray</code> is mapped to JavaScript Int8Array with a property <code>$type$ == "BooleanArray"</code></li>
+			<li><code>kotlin.CharArray</code> is mapped to JavaScript UInt16Array with a property <code>$type$ == "CharArray"</code></li>
+			<li><code>kotlin.LongArray</code> is mapped to JavaScript Array of <code>kotlin.Long</code> with a property <code>$type$ == "LongArray"</code>.</li>
+		</ul>
+
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>

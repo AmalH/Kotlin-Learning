@@ -1,0 +1,284 @@
+<html>
+	<body>
+	<article>
+		<h2 id="classes">Classes<a class="anchor" href="#classes"></a></h2>
+		<p>Classes in Kotlin are declared using the keyword <em class="keyword">class</em>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Invoice</span> {
+}
+</code></pre>
+		<p>The class declaration consists of the class name, the class header (specifying its type parameters, the primary
+			constructor etc.) and the class body, surrounded by curly braces. Both the header and the body are optional;
+			if the class has no body, curly braces can be omitted.</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Empty</span>
+</code></pre>
+		<h2 id="constructors">Constructors<a class="anchor" href="#constructors"></a></h2>
+		<p>A class in Kotlin can have a <strong>primary constructor</strong> and one or more <strong>secondary constructors</strong>. The primary
+			constructor is part of the class header: it goes after the class name (and optional type parameters).</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Person</span> <span class="cm-keyword">constructor</span>(<span class="cm-variable">firstName</span>: <span class="cm-variable-3">String</span>) {
+}
+</code></pre>
+		<p>If the primary constructor does not have any annotations or visibility modifiers, the <em class="keyword">constructor</em>
+			keyword can be omitted:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Person</span>(<span class="cm-variable">firstName</span>: <span class="cm-variable-3">String</span>) {
+}
+</code></pre>
+		<p>The primary constructor cannot contain any code. Initialization code can be placed
+			in <strong>initializer blocks</strong>, which are prefixed with the <em class="keyword">init</em> keyword.</p>
+		<p>During an instance initialization, the initializer blocks are executed in the same order as they appear
+			in the class body, interleaved with the property initializers:</p>
+		<div class="sample" data-kotlin-runcode-initialized="true" style="display: none;">
+<pre><code class="language-kotlin">//sampleStart
+class InitOrderDemo(name: String) {
+    val firstProperty = "First property: $name".also(::println)
+
+    init {
+        println("First initializer block that prints ${name}")
+    }
+
+    val secondProperty = "Second property: ${name.length}".also(::println)
+
+    init {
+        println("Second initializer block that prints ${name.length}")
+    }
+}
+//sampleEnd
+
+fun main(args: Array&lt;String&gt;) {
+    InitOrderDemo("hello")
+}
+</code></pre>
+		</div><div><div class="executable-fragment-wrapper"><div class="executable-fragment"><div class="code-area _folded"><div class="fold-button "></div><div class="zigzag _top "></div><div class="zigzag _bottom "></div><!--if--><div class="run-button "></div><!--if--><textarea style="display: none;"></textarea><div class="CodeMirror cm-s-default"><div class="CodeMirror-vscrollbar" cm-not-content="true" style="width: 18px; pointer-events: none;"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-hscrollbar" cm-not-content="true" style="height: 18px; pointer-events: none;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 17px; margin-bottom: 0px; border-right-width: 30px; min-height: 208px; min-width: 495.156px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><span><span>​</span>x</span></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-cursors"></div><div class="CodeMirror-code" role="presentation" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" tabindex="0" style=""><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">InitOrderDemo</span>(<span class="cm-variable">name</span>: <span class="cm-type">String</span>) {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-keyword">val</span> <span class="cm-def">firstProperty</span> <span class="cm-operator">=</span> <span class="cm-string">"First property: $name"</span>.<span class="cm-variable">also</span>(::<span class="cm-variable">println</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-keyword">init</span> {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">        <span class="cm-variable">println</span>(<span class="cm-string">"First initializer block that prints ${name}"</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-keyword">val</span> <span class="cm-def">secondProperty</span> <span class="cm-operator">=</span> <span class="cm-string">"Second property: ${name.length}"</span>.<span class="cm-variable">also</span>(::<span class="cm-variable">println</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-keyword">init</span> {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">        <span class="cm-variable">println</span>(<span class="cm-string">"Second initializer block that prints ${name.length}"</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; border-bottom: 0px solid transparent; top: 208px;"></div><div class="CodeMirror-gutters" style="height: 238px; left: 0px;"><div class="CodeMirror-gutter errors-and-warnings-gutter"></div><div class="CodeMirror-gutter CodeMirror-foldgutter"></div></div></div></div></div><!--if--></div><div class="compiler-info"><span>Target platform: JVM</span><span>Running on kotlin v. 1.2.10</span></div><!--if--></div></div>
+		<p>Note that parameters of the primary constructor can be used in the initializer blocks. They can also be used in
+			property initializers declared in the class body:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Customer</span>(<span class="cm-variable">name</span>: <span class="cm-variable-3">String</span>) {
+    <span class="cm-keyword">val</span> <span class="cm-def">customerKey</span> <span class="cm-operator">=</span> <span class="cm-variable">name</span>.<span class="cm-variable">toUpperCase</span>()
+}
+</code></pre>
+		<p>In fact, for declaring properties and initializing them from the primary constructor, Kotlin has a concise syntax:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Person</span>(<span class="cm-keyword">val</span> <span class="cm-def">firstName</span>: <span class="cm-variable-3">String</span>, <span class="cm-keyword">val</span> <span class="cm-def">lastName</span>: <span class="cm-variable-3">String</span>, <span class="cm-keyword">var</span> <span class="cm-def">age</span>: <span class="cm-variable">Int</span>) {
+    <span class="cm-comment">// ...</span>
+}
+</code></pre>
+		<p>Much the same way as regular properties, the properties declared in the primary constructor can be
+			mutable (<em class="keyword">var</em>) or read-only (<em class="keyword">val</em>).</p>
+		<p>If the constructor has annotations or visibility modifiers, the <em class="keyword">constructor</em> keyword is required, and
+			the modifiers go before it:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Customer</span> <span class="cm-keyword">public</span> <span class="cm-variable">@Inject</span> <span class="cm-keyword">constructor</span>(<span class="cm-variable">name</span>: <span class="cm-variable-3">String</span>) { ... }
+</code></pre>
+		<h4 id="secondary-constructors">Secondary Constructors</h4>
+		<p>The class can also declare <strong>secondary constructors</strong>, which are prefixed with <em class="keyword">constructor</em>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Person</span> {
+    <span class="cm-keyword">constructor</span>(<span class="cm-variable">parent</span>: <span class="cm-variable">Person</span>) {
+        <span class="cm-variable">parent</span>.<span class="cm-variable">children</span>.<span class="cm-variable">add</span>(<span class="cm-keyword">this</span>)
+    }
+}
+</code></pre>
+		<p>If the class has a primary constructor, each secondary constructor needs to delegate to the primary constructor, either
+			directly or indirectly through another secondary constructor(s). Delegation to another constructor of the same class
+			is done using the <em class="keyword">this</em> keyword:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Person</span>(<span class="cm-keyword">val</span> <span class="cm-def">name</span>: <span class="cm-variable-3">String</span>) {
+    <span class="cm-keyword">constructor</span>(<span class="cm-variable">name</span>: <span class="cm-variable-3">String</span>, <span class="cm-variable">parent</span>: <span class="cm-variable">Person</span>) : <span class="cm-keyword">this</span>(<span class="cm-variable">name</span>) {
+        <span class="cm-variable">parent</span>.<span class="cm-variable">children</span>.<span class="cm-variable">add</span>(<span class="cm-keyword">this</span>)
+    }
+}
+</code></pre>
+		<p>Note that code in initializer blocks effectively becomes part of the primary constructor. Delegation to the primary
+			constructor happens as the first statement of a secondary constructor, so the code in all initializer blocks is executed
+			before the secondary constructor body. Even if the class has no primary constructor, the delegation still happens
+			implicitly, and the initializer blocks are still executed:</p>
+		<div class="sample" data-kotlin-runcode-initialized="true" style="display: none;">
+<pre><code class="language-kotlin">//sampleStart
+class Constructors {
+    init {
+        println("Init block")
+    }
+
+    constructor(i: Int) {
+        println("Constructor")
+    }
+}
+//sampleEnd
+
+fun main(args: Array&lt;String&gt;) {
+    Constructors(1)
+}
+</code></pre>
+		</div><div><div class="executable-fragment-wrapper"><div class="executable-fragment"><div class="code-area _folded"><div class="fold-button "></div><div class="zigzag _top "></div><div class="zigzag _bottom "></div><!--if--><div class="run-button "></div><!--if--><textarea style="display: none;"></textarea><div class="CodeMirror cm-s-default"><div class="CodeMirror-vscrollbar" cm-not-content="true" style="width: 18px; pointer-events: none;"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-hscrollbar" cm-not-content="true" style="height: 18px; pointer-events: none;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 17px; margin-bottom: 0px; border-right-width: 30px; min-height: 144px; min-width: 204.906px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-cursors"></div><div class="CodeMirror-code" role="presentation" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" tabindex="0" style=""><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">class</span> <span class="cm-def">Constructors</span> {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-keyword">init</span> {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">        <span class="cm-variable">println</span>(<span class="cm-string">"Init block"</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-keyword">constructor</span>(<span class="cm-variable">i</span>: <span class="cm-variable">Int</span>) {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">        <span class="cm-variable">println</span>(<span class="cm-string">"Constructor"</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; border-bottom: 0px solid transparent; top: 144px;"></div><div class="CodeMirror-gutters" style="height: 174px; left: 0px;"><div class="CodeMirror-gutter errors-and-warnings-gutter"></div><div class="CodeMirror-gutter CodeMirror-foldgutter"></div></div></div></div></div><!--if--></div><div class="compiler-info"><span>Target platform: JVM</span><span>Running on kotlin v. 1.2.10</span></div><!--if--></div></div>
+		<p>If a non-abstract class does not declare any constructors (primary or secondary), it will have a generated primary
+			constructor with no arguments. The visibility of the constructor will be public. If you do not want your class
+			to have a public constructor, you need to declare an empty primary constructor with non-default visibility:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">DontCreateMe</span> <span class="cm-keyword">private</span> <span class="cm-keyword">constructor</span> () {
+}
+</code></pre>
+		<blockquote class="info">
+			<p><strong>NOTE</strong>: On the JVM, if all of the parameters of the primary constructor have default values, the compiler will
+				generate an additional parameterless constructor which will use the default values. This makes it easier to use
+				Kotlin with libraries such as Jackson or JPA that create class instances through parameterless constructors.</p>
+			<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Customer</span>(<span class="cm-keyword">val</span> <span class="cm-def">customerName</span>: <span class="cm-variable-3">String</span> <span class="cm-operator">=</span> <span class="cm-string">""</span>)
+</code></pre>
+		</blockquote>
+		<h2 id="creating-instances-of-classes">Creating instances of classes<a class="anchor" href="#creating-instances-of-classes"></a></h2>
+		<p>To create an instance of a class, we call the constructor as if it were a regular function:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">val</span> <span class="cm-def">invoice</span> <span class="cm-operator">=</span> <span class="cm-variable">Invoice</span>()
+
+<span class="cm-keyword">val</span> <span class="cm-def">customer</span> <span class="cm-operator">=</span> <span class="cm-variable">Customer</span>(<span class="cm-string">"Joe Smith"</span>)
+</code></pre>
+		<p>Note that Kotlin does not have a <em class="keyword">new</em> keyword.</p>
+		<p>Creating instances of nested, inner and anonymous inner classes is described in <a href="http://kotlinlang.org/docs/reference/nested-classes.html">Nested classes</a>.</p>
+		<h2 id="class-members">Class Members<a class="anchor" href="#class-members"></a></h2>
+		<p>Classes can contain:</p>
+		<ul>
+			<li><a href="http://kotlinlang.org/docs/reference/classes.html#constructors">Constructors and initializer blocks</a></li>
+			<li><a href="http://kotlinlang.org/docs/reference/functions.html">Functions</a></li>
+			<li><a href="http://kotlinlang.org/docs/reference/properties.html">Properties</a></li>
+			<li><a href="http://kotlinlang.org/docs/reference/nested-classes.html">Nested and Inner Classes</a></li>
+			<li><a href="http://kotlinlang.org/docs/reference/object-declarations.html">Object Declarations</a></li>
+		</ul>
+		<h2 id="inheritance">Inheritance<a class="anchor" href="#inheritance"></a></h2>
+		<p>All classes in Kotlin have a common superclass <code>Any</code>, that is a default super for a class with no supertypes declared:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Example</span> <span class="cm-comment">// Implicitly inherits from Any</span>
+</code></pre>
+		<p><code>Any</code> is not <code>java.lang.Object</code>; in particular, it does not have any members other than <code>equals()</code>, <code>hashCode()</code> and <code>toString()</code>.
+			Please consult the <a href="http://kotlinlang.org/docs/reference/java-interop.html#object-methods">Java interoperability</a> section for more details.</p>
+		<p>To declare an explicit supertype, we place the type after a colon in the class header:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">open</span> <span class="cm-keyword">class</span> <span class="cm-def">Base</span>(<span class="cm-variable">p</span>: <span class="cm-variable">Int</span>)
+
+<span class="cm-keyword">class</span> <span class="cm-def">Derived</span>(<span class="cm-variable">p</span>: <span class="cm-variable">Int</span>) : <span class="cm-variable">Base</span>(<span class="cm-variable">p</span>)
+</code></pre>
+		<p>If the class has a primary constructor, the base type can (and must) be initialized right there,
+			using the parameters of the primary constructor.</p>
+		<p>If the class has no primary constructor, then each secondary constructor has to initialize the base type
+			using the <em class="keyword">super</em> keyword, or to delegate to another constructor which does that.
+			Note that in this case different secondary constructors can call different constructors of the base type:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">MyView</span> : <span class="cm-variable">View</span> {
+    <span class="cm-keyword">constructor</span>(<span class="cm-variable">ctx</span>: <span class="cm-variable">Context</span>) : <span class="cm-keyword">super</span>(<span class="cm-variable">ctx</span>)
+
+    <span class="cm-keyword">constructor</span>(<span class="cm-variable">ctx</span>: <span class="cm-variable">Context</span>, <span class="cm-variable">attrs</span>: <span class="cm-variable">AttributeSet</span>) : <span class="cm-keyword">super</span>(<span class="cm-variable">ctx</span>, <span class="cm-variable">attrs</span>)
+}
+</code></pre>
+		<p>The <em class="keyword">open</em> annotation on a class is the opposite of Java's <em class="keyword">final</em>: it allows others
+			to inherit from this class. By default, all classes in Kotlin are final, which
+			corresponds to <a href="http://www.oracle.com/technetwork/java/effectivejava-136174.html">Effective Java</a>,
+			Item 17: <em>Design and document for inheritance or else prohibit it</em>.</p>
+		<h2 id="overriding-methods">Overriding Methods<a class="anchor" href="#overriding-methods"></a></h2>
+		<p>As we mentioned before, we stick to making things explicit in Kotlin. And unlike Java, Kotlin requires explicit
+			annotations for overridable members (we call them <em>open</em>) and for overrides:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">open</span> <span class="cm-keyword">class</span> <span class="cm-def">Base</span> {
+    <span class="cm-keyword">open</span> <span class="cm-keyword">fun</span> <span class="cm-def">v</span>() {}
+    <span class="cm-keyword">fun</span> <span class="cm-def">nv</span>() {}
+}
+<span class="cm-keyword">class</span> <span class="cm-def">Derived</span>() : <span class="cm-variable">Base</span>() {
+    <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">v</span>() {}
+}
+</code></pre>
+		<p>The <em class="keyword">override</em> annotation is required for <code>Derived.v()</code>. If it were missing, the compiler would complain.
+			If there is no <em class="keyword">open</em> annotation on a function, like <code>Base.nv()</code>, declaring a method with the same signature in a subclass is illegal,
+			either with <em class="keyword">override</em> or without it. In a final class (e.g. a class with no <em class="keyword">open</em> annotation), open members are prohibited.</p>
+		<p>A member marked <em class="keyword">override</em> is itself open, i.e. it may be overridden in subclasses. If you want to prohibit re-overriding, use <em class="keyword">final</em>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">open</span> <span class="cm-keyword">class</span> <span class="cm-def">AnotherDerived</span>() : <span class="cm-variable">Base</span>() {
+    <span class="cm-keyword">final</span> <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">v</span>() {}
+}
+</code></pre>
+		<h2 id="overriding-properties">Overriding Properties<a class="anchor" href="#overriding-properties"></a></h2>
+		<p>Overriding properties works in a similar way to overriding methods; properties declared on a superclass that are then redeclared on a derived class must be prefaced with <em class="keyword">override</em>, and they must have a compatible type. Each declared property can be overridden by a property with an initializer or by a property with a getter method.</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">open</span> <span class="cm-keyword">class</span> <span class="cm-def">Foo</span> {
+    <span class="cm-keyword">open</span> <span class="cm-keyword">val</span> <span class="cm-def">x</span>: <span class="cm-variable">Int</span> <span class="cm-keyword">get</span>() { ... }
+}
+
+<span class="cm-keyword">class</span> <span class="cm-def">Bar1</span> : <span class="cm-variable">Foo</span>() {
+    <span class="cm-keyword">override</span> <span class="cm-keyword">val</span> <span class="cm-def">x</span>: <span class="cm-variable">Int</span> <span class="cm-operator">=</span> ...
+}
+</code></pre>
+		<p>You can also override a <code>val</code> property with a <code>var</code> property, but not vice versa. This is allowed because a <code>val</code> property essentially declares a getter method, and overriding it as a <code>var</code> additionally declares a setter method in the derived class.</p>
+		<p>Note that you can use the <em class="keyword">override</em> keyword as part of the property declaration in a primary constructor.</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">interface</span> <span class="cm-def">Foo</span> {
+    <span class="cm-keyword">val</span> <span class="cm-def">count</span>: <span class="cm-variable">Int</span>
+}
+
+<span class="cm-keyword">class</span> <span class="cm-def">Bar1</span>(<span class="cm-keyword">override</span> <span class="cm-keyword">val</span> <span class="cm-def">count</span>: <span class="cm-variable">Int</span>) : <span class="cm-variable">Foo</span>
+
+<span class="cm-keyword">class</span> <span class="cm-def">Bar2</span> : <span class="cm-variable">Foo</span> {
+    <span class="cm-keyword">override</span> <span class="cm-keyword">var</span> <span class="cm-def">count</span>: <span class="cm-variable">Int</span> <span class="cm-operator">=</span> <span class="cm-number">0</span>
+}
+</code></pre>
+		<h2 id="calling-the-superclass-implementation">Calling the superclass implementation<a class="anchor" href="#calling-the-superclass-implementation"></a></h2>
+		<p>Code in a derived class can call its superclass functions and property accessors implementations using the <em class="keyword">super</em> keyword:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">open</span> <span class="cm-keyword">class</span> <span class="cm-def">Foo</span> {
+    <span class="cm-keyword">open</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>() { <span class="cm-variable">println</span>(<span class="cm-string">"Foo.f()"</span>) }
+    <span class="cm-keyword">open</span> <span class="cm-keyword">val</span> <span class="cm-def">x</span>: <span class="cm-variable">Int</span> <span class="cm-keyword">get</span>() <span class="cm-operator">=</span> <span class="cm-number">1</span>
+}
+
+<span class="cm-keyword">class</span> <span class="cm-def">Bar</span> : <span class="cm-variable">Foo</span>() {
+    <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>() {
+        <span class="cm-keyword">super</span>.<span class="cm-variable">f</span>()
+        <span class="cm-variable">println</span>(<span class="cm-string">"Bar.f()"</span>)
+    }
+
+    <span class="cm-keyword">override</span> <span class="cm-keyword">val</span> <span class="cm-def">x</span>: <span class="cm-variable">Int</span> <span class="cm-keyword">get</span>() <span class="cm-operator">=</span> <span class="cm-keyword">super</span>.<span class="cm-variable">x</span> <span class="cm-operator">+</span> <span class="cm-number">1</span>
+}
+</code></pre>
+		<p>Inside an inner class, accessing the superclass of the outer class is done with the <em class="keyword">super</em> keyword qualified with the outer class name: <code>super@Outer</code>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Bar</span> : <span class="cm-variable">Foo</span>() {
+    <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>() { <span class="cm-comment">/* ... */</span> }
+    <span class="cm-keyword">override</span> <span class="cm-keyword">val</span> <span class="cm-def">x</span>: <span class="cm-variable">Int</span> <span class="cm-keyword">get</span>() <span class="cm-operator">=</span> <span class="cm-number">0</span>
+
+    <span class="cm-keyword">inner</span> <span class="cm-keyword">class</span> <span class="cm-def">Baz</span> {
+        <span class="cm-keyword">fun</span> <span class="cm-def">g</span>() {
+            <span class="cm-keyword">super</span><span class="cm-variable">@Bar</span>.<span class="cm-variable">f</span>() <span class="cm-comment">// Calls Foo's implementation of f()</span>
+            <span class="cm-variable">println</span>(<span class="cm-keyword">super</span><span class="cm-variable">@Bar</span>.<span class="cm-variable">x</span>) <span class="cm-comment">// Uses Foo's implementation of x's getter</span>
+        }
+    }
+}
+</code></pre>
+		<h2 id="overriding-rules">Overriding Rules<a class="anchor" href="#overriding-rules"></a></h2>
+		<p>In Kotlin, implementation inheritance is regulated by the following rule: if a class inherits many implementations of the same member from its immediate superclasses,
+			it must override this member and provide its own implementation (perhaps, using one of the inherited ones).
+			To denote the supertype from which the inherited implementation is taken, we use <em class="keyword">super</em> qualified by the supertype name in angle brackets, e.g. <code>super&lt;Base&gt;</code>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">open</span> <span class="cm-keyword">class</span> <span class="cm-def">A</span> {
+    <span class="cm-keyword">open</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>() { <span class="cm-variable">print</span>(<span class="cm-string">"A"</span>) }
+    <span class="cm-keyword">fun</span> <span class="cm-def">a</span>() { <span class="cm-variable">print</span>(<span class="cm-string">"a"</span>) }
+}
+
+<span class="cm-keyword">interface</span> <span class="cm-def">B</span> {
+    <span class="cm-keyword">fun</span> <span class="cm-def">f</span>() { <span class="cm-variable">print</span>(<span class="cm-string">"B"</span>) } <span class="cm-comment">// interface members are 'open' by default</span>
+    <span class="cm-keyword">fun</span> <span class="cm-def">b</span>() { <span class="cm-variable">print</span>(<span class="cm-string">"b"</span>) }
+}
+
+<span class="cm-keyword">class</span> <span class="cm-def">C</span>() : <span class="cm-variable">A</span>(), <span class="cm-variable">B</span> {
+    <span class="cm-comment">// The compiler requires f() to be overridden:</span>
+    <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>() {
+        <span class="cm-keyword">super</span><span class="cm-operator">&lt;</span><span class="cm-variable">A</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">f</span>() <span class="cm-comment">// call to A.f()</span>
+        <span class="cm-keyword">super</span><span class="cm-operator">&lt;</span><span class="cm-variable">B</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">f</span>() <span class="cm-comment">// call to B.f()</span>
+    }
+}
+</code></pre>
+		<p>It's fine to inherit from both <code>A</code> and <code>B</code>, and we have no problems with <code>a()</code> and <code>b()</code> since <code>C</code> inherits only one implementation of each of these functions.
+			But for <code>f()</code> we have two implementations inherited by <code>C</code>, and thus we have to override <code>f()</code> in <code>C</code>
+			and provide our own implementation that eliminates the ambiguity.</p>
+		<h2 id="abstract-classes">Abstract Classes<a class="anchor" href="#abstract-classes"></a></h2>
+		<p>A class and some of its members may be declared <em class="keyword">abstract</em>.
+			An abstract member does not have an implementation in its class.
+			Note that we do not need to annotate an abstract class or function with open – it goes without saying.</p>
+		<p>We can override a non-abstract open member with an abstract one</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">open</span> <span class="cm-keyword">class</span> <span class="cm-def">Base</span> {
+    <span class="cm-keyword">open</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>() {}
+}
+
+<span class="cm-keyword">abstract</span> <span class="cm-keyword">class</span> <span class="cm-def">Derived</span> : <span class="cm-variable">Base</span>() {
+    <span class="cm-keyword">override</span> <span class="cm-keyword">abstract</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>()
+}
+</code></pre>
+		<h2 id="companion-objects">Companion Objects</h2>
+		<p>In Kotlin, unlike Java or C#, classes do not have static methods. In most cases, it's recommended to simply use
+			package-level functions instead.</p>
+		<p>If you need to write a function that can be called without having a class instance but needs access to the internals
+			of a class (for example, a factory method), you can write it as a member of an <a href="http://kotlinlang.org/docs/reference/object-declarations.html">object declaration</a>
+			inside that class.</p>
+		<p>Even more specifically, if you declare a <a href="http://kotlinlang.org/docs/reference/object-declarations.html#companion-objects">companion object</a> inside your class,
+			you'll be able to call its members with the same syntax as calling static methods in Java/C#, using only the class name
+			as a qualifier.</p>
+
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>

@@ -1,0 +1,212 @@
+<html>
+	<body>
+	<article role="main" class="page-content g-9">
+
+		<h2 id="coroutines">Coroutines<a class="anchor" href="#coroutines"></a></h2>
+		<blockquote class="note">
+			<p>Coroutines are <em>experimental</em> in Kotlin 1.1+. See details <a href="#experimental-status-of-coroutines">below</a></p>
+		</blockquote>
+		<p>Some APIs initiate long-running operations (such as network IO, file IO, CPU- or GPU-intensive work, etc) and require the caller to block until they complete. Coroutines provide a way to avoid blocking a thread and replace it with a cheaper and more controllable operation: <em>suspension</em> of a coroutine.</p>
+		<p>Coroutines simplify asynchronous programming by putting the complications into libraries. The logic of the program can be expressed <em>sequentially</em> in a coroutine, and the underlying library will figure out the asynchrony for us. The library can wrap relevant parts of the user code into callbacks, subscribe to relevant events, schedule execution on different threads (or even different machines!), and the code remains as simple as if it was sequentially executed.</p>
+		<p>Many asynchronous mechanisms available in other languages can be implemented as libraries using Kotlin coroutines. This includes <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/coroutines-guide.md#composing-suspending-functions"><code>async</code>/<code>await</code></a> from C# and ECMAScript, <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/coroutines-guide.md#channels">channels</a> and <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/coroutines-guide.md#select-expression"><code>select</code></a> from Go, and <a href="#generators-api-in-kotlincoroutines">generators/<code>yield</code></a> from C# and Python. See the description <a href="#standard-apis">below</a> for libraries providing such constructs.</p>
+		<h2 id="blocking-vs-suspending">Blocking vs Suspending<a class="anchor" href="#blocking-vs-suspending"></a></h2>
+		<p>Basically, coroutines are computations that can be <em>suspended</em> without <em>blocking a thread</em>. Blocking threads is often expensive, especially under high load, because only a relatively small number of threads is practical to keep around, so blocking one of them leads to some important work being delayed.</p>
+		<p>Coroutine suspension is almost free, on the other hand. No context switch or any other involvement of the OS is required. And on top of that, suspension can be controlled by a user library to a large extent: as library authors, we can decide what happens upon a suspension and optimize/log/intercept according to our needs.</p>
+		<p>Another difference is that coroutines can not be suspended at random instructions, but rather only at so called <em>suspension points</em>, which are calls to specially marked functions.</p>
+		<h2 id="suspending-functions">Suspending functions<a class="anchor" href="#suspending-functions"></a></h2>
+		<p>A suspension happens when we call a function marked with the special modifier, <code>suspend</code>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">suspend</span> <span class="cm-keyword">fun</span> <span class="cm-def">doSomething</span>(<span class="cm-variable">foo</span>: <span class="cm-variable">Foo</span>): <span class="cm-variable">Bar</span> {
+    ...
+}
+</code></pre>
+		<p>Such functions are called <em>suspending functions</em>, because calls to them may suspend a coroutine (the library can decide to proceed without suspension, if the result for the call in question is already available). Suspending functions can take parameters and return values in the same manner as regular functions, but they can only be called from coroutines and other suspending functions. In fact, to start a coroutine, there must be at least one suspending function, and it is usually anonymous (i.e. it is a suspending lambda). Let's look at an example, a simplified <code>async()</code> function (from the <a href="#generators-api-in-kotlincoroutines"><code>kotlinx.coroutines</code></a> library):</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-variable">T</span><span class="cm-operator">&gt;</span> <span class="cm-variable">async</span>(<span class="cm-variable">block</span>: <span class="cm-keyword">suspend</span> () <span class="cm-operator">-&gt;</span> <span class="cm-variable">T</span>)
+</code></pre>
+		<p>Here, <code>async()</code> is a regular function (not a suspending function), but the <code>block</code> parameter has a function type with the <code>suspend</code> modifier: <code>suspend () -&gt; T</code>. So, when we pass a lambda to <code>async()</code>, it is a <em>suspending lambda</em>, and we can call a suspending function from it:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">async</span> {
+    <span class="cm-variable">doSomething</span>(<span class="cm-variable">foo</span>)
+    ...
+}
+</code></pre>
+		<blockquote>
+			<p><strong>Note:</strong> currently, suspending function types cannot be used as supertypes, and anonymous suspending functions are currently not supported.</p>
+		</blockquote>
+		<p>To continue the analogy, <code>await()</code> can be a suspending function (hence also callable from within an <code>async {}</code> block) that suspends a coroutine until some computation is done and returns its result:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">async</span> {
+    ...
+    <span class="cm-keyword">val</span> <span class="cm-def">result</span> <span class="cm-operator">=</span> <span class="cm-variable">computation</span>.<span class="cm-variable">await</span>()
+    ...
+}
+</code></pre>
+		<p>More information on how actual <code>async/await</code> functions work in <code>kotlinx.coroutines</code> can be found <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/coroutines-guide.md#composing-suspending-functions">here</a>.</p>
+		<p>Note that suspending functions <code>await()</code> and <code>doSomething()</code> can not be called from a regular function like <code>main()</code>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">main</span>(<span class="cm-variable">args</span>: <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>) {
+    <span class="cm-variable">doSomething</span>() <span class="cm-comment">// ERROR: Suspending function called from a non-coroutine context </span>
+}
+</code></pre>
+		<p>Also note that suspending functions can be virtual, and when overriding them, the <code>suspend</code> modifier has to be specified:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">interface</span> <span class="cm-def">Base</span> {
+    <span class="cm-keyword">suspend</span> <span class="cm-keyword">fun</span> <span class="cm-def">foo</span>()
+}
+
+<span class="cm-keyword">class</span> <span class="cm-def">Derived</span>: <span class="cm-variable">Base</span> {
+    <span class="cm-keyword">override</span> <span class="cm-keyword">suspend</span> <span class="cm-keyword">fun</span> <span class="cm-def">foo</span>() { ... }
+}
+</code></pre>
+		<h2 id="restrictssuspension-annotation"><code>@RestrictsSuspension</code> annotation<a class="anchor" href="#restrictssuspension-annotation"></a></h2>
+		<p>Extension functions (and lambdas) can also be marked <code>suspend</code>, just like regular ones. This enables creation of <a href="type-safe-builders.html">DSLs</a> and other APIs that users can extend. In some cases the library author needs to prevent the user from adding <em>new ways</em> of suspending a coroutine.</p>
+		<p>To achieve this, the <a href="/api/latest/jvm/stdlib/kotlin.coroutines.experimental/-restricts-suspension/index.html"><code>@RestrictsSuspension</code></a> annotation may be used. When a receiver class or interface <code>R</code> is annotated with it, all suspending extensions are required to delegate to either members of <code>R</code> or other extensions to it. Since extensions can't delegate to each other indefinitely (the program would not terminate), this guarantees that all suspensions happen through calling members of <code>R</code> that the author of the library can fully control.</p>
+		<p>This is relevant in the <em>rare</em> cases when every suspension is handled in a special way in the library. For example, when implementing generators through the <a href="/api/latest/jvm/stdlib/kotlin.coroutines.experimental/build-sequence.html"><code>buildSequence()</code></a> function described <a href="#generators-api-in-kotlincoroutines">below</a>, we need to make sure that any suspending call in the coroutine ends up calling either <code>yield()</code> or <code>yieldAll()</code> and not any other function. This is why <a href="/api/latest/jvm/stdlib/kotlin.coroutines.experimental/-sequence-builder/index.html"><code>SequenceBuilder</code></a> is annotated with <code>@RestrictsSuspension</code>:</p>
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-variable">@RestrictsSuspension</span>
+<span class="cm-keyword">public</span> <span class="cm-keyword">abstract</span> <span class="cm-keyword">class</span> <span class="cm-def">SequenceBuilder</span><span class="cm-operator">&lt;</span><span class="cm-keyword">in</span> <span class="cm-variable">T</span><span class="cm-operator">&gt;</span> {
+    ...
+}
+</code></pre>
+		<p>See the sources <a href="https://github.com/JetBrains/kotlin/blob/master/libraries/stdlib/src/kotlin/coroutines/experimental/SequenceBuilder.kt">on Github</a>.</p>
+		<h2 id="the-inner-workings-of-coroutines">The inner workings of coroutines<a class="anchor" href="#the-inner-workings-of-coroutines"></a></h2>
+		<p>We are not trying here to give a complete explanation of how coroutines work under the hood, but a rough sense of what's going on is rather important.</p>
+		<p>Coroutines are completely implemented through a compilation technique (no support from the VM or OS side is required), and suspension works through code transformation. Basically, every suspending function (optimizations may apply, but we'll not go into this here) is transformed to a state machine where states correspond to suspending calls. Right before a suspension, the next state is stored in a field of a compiler-generated class along with relevant local variables, etc. Upon resumption of that coroutine, local variables are restored and the state machine proceeds from the state right after suspension.</p>
+		<p>A suspended coroutine can be stored and passed around as an object that keeps its suspended state and locals. The type of such objects is <code>Continuation</code>, and the overall code transformation described here corresponds to the classical <a href="https://en.wikipedia.org/wiki/Continuation-passing_style">Continuation-passing style</a>. Consequently, suspending functions take an extra parameter of type <code>Continuation</code> under the hood.</p>
+		<p>More details on how coroutines work may be found in <a href="https://github.com/Kotlin/kotlin-coroutines/blob/master/kotlin-coroutines-informal.md">this design document</a>. Similar descriptions of async/await in other languages (such as C# or ECMAScript 2016) are relevant here, although the language features they implement may not be as general as Kotlin coroutines.</p>
+		<h2 id="experimental-status-of-coroutines">Experimental status of coroutines<a class="anchor" href="#experimental-status-of-coroutines"></a></h2>
+		<p>The design of coroutines is <a href="compatibility.html#experimental-features">experimental</a>, which means that it will be changed in the upcoming releases. When compiling coroutines in Kotlin 1.1+, a warning is reported by default: <em>The feature "coroutines" is experimental</em>. To remove the warning, you need to specify an <a href="/docs/diagnostics/experimental-coroutines.html">opt-in flag</a>.</p>
+		<p>Due to its experimental status, the coroutine-related API in the Standard Library is put under the <code>kotlin.coroutines.experimental</code> package. When the design is finalized and the experimental status lifted, the final API will be moved to <code>kotlin.coroutines</code>, and the experimental package will be kept around (probably in a separate artifact) for backward compatibility.</p>
+		<p><strong>IMPORTANT NOTE</strong>: We advise library authors to follow the same convention: add the "experimental" (e.g. <code>com.example.experimental</code>) suffix to your packages exposing coroutine-based APIs so that your library remains binary compatible. When the final API is released, follow these steps:</p>
+		<ul>
+			<li>copy all the APIs to <code>com.example</code> (without the experimental suffix),</li>
+			<li>keep the experimental package around for backward compatibility.</li>
+		</ul>
+		<p>This will minimize migration issues for your users.</p>
+		<h2 id="standard-apis">Standard APIs<a class="anchor" href="#standard-apis"></a></h2>
+		<p>Coroutines come in three main ingredients:</p>
+		<ul>
+			<li>language support (i.s. suspending functions, as described above);</li>
+			<li>low-level core API in the Kotlin Standard Library;</li>
+			<li>high-level APIs that can be used directly in the user code.</li>
+		</ul>
+		<h2 id="low-level-api-kotlincoroutines">Low-level API: <code>kotlin.coroutines</code><a class="anchor" href="#low-level-api-kotlincoroutines"></a></h2>
+		<p>Low-level API is relatively small and should never be used other than for creating higher-level libraries. It consists of two main packages:</p>
+		<ul>
+			<li><a href="/api/latest/jvm/stdlib/kotlin.coroutines.experimental/index.html"><code>kotlin.coroutines.experimental</code></a> with main types and primitives such as:
+				<ul>
+					<li><a href="/api/latest/jvm/stdlib/kotlin.coroutines.experimental/create-coroutine.html"><code>createCoroutine()</code></a>,</li>
+					<li><a href="/api/latest/jvm/stdlib/kotlin.coroutines.experimental/start-coroutine.html"><code>startCoroutine()</code></a>,</li>
+					<li><a href="/api/latest/jvm/stdlib/kotlin.coroutines.experimental/suspend-coroutine.html"><code>suspendCoroutine()</code></a>;</li>
+				</ul>
+			</li>
+			<li><a href="/api/latest/jvm/stdlib/kotlin.coroutines.experimental.intrinsics/index.html"><code>kotlin.coroutines.experimental.intrinsics</code></a> with even lower-level intrinsics such as <a href="/api/latest/jvm/stdlib/kotlin.coroutines.experimental.intrinsics/suspend-coroutine-or-return.html"><code>suspendCoroutineOrReturn</code></a>.</li>
+		</ul>
+		<p>More details about the usage of these APIs can be found <a href="https://github.com/Kotlin/kotlin-coroutines/blob/master/kotlin-coroutines-informal.md">here</a>.</p>
+		<h2 id="generators-api-in-kotlincoroutines">Generators API in <code>kotlin.coroutines</code><a class="anchor" href="#generators-api-in-kotlincoroutines"></a></h2>
+		<p>The only "application-level" functions in <code>kotlin.coroutines.experimental</code> are</p>
+		<ul>
+			<li><a href="/api/latest/jvm/stdlib/kotlin.coroutines.experimental/build-sequence.html"><code>buildSequence()</code></a></li>
+			<li><a href="/api/latest/jvm/stdlib/kotlin.coroutines.experimental/build-iterator.html"><code>buildIterator()</code></a></li>
+		</ul>
+		<p>These are shipped within <code>kotlin-stdlib</code> because they are related to sequences. In fact, these functions (and we can limit ourselves to <code>buildSequence()</code> alone here) implement <em>generators</em>, i.e. provide a way to cheaply build a lazy sequence:</p>
+		<div class="sample" data-min-compiler-version="1.1" data-kotlin-runcode-initialized="true" style="display: none;">
+<pre><code class="language-kotlin">import kotlin.coroutines.experimental.*
+
+fun main(args: Array&lt;String&gt;) {
+//sampleStart
+    val fibonacciSeq = buildSequence {
+        var a = 0
+        var b = 1
+
+        yield(1)
+
+        while (true) {
+            yield(a + b)
+
+            val tmp = a + b
+            a = b
+            b = tmp
+        }
+    }
+//sampleEnd
+
+    // Print the first five Fibonacci numbers
+    println(fibonacciSeq.take(8).toList())
+}
+</code></pre>
+		</div><div><div class="executable-fragment-wrapper"><div class="executable-fragment"><div class="code-area _folded"><div class="fold-button "></div><div class="zigzag _top "></div><div class="zigzag _bottom "></div><!--if--><div class="run-button "></div><!--if--><textarea style="display: none;"></textarea><div class="CodeMirror cm-s-default"><div class="CodeMirror-vscrollbar" cm-not-content="true" style="width: 18px; pointer-events: none;"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-hscrollbar" cm-not-content="true" style="height: 18px; pointer-events: auto;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 17px; margin-bottom: 0px; border-right-width: 30px; min-height: 224px; min-width: 231px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><span><span>​</span>x</span></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-cursors"></div><div class="CodeMirror-code" role="presentation" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" tabindex="0" style=""><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">val</span> <span class="cm-def">fibonacciSeq</span> <span class="cm-operator">=</span> <span class="cm-variable">buildSequence</span> {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-keyword">var</span> <span class="cm-def">a</span> <span class="cm-operator">=</span> <span class="cm-number">0</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-keyword">var</span> <span class="cm-def">b</span> <span class="cm-operator">=</span> <span class="cm-number">1</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-variable">yield</span>(<span class="cm-number">1</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-keyword">while</span> (<span class="cm-atom">true</span>) {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">        <span class="cm-variable">yield</span>(<span class="cm-variable">a</span> <span class="cm-operator">+</span> <span class="cm-variable">b</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">        <span class="cm-keyword">val</span> <span class="cm-def">tmp</span> <span class="cm-operator">=</span> <span class="cm-variable">a</span> <span class="cm-operator">+</span> <span class="cm-variable">b</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">        <span class="cm-variable">a</span> <span class="cm-operator">=</span> <span class="cm-variable">b</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">        <span class="cm-variable">b</span> <span class="cm-operator">=</span> <span class="cm-variable">tmp</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; border-bottom: 0px solid transparent; top: 224px;"></div><div class="CodeMirror-gutters" style="height: 254px; left: 0px;"><div class="CodeMirror-gutter errors-and-warnings-gutter"></div><div class="CodeMirror-gutter CodeMirror-foldgutter"></div></div></div></div></div><!--if--></div><div class="compiler-info"><span>Target platform: JVM</span><span>Running on kotlin v. 1.2.10</span></div><!--if--></div></div>
+		<p>This generates a lazy, potentially infinite Fibonacci sequence by creating a coroutine that yields consecutive Fibonacci numbers by calling the <code>yield()</code> function. When iterating over such a sequence every step of the iterator executes another portion of the coroutine that generates the next number. So, we can take any finite list of numbers out of this sequence, e.g. <code>fibonacciSeq.take(8).toList()</code> results in <code>[1, 1, 2, 3, 5, 8, 13, 21]</code>. And coroutines are cheap enough to make this practical.</p>
+		<p>To demonstrate the real laziness of such a sequence, let's print some debug output inside a call to <code>buildSequence()</code>:</p>
+		<div class="sample" data-min-compiler-version="1.1" data-kotlin-runcode-initialized="true" style="display: none;">
+<pre><code class="language-kotlin">import kotlin.coroutines.experimental.*
+
+fun main(args: Array&lt;String&gt;) {
+//sampleStart
+    val lazySeq = buildSequence {
+        print("START ")
+        for (i in 1..5) {
+            yield(i)
+            print("STEP ")
+        }
+        print("END")
+    }
+
+    // Print the first three elements of the sequence
+    lazySeq.take(3).forEach { print("$it ") }
+//sampleEnd
+}
+</code></pre>
+		</div><div><div class="executable-fragment-wrapper"><div class="executable-fragment"><div class="code-area _folded"><div class="fold-button "></div><div class="zigzag _top "></div><div class="zigzag _bottom "></div><!--if--><div class="run-button "></div><!--if--><textarea style="display: none;"></textarea><div class="CodeMirror cm-s-default"><div class="CodeMirror-vscrollbar" cm-not-content="true" style="width: 18px; pointer-events: none;"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-hscrollbar" cm-not-content="true" style="height: 18px; pointer-events: auto;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 17px; margin-bottom: 0px; border-right-width: 30px; min-height: 176px; min-width: 330px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-cursors"></div><div class="CodeMirror-code" role="presentation" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" tabindex="0" style=""><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">val</span> <span class="cm-def">lazySeq</span> <span class="cm-operator">=</span> <span class="cm-variable">buildSequence</span> {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-variable">print</span>(<span class="cm-string">"START "</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-keyword">for</span> (<span class="cm-variable">i</span> <span class="cm-keyword">in</span> <span class="cm-number">1.</span>.<span class="cm-number">5</span>) {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">        <span class="cm-variable">yield</span>(<span class="cm-variable">i</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">        <span class="cm-variable">print</span>(<span class="cm-string">"STEP "</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    }</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-variable">print</span>(<span class="cm-string">"END"</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-comment">// Print the first three elements of the sequence</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">lazySeq</span>.<span class="cm-variable">take</span>(<span class="cm-number">3</span>).<span class="cm-variable">forEach</span> { <span class="cm-variable">print</span>(<span class="cm-string">"$it "</span>) }</span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; border-bottom: 0px solid transparent; top: 176px;"></div><div class="CodeMirror-gutters" style="height: 206px; left: 0px;"><div class="CodeMirror-gutter errors-and-warnings-gutter"></div><div class="CodeMirror-gutter CodeMirror-foldgutter"></div></div></div></div></div><!--if--></div><div class="compiler-info"><span>Target platform: JVM</span><span>Running on kotlin v. 1.2.10</span></div><!--if--></div></div>
+		<p>Running the code above prints the first three elements. The numbers are interleaved with <code>STEP</code>s in the generating loop. This means that the computation is lazy indeed. To print <code>1</code> we only execute until the first <code>yield(i)</code>, and print <code>START</code> along the way. Then, to print <code>2</code> we need to proceed to the next <code>yield(i)</code>, and this prints <code>STEP</code>. Same for <code>3</code>. And the next <code>STEP</code> never gets printed (as well as <code>END</code>), because we never requested further elements of the sequence.</p>
+		<p>To yield a collection (or sequence) of values at once, the <code>yieldAll()</code> function is available:</p>
+		<div class="sample" data-min-compiler-version="1.1" data-kotlin-runcode-initialized="true" style="display: none;">
+<pre><code class="language-kotlin">import kotlin.coroutines.experimental.*
+
+fun main(args: Array&lt;String&gt;) {
+//sampleStart
+    val lazySeq = buildSequence {
+        yield(0)
+        yieldAll(1..10)
+    }
+
+    lazySeq.forEach { print("$it ") }
+//sampleEnd
+}
+</code></pre>
+		</div><div><div class="executable-fragment-wrapper"><div class="executable-fragment"><div class="code-area _folded"><div class="fold-button "></div><div class="zigzag _top "></div><div class="zigzag _bottom "></div><!--if--><div class="run-button "></div><!--if--><textarea style="display: none;"></textarea><div class="CodeMirror cm-s-default"><div class="CodeMirror-vscrollbar" cm-not-content="true" style="width: 18px; pointer-events: none;"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-hscrollbar" cm-not-content="true" style="height: 18px; pointer-events: auto;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 17px; margin-bottom: 0px; border-right-width: 30px; min-height: 96px; min-width: 224.656px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-cursors"></div><div class="CodeMirror-code" role="presentation" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" tabindex="0" style=""><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">val</span> <span class="cm-def">lazySeq</span> <span class="cm-operator">=</span> <span class="cm-variable">buildSequence</span> {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-variable">yield</span>(<span class="cm-number">0</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-variable">yieldAll</span>(<span class="cm-number">1.</span>.<span class="cm-number">10</span>) </span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">lazySeq</span>.<span class="cm-variable">forEach</span> { <span class="cm-variable">print</span>(<span class="cm-string">"$it "</span>) }</span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; border-bottom: 0px solid transparent; top: 96px;"></div><div class="CodeMirror-gutters" style="height: 126px; left: 0px;"><div class="CodeMirror-gutter errors-and-warnings-gutter"></div><div class="CodeMirror-gutter CodeMirror-foldgutter"></div></div></div></div></div><!--if--></div><div class="compiler-info"><span>Target platform: JVM</span><span>Running on kotlin v. 1.2.10</span></div><!--if--></div></div>
+		<p>The <code>buildIterator()</code> works similarly to <code>buildSequence()</code>, but returns a lazy iterator.</p>
+		<p>One can add custom yielding logic to <code>buildSequence()</code> by writing suspending extensions to the <code>SequenceBuilder</code> class (that bears the <code>@RestrictsSuspension</code> annotation described <a href="#restrictssuspension-annotation">above</a>):</p>
+		<div class="sample" data-min-compiler-version="1.1" data-kotlin-runcode-initialized="true" style="display: none;">
+<pre><code class="language-kotlin">import kotlin.coroutines.experimental.*
+
+//sampleStart
+suspend fun SequenceBuilder&lt;Int&gt;.yieldIfOdd(x: Int) {
+    if (x % 2 != 0) yield(x)
+}
+
+val lazySeq = buildSequence {
+    for (i in 1..10) yieldIfOdd(i)
+}
+//sampleEnd
+
+fun main(args: Array&lt;String&gt;) {
+    lazySeq.forEach { print("$it ") }
+}
+</code></pre>
+		</div><div><div class="executable-fragment-wrapper"><div class="executable-fragment"><div class="code-area _folded"><div class="fold-button "></div><div class="zigzag _top "></div><div class="zigzag _bottom "></div><!--if--><div class="run-button "></div><!--if--><textarea style="display: none;"></textarea><div class="CodeMirror cm-s-default"><div class="CodeMirror-vscrollbar" cm-not-content="true" style="width: 18px; pointer-events: none;"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-hscrollbar" cm-not-content="true" style="height: 18px; pointer-events: auto;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 17px; margin-bottom: 0px; border-right-width: 30px; min-height: 112px; min-width: 356.563px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-cursors"></div><div class="CodeMirror-code" role="presentation" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true" tabindex="0" style=""><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">suspend</span> <span class="cm-keyword">fun</span> <span class="cm-def">SequenceBuilder</span><span class="cm-operator">&lt;</span><span class="cm-variable">Int</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">yieldIfOdd</span>(<span class="cm-variable">x</span>: <span class="cm-variable">Int</span>) {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-keyword">if</span> (<span class="cm-variable">x</span> <span class="cm-operator">%</span> <span class="cm-number">2</span> <span class="cm-operator">!=</span> <span class="cm-number">0</span>) <span class="cm-variable">yield</span>(<span class="cm-variable">x</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span cm-text="">​</span></span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-keyword">val</span> <span class="cm-def">lazySeq</span> <span class="cm-operator">=</span> <span class="cm-variable">buildSequence</span> {</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">    <span class="cm-keyword">for</span> (<span class="cm-variable">i</span> <span class="cm-keyword">in</span> <span class="cm-number">1.</span>.<span class="cm-number">10</span>) <span class="cm-variable">yieldIfOdd</span>(<span class="cm-variable">i</span>)</span></pre><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; border-bottom: 0px solid transparent; top: 112px;"></div><div class="CodeMirror-gutters" style="height: 142px; left: 0px;"><div class="CodeMirror-gutter errors-and-warnings-gutter"></div><div class="CodeMirror-gutter CodeMirror-foldgutter"></div></div></div></div></div><!--if--></div><div class="compiler-info"><span>Target platform: JVM</span><span>Running on kotlin v. 1.2.10</span></div><!--if--></div></div>
+		<h2 id="other-high-level-apis-kotlinxcoroutines">Other high-level APIs: <code>kotlinx.coroutines</code><a class="anchor" href="#other-high-level-apis-kotlinxcoroutines"></a></h2>
+		<p>Only core APIs related to coroutines are available from the Kotlin Standard Library. This mostly consists of core primitives and interfaces that all coroutine-based libraries are likely to use.</p>
+		<p>Most application-level APIs based on coroutines are released as a separate library: <a href="https://github.com/Kotlin/kotlinx.coroutines"><code>kotlinx.coroutines</code></a>. This library covers</p>
+		<ul>
+			<li>Platform-agnostic asynchronous programming with <code>kotlinx-coroutines-core</code>:
+				<ul>
+					<li>this module includes Go-like channels that support <code>select</code> and other convenient primitives,</li>
+					<li>a comprehensive guide to this library is available <a href="https://github.com/Kotlin/kotlinx.coroutines/blob/master/coroutines-guide.md">here</a>;</li>
+				</ul>
+			</li>
+			<li>APIs based on <code>CompletableFuture</code> from JDK 8: <code>kotlinx-coroutines-jdk8</code>;</li>
+			<li>Non-blocking IO (NIO) based on APIs from JDK 7 and higher: <code>kotlinx-coroutines-nio</code>;</li>
+			<li>Support for Swing (<code>kotlinx-coroutines-swing</code>) and JavaFx (<code>kotlinx-coroutines-javafx</code>);</li>
+			<li>Support for RxJava: <code>kotlinx-coroutines-rx</code>.</li>
+		</ul>
+		<p>These libraries serve as both convenient APIs that make common tasks easy and end-to-end examples of how to build coroutine-based libraries.</p>
+
+	</article>
+	</body>
+	<link href="file:///android_asset/css/general.css" type="text/css" rel="stylesheet" />
+</html>
