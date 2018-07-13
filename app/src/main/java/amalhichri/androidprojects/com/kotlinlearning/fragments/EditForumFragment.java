@@ -20,7 +20,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.android.volley.VolleyError;
-import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONObject;
 
@@ -158,7 +157,7 @@ public class EditForumFragment extends Fragment {
 
                 if(!isCodeEmpty && !f.getContent().isEmpty() && !f.getTags().isEmpty()){
                   //  if(Configuration.isOnline(getContext()))
-                        ForumServices.getInstance().editForum(getContext(), f, FirebaseAuth.getInstance().getCurrentUser().getUid(), new ServerCallbacks() {
+                        ForumServices.getInstance().editForum(getContext(), f, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {
                                 Toast.makeText(getContext(),"Upated", Toast.LENGTH_SHORT).show();
@@ -227,7 +226,7 @@ public class EditForumFragment extends Fragment {
                             public void onClick(final DialogInterface dialog, int whichButton) {
                                 progressDialog.setMessage("Deleting");
                                 progressDialog.show();
-                                ForumServices.getInstance().delForum(FirebaseAuth.getInstance().getCurrentUser().getUid(), getContext(), f.getId(), new ServerCallbacks() {
+                                ForumServices.getInstance().delForum("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), f.getId(), new ServerCallbacks() {
                                     @Override
                                     public void onSuccess(JSONObject result) {
                                         dialog.dismiss();

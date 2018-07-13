@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.lucasurbas.listitemview.ListItemView;
 
 import java.util.ArrayList;
@@ -29,11 +28,9 @@ public class CoursesListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
 
-    // could've user an ArrayList<Course> but this list's data isnt dynamic it wont change !
     private List listTitles;
     private HashMap<String, List> listData;
     private int[] icons;
-    final ArrayList<Integer> takenCoursesNbs=new ArrayList<>();
 
 
     public CoursesListAdapter(Context context, List listTitles, HashMap<String, List> listData, int[]icons) {
@@ -105,8 +102,8 @@ public class CoursesListAdapter extends BaseExpandableListAdapter {
             public void onActionMenuItemSelected(final MenuItem item) {
                 if(item.getItemId()== R.id.action_startcourse){
 
-                    if(!DataBaseHandler.getInstance(context).courseExist(FirebaseAuth.getInstance().getCurrentUser().getUid(),groupPosition)){
-                        DataBaseHandler.getInstance(context).addCourse(FirebaseAuth.getInstance().getCurrentUser().getUid(),groupPosition);
+                    if(!DataBaseHandler.getInstance(context).courseExist("dZb3TxK1x5dqQJkq7ve0d683VoA3",groupPosition)){
+                        DataBaseHandler.getInstance(context).addCourse("dZb3TxK1x5dqQJkq7ve0d683VoA3",groupPosition);
                         /** switch fragments to display courses list **/
                         AppCompatActivity activity=(AppCompatActivity) context;
                         LearnFragment_currentUserCourses currentUserCourses = new LearnFragment_currentUserCourses();

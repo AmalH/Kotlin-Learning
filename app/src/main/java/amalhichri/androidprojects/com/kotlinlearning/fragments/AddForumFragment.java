@@ -14,7 +14,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.android.volley.VolleyError;
-import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONObject;
 
@@ -22,8 +21,6 @@ import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.models.ForumQuestion;
 import amalhichri.androidprojects.com.kotlinlearning.services.ForumServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
-import amalhichri.androidprojects.com.kotlinlearning.services.UserProfileServices;
-import amalhichri.androidprojects.com.kotlinlearning.utils.Configuration;
 import me.originqiu.library.EditTag;
 
 public class AddForumFragment extends Fragment {
@@ -90,8 +87,8 @@ public class AddForumFragment extends Fragment {
                 }
 
                if(!isCodeEmpty && !f.getContent().isEmpty() && !f.getTags().isEmpty() && !f.getSubject().isEmpty()){
-                    if(Configuration.isOnline(getContext()) && UserProfileServices.getInstance().is_verified(getContext()))
-                        ForumServices.getInstance().addForum(getContext(), f, FirebaseAuth.getInstance().getCurrentUser().getUid(), new ServerCallbacks() {
+                   // if(Configuration.isOnline(getContext()) && UserServices.getInstance().is_verified(getContext()))
+                        ForumServices.getInstance().addForum(getContext(), f, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {
                                 Toast.makeText(getContext(),"Submitted...", Toast.LENGTH_SHORT).show();
@@ -117,12 +114,12 @@ public class AddForumFragment extends Fragment {
                                 }
                             }
                         });
-                    else{
+                    /*else{
                         if (progressDialog.isShowing()) {
                             progressDialog.dismiss();
                         }
                         if(!Configuration.isOnline(getContext())) Toast.makeText(getContext(),"No connection", Toast.LENGTH_SHORT).show();
-                    }
+                    }*/
 
                 }
                 else {

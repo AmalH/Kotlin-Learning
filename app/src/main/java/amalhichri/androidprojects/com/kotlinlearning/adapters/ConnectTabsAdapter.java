@@ -73,12 +73,12 @@ public class ConnectTabsAdapter extends PagerAdapter implements TabAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
 
-        /** this adapter returns the connect_fragments_root empty layout
+        /** this adapter returns the fragment_connect_root empty layout
          * which content is set when we instantiate the tabLyout in connect fragment
          * depending on tab position ..
          * ( check connect fragment )
          */
-        View view= LayoutInflater.from(context).inflate(R.layout.connect_fragments_root, null, false);
+        View view= LayoutInflater.from(context).inflate(R.layout.fragment_connect_root, null, false);
         container.addView(view);
         return view;
     }

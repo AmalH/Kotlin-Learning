@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -67,7 +66,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         else
         {
             String item=forumAnswersList.get(position).getUsername();
-           // holder.user_picture.setImageDrawable(UserProfileServices.getInstance().getEmptyProfimePicture(item));
+           // holder.user_picture.setImageDrawable(UserServices.getInstance().getEmptyProfimePicture(item));
         }
 
         //check to add delete button
@@ -87,7 +86,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         holder.upvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ForumServices.getInstance().upvoteComment(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                //FirebaseAuth.getInstance().getCurrentUser().getUid()
+                ForumServices.getInstance().upvoteComment("dZb3TxK1x5dqQJkq7ve0d683VoA3",
                         context, forumAnswersList.get(position).getId(), new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {

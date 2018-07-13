@@ -35,7 +35,7 @@ public class LearnFragment extends Fragment {
         this.fgMgr=getFragmentManager();
         this.dialog = new Dialog(getActivity());
         //dialog.getWindow().setBackgroundDrawableResource(R.drawable.test);
-        this.dialog.setContentView(R.layout.listcourses_view);
+        this.dialog.setContentView(R.layout.courseslist_view);
         prepareListData();
         this.lvCourses=dialog.findViewById(R.id.expandableLvw);
         this.lvCourses.setAdapter(new CoursesListAdapter(getContext(), courses, chapters,icons));

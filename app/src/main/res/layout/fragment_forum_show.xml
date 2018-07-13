@@ -19,32 +19,6 @@
                     android:orientation="vertical"
                     android:weightSum="100">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <ImageButton
-                            android:id="@+id/backtoForumFromComment"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start"
-                            android:src="@drawable/ic_action_back_to"
-                            android:layout_marginRight="-50dp"
-                            android:scaleType="fitCenter"
-                            android:background="@color/float_transparent"
-                            />
-                        <TextView
-                            android:id="@+id/textView4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Ikotlin Q&amp;A"
-                            android:textSize="18dp"
-                            android:textColor="@color/base_color_1"
-                            android:gravity="center"
-                            android:fontFamily="@fonts/graublau_slab"/>
-                    </LinearLayout>
-
-
                 <android.support.v7.widget.CardView
                     xmlns:card_view="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"

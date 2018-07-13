@@ -33,7 +33,7 @@ import amalhichri.androidprojects.com.kotlinlearning.adapters.CoursesListAdapter
 import amalhichri.androidprojects.com.kotlinlearning.models.User;
 import amalhichri.androidprojects.com.kotlinlearning.models.UserDb;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
-import amalhichri.androidprojects.com.kotlinlearning.services.UserProfileServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
 
 /**
  * Created by Amal on 30/11/2017.
@@ -79,7 +79,7 @@ public class Statics {
                         //
                         String idUser=auth.getCurrentUser().getUid();
                         // save user to mysql database and start the next activity
-                        UserProfileServices.getInstance().registerUserWebService(idUser,fullName,email,activity,new ServerCallbacks(){
+                        UserServices.getInstance().registerUserWebService(idUser,fullName,email,activity,new ServerCallbacks(){
 
                             @Override
                             public void onSuccess(JSONObject result) {
@@ -89,7 +89,7 @@ public class Statics {
                                 activity.finishAffinity();
                                 //start intent
                                 UserDb user;
-                                user=UserProfileServices.getInstance().get_user_from_json(result);
+                                user= UserServices.getInstance().get_user_from_json(result);
                                 DataBaseHandler.getInstance(activity).saveUser(user);
                                 // FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
                                 Intent intent = new Intent(activity, HomeActivity.class);
@@ -147,11 +147,11 @@ public class Statics {
 
 
 
-    public static Dialog createCoursesListDialog(Context context){   /** attached listcourses_view ui to the dialog (check CoursesListAdapter..)**/
+    public static Dialog createCoursesListDialog(Context context){   /** attached courseslist_view ui to the dialog (check CoursesListAdapter..)**/
         Dialog dialog = new Dialog(context);
         int[] icons = new int[]{R.drawable.ic_overview,R.drawable.ic_start,R.drawable.ic_basics,R.drawable.ic_classesobjects,
                 R.drawable.ic_functions,R.drawable.ic_others,R.drawable.ic_java,R.drawable.ic_javascript};
-        dialog.setContentView(R.layout.listcourses_view);
+        dialog.setContentView(R.layout.courseslist_view);
         ExpandableListView lvCourses=dialog.findViewById(R.id.expandableLvw);
         prepareCoursesListData();
         lvCourses.setAdapter(new CoursesListAdapter(context,courses,chapters,icons));

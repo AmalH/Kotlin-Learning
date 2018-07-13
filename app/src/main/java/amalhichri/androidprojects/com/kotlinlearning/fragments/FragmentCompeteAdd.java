@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONObject;
 
@@ -42,7 +41,7 @@ public class FragmentCompeteAdd extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragment_compete_add, container, false);
+        return inflater.inflate(R.layout.fragment_compete_add, container, false);
     }
 
     @Override
@@ -86,7 +85,7 @@ public class FragmentCompeteAdd extends Fragment {
                                    public void onClick(final DialogInterface dialog, int whichButton) {
                                        progressDialog.setMessage("Posting...");
                                        progressDialog.show();
-                                       CompetitionServices.getInstance().addCompetition(getContext(),c, FirebaseAuth.getInstance().getCurrentUser().getUid(), new ServerCallbacks() {
+                                       CompetitionServices.getInstance().addCompetition(getContext(),c, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
                                            @Override
                                            public void onSuccess(JSONObject result) {
                                                dialog.dismiss();

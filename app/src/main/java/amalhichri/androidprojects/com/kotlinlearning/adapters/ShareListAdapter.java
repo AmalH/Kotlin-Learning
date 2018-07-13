@@ -11,13 +11,21 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.fragments.ForumShowFragment;
 import amalhichri.androidprojects.com.kotlinlearning.models.ForumQuestion;
+import amalhichri.androidprojects.com.kotlinlearning.services.ForumServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
+import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.originqiu.library.FlowLayout;
 
@@ -34,7 +42,7 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
     public ShareListAdapter(ArrayList<ForumQuestion> forum_list, Context context){
         this.forumQuestionsList=forum_list;
         this.context=context;
-       // userid= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userid= FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     @Override
@@ -50,8 +58,7 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
         holder.title.setText(forumQuestionsList.get(position).getSubject());
         holder.nbviews.setText(forumQuestionsList.get(position).getViews_string());
         holder.rating.setText(forumQuestionsList.get(position).getRatingString());
-        //holder.createed.setText(forumQuestionsList.get(position).getCreated_string());
-        holder.createed.setText("24-02-1993");
+        holder.createed.setText(forumQuestionsList.get(position).getCreated_string());
 
         if(forumQuestionsList.get(position).getId_User().equals(userid))
             holder.user_name.setText("me");
@@ -59,16 +66,16 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
             holder.user_name.setText(forumQuestionsList.get(position).getUser_name_captalized());
 
         if(forumQuestionsList.get(position).getUser_picture_url()!=null)
-        Picasso.with(context).load(Uri.parse(forumQuestionsList.get(position).getUser_picture_url())).into(holder.user_picture);
+            Picasso.with(context).load(Uri.parse(forumQuestionsList.get(position).getUser_picture_url())).into(holder.user_picture);
         else{
             String item=forumQuestionsList.get(position).getUser_name();
-            //holder.user_picture.setImageDrawable(UserServices.getInstance().getEmptyProfimePicture(item));
+            holder.user_picture.setImageDrawable(UserServices.getInstance().getEmptyProfimePicture(item));
         }
         //split tags
         String[] array = forumQuestionsList.get(position).getTags().split(",");
 
         //init tags layout
-      //  holder.tags_layout.removeAllViews();
+        holder.tags_layout.removeAllViews();
         //fill tags
         for(String s : array){
             TextView t = new TextView(context);
@@ -81,7 +88,7 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
             t.setGravity(View.TEXT_ALIGNMENT_CENTER);
             t.setPaddingRelative(5,3,5,3);
             t.setTextSize(TypedValue.COMPLEX_UNIT_DIP ,13);
-            //holder.tags_layout.addView(t);
+            holder.tags_layout.addView(t);
         }
         //view content
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -91,11 +98,11 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
 
                 final ForumShowFragment fs =new ForumShowFragment();
                 fs.setF(forumQuestionsList.get(position));
-                /*ForumServices.getInstance().markViewForum(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                ForumServices.getInstance().markViewForum(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                         context, forumQuestionsList.get(position).getId(), new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {
-                               // Toast.makeText(context,"marked ",Toast.LENGTH_LONG).show();
+                                // Toast.makeText(context,"marked ",Toast.LENGTH_LONG).show();
                                 try {
                                     if(result.getInt("resp")>0){
                                         holder.nbviews.setText(String.valueOf(result.getInt("resp")));
@@ -107,14 +114,16 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
 
                             @Override
                             public void onError(VolleyError result) {
-                              //  Toast.makeText(context,"not marked",Toast.LENGTH_LONG).show();
+                                //  Toast.makeText(context,"not marked",Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public void onWrong(JSONObject result) {
-                              //  Toast.makeText(context,"not marked",Toast.LENGTH_LONG).show();
+                                //  Toast.makeText(context,"not marked",Toast.LENGTH_LONG).show();
                             }
-                        });*/
+                        });
+
+
                 activity.getSupportFragmentManager().beginTransaction()
                         .replace(R.id.root_share_fragment,fs)
                         .addToBackStack(null)
@@ -126,7 +135,7 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
 
     @Override
     public int getItemCount() {
-       return forumQuestionsList.size();
+        return forumQuestionsList.size();
     }
 
     public static class ShareItem_ViewHolder extends RecyclerView.ViewHolder  {

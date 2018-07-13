@@ -158,10 +158,9 @@ public class ShareFragment extends Fragment {
             forumRececyclerView.removeAllViews();
             listForum.clear();
         }
-        //Toast.makeText(getContext(),"Loaded : "+loaded_length,Toast.LENGTH_LONG).show();
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
             swipeRefreshLayout.setRefreshing(true);
-            ForumServices.getInstance().getTopForums(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+            ForumServices.getInstance().getTopForums("dZb3TxK1x5dqQJkq7ve0d683VoA3",
                     getActivity().getApplicationContext(),start_at,query,orderby,
                     new ServerCallbacks() {
                         @Override

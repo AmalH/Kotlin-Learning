@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.androidprojects.esprit.ikotlin.fragments.FragmentCompeteMain">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -168,16 +167,15 @@
         </LinearLayout>
 
     </LinearLayout>
-    <android.support.design.widget.FloatingActionButton
+    <com.rey.material.widget.FloatingActionButton
         android:id="@+id/compete_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
         android:elevation="9dp"
-        android:src="@drawable/ic_action_add_forum"
-        app:layout_anchorGravity="left|right|end"
-        android:layout_gravity="end|bottom"
-        />
+        app:fab_backgroundColor="@color/base_color_1"
+        app:fab_iconSrc="@drawable/ic_action_add_forum"
+        android:layout_gravity="end|bottom" />
 
 </FrameLayout>

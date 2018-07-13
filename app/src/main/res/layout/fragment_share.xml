@@ -79,14 +79,14 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.rey.material.widget.FloatingActionButton
         android:id="@+id/add_forum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
         android:elevation="9dp"
-        android:src="@drawable/ic_action_add_forum"
+        app:fab_iconSrc="@drawable/ic_action_add_forum"
         app:layout_anchorGravity="left|right|end"
         android:layout_gravity="end|bottom"
         />

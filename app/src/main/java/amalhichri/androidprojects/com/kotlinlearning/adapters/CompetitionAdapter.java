@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.fragments.FragmentCompeteShow;
 import amalhichri.androidprojects.com.kotlinlearning.models.Competition;
-import amalhichri.androidprojects.com.kotlinlearning.services.UserProfileServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -33,7 +32,8 @@ public class CompetitionAdapter extends RecyclerView.Adapter<CompetitionAdapter.
     public CompetitionAdapter(ArrayList<Competition> c_list, Context context){
         this.CompetitionsList=c_list;
         this.context=context;
-        userid= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userid=  "dZb3TxK1x5dqQJkq7ve0d683VoA3";
+                //FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class CompetitionAdapter extends RecyclerView.Adapter<CompetitionAdapter.
             Picasso.with(context).load(Uri.parse(CompetitionsList.get(position).getProfile_picture())).into(holder.user_picture);
         else{
             String item=CompetitionsList.get(position).getUsername();
-            holder.user_picture.setImageDrawable(UserProfileServices.getInstance().getEmptyProfimePicture(item));
+            holder.user_picture.setImageDrawable(UserServices.getInstance().getEmptyProfimePicture(item));
         }
 
         //view content

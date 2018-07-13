@@ -35,7 +35,7 @@ import amalhichri.androidprojects.com.kotlinlearning.utils.DataBaseHandler;
  * Created by Amal on 19/11/2017.
  */
 
-public class UserProfileServices {
+public class UserServices {
 
     public static String IP;
     public static final String URL_RGISTER= "user/register";
@@ -44,16 +44,16 @@ public class UserProfileServices {
     public static final String URL_SET_USERNAME="user/setusername";
 
     /** Constructeur privé */
-    private UserProfileServices()
+    private UserServices()
     {
         IP= "http://41.226.11.243:10080/ikotlin/public_html/web/app.php/";
     }
 
     /** Instance unique pré-initialisée */
-    private static UserProfileServices INSTANCE = new UserProfileServices();
+    private static UserServices INSTANCE = new UserServices();
 
     /** Point d'accès pour l'instance unique du singleton */
-    public static synchronized UserProfileServices getInstance()
+    public static synchronized UserServices getInstance()
     {	return INSTANCE;
     }
 
@@ -192,14 +192,14 @@ public class UserProfileServices {
                 return true;
             }
             else {
-                Toast.makeText(context, "Verifing", Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "Verifing", Toast.LENGTH_LONG).show();
                 FirebaseAuth.getInstance().getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
-                            Toast.makeText(context, "not verfied", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Please confirm your email before commenting !", Toast.LENGTH_SHORT).show();
                             FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
-                            Toast.makeText(context, "An email has been sent to your account\nPlease refresh and try again", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "A confirmation link has been sent to your account !\nPlease refresh and try again", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

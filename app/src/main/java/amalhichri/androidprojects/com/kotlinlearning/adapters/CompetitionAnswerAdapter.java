@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.ArrayList;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
@@ -29,7 +27,8 @@ public class CompetitionAnswerAdapter extends RecyclerView.Adapter<CompetitionAn
     public CompetitionAnswerAdapter(ArrayList<CompetitionAnswer> c_list, Context context) {
         this.CompetitionsList = c_list;
         this.context = context;
-        userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userid = "dZb3TxK1x5dqQJkq7ve0d683VoA3";
+                //FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     @Override

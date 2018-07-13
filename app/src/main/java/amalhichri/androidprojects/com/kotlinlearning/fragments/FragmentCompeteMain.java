@@ -3,7 +3,6 @@ package amalhichri.androidprojects.com.kotlinlearning.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -45,8 +44,6 @@ public class FragmentCompeteMain extends Fragment {
     RecyclerView competitionsRecyclerView,answersRecyclerView;
     SwipeRefreshLayout competeSwipeRefresh,competeAnswerSwipeRefresh;
 
-    FloatingActionButton addButton;
-
     static int level=1;
     int order=1;
     int toggle=0;
@@ -68,7 +65,7 @@ public class FragmentCompeteMain extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragment_compete_main, container, false);
+        return inflater.inflate(R.layout.fragment_compete_main, container, false);
     }
 
     @Override
@@ -87,7 +84,6 @@ public class FragmentCompeteMain extends Fragment {
         answersRecyclerView = getActivity().findViewById(R.id.compete_answers);
         competeSwipeRefresh=getActivity().findViewById(R.id.compete_swipeRefresh);
         competeAnswerSwipeRefresh=getActivity().findViewById(R.id.competeanswer_swipeRefresh);
-        addButton=getActivity().findViewById(R.id.compete_add);
 
         toggle_view.enableMultipleChoice(false);
         toggle_view.setValue(0);
@@ -137,7 +133,7 @@ public class FragmentCompeteMain extends Fragment {
                         competitionsRecyclerView.removeAllViews();
                         competitionList.clear();
                     }
-                    CompetitionServices.getInstance().getCompetitions(FirebaseAuth.getInstance().getCurrentUser().getUid(), getContext(), loaded_length_competition, level, order, new ServerCallbacks() {
+                    CompetitionServices.getInstance().getCompetitions("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), loaded_length_competition, level, order, new ServerCallbacks() {
                         @Override
                         public void onSuccess(JSONObject result) {
                             boolean goShow=true;
@@ -554,7 +550,7 @@ public class FragmentCompeteMain extends Fragment {
     }
 
     public void attachaddListener(){
-        addButton.setOnClickListener(new View.OnClickListener() {
+        getActivity().findViewById(R.id.compete_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager().beginTransaction()

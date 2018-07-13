@@ -4,10 +4,14 @@
 
     <item android:id="@+id/action_startcourse"
         android:title="Add to my courses"
+        app:showAsAction="always"
+        app:actionLayout="@layout/menu_item_startcourse"
         >
     </item>
     <item android:id="@+id/action_share"
         android:title="Share"
+        app:showAsAction="always"
+        app:actionLayout="@layout/menu_item_share"
         app:actionProviderClass="android.support.v7.widget.ShareActionProvider">
     </item>
 
