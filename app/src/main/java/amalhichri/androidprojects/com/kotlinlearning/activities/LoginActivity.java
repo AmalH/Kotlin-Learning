@@ -101,6 +101,7 @@ public class LoginActivity extends Activity {
 
     /** Facebook login **/
     public void loginWithFacebook(View v) {
+        Log.d("FROM INIT","FROM THERE");
         isFacebook = true;
         if (AccessToken.getCurrentAccessToken() != null) {
             mLoginManager.logOut();
@@ -111,6 +112,7 @@ public class LoginActivity extends Activity {
     }
     // to initialize facebook api + retrieve user info
     private void facebookApiInit() {
+
         FacebookSdk.sdkInitialize(getApplicationContext());
         mLoginManager = LoginManager.getInstance();
         mAccessTokenTracker = new AccessTokenTracker() {
@@ -137,8 +139,7 @@ public class LoginActivity extends Activity {
                                     JSONObject object,
                                     GraphResponse response) {
                                 try {
-                                   // Statics.signIn(object.getString("first_name"),String.valueOf(object.getInt("id")), LoginActivity.this);
-                                    Statics.signIn("test.email@gmail.com",String.valueOf(object.getInt("id")), LoginActivity.this);
+                                    Statics.signIn(object.getString("email"),String.valueOf(object.getInt("id")), LoginActivity.this);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -154,7 +155,6 @@ public class LoginActivity extends Activity {
             }
             @Override
             public void onError(FacebookException error) {
-
             }
         });
     }

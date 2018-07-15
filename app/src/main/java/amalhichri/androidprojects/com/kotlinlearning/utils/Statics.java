@@ -3,22 +3,19 @@ package amalhichri.androidprojects.com.kotlinlearning.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
 import com.rey.material.app.Dialog;
 
 import org.json.JSONObject;
@@ -29,8 +26,8 @@ import java.util.List;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.activities.HomeActivity;
+import amalhichri.androidprojects.com.kotlinlearning.activities.LoginActivity;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.CoursesListAdapter;
-import amalhichri.androidprojects.com.kotlinlearning.models.User;
 import amalhichri.androidprojects.com.kotlinlearning.models.UserDb;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
@@ -48,7 +45,7 @@ public class Statics {
 
     public static FirebaseAuth auth = FirebaseAuth.getInstance();
     public static DatabaseReference usersTable = FirebaseDatabase.getInstance().getReference("users");
-    public static DatabaseReference takenCoursesTable = FirebaseDatabase.getInstance().getReference().child("takenCourses");
+    //public static DatabaseReference takenCoursesTable = FirebaseDatabase.getInstance().getReference().child("takenCourses");
     public static DatabaseReference startedChaptersTable = FirebaseDatabase.getInstance().getReference().child("startedChapters");
     static List<String> courses=new ArrayList<>();
     static HashMap<String,List> chapters= new HashMap<>();
@@ -56,68 +53,46 @@ public class Statics {
 
     /** user signup **/
     public static void signUp(final String email, String password, final String fullName, final String pictureUrl, final Activity activity) {
-        // we'll use a fullName in signup ui we're not providing firstName / lastName editTexts
-        //authenticate user through firebase
         Statics.auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        // add user to database
-                        //Log.d("Test","Facebook to firebase success");
-                        User userToAdd = new User();
-                        userToAdd.setEmailAddress(email);
-                        String[] splited = fullName.split("\\s+");
-                        userToAdd.setFirstName(splited[0]);
-                        userToAdd.setLastName(splited[1]);
-                        userToAdd.setPictureUrl(pictureUrl);
-                        usersTable.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userToAdd).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("Failure",e.getMessage());
-                            }
-                        });
-                        //
-                        String idUser=auth.getCurrentUser().getUid();
-                        // save user to mysql database and start the next activity
-                        UserServices.getInstance().registerUserWebService(idUser,fullName,email,activity,new ServerCallbacks(){
 
-                            @Override
-                            public void onSuccess(JSONObject result) {
-                                //send email verification
-
-                                //clear backstack
-                                activity.finishAffinity();
-                                //start intent
-                                UserDb user;
-                                user= UserServices.getInstance().get_user_from_json(result);
-                                DataBaseHandler.getInstance(activity).saveUser(user);
-                                // FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
-                                Intent intent = new Intent(activity, HomeActivity.class);
-                                activity.startActivity(intent);
-
-                                activity.finish();
-
-                            }
-
-                            @Override
-                            public void onError(VolleyError result) {
-                                auth.getCurrentUser().delete();
-                                Toast.makeText(activity,"Error while registring please retry",Toast.LENGTH_LONG).show();
-                            }
-
-                            @Override
-                            public void onWrong(JSONObject result) {
-                                auth.getCurrentUser().delete();
-                                Toast.makeText(activity,"Error while registring please retry",Toast.LENGTH_LONG).show();
-                            }
-                        });
-                        Toast.makeText(activity, "added to database ", Toast.LENGTH_LONG).show();
                     }
-                }).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                })
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                Log.d("Test","Facebook ato firebase success");
-
+                if (task.isSuccessful()) {
+                    UserServices.getInstance().registerUserWebService(auth.getCurrentUser().getUid(),fullName,email,activity,new ServerCallbacks(){
+                        @Override
+                        public void onSuccess(JSONObject result) {
+                            UserDb user;
+                            user=UserServices.getInstance().get_user_from_json(result);
+                            DataBaseHandler.getInstance(activity).saveUser(user);
+                            Toast.makeText(activity, "Successfully Joined to iKotlin ! Login ?", Toast.LENGTH_LONG).show();
+                            (new Handler()).postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    activity.startActivity(new Intent(activity, LoginActivity.class));
+                                }
+                            }, 2500);
+                        }
+                        @Override
+                        public void onError(VolleyError result) {
+                            auth.getCurrentUser().delete();
+                            Toast.makeText(activity,"----"+result.getClass(),Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(activity,"Error while registring please retry",Toast.LENGTH_LONG).show();
+                        }
+                        @Override
+                        public void onWrong(JSONObject result) {
+                            auth.getCurrentUser().delete();
+                            Toast.makeText(activity,"Error"+"-------- "+result.toString(),Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else {
+                    Toast.makeText(activity, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -136,16 +111,6 @@ public class Statics {
                     }
                 });
     }
-    /** for user session **/
-    // this will be re-used alot in the whole project !
-    public static User getLoggedUser(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("loggedUserPrefs", 0);
-        User user = (new Gson()).fromJson(prefs.getString("user", null), User.class);
-        return user;
-    }
-
-
-
 
     public static Dialog createCoursesListDialog(Context context){   /** attached courseslist_view ui to the dialog (check CoursesListAdapter..)**/
         Dialog dialog = new Dialog(context);
@@ -158,9 +123,9 @@ public class Statics {
         return dialog;
     }
 
-    public static void prepareCoursesListData(){
-        courses = new ArrayList<String>();
-        chapters = new HashMap<String, List>();
+   private static void prepareCoursesListData(){
+        courses = new ArrayList<>();
+        chapters = new HashMap<>();
 
         courses.add("Overview");
         courses.add("Getting started");
@@ -235,6 +200,5 @@ public class Statics {
         chapters.put(courses.get(7),javascriptCourse);
 
     }
-
 
 }

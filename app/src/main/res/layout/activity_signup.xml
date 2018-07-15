@@ -37,7 +37,7 @@
         <com.rey.material.widget.EditText
             android:id="@+id/emailSignupTxt"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:layout_marginTop="30dp"
             app:et_labelEnable="true"
             app:et_labelTextColor="@color/base_color_1"
@@ -108,7 +108,7 @@
                 android:drawableLeft="@drawable/ic_facebook_login"
                 android:paddingLeft="10dp"
                 android:layout_marginRight="5dp"
-                android:text="Continue with Facebook"
+                android:text="Signup with Facebook"
                 android:textColor="#FFFFFF"
                 android:onClick="signUpWithFacebook"
                 />
@@ -119,7 +119,7 @@
                 android:background="@drawable/lkdin_btn_background"
                 android:drawableLeft="@drawable/ic_linkedin_login"
                 android:paddingLeft="10dp"
-                android:text="Continue with linkedin"
+                android:text="Signup with    linkedin"
                 android:textColor="#FFFFFF"
                 android:onClick="signUpWithLinkedin"
                 />

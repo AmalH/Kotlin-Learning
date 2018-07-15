@@ -48,7 +48,8 @@ public class SignupActivity extends Activity {
     private LoginManager mLoginManager;
     private AccessTokenTracker mAccessTokenTracker;
     private CallbackManager mFacebookCallbackManager;
-    private User userFromLinkedIn;
+    private static User userFromLinkedIn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,8 @@ public class SignupActivity extends Activity {
             }
         }
         );
+
+        isFacebook= false;
     }
 
     /** Firebase Sign up  **/
@@ -95,33 +98,30 @@ public class SignupActivity extends Activity {
             ((EditText) findViewById(R.id.pswSignupTxt)).setError("Password should be at least 6 characters");
             return;
         }
-        if (((EditText) findViewById(R.id.fullNameTxt)).getText().toString().isEmpty()) {
-            ((EditText) findViewById(R.id.fullNameTxt)).setError("Full name missing");
-            return;
-        }
         if (!(((EditText) findViewById(R.id.fullNameTxt)).getText().toString().isEmpty())
                 && !(isFullName(((EditText) findViewById(R.id.fullNameTxt)).getText().toString()))) {
-            ((EditText) findViewById(R.id.fullNameTxt)).setError("Please provide your full name");
+            ((EditText) findViewById(R.id.fullNameTxt)).setError("Please provide a full name");
             return;
         }
         /**authenticate user + add it to DB **/
         Statics.signUp(((EditText) findViewById(R.id.emailSignupTxt)).getText().toString(),
                 ((EditText) findViewById(R.id.pswSignupTxt)).getText().toString(),
                 ((EditText) findViewById(R.id.fullNameTxt)).getText().toString(),
-                "",
+                null,
                 SignupActivity.this);
     }
 
     /** Linkedin signup **/
     public void signUpWithLinkedin(View v){
+       // String url = "https://api.linkedin.com/v1/people/~?format=json";
         String url = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,picture-url,email-address)";
-        // initializing connection to linkedin api
         final APIHelper apiHelper = APIHelper.getInstance(getApplicationContext());
         apiHelper.getRequest(this, url, new ApiListener() {
             @Override
             public void onApiSuccess(ApiResponse apiResponse) {
-                /**  create User object from the linkedin profile**/
+                /**  create User object from the linkedin profile **/
                  userFromLinkedIn = (new Gson()).fromJson(apiResponse.getResponseDataAsJson().toString(),User.class);
+                // Toast.makeText(getApplicationContext(), "Success 1 "+userFromLinkedIn, Toast.LENGTH_LONG).show();
             }
             @Override
             public void onApiError(LIApiError liApiError) {
@@ -133,11 +133,12 @@ public class SignupActivity extends Activity {
             @Override
             public void onAuthSuccess() {
                 /** signup to firebase with that user **/
-                 Statics.signUp(userFromLinkedIn.getEmailAddress(),userFromLinkedIn.getId(),userFromLinkedIn.getFirstName()+" "+userFromLinkedIn.getLastName(),userFromLinkedIn.getPictureUrl(),SignupActivity.this);
+               //Toast.makeText(getApplicationContext(), "success 2 "+userFromLinkedIn.toString(), Toast.LENGTH_LONG).show();
+                Statics.signUp(userFromLinkedIn.getEmailAddress(),userFromLinkedIn.getId(),userFromLinkedIn.getFirstName()+" "+userFromLinkedIn.getLastName(),userFromLinkedIn.getPictureUrl(),SignupActivity.this);
             }
             @Override
             public void onAuthError(LIAuthError error) {
-                //Toast.makeText(getApplicationContext(), "failed " + error.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "failed " + error.toString(), Toast.LENGTH_LONG).show();
             }
         }, true);
 
@@ -169,7 +170,6 @@ public class SignupActivity extends Activity {
 
         final LoginButton loginButton = findViewById(R.id.facebookSignInBtn);
         mFacebookCallbackManager = CallbackManager.Factory.create();
-
         loginButton.setReadPermissions("email","public_profile");
         loginButton.registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -183,18 +183,21 @@ public class SignupActivity extends Activity {
                                     Log.d("OBJECT",object.toString());
                                     //if facebook account is based on phone number / or containes no email
                                     if(object.isNull("email")){
-                                        Statics.signUp(object.getString("test"),String.valueOf(object.getInt("id")),
-                                                object.getString("first_name")+" "+object.getString("last_name"),object.getJSONObject("picture").getJSONObject("data").getString("url") ,SignupActivity.this);
-                                     /*   SignupActivity.this.runOnUiThread(new Runnable() {
+                                        Statics.signUp(null,String.valueOf(object.getInt("id")),
+                                                object.getString("first_name")+" "+object.getString("last_name"),
+                                                object.getJSONObject("picture").getJSONObject("data").getString("url")
+                                                ,SignupActivity.this);
+                                      SignupActivity.this.runOnUiThread(new Runnable() {
                                             public void run() {
                                                 Toast.makeText(SignupActivity.this, "Sign up failed! \n Please provide a Facebook account with email!", Toast.LENGTH_SHORT).show();
                                             }
-                                        });*/
+                                        });
                                     }else
                                         Statics.signUp(object.getString("email"),String.valueOf(object.getInt("id")),
                                                 object.getString("first_name")+" "+object.getString("last_name"),object.getJSONObject("picture").getJSONObject("data").getString("url") ,SignupActivity.this);
+                                    //Log.d("Picture","-------"+object.getJSONObject("picture").getJSONObject("data").getString("url"));
                                 } catch (JSONException e) {
-                                  Log.d("ERROR",e.getMessage());
+                                  Log.d("ERROR","---------- "+e.getMessage());
                                 }
                             }
                         });
@@ -220,7 +223,7 @@ public class SignupActivity extends Activity {
             }
             @Override
             public void onError(FacebookException error) {
-                Log.d("ERROR",error.toString());
+                Log.d("ERROR","--------- "+error.toString());
             }
         });
     }

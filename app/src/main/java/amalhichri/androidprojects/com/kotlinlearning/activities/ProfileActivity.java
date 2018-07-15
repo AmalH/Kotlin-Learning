@@ -2,24 +2,15 @@ package amalhichri.androidprojects.com.kotlinlearning.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.squareup.picasso.Picasso;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.ProfileTabsAdapter;
-import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
-import de.hdodenhof.circleimageview.CircleImageView;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
@@ -45,7 +36,8 @@ public class ProfileActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         /** populating ui with user data **/
-        /** fields data **/
+        /** fields data
+        UserDb user = DataBaseHandler.getInstance(getApplicationContext()).getUser();
         Log.d("picture url",Statics.getLoggedUser(getApplicationContext()).getPictureUrl().toString());
         ((TextView) findViewById(R.id.fullNameInProfile)).setText(Statics.getLoggedUser(getApplicationContext()).getFirstName()+" "+
         Statics.getLoggedUser(getApplicationContext()).getLastName());
@@ -55,7 +47,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
         else
             ((ImageView) findViewById(R.id.userImgProfile)).setImageDrawable(UserServices.getInstance().getEmptyProfimePicture(Statics.getLoggedUser(getApplicationContext()).getFirstName()+" "+
-                    Statics.getLoggedUser(getApplicationContext()).getLastName()));
+                    Statics.getLoggedUser(getApplicationContext()).getLastName()));**/
 
 
         (findViewById(R.id.logoutBtn)).setOnClickListener(new View.OnClickListener() {

@@ -44,9 +44,10 @@ public class UserServices {
     public static final String URL_SET_USERNAME="user/setusername";
 
     /** Constructeur privé */
+    //http://41.226.11.243:10080/ikotlin/public_html/web/app.php/
     private UserServices()
     {
-        IP= "http://41.226.11.243:10080/ikotlin/public_html/web/app.php/";
+        IP= "http://192.168.1.5:80/ikotlinBackEnd/web/";
     }
 
     /** Instance unique pré-initialisée */

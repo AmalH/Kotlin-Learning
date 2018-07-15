@@ -19,18 +19,13 @@ import amalhichri.androidprojects.com.kotlinlearning.models.UserDb;
 
 public class DataBaseHandler extends SQLiteOpenHelper {
 
-    //Database version
     public static final int DATABASE_VERSION=2;
-    //Database name
     public static final String DATABASE_NAME="ikotlin";
-    //table user
     public static final String TABLE_USER="user";
-    //table course
     public static final String TABLE_COURSE="course";
-    //singleton
     public static DataBaseHandler sInstance;
 
-    //Table user columns
+
     public static final String KEY_ID="id";
     public static final String KEY_UID="uid";
     public static final String KEY_USERNAME="username";
@@ -50,9 +45,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     public static synchronized DataBaseHandler getInstance(Context context) {
 
-        // Use the application context, which will ensure that you
-        // don't accidentally leak an Activity's context.
-        // See this article for more information: http://bit.ly/6LRzfx
+
         if (sInstance == null) {
             sInstance = new DataBaseHandler(context.getApplicationContext());
         }
@@ -86,14 +79,11 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        //enlever la table si existe
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLE_USER);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLE_COURSE);
-        //creation de la table
         onCreate(sqLiteDatabase);
     }
 
-    //USER METHODS
     public void saveUser (UserDb user){
         FirebaseAuth.getInstance().getCurrentUser().reload();
         SQLiteDatabase db = this.getWritableDatabase();
@@ -108,9 +98,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         values.put(KEY_SKILL_CHALLENGER, user.getSkill_challenger());
         values.put(KEY_SKILL_CODER, user.getSkill_coder());
         values.put(KEY_CREATED, user.getCreated().getTimeInMillis());
-        //INSERT
         db.insert(TABLE_USER,null,values);
-        //CLOSE CONNECTION
         db.close();
     }
 

@@ -2,7 +2,6 @@ package amalhichri.androidprojects.com.kotlinlearning.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -36,22 +34,14 @@ import amalhichri.androidprojects.com.kotlinlearning.utils.Configuration;
 
 public class ShareFragment extends Fragment {
 
-    public RecyclerView forumRececyclerView;
-    public SwipeRefreshLayout swipeRefreshLayout;
-    public RecyclerView.Adapter adapter;
-    public RecyclerView.LayoutManager layoutManager;
-    public ArrayList<ForumQuestion> listForum;
-    public TextView noConenction_textView;
-    public FloatingActionButton addForum_button;
-    public Spinner orderBySpinner;
-    public SearchView searchKey;
+    private RecyclerView forumRececyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<ForumQuestion> listForum;
 
     private static int loaded_length;
-
     private boolean loading = true,loadwhile_empty=true;
-    int pastVisiblesItems, visibleItemCount, totalItemCount;
-    //get Spinner+1
-    int orderby;
+    private int pastVisiblesItems, visibleItemCount, totalItemCount,orderby;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,7 +53,15 @@ public class ShareFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        /** affect list **/
+
+       // ((SearchView)getActivity().findViewById(R.id.searchKey_forum)).onActionViewExpanded();
+        /*((SearchView)getActivity().findViewById(R.id.searchKey_forum)).setIconifiedByDefault(true);
+        (getActivity().findViewById(R.id.searchKey_forum)).setFocusable(true);
+        ((SearchView)getActivity().findViewById(R.id.searchKey_forum)).setIconified(false);
+        ((SearchView)getActivity().findViewById(R.id.searchKey_forum)).clearFocus();
+        (getActivity().findViewById(R.id.searchKey_forum)).requestFocusFromTouch();*/
+
+        /** list **/
         forumRececyclerView = getActivity().findViewById(R.id.forum_recycler_view_share);
         layoutManager = new LinearLayoutManager(getContext());
         forumRececyclerView.setLayoutManager(layoutManager);
@@ -78,12 +76,6 @@ public class ShareFragment extends Fragment {
         forumRececyclerView.setItemAnimator(animator);
         adapter = new ShareListAdapter(new ArrayList<ForumQuestion>(),getActivity());
         forumRececyclerView.setAdapter(adapter);
-        //Affect views
-        noConenction_textView = getActivity().findViewById(R.id.no_connection_shareFragment);
-        swipeRefreshLayout = getActivity().findViewById(R.id.share_refresh);
-        orderBySpinner = getActivity().findViewById(R.id.orderby_forum);
-        searchKey = getActivity().findViewById(R.id.searchKey_forum);
-        addForum_button = getActivity().findViewById(R.id.add_forum);
         setActionListenerToAdd();
 
         //forum loads in first time in here
@@ -92,32 +84,29 @@ public class ShareFragment extends Fragment {
         //setSubmitListener fo search
         setOnsearchListener();
 
-        swipeRefreshLayout.setColorSchemeColors(
+        ((SwipeRefreshLayout)getActivity().findViewById(R.id.share_refresh)).setColorSchemeColors(
                 getContext().getResources().getColor(R.color.refresh_progress_1),
                 getContext().getResources().getColor(R.color.refresh_progress_2),
                 getContext().getResources().getColor(R.color.refresh_progress_3));
 
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        ((SwipeRefreshLayout)getActivity().findViewById(R.id.share_refresh)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(Configuration.isOnline(getContext())){
                     loaded_length=0;
                     //Log.d("loaded",loaded_length+"by refresh");
-                    load_forum(0,searchKey.getQuery().toString());
+                    load_forum(0,((SearchView)getActivity().findViewById(R.id.searchKey_forum)).getQuery().toString());
                 }
                 else
                 {
-                    noConenction_textView.setVisibility(View.VISIBLE);
+                    getActivity().findViewById(R.id.no_connection_shareFragment).setVisibility(View.VISIBLE);
                     forumRececyclerView.setVisibility(View.GONE);
-                    swipeRefreshLayout.setRefreshing(false);
+                    ((SwipeRefreshLayout)getActivity().findViewById(R.id.share_refresh)).setRefreshing(false);
                     loading=false;
                 }
             }
         });
-
-
-        //add scrollListener to the recycler view
         attach_scrollListener();
 
     }
@@ -135,22 +124,17 @@ public class ShareFragment extends Fragment {
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        /**this executes everytime user gets back to Forum tab **/
-
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             if(Configuration.isOnline(getContext()) && forumRececyclerView.getChildCount()==0) {
                 loaded_length = 0;
-                noConenction_textView.setVisibility(View.GONE);
-                //Log.d("loaded",loaded_length+"by tab");
-                load_forum(0, searchKey.getQuery().toString());
-
+                getActivity().findViewById(R.id.no_connection_shareFragment).setVisibility(View.GONE);
+                load_forum(0, ((SearchView)getActivity().findViewById(R.id.searchKey_forum)).getQuery().toString());
             }
         }
     }
 
 
-    /** this method load forum items and push it to showList **/
     public synchronized void  load_forum(final int start_at, String query){
         if(start_at==0)
         {
@@ -159,7 +143,7 @@ public class ShareFragment extends Fragment {
             listForum.clear();
         }
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-            swipeRefreshLayout.setRefreshing(true);
+            ((SwipeRefreshLayout)getActivity().findViewById(R.id.share_refresh)).setRefreshing(true);
             ForumServices.getInstance().getTopForums("dZb3TxK1x5dqQJkq7ve0d683VoA3",
                     getActivity().getApplicationContext(),start_at,query,orderby,
                     new ServerCallbacks() {
@@ -172,9 +156,7 @@ public class ShareFragment extends Fragment {
                             } catch (JSONException e) {
                                 Toast.makeText(getContext(),"Server error while loading forum , please report",Toast.LENGTH_SHORT).show();
                                 goShow=false;
-                                //Log.e("hiding","1");
                             }
-                            //if(array.length()==0 && loaded_length==0) {goShow=false;  }
                             for(int i = 0 ; i < array.length() ; i++){
                                 try {
                                     /** parse forum and add it to the arraylist**/
@@ -182,12 +164,11 @@ public class ShareFragment extends Fragment {
                                 } catch (JSONException e) {
                                     Toast.makeText(getContext(),"Application error while loading forum , please report",Toast.LENGTH_SHORT).show();
                                     goShow=false;
-                                    //Log.e("hiding","3");
                                 }
                             }
                             /** All the work will be here **/
                             if(goShow) {
-                                noConenction_textView.setVisibility(View.GONE);
+                                getActivity().findViewById(R.id.no_connection_shareFragment).setVisibility(View.GONE);
                                 forumRececyclerView.setVisibility(View.VISIBLE);
                                 if(loaded_length==0){
                                     //Log.d("loaded",loaded_length+"new load");
@@ -199,7 +180,6 @@ public class ShareFragment extends Fragment {
                                     if(adapter==null){
                                         adapter=new ShareListAdapter(listForum,getContext());
                                         forumRececyclerView.setAdapter(adapter);
-
                                     }
                                     else
                                     { adapter.notifyDataSetChanged();}
@@ -210,30 +190,35 @@ public class ShareFragment extends Fragment {
                                     loaded_length+=10;
                             }
                             else{
-                                noConenction_textView.setVisibility(View.VISIBLE);
+                                getActivity().findViewById(R.id.no_connection_shareFragment).setVisibility(View.VISIBLE);
                                 forumRececyclerView.setVisibility(View.GONE);
                             }
                             if(listForum.size()==0){
-                                noConenction_textView.setVisibility(View.VISIBLE);
+                                getActivity().findViewById(R.id.no_connection_shareFragment).setVisibility(View.VISIBLE);
                                 forumRececyclerView.setVisibility(View.GONE);
                             }
-                            swipeRefreshLayout.setRefreshing(false);
+                            ((SwipeRefreshLayout)getActivity().findViewById(R.id.share_refresh)).setRefreshing(false);
                             loading=false;
                         }
 
                         @Override
                         public void onError(VolleyError result) {
-                            noConenction_textView.setVisibility(View.VISIBLE);
+                            if (result.networkResponse == null) {
+                                Toast.makeText(getContext(),"error class"+result.getClass().getName(),Toast.LENGTH_SHORT).show();
+                            }
+                            Toast.makeText(getContext(),"----"+result.getClass(),Toast.LENGTH_SHORT).show();
+                            getActivity().findViewById(R.id.no_connection_shareFragment).setVisibility(View.VISIBLE);
                             forumRececyclerView.setVisibility(View.GONE);
-                            swipeRefreshLayout.setRefreshing(false);
+                            ((SwipeRefreshLayout)getActivity().findViewById(R.id.share_refresh)).setRefreshing(false);
                             loading=false;
                         }
 
                         @Override
                         public void onWrong(JSONObject result) {
-                            noConenction_textView.setVisibility(View.VISIBLE);
+                            Toast.makeText(getContext(),"error----"+result.toString(),Toast.LENGTH_SHORT).show();
+                            getActivity().findViewById(R.id.no_connection_shareFragment).setVisibility(View.VISIBLE);
                             forumRececyclerView.setVisibility(View.GONE);
-                            swipeRefreshLayout.setRefreshing(false);
+                            ((SwipeRefreshLayout)getActivity().findViewById(R.id.share_refresh)).setRefreshing(false);
                             loading=false;
                         }
                     });
@@ -260,7 +245,7 @@ public class ShareFragment extends Fragment {
                             loading=true;
                             if(adapter!=null) {
                                 //Log.d("loaded",loaded_length+"by search");
-                                load_forum(loaded_length, searchKey.getQuery().toString());
+                                load_forum(loaded_length, ((SearchView)getActivity().findViewById(R.id.searchKey_forum)).getQuery().toString());
                                 // //Log.d("loading","loading_more");
                             }
                         }
@@ -270,7 +255,7 @@ public class ShareFragment extends Fragment {
         });
     }
     public void  setActionListenerToAdd(){
-        addForum_button.setOnClickListener(new View.OnClickListener() {
+        getActivity().findViewById(R.id.add_forum).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //loaded_length=0;
@@ -284,7 +269,7 @@ public class ShareFragment extends Fragment {
     }
 
     public void setActionListenerToOrderBySpinner(){
-        orderBySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        ((Spinner)getActivity().findViewById(R.id.orderby_forum)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
@@ -292,11 +277,11 @@ public class ShareFragment extends Fragment {
                 //load forum
                 if(Configuration.isOnline(getContext()))
                 {
-                    load_forum(0,searchKey.getQuery().toString());
+                    load_forum(0,((SearchView)getActivity().findViewById(R.id.searchKey_forum)).getQuery().toString());
                 }
                 else
                     forumRececyclerView.setVisibility(View.GONE);
-                noConenction_textView.setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.no_connection_shareFragment).setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -307,7 +292,7 @@ public class ShareFragment extends Fragment {
     }
 
     public void setOnsearchListener(){
-        searchKey.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        ((SearchView)getActivity().findViewById(R.id.searchKey_forum)).setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 if(Configuration.isOnline(getContext())){

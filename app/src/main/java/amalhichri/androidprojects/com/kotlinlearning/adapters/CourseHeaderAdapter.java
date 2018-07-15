@@ -1,7 +1,6 @@
 package amalhichri.androidprojects.com.kotlinlearning.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,16 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.utils.AllCourses;
-import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
 
 /**
@@ -32,7 +23,7 @@ public class CourseHeaderAdapter extends BaseAdapter {
 
     private Context context;
     private int coursePosition;
-    private final ArrayList<String> courseChapters = new ArrayList<>();
+    //private final ArrayList<String> courseChapters = new ArrayList<>();
 
 
     public CourseHeaderAdapter(Context context, int coursePosition){
@@ -60,7 +51,7 @@ public class CourseHeaderAdapter extends BaseAdapter {
         View rowView= ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.course_header_view, parent, false);
         ((TextView) rowView.findViewById(R.id.courseTitle)).setText("Course "+ String.valueOf(coursePosition+1)+": "+  AllCourses.getCourse(coursePosition).getTitle());
         ((TextView) rowView.findViewById(R.id.courseDescription)).setText( AllCourses.getCourse(coursePosition).getDescription());
-        ((TextView) rowView.findViewById(R.id.nbChaptersFinished)).setText(String.valueOf(getNbChaptersFinished()));
+        ((TextView) rowView.findViewById(R.id.nbChaptersFinished)).setText(String.valueOf(2));
         ((TextView) rowView.findViewById(R.id.nbbadgesEarned_course)).setText(String.valueOf(getNbBadgesEarned()));
         ((TextView) rowView.findViewById(R.id.timeNeeded_course)).setText(String.valueOf(AllCourses.getCourse(coursePosition).getTimeToFinish()));
         ((com.daimajia.numberprogressbar.NumberProgressBar) rowView.findViewById(R.id.courseProgress)).setProgress((AllCourses.getCourse(coursePosition).getAdvancement()));
@@ -68,7 +59,7 @@ public class CourseHeaderAdapter extends BaseAdapter {
         return rowView;
     }
 
-    private int getNbChaptersFinished(){
+   /* private int getNbChaptersFinished(){
         final int[] nbChpts = {0};
         // if chapter has already been started
         Statics.startedChaptersTable.orderByChild("userId").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -93,7 +84,7 @@ public class CourseHeaderAdapter extends BaseAdapter {
                     }
                 });
         return nbChpts[0];
-    }
+    }*/
 
     private int getNbBadgesEarned(){
         return 1;

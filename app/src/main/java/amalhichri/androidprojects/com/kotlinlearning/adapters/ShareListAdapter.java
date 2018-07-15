@@ -35,7 +35,7 @@ import me.originqiu.library.FlowLayout;
 
 public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.ShareItem_ViewHolder> {
 
-    ArrayList<ForumQuestion> forumQuestionsList= new ArrayList<>();
+    ArrayList<ForumQuestion> forumQuestionsList;
     Context context;
     String userid;
 

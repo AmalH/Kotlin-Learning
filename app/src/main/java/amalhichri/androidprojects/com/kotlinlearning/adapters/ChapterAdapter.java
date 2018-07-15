@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.utils.AllCourses;
-import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
 /**
  * Created by Amal on 26/11/2017.
@@ -36,7 +27,6 @@ public class ChapterAdapter extends BaseAdapter {
 
     private Context context;
     private int coursePosition,chapterPosition;
-    private final ArrayList<String> startedChapters = new ArrayList<>();
 
 
     public ChapterAdapter(Context context, int coursePosition, int chapterPosition){
@@ -98,40 +88,6 @@ public class ChapterAdapter extends BaseAdapter {
                 ( rowView.findViewById(R.id.chapterDoneIcon)).getBackground().clearColorFilter();
                 ((TextView) rowView.findViewById(R.id.chapterDoneTxt)).setText("finished");
                 ((TextView) rowView.findViewById(R.id.chapterDoneTxt)).setTextColor( Color.parseColor("#e99631"));
-
-                // if chapter has already been started
-                Statics.startedChaptersTable.orderByChild("userId").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot snapshot) {
-                                // Log.d("COUNT++","bbb "+snapshot.getChildren().toString());
-                               // Log.d("COUNT",String.valueOf(snapshot.getChildrenCount()));
-                                if(snapshot.getChildrenCount()>0){
-                                    for (DataSnapshot chapter: snapshot.getChildren()) {
-                                        Log.d("FChapter nb", chapter.child("chapterNb").getValue().toString());
-                                        Log.d("FChapter nb", chapter.child("courseNb").getValue().toString());
-                                        startedChapters.add(chapter.child("chapterNb").getValue().toString());
-                                    }
-                                    if(!startedChapters.contains(String.valueOf(chapterPosition))){
-                                        String courseId = Statics.startedChaptersTable.push().getKey();
-                                        Statics.startedChaptersTable.child(courseId).child("userId").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                        Statics.startedChaptersTable.child(courseId).child("courseNb").setValue(String.valueOf(coursePosition));
-                                        Statics.startedChaptersTable.child(courseId).child("chapterNb").setValue(String.valueOf(chapterPosition));
-                                    }
-                                }
-                                else {
-                                    String courseId = Statics.startedChaptersTable.push().getKey();
-                                    Statics.startedChaptersTable.child(courseId).child("userId").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                    Statics.startedChaptersTable.child(courseId).child("courseNb").setValue(String.valueOf(coursePosition));
-                                    Statics.startedChaptersTable.child(courseId).child("chapterNb").setValue(String.valueOf(chapterPosition));
-                                }
-
-                            }
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                Log.w("FOUND 1", "getUser:onCancelled", databaseError.toException());
-                            }
-                        });
                 ( rowView.findViewById(R.id.chapterDoneIcon)).setEnabled(false);
             }
         });

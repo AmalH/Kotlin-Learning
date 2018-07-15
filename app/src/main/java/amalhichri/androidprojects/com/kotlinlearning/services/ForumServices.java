@@ -49,7 +49,7 @@ public class ForumServices {
     //http://ikotlin.000webhostapp.com/web/
     private ForumServices()
     {
-        IP= "http://41.226.11.243:10080/ikotlin/public_html/web/app.php/";
+        IP= "http://192.168.1.5:80/ikotlinBackEnd/web/";
     }
 
     /** Instance unique pré-initialisée */
@@ -63,20 +63,21 @@ public class ForumServices {
     }
 
     public void getTopForums(String id, Context context, int start, String search, int orderby , final ServerCallbacks serverCallbacks){
+        Log.d("BEFORE","BEFORE");
         final JSONObject jsonBody = new JSONObject();
-
             JsonObjectRequest jsObjRequest = new JsonObjectRequest
                     (Request.Method.GET, IP + URL_FORUM_HOME+"?id="+id+"&start="+start+"&orderby="+orderby+"&keysearch="+search, jsonBody, new Response.Listener<JSONObject>() {
 
                         @Override
                         public void onResponse(JSONObject response) {
-
+                            Log.d("THERE","-----"+response.toString());
                             if (!response.has("Error")){
                                 //ok
                                 serverCallbacks.onSuccess(response);
                             }
                             else{
                                 //wrong entries
+                                Log.d("ERROR","ERRO");
                                 serverCallbacks.onWrong(response);
                             }
                         }
@@ -84,15 +85,14 @@ public class ForumServices {
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            //connection problem
+                            Log.d("ERROR 2","ERROR 2");
                             serverCallbacks.onError(error);
                         }
                     });
-            jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
+           /* jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
                     5000,//timeout
                     3,//retry
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));*/
             AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "getForums");
     }
 
@@ -100,7 +100,7 @@ public class ForumServices {
         ForumQuestion f = null;
         //datetimeparser
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance()   ;
                 try {
                     cal.setTime(sdf.parse(o.getString("created")));
                 } catch (ParseException e) {
