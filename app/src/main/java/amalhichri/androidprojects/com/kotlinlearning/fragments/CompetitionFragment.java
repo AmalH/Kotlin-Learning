@@ -101,7 +101,7 @@ public class FragmentCompeteShow extends Fragment {
         if (competition.getProfile_picture() != null)
             Picasso.with(getContext()).load(Uri.parse(competition.getProfile_picture())).into((CircleImageView)getActivity().findViewById(R.id.compete_show_user_picture));
         else {
-            ((ImageView)getActivity().findViewById(R.id.compete_show_user_picture)).setImageDrawable(UserServices.getInstance().getEmptyProfimePicture(competition.getUsername()));
+            ((ImageView)getActivity().findViewById(R.id.compete_show_user_picture)).setImageDrawable(UserServices.getInstance().getPlaceholderProfilePic(competition.getUsername()));
         }
     }
 
