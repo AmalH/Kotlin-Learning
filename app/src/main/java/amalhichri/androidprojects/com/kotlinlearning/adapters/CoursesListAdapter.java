@@ -3,7 +3,6 @@ package amalhichri.androidprojects.com.kotlinlearning.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,18 +10,15 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lucasurbas.listitemview.ListItemView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.fragments.LearnFragment_currentUserCourses;
 import amalhichri.androidprojects.com.kotlinlearning.utils.AllCourses;
-import amalhichri.androidprojects.com.kotlinlearning.utils.DataBaseHandler;
 
 public class CoursesListAdapter extends BaseExpandableListAdapter {
 
@@ -95,66 +91,24 @@ public class CoursesListAdapter extends BaseExpandableListAdapter {
          * and update the takenCoursesPrefs
          * **/
 
-        final StringBuilder str = new StringBuilder();
-        final ArrayList<String>  takenCourses = new ArrayList<>();
         ((ListItemView) convertView. findViewById(R.id.coursesListItem )).setOnMenuItemClickListener(new ListItemView.OnMenuItemClickListener() {
             @Override
             public void onActionMenuItemSelected(final MenuItem item) {
                 if(item.getItemId()== R.id.action_startcourse){
 
-                    if(!DataBaseHandler.getInstance(context).courseExist("dZb3TxK1x5dqQJkq7ve0d683VoA3",groupPosition)){
-                        DataBaseHandler.getInstance(context).addCourse("dZb3TxK1x5dqQJkq7ve0d683VoA3",groupPosition);
+                    //if(!DataBaseHandler.getInstance(context).courseExist("dZb3TxK1x5dqQJkq7ve0d683VoA3",groupPosition)){
+                        //DataBaseHandler.getInstance(context).addCourse("dZb3TxK1x5dqQJkq7ve0d683VoA3",groupPosition);
                         /** switch fragments to display courses list **/
                         AppCompatActivity activity=(AppCompatActivity) context;
                         LearnFragment_currentUserCourses currentUserCourses = new LearnFragment_currentUserCourses();
                         currentUserCourses.currentUserCourses.add(AllCourses.getCourse(groupPosition));
                         activity.getSupportFragmentManager().beginTransaction().replace(R.id.root_learFragment,currentUserCourses).addToBackStack(null).commit();
-                    }else{
-                        //DataBaseHandler.getInstance(context).deleteCourse(FirebaseAuth.getInstance().getCurrentUser().getUid(),groupPosition);
-                        /** will change later on to snackbar or smthin gpresentable **/
+                   /* }else{
+                        /** will change later on to snackbar or smthin gpresentable
                         Toast toast = Toast.makeText( context, "You already started this course.", Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
-                    }
-
-                    /** search for course in coursesTable **/
-                    /*Statics.takenCoursesTable.orderByChild("userId").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                           .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-                            //Log.d("COUNT++","bbb "+snapshot.getChildren().toString());
-                           //Log.d("COUNT",String.valueOf(snapshot.getChildrenCount()));
-
-                            // if user has courses already
-                            if(snapshot.getChildrenCount()>0){
-                                for (DataSnapshot course: snapshot.getChildren()) {
-                                    Log.d("FCourse", course.toString());
-                                    Log.d("FCourse nb", course.child("courseNb").getValue().toString());
-                                    takenCourses.add(course.child("courseNb").getValue().toString());
-                                }
-                                Toast toast = Toast.makeText(context, "Taken Courses are: "+takenCourses.size(), Toast.LENGTH_SHORT);
-                                toast.setGravity(Gravity.CENTER, 0, 0);
-                                toast.show();
-                                if(!takenCourses.contains(String.valueOf(groupPosition))){
-                                    String courseId = Statics.takenCoursesTable.push().getKey();
-                                    Statics.takenCoursesTable.child(courseId).child("userId").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                    Statics.takenCoursesTable.child(courseId).child("courseNb").setValue(String.valueOf(groupPosition));
-                                    LearnFragment_noCourses.switchFragments(groupPosition,context);
-                                }
-                            }
-                            else {
-                                String courseId = Statics.takenCoursesTable.push().getKey();
-                                Statics.takenCoursesTable.child(courseId).child("userId").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                Statics.takenCoursesTable.child(courseId).child("courseNb").setValue(String.valueOf(groupPosition));
-                                LearnFragment_noCourses.switchFragments(groupPosition,context);
-                            }
-
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            Log.w("FOUND 1", "getUser:onCancelled", databaseError.toException());
-                        }
-                    });*/
+                    }*/
                 }
                 if(item.getItemId()== R.id.action_share){
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);

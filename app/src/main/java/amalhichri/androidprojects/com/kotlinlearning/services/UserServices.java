@@ -2,8 +2,6 @@ package amalhichri.androidprojects.com.kotlinlearning.services;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
@@ -12,24 +10,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserInfo;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
-import amalhichri.androidprojects.com.kotlinlearning.models.UserDb;
 import amalhichri.androidprojects.com.kotlinlearning.utils.AppSingleton;
-import amalhichri.androidprojects.com.kotlinlearning.utils.DataBaseHandler;
 
 /**
  * Created by Amal on 19/11/2017.
@@ -39,17 +26,17 @@ public class UserServices {
 
     private static String userServicesAddress;
     private static final String registerUser= "/register";
-    private static final String userLogin= "/authentification";
+    //private static final String userLogin= "/authentification";
     private static final String setProfilePic="/setprofilepicture";
     private static final String setUsername="/setusername";
     private static final String getUser="/getUser?id=";
+    private static UserServices INSTANCE = new UserServices();
 
     private UserServices()
     {
         userServicesAddress = "http://192.168.1.5:80/ikotlinBackEnd/web/users";
     }
 
-    private static UserServices INSTANCE = new UserServices();
 
     public static synchronized UserServices getInstance()
     {	return INSTANCE;
@@ -127,10 +114,20 @@ public class UserServices {
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "GetUser");
     }
 
+    public Drawable getPlaceholderProfilePic(String item){
+        ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
+        int color = generator.getColor(item);
+        TextDrawable drawable = TextDrawable.builder()
+                .beginConfig()
+                .width(60)  // width in px
+                .height(60) // height in px
+                .endConfig()
+                .buildRect(String.valueOf(item.charAt(0)).toUpperCase()+ String.valueOf(item.charAt(1)), color);
+        return drawable;
+    }
 
 
-
-    public void markLoggedUserWebService(String id, Context context , final ServerCallbacks serverCallbacks){
+     /*public void markLoggedUserWebService(String id, Context context , final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
@@ -163,12 +160,7 @@ public class UserServices {
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "logging");
     }
-
-    public void logout(Context context){
-        DataBaseHandler.getInstance(context).deleteUser();
-    }
-
-    public UserDb get_user_from_json(JSONObject json){
+   public UserDb get_user_from_json(JSONObject json){
         //datetimeparser
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
         Calendar cal = Calendar.getInstance();
@@ -205,15 +197,6 @@ public class UserServices {
         return user;
     }
 
-    public Boolean isFacebooklogged(Context context){
-        for (UserInfo user: FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
-            if (user.getProviderId().equals("facebook.com")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
    public Boolean is_verified(final Context context){
         if(DataBaseHandler.getInstance(context).getUser().isConfirmed()) return true;
         else{
@@ -242,19 +225,8 @@ public class UserServices {
             }
         }
         return false;
-    }
+    }*/
 
-    public Drawable getPlaceholderProfilePic(String item){
-        ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
-        int color = generator.getColor(item);
-        TextDrawable drawable = TextDrawable.builder()
-                .beginConfig()
-                .width(60)  // width in px
-                .height(60) // height in px
-                .endConfig()
-                .buildRect(String.valueOf(item.charAt(0)).toUpperCase()+ String.valueOf(item.charAt(1)), color);
-        return drawable;
-    }
 
     public Drawable getRatingINPicture(String item){
         ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT

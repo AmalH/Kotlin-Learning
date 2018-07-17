@@ -28,34 +28,31 @@ import amalhichri.androidprojects.com.kotlinlearning.utils.AppSingleton;
  */
 
 public class ForumServices {
-    public static String IP;
-    public static final String URL_FORUM_HOME= "forum/getforums";
-    public static final String URL_FORUM_ADD= "forum/addforum";
-    public static final String URL_COMMENTS_GET= "forum/getforumcommments";
-    public static final String URL_COMMENT_ADD= "forum/addcomment";
-    public static final String URL_UPVOTE_FORUM="forum/forum/upvote";
-    public static final String URL_DOWNVOTE_FORUM="forum/forum/downvote";
-    public static final String URL_UPVOTE_COMMENT="forum/comment/upvote";
-    public static final String URL_DOWNVOTE_COMMENT="forum/comment/downvote";
-    public static final String URL_MARKVIEW_FORUM="forum/markview";
-    public static final String URL_GET_SINGLE_FORUM="forum/getsignleforum";
-    public static final String URL_SAVE_FORUM="forum/edit";
-    public static final String URL_DELETE_FORUM="forum/delete";
-    public static final String URL_DELETE_COMMENT="comment/delete";
-    public static final String URL_USERS_FORUMS="forum/getmine";
 
-    /** Constructeur privé */
+
+    private static String IP;
+    private static ForumServices INSTANCE = new ForumServices();
+    private static final String getAll = "/getAllQuestions";
+    private static final String addQuestion = "/addQuestion";
+    private static final String getComments = "/getCommments";
+    private static final String addComment = "/addComment";
+    private static final String upvotesNb ="/questionUpvotes";
+    private static final String downvotesNb ="/questionDownvotes";
+    private static final String upvoteComment ="/getCommentUpvotes";
+    private static final String downVoteComment ="/getCommentDownvotes";
+    private static final String markSeenQuestion ="/markQuestionAsSeen";
+    private static final String getQuestion ="/getSingleQuestion";
+    private static final String saveQuestion ="/editQuestion";  // not working
+    private static final String deleteQuestion ="/deleteQuestion"; // not working
+    private static final String deleteComment ="/deleteComment"; // not working
+    private static final String getCurrentUserQuestions ="/getCurrentUserQuestions";
 
     //http://ikotlin.000webhostapp.com/web/
     private ForumServices()
     {
-        IP= "http://192.168.1.5:80/ikotlinBackEnd/web/";
+        IP= "http://192.168.1.5:80/ikotlinBackEnd/web/forums";
     }
 
-    /** Instance unique pré-initialisée */
-    private static ForumServices INSTANCE = new ForumServices();
-
-    /** Point d'accès pour l'instance unique du singleton */
     public static synchronized ForumServices getInstance()
     {
         if (INSTANCE==null) INSTANCE=new ForumServices();
@@ -66,7 +63,7 @@ public class ForumServices {
         Log.d("BEFORE","BEFORE");
         final JSONObject jsonBody = new JSONObject();
             JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                    (Request.Method.GET, IP + URL_FORUM_HOME+"?id="+id+"&start="+start+"&orderby="+orderby+"&keysearch="+search, jsonBody, new Response.Listener<JSONObject>() {
+                    (Request.Method.GET, IP + getAll +"?id="+id+"&start="+start+"&orderby="+orderby+"&keysearch="+search, jsonBody, new Response.Listener<JSONObject>() {
 
                         @Override
                         public void onResponse(JSONObject response) {
@@ -98,7 +95,6 @@ public class ForumServices {
 
     public static ForumQuestion parse_(JSONObject o){
         ForumQuestion f = null;
-        //datetimeparser
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
         Calendar cal = Calendar.getInstance()   ;
                 try {
@@ -157,7 +153,7 @@ public class ForumServices {
         final JSONObject jsonBody = new JSONObject(m);
         Log.d("body",jsonBody.toString());
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, IP + URL_FORUM_ADD, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, IP + addQuestion, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -199,7 +195,7 @@ public class ForumServices {
         final JSONObject jsonBody = new JSONObject(m);
         Log.d("body",jsonBody.toString());
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, IP + URL_SAVE_FORUM, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, IP + saveQuestion, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -229,11 +225,11 @@ public class ForumServices {
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AddForumFragment");
     }
 
-    public void getComments(String id, Context context, int start, int forumId, final ServerCallbacks serverCallbacks){
+    public void getComments(String id, Context context, int start, int questionId, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, IP + URL_COMMENTS_GET+"?id="+id+"&forumid="+forumId+"&start="+start, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, IP + getComments +"?id="+id+"&questionId="+questionId+"&start="+start, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -263,7 +259,6 @@ public class ForumServices {
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "getForums");
     }
 
-
     public static Answer Answerparse_(JSONObject o){
         Answer a = null;
         //datetimeparser
@@ -289,16 +284,15 @@ public class ForumServices {
         return a;
     }
 
-
     public void addAnswer(Context context, String content, int idforum, String id, final ServerCallbacks serverCallbacks){
         Map<String, String> m = new HashMap<String, String>();
         m.put("id", id);
-        m.put("forumid", String.valueOf(idforum));
+        m.put("questionId", String.valueOf(idforum));
         m.put("commentcontent", content);
         final JSONObject jsonBody = new JSONObject(m);
         Log.d("body",jsonBody.toString());
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, IP + URL_COMMENT_ADD, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, IP + addComment, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -328,10 +322,10 @@ public class ForumServices {
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AddAnswerFragment");
     }
 
-    public void upvoteForum (String id, Context context, int forumId, final ServerCallbacks serverCallbacks){
+    public void upvoteForum (String id, Context context, int questionId, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, IP + URL_UPVOTE_FORUM+"?id="+id+"&forumid="+forumId, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, IP + upvotesNb +"?id="+id+"&questionId="+questionId, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -367,10 +361,10 @@ public class ForumServices {
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "getForums");
     }
 
-    public void downvoteForum (String id, Context context, int forumId, final ServerCallbacks serverCallbacks){
+    public void downvoteForum (String id, Context context, int questionId, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, IP + URL_DOWNVOTE_FORUM+"?id="+id+"&forumid="+forumId, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, IP + downvotesNb +"?id="+id+"&questionId="+questionId, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -410,7 +404,7 @@ public class ForumServices {
     public void upvoteComment (String id, Context context, int commentid, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, IP + URL_UPVOTE_COMMENT+"?id="+id+"&commentid="+commentid, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, IP + upvoteComment +"?id="+id+"&commentid="+commentid, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -449,7 +443,7 @@ public class ForumServices {
     public void downvoteComment (String id, Context context, int commentid, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, IP + URL_DOWNVOTE_COMMENT+"?id="+id+"&commentid="+commentid, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, IP + downVoteComment +"?id="+id+"&commentid="+commentid, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -485,10 +479,10 @@ public class ForumServices {
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "getForums");
     }
 
-    public void markViewForum (String id, Context context, int forumid, final ServerCallbacks serverCallbacks){
+    public void markViewForum (String id, Context context, int questionId, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, IP + URL_MARKVIEW_FORUM+"?id="+id+"&forumid="+forumid, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, IP + markSeenQuestion +"?id="+id+"&questionId="+questionId, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -518,10 +512,10 @@ public class ForumServices {
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "markforumView");
     }
 
-    public void getForum (String id, Context context, int forumid, final ServerCallbacks serverCallbacks){
+    public void getForum (String id, Context context, int questionId, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, IP + URL_GET_SINGLE_FORUM+"?id="+id+"&forumid="+forumid, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, IP + getQuestion +"?id="+id+"&questionId="+questionId, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -551,10 +545,10 @@ public class ForumServices {
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "getForum");
     }
 
-    public void delForum (String id, Context context, int forumid, final ServerCallbacks serverCallbacks){
+    public void delForum (String id, Context context, int questionId, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, IP + URL_DELETE_FORUM+"?id="+id+"&forumid="+forumid, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, IP + deleteQuestion +"?id="+id+"&questionId="+questionId, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -587,7 +581,7 @@ public class ForumServices {
     public void delComment(String id, Context context, int commentid, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, IP + URL_DELETE_COMMENT+"?id="+id+"&commentid="+commentid, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, IP + deleteComment +"?id="+id+"&commentid="+commentid, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -621,7 +615,7 @@ public class ForumServices {
         final JSONObject jsonBody = new JSONObject();
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, IP + URL_USERS_FORUMS+"?id="+id+"&start="+start, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, IP + getCurrentUserQuestions +"?id="+id+"&start="+start, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {

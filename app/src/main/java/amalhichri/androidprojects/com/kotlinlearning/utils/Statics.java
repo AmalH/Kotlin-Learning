@@ -28,7 +28,6 @@ import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.activities.HomeActivity;
 import amalhichri.androidprojects.com.kotlinlearning.activities.LoginActivity;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.CoursesListAdapter;
-import amalhichri.androidprojects.com.kotlinlearning.models.UserDb;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
 
@@ -67,8 +66,6 @@ public class Statics {
                     UserServices.getInstance().registerUser(auth.getCurrentUser().getUid(),fullName,email,pictureUrl,activity,new ServerCallbacks(){
                         @Override
                         public void onSuccess(JSONObject result) {
-                            UserDb user=UserServices.getInstance().get_user_from_json(result);
-                            DataBaseHandler.getInstance(activity).saveUser(user);
                             Toast.makeText(activity, "Successfully Joined to iKotlin ! Login ?", Toast.LENGTH_LONG).show();
                             (new Handler()).postDelayed(new Runnable() {
                                 @Override
