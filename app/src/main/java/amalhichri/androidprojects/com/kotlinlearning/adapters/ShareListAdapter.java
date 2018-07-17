@@ -21,7 +21,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
-import amalhichri.androidprojects.com.kotlinlearning.fragments.ForumShowFragment;
+import amalhichri.androidprojects.com.kotlinlearning.fragments.ForumQuestionFragment;
 import amalhichri.androidprojects.com.kotlinlearning.models.ForumQuestion;
 import amalhichri.androidprojects.com.kotlinlearning.services.ForumServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
@@ -83,10 +83,9 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
             t.setLayoutParams(lp);
             t.setText(s);
             t.setBackgroundResource(R.drawable.button_background2);
-           // t.setBackgroundColor(context.getResources().getColor(R.color.material_deep_teal_50));
             t.setTextColor(context.getResources().getColor(R.color.cardview_light_background));
             t.setGravity(View.TEXT_ALIGNMENT_CENTER);
-            t.setPaddingRelative(5,3,5,3);
+            t.setPadding(3,3,3,3);
             t.setTextSize(TypedValue.COMPLEX_UNIT_DIP ,13);
             holder.tags_layout.addView(t);
         }
@@ -97,8 +96,8 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
             @Override
             public void onClick(View view) {
                 AppCompatActivity activity=(AppCompatActivity) context;
-                final ForumShowFragment forumQuestion =new ForumShowFragment();
-                forumQuestion.setContent(forumQuestionsList.get(position));
+                final ForumQuestionFragment forumQuestionFragment =new ForumQuestionFragment();
+                forumQuestionFragment.setContent(forumQuestionsList.get(position));
                 ForumServices.getInstance().markViewForum(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                         context, forumQuestionsList.get(position).getId(), new ServerCallbacks() {
                             @Override
@@ -124,7 +123,7 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
                             }
                         });
                 activity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.root_share_fragment,forumQuestion)
+                        .replace(R.id.root_share_fragment, forumQuestionFragment)
                         .addToBackStack(null)
                         .commit();
             }
@@ -148,7 +147,7 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
             user_name=itemView.findViewById(R.id.forum_postedBy_name);
             nbviews=itemView.findViewById(R.id.nbViews);
             rating=itemView.findViewById(R.id.nbVotes);
-            createed=itemView.findViewById(R.id.forum_created);
+            createed=itemView.findViewById(R.id.forumQstnCreated);
             tags_layout=itemView.findViewById(R.id.tags_layout);
 
         }

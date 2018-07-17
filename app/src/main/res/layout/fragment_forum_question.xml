@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
         <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/comment_refresh_layout"
+            android:id="@+id/commentsRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="4dp"
@@ -19,31 +19,25 @@
                     android:orientation="vertical"
                     android:weightSum="100">
 
-                <android.support.v7.widget.CardView
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    card_view:cardCornerRadius="4dp"
-                    android:layout_marginBottom="10dp"
-                    card_view:cardUseCompatPadding="true">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:weightSum="100"
-                            >
-
+                            android:paddingRight="10dp"
+                            android:background="#fff"
+                            android:weightSum="100">
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="15"
                                 android:layout_marginTop="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
                                 android:orientation="vertical">
 
 
                                 <ImageButton
-                                    android:id="@+id/forum_up_arrow"
+                                    android:id="@+id/forumQstUpVote"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/ic_arrow_up"
@@ -51,14 +45,15 @@
                                     />
 
                                 <TextView
-                                    android:id="@+id/forum_rating_show"
-                                    android:layout_width="match_parent"
+                                    android:id="@+id/forumQstRatingShow"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:gravity="center"
+                                    android:textStyle="bold"
+                                    android:layout_gravity="center_horizontal"
                                     android:text="0" />
 
                                 <ImageButton
-                                    android:id="@+id/forum_down_arrow"
+                                    android:id="@+id/forumQstnDownArrow"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/ic_arrow_down"
@@ -66,39 +61,35 @@
                             </LinearLayout>
 
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="82"
                                 android:orientation="vertical"
                                 android:layout_marginLeft="2dp"
-                                android:layout_marginBottom="3dp"
-                                >
+                                android:layout_marginBottom="3dp">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal"
-                                    android:weightSum="100"
-                                    android:layout_marginTop="2dp"
+                                    android:layout_marginTop="5dp"
                                     android:layout_marginBottom="5dp"
+                                    android:paddingRight="10dp"
                                     >
                                     <TextView
-                                        android:id="@+id/forum_subject"
+                                        android:id="@+id/forumQstSubject"
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
                                         android:text="subject..."
                                         android:textSize="15dp"
                                         android:layout_weight="75"
-                                        android:fontFamily="@fonts/graublau_slab"
                                         />
                                     <ImageView
-                                        android:id="@+id/imageView"
                                         android:layout_width="20dp"
                                         android:layout_height="20dp"
                                         android:src="@drawable/ic_views_share"
                                         android:layout_gravity="center"/>
                                     <TextView
-                                        android:id="@+id/forum_views_txt"
+                                        android:id="@+id/forumQstViews"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textSize="13dp"
@@ -108,12 +99,10 @@
                                         tools:ignore="MissingPrefix"
                                         />
                                     <ImageButton
-                                        android:id="@+id/forum_edit_button"
+                                        android:id="@+id/forumQstEditBtn"
                                         android:layout_width="25dp"
                                         android:layout_height="29dp"
-                                        android:layout_gravity="end"
                                         android:layout_marginLeft="20dp"
-                                        android:layout_marginRight="-30dp"
                                         android:src="@drawable/ic_action_edit"
                                         android:background="@color/float_transparent"
                                         android:visibility="gone"
@@ -123,7 +112,7 @@
 
 
                                 <me.originqiu.library.FlowLayout
-                                    android:id="@+id/forum_tags"
+                                    android:id="@+id/forumQstTags"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="5dp"
@@ -133,7 +122,7 @@
                                 </me.originqiu.library.FlowLayout>
 
                                 <TextView
-                                    android:id="@+id/forum_content"
+                                    android:id="@+id/forumQstnContent"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="content"
@@ -141,7 +130,7 @@
                                     android:layout_marginBottom="5dp"
                                     />
                                 <io.github.kbiakov.codeview.CodeView
-                                    android:id="@+id/code_view"
+                                    android:id="@+id/codeViewerInQstn"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="3dp"
@@ -155,7 +144,7 @@
                                     android:orientation="horizontal"
                                     android:layout_gravity="end|bottom">
                                     <TextView
-                                        android:id="@+id/forum_show_edited"
+                                        android:id="@+id/forumQstnShowEdited"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textSize="11dp"
@@ -171,7 +160,7 @@
                                         android:orientation="vertical"
                                         >
                                         <TextView
-                                            android:id="@+id/forum_username"
+                                            android:id="@+id/forumQstnUsername"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="name"
@@ -181,7 +170,7 @@
                                             tools:ignore="MissingPrefix"
                                             />
                                         <TextView
-                                            android:id="@+id/forum_created"
+                                            android:id="@+id/forumQstnCreated"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text="created"
@@ -192,40 +181,37 @@
                                             />
                                     </LinearLayout>
                                     <de.hdodenhof.circleimageview.CircleImageView
-                                        android:id="@+id/forum_user_picture"
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
+                                        android:id="@+id/forumQuestionUserPic"
+                                        android:layout_width="45dp"
+                                        android:layout_height="45dp"
                                         android:layout_marginLeft="5dp"
                                         />
                                 </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
 
-                </android.support.v7.widget.CardView>
-
+                    <TextView
+                        android:id="@+id/commentsNbTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"/>
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/comments_container_list"
+                    android:id="@+id/commentsContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#fff"
                     android:layout_weight="80"
                     android:scrollbars="vertical"
                     />
-
-                    <com.rey.material.widget.TextView
-                        android:id="@+id/no_comments_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="No comments."
-                        android:visibility="gone" />
-
 
                 </LinearLayout>
     </ScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_Comment"
+        android:id="@+id/addCommentBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"

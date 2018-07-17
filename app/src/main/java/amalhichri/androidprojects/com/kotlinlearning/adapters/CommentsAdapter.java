@@ -1,9 +1,7 @@
 package amalhichri.androidprojects.com.kotlinlearning.adapters;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -156,7 +154,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
             }
         });
 
-        holder.delete.setOnClickListener(new View.OnClickListener() {
+       /* holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 new AlertDialog.Builder(context)
@@ -200,13 +198,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
                             }
                         })
                         .show();
-
-
-
-
-
             }
-        });
+        });*/
 
     }
 
@@ -229,8 +222,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
             createed=itemView.findViewById(R.id.comment_created);
             upvote=itemView.findViewById(R.id.comment_up_arrow);
             downvote=itemView.findViewById(R.id.comment_down_arrow);
-            delete=itemView.findViewById(R.id.deleComment);
-
+           // delete=itemView.findViewById(R.id.deleComment);
         }
 
     }

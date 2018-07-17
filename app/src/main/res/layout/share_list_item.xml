@@ -78,55 +78,61 @@
         android:layout_below="@+id/tags_layout"
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@id/forum_postedBy_img"
+        android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_views_share" />
 
         <TextView
             android:id="@+id/nbViews"
             fontPath="fonts/open_sans_light.ttf"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginTop="3dp"
             android:text="3"
-            android:textSize="14dp"
+            android:textSize="10dp"
             tools:ignore="MissingPrefix" />
 
         <ImageView
             fontPath="fonts/open_sans_light.ttf"
-            android:layout_width="13dp"
-            android:layout_height="13dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="4dp"
-            android:src="@drawable/ic_vote_up_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:src="@drawable/ic_up_down"
             tools:ignore="MissingPrefix" />
 
         <TextView
             android:id="@+id/nbVotes"
             fontPath="fonts/open_sans_light.ttf"
             android:layout_width="wrap_content"
-            android:layout_height="15dp"
-            android:layout_marginLeft="3dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:textStyle="bold"
+            android:layout_marginTop="3dp"
             android:text="+5"
+            android:textSize="10dp"
             tools:ignore="MissingPrefix" />
 
         <ImageView
-            android:layout_width="13dp"
-            android:layout_height="13dp"
-            android:layout_marginLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
             android:src="@drawable/ic_calendar" />
 
         <TextView
-            android:id="@+id/forum_created"
+            android:id="@+id/forumQstnCreated"
             fontPath="fonts/open_sans_light.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginTop="3dp"
             android:text="4 days"
             android:textSize="10dp"
+            android:layout_marginLeft="2dp"
             tools:ignore="MissingPrefix" />
 
     </LinearLayout>

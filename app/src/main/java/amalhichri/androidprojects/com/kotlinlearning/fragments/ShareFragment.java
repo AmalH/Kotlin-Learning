@@ -143,8 +143,6 @@ public class ShareFragment extends Fragment {
                 }
                 else
                 {
-                    getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
-                    forumQustsRecyclerView.setVisibility(View.GONE);
                     ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setRefreshing(false);
                     loading=false;
                 }
