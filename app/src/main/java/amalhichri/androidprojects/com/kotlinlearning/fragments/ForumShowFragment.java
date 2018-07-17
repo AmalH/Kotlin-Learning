@@ -49,7 +49,7 @@ import me.originqiu.library.FlowLayout;
 public class ForumShowFragment extends Fragment {
 
 
-    private ForumQuestion f;
+    private ForumQuestion content;
     private CircleImageView picture;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -91,7 +91,7 @@ public class ForumShowFragment extends Fragment {
             public void onClick(View view) {
                 getActivity().findViewById(R.id.forum_up_arrow).setEnabled(false);
                 ForumServices.getInstance().upvoteForum("dZb3TxK1x5dqQJkq7ve0d683VoA3",
-                        getContext(), f.getId(), new ServerCallbacks() {
+                        getContext(), content.getId(), new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {
                                 try {
@@ -125,7 +125,7 @@ public class ForumShowFragment extends Fragment {
             public void onClick(View view) {
                 getActivity().findViewById(R.id.forum_down_arrow).setEnabled(false);
                 ForumServices.getInstance().downvoteForum("dZb3TxK1x5dqQJkq7ve0d683VoA3",
-                        getContext(), f.getId(), new ServerCallbacks() {
+                        getContext(), content.getId(), new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {
                                 try {
@@ -181,8 +181,8 @@ public class ForumShowFragment extends Fragment {
         load_forum();
     }
 
-    public void setF(ForumQuestion f) {
-        this.f = f;
+    public void setContent(ForumQuestion content) {
+        this.content = content;
     }
 
     public void load_comments(int start_at) {
@@ -195,7 +195,7 @@ public class ForumShowFragment extends Fragment {
         ((SwipeRefreshLayout) getActivity().findViewById(R.id.comment_refresh_layout)).setRefreshing(true);
         if (Configuration.isOnline(getContext()))
             ForumServices.getInstance().getComments("dZb3TxK1x5dqQJkq7ve0d683VoA3",
-                    getContext(), start_at, f.getId(), new ServerCallbacks() {
+                    getContext(), start_at, content.getId(), new ServerCallbacks() {
                         @Override
                         public void onSuccess(JSONObject result) {
                             /**
@@ -301,7 +301,7 @@ public class ForumShowFragment extends Fragment {
                                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                     final String ct = ((TextView) (inflater.inflate(R.layout.comment_add_view, null)).findViewById(R.id.comment_post_content)).getText().toString().trim();
                                    // if (!ct.isEmpty() && Configuration.isOnline(getContext()) && UserServices.getInstance().is_verified(getContext())) {
-                                        ForumServices.getInstance().addAnswer(getContext(), ct, f.getId(), "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
+                                        ForumServices.getInstance().addAnswer(getContext(), ct, content.getId(), "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
                                             @Override
                                             public void onSuccess(JSONObject result) {
                                                 load_comments(0);
@@ -353,12 +353,12 @@ public class ForumShowFragment extends Fragment {
     }
 
     private void load_forum() {
-        ForumServices.getInstance().getForum("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), f.getId(),
+        ForumServices.getInstance().getForum("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), content.getId(),
                 new ServerCallbacks() {
                     @Override
                     public void onSuccess(JSONObject result) {
                         try {
-                            f = ForumServices.parse_(result.getJSONArray("forum").getJSONObject(0));
+                            content = ForumServices.parse_(result.getJSONArray("forum").getJSONObject(0));
                             if (result.has("selfvote")) {
                                 selfVote = result.getInt("selfvote");
                             } else
@@ -385,28 +385,28 @@ public class ForumShowFragment extends Fragment {
 
     private void setForumContent() {
 
-        if (f.getId_User().equals("dZb3TxK1x5dqQJkq7ve0d683VoA3"))
+        if (content.getId_User().equals("dZb3TxK1x5dqQJkq7ve0d683VoA3"))
             mine = true;
-        ((TextView) getActivity().findViewById(R.id.forum_rating_show)).setText((f.getRating() > 0 ? "+" + f.getRating() : f.getRating() + ""));
-        ((TextView) getActivity().findViewById(R.id.forum_views_txt)).setText(f.getViews() + "");
-        ((TextView) getActivity().findViewById(R.id.forum_subject)).setText(f.getSubject());
-        ((TextView) getActivity().findViewById(R.id.forum_content)).setText(f.getContent());
+        ((TextView) getActivity().findViewById(R.id.forum_rating_show)).setText((content.getRating() > 0 ? "+" + content.getRating() : content.getRating() + ""));
+        ((TextView) getActivity().findViewById(R.id.forum_views_txt)).setText(content.getViews() + "");
+        ((TextView) getActivity().findViewById(R.id.forum_subject)).setText(content.getSubject());
+        ((TextView) getActivity().findViewById(R.id.forum_content)).setText(content.getContent());
 
         if (!mine)
-            ((TextView) getActivity().findViewById(R.id.forum_username)).setText(f.getUser_name());
+            ((TextView) getActivity().findViewById(R.id.forum_username)).setText(content.getUser_name());
         else ((TextView) getActivity().findViewById(R.id.forum_username)).setText("By me ");
 
-        ((TextView) (getActivity().findViewById(R.id.forum_created))).setText(f.getCreated_string());
+        ((TextView) (getActivity().findViewById(R.id.forum_created))).setText(content.getCreated_string());
 
-        if (f.getUser_picture_url() != null)
-            Picasso.with(getContext()).load(Uri.parse(f.getUser_picture_url())).into(picture);
+        if (content.getUser_picture_url() != null)
+            Picasso.with(getContext()).load(Uri.parse(content.getUser_picture_url())).into(picture);
         else {
-            String item = f.getUser_name();
-            ((ImageView) getActivity().findViewById(R.id.forum_user_picture)).setImageDrawable(UserServices.getInstance().getEmptyProfimePicture(item));
+            String item = content.getUser_name();
+            ((ImageView) getActivity().findViewById(R.id.forum_user_picture)).setImageDrawable(UserServices.getInstance().getPlaceholderProfilePic(item));
         }
 
         //split tags
-        String[] array = f.getTags().split(",");
+        String[] array = content.getTags().split(",");
         //Clear just in case
         ((FlowLayout) getActivity().findViewById(R.id.forum_tags)).removeAllViews();
         //fill tags
@@ -429,15 +429,15 @@ public class ForumShowFragment extends Fragment {
         color_voted();
 
         /**  if internet is low */
-        if (f.getViews() == 0)
+        if (content.getViews() == 0)
             ((TextView) getActivity().findViewById(R.id.forum_views_txt)).setText("1");
 
         /** set code viewer*/
-        if (f.getCode() != null) {
+        if (content.getCode() != null) {
             getActivity().findViewById(R.id.code_view).setVisibility(View.VISIBLE);
             ((CodeView) getActivity().findViewById(R.id.code_view)).setOptions(Options.Default.get(getContext())
                     .withLanguage("java")
-                    .withCode(f.getCode())
+                    .withCode(content.getCode())
                     .withTheme(ColorTheme.DEFAULT));
         } else
             (getActivity().findViewById(R.id.code_view)).setVisibility(View.GONE);
@@ -445,8 +445,8 @@ public class ForumShowFragment extends Fragment {
         if (mine) getActivity().findViewById(R.id.forum_edit_button).setVisibility(View.VISIBLE);
         attachEditForumListener();
 
-        if (f.getEdited() != null) {
-            ((TextView) getActivity().findViewById(R.id.forum_show_edited)).setText("Last Edited: " + f.getEditedString());
+        if (content.getEdited() != null) {
+            ((TextView) getActivity().findViewById(R.id.forum_show_edited)).setText("Last Edited: " + content.getEditedString());
             getActivity().findViewById(R.id.forum_show_edited).setVisibility(View.VISIBLE);
         }
 
@@ -470,7 +470,7 @@ public class ForumShowFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 EditForumFragment ef = new EditForumFragment();
-                ef.setForum(f);
+                ef.setForum(content);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.root_share_fragment, ef)
                         .addToBackStack(null)

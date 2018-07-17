@@ -204,14 +204,14 @@ fun main(args: Array&lt;String&gt;) {
 		<h2 id="calling-the-superclass-implementation">Calling the superclass implementation<a class="anchor" href="#calling-the-superclass-implementation"></a></h2>
 		<p>Code in a derived class can call its superclass functions and property accessors implementations using the <em class="keyword">super</em> keyword:</p>
 		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">open</span> <span class="cm-keyword">class</span> <span class="cm-def">Foo</span> {
-    <span class="cm-keyword">open</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>() { <span class="cm-variable">println</span>(<span class="cm-string">"Foo.f()"</span>) }
+    <span class="cm-keyword">open</span> <span class="cm-keyword">fun</span> <span class="cm-def">content</span>() { <span class="cm-variable">println</span>(<span class="cm-string">"Foo.content()"</span>) }
     <span class="cm-keyword">open</span> <span class="cm-keyword">val</span> <span class="cm-def">x</span>: <span class="cm-variable">Int</span> <span class="cm-keyword">get</span>() <span class="cm-operator">=</span> <span class="cm-number">1</span>
 }
 
 <span class="cm-keyword">class</span> <span class="cm-def">Bar</span> : <span class="cm-variable">Foo</span>() {
-    <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>() {
-        <span class="cm-keyword">super</span>.<span class="cm-variable">f</span>()
-        <span class="cm-variable">println</span>(<span class="cm-string">"Bar.f()"</span>)
+    <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">content</span>() {
+        <span class="cm-keyword">super</span>.<span class="cm-variable">content</span>()
+        <span class="cm-variable">println</span>(<span class="cm-string">"Bar.content()"</span>)
     }
 
     <span class="cm-keyword">override</span> <span class="cm-keyword">val</span> <span class="cm-def">x</span>: <span class="cm-variable">Int</span> <span class="cm-keyword">get</span>() <span class="cm-operator">=</span> <span class="cm-keyword">super</span>.<span class="cm-variable">x</span> <span class="cm-operator">+</span> <span class="cm-number">1</span>
@@ -219,12 +219,12 @@ fun main(args: Array&lt;String&gt;) {
 </code></pre>
 		<p>Inside an inner class, accessing the superclass of the outer class is done with the <em class="keyword">super</em> keyword qualified with the outer class name: <code>super@Outer</code>:</p>
 		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Bar</span> : <span class="cm-variable">Foo</span>() {
-    <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>() { <span class="cm-comment">/* ... */</span> }
+    <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">content</span>() { <span class="cm-comment">/* ... */</span> }
     <span class="cm-keyword">override</span> <span class="cm-keyword">val</span> <span class="cm-def">x</span>: <span class="cm-variable">Int</span> <span class="cm-keyword">get</span>() <span class="cm-operator">=</span> <span class="cm-number">0</span>
 
     <span class="cm-keyword">inner</span> <span class="cm-keyword">class</span> <span class="cm-def">Baz</span> {
         <span class="cm-keyword">fun</span> <span class="cm-def">g</span>() {
-            <span class="cm-keyword">super</span><span class="cm-variable">@Bar</span>.<span class="cm-variable">f</span>() <span class="cm-comment">// Calls Foo's implementation of f()</span>
+            <span class="cm-keyword">super</span><span class="cm-variable">@Bar</span>.<span class="cm-variable">content</span>() <span class="cm-comment">// Calls Foo's implementation of content()</span>
             <span class="cm-variable">println</span>(<span class="cm-keyword">super</span><span class="cm-variable">@Bar</span>.<span class="cm-variable">x</span>) <span class="cm-comment">// Uses Foo's implementation of x's getter</span>
         }
     }
@@ -235,25 +235,25 @@ fun main(args: Array&lt;String&gt;) {
 			it must override this member and provide its own implementation (perhaps, using one of the inherited ones).
 			To denote the supertype from which the inherited implementation is taken, we use <em class="keyword">super</em> qualified by the supertype name in angle brackets, e.g. <code>super&lt;Base&gt;</code>:</p>
 		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">open</span> <span class="cm-keyword">class</span> <span class="cm-def">A</span> {
-    <span class="cm-keyword">open</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>() { <span class="cm-variable">print</span>(<span class="cm-string">"A"</span>) }
+    <span class="cm-keyword">open</span> <span class="cm-keyword">fun</span> <span class="cm-def">content</span>() { <span class="cm-variable">print</span>(<span class="cm-string">"A"</span>) }
     <span class="cm-keyword">fun</span> <span class="cm-def">a</span>() { <span class="cm-variable">print</span>(<span class="cm-string">"a"</span>) }
 }
 
 <span class="cm-keyword">interface</span> <span class="cm-def">B</span> {
-    <span class="cm-keyword">fun</span> <span class="cm-def">f</span>() { <span class="cm-variable">print</span>(<span class="cm-string">"B"</span>) } <span class="cm-comment">// interface members are 'open' by default</span>
+    <span class="cm-keyword">fun</span> <span class="cm-def">content</span>() { <span class="cm-variable">print</span>(<span class="cm-string">"B"</span>) } <span class="cm-comment">// interface members are 'open' by default</span>
     <span class="cm-keyword">fun</span> <span class="cm-def">b</span>() { <span class="cm-variable">print</span>(<span class="cm-string">"b"</span>) }
 }
 
 <span class="cm-keyword">class</span> <span class="cm-def">C</span>() : <span class="cm-variable">A</span>(), <span class="cm-variable">B</span> {
-    <span class="cm-comment">// The compiler requires f() to be overridden:</span>
-    <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>() {
-        <span class="cm-keyword">super</span><span class="cm-operator">&lt;</span><span class="cm-variable">A</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">f</span>() <span class="cm-comment">// call to A.f()</span>
-        <span class="cm-keyword">super</span><span class="cm-operator">&lt;</span><span class="cm-variable">B</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">f</span>() <span class="cm-comment">// call to B.f()</span>
+    <span class="cm-comment">// The compiler requires content() to be overridden:</span>
+    <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">content</span>() {
+        <span class="cm-keyword">super</span><span class="cm-operator">&lt;</span><span class="cm-variable">A</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">content</span>() <span class="cm-comment">// call to A.content()</span>
+        <span class="cm-keyword">super</span><span class="cm-operator">&lt;</span><span class="cm-variable">B</span><span class="cm-operator">&gt;</span>.<span class="cm-variable">content</span>() <span class="cm-comment">// call to B.content()</span>
     }
 }
 </code></pre>
 		<p>It's fine to inherit from both <code>A</code> and <code>B</code>, and we have no problems with <code>a()</code> and <code>b()</code> since <code>C</code> inherits only one implementation of each of these functions.
-			But for <code>f()</code> we have two implementations inherited by <code>C</code>, and thus we have to override <code>f()</code> in <code>C</code>
+			But for <code>content()</code> we have two implementations inherited by <code>C</code>, and thus we have to override <code>content()</code> in <code>C</code>
 			and provide our own implementation that eliminates the ambiguity.</p>
 		<h2 id="abstract-classes">Abstract Classes<a class="anchor" href="#abstract-classes"></a></h2>
 		<p>A class and some of its members may be declared <em class="keyword">abstract</em>.
@@ -261,11 +261,11 @@ fun main(args: Array&lt;String&gt;) {
 			Note that we do not need to annotate an abstract class or function with open – it goes without saying.</p>
 		<p>We can override a non-abstract open member with an abstract one</p>
 		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">open</span> <span class="cm-keyword">class</span> <span class="cm-def">Base</span> {
-    <span class="cm-keyword">open</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>() {}
+    <span class="cm-keyword">open</span> <span class="cm-keyword">fun</span> <span class="cm-def">content</span>() {}
 }
 
 <span class="cm-keyword">abstract</span> <span class="cm-keyword">class</span> <span class="cm-def">Derived</span> : <span class="cm-variable">Base</span>() {
-    <span class="cm-keyword">override</span> <span class="cm-keyword">abstract</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>()
+    <span class="cm-keyword">override</span> <span class="cm-keyword">abstract</span> <span class="cm-keyword">fun</span> <span class="cm-def">content</span>()
 }
 </code></pre>
 		<h2 id="companion-objects">Companion Objects</h2>

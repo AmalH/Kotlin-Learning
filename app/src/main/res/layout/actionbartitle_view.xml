@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/base_color_2"
         fontPath="fonts/graublau_slab_bold.ttf"
-        android:textSize="10pt"
+        android:textSize="11pt"
         tools:ignore="MissingPrefix" />
 
 </LinearLayout>

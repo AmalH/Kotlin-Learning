@@ -70,8 +70,8 @@
 			but from another execution context, such as a local object or a nested function. In such cases, non-local control flow
 			is also not allowed in the lambdas. To indicate that, the lambda parameter needs to be marked with
 			the <code>crossinline</code> modifier:</p>
-		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">inline</span> <span class="cm-keyword">fun</span> <span class="cm-def">f</span>(<span class="cm-keyword">crossinline</span> <span class="cm-variable">body</span>: () <span class="cm-operator">-&gt;</span> <span class="cm-variable">Unit</span>) {
-    <span class="cm-keyword">val</span> <span class="cm-def">f</span> <span class="cm-operator">=</span> <span class="cm-keyword">object</span>: <span class="cm-variable-3">Runnable</span> {
+		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">inline</span> <span class="cm-keyword">fun</span> <span class="cm-def">content</span>(<span class="cm-keyword">crossinline</span> <span class="cm-variable">body</span>: () <span class="cm-operator">-&gt;</span> <span class="cm-variable">Unit</span>) {
+    <span class="cm-keyword">val</span> <span class="cm-def">content</span> <span class="cm-operator">=</span> <span class="cm-keyword">object</span>: <span class="cm-variable-3">Runnable</span> {
         <span class="cm-keyword">override</span> <span class="cm-keyword">fun</span> <span class="cm-def">run</span>() <span class="cm-operator">=</span> <span class="cm-variable">body</span>()
     }
     <span class="cm-comment">// ...</span>

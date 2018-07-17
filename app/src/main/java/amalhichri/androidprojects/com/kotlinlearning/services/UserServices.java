@@ -37,35 +37,33 @@ import amalhichri.androidprojects.com.kotlinlearning.utils.DataBaseHandler;
 
 public class UserServices {
 
-    public static String IP;
-    public static final String URL_RGISTER= "user/register";
-    public static final String URL_LOGIN= "user/authentification";
-    public static final String URL_SET_PROFILE_PICTURE="user/setprofilepicture";
-    public static final String URL_SET_USERNAME="user/setusername";
+    private static String userServicesAddress;
+    private static final String registerUser= "/register";
+    private static final String userLogin= "/authentification";
+    private static final String setProfilePic="/setprofilepicture";
+    private static final String setUsername="/setusername";
+    private static final String getUser="/getUser?id=";
 
-    /** Constructeur privé */
-    //http://41.226.11.243:10080/ikotlin/public_html/web/app.php/
     private UserServices()
     {
-        IP= "http://192.168.1.5:80/ikotlinBackEnd/web/";
+        userServicesAddress = "http://192.168.1.5:80/ikotlinBackEnd/web/users";
     }
 
-    /** Instance unique pré-initialisée */
     private static UserServices INSTANCE = new UserServices();
 
-    /** Point d'accès pour l'instance unique du singleton */
     public static synchronized UserServices getInstance()
     {	return INSTANCE;
     }
 
-    public void registerUserWebService(String id, String username, String email, Context context , final ServerCallbacks serverCallbacks){
+    public void registerUser(String id, String username, String email, String pictureUrl, Context context , final ServerCallbacks serverCallbacks){
         Map<String, String> m = new HashMap<String, String>();
         m.put("id", id);
         m.put("username", username);
         m.put("email", email);
+        m.put("pictureUrl", pictureUrl);
         final JSONObject jsonBody = new JSONObject(m);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, IP + URL_RGISTER, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, userServicesAddress + registerUser, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -95,11 +93,48 @@ public class UserServices {
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "Register");
     }
 
+
+    public void getUserById(String id, Context context, final ServerCallbacks serverCallbacks){
+        final JSONObject jsonBody = new JSONObject();
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, userServicesAddress + getUser +id, jsonBody, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        if (!response.has("Error")){
+                            //ok
+                            serverCallbacks.onSuccess(response);
+                        }
+                        else{
+                            //wrong entries
+                            serverCallbacks.onWrong(response);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //connection problem
+                        serverCallbacks.onError(error);
+                    }
+                });
+        jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,//timeout
+                3,//retry
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "GetUser");
+    }
+
+
+
+
     public void markLoggedUserWebService(String id, Context context , final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, IP + URL_LOGIN+"?id="+id, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, userServicesAddress + userLogin+"?id="+id, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -179,7 +214,7 @@ public class UserServices {
         return false;
     }
 
-    public Boolean is_verified(final Context context){
+   public Boolean is_verified(final Context context){
         if(DataBaseHandler.getInstance(context).getUser().isConfirmed()) return true;
         else{
             for (UserInfo user: FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
@@ -209,7 +244,7 @@ public class UserServices {
         return false;
     }
 
-    public Drawable getEmptyProfimePicture(String item){
+    public Drawable getPlaceholderProfilePic(String item){
         ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
         int color = generator.getColor(item);
         TextDrawable drawable = TextDrawable.builder()
@@ -240,7 +275,7 @@ public class UserServices {
         m.put("profile_picture", picture);
         final JSONObject jsonBody = new JSONObject(m);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, IP + URL_SET_PROFILE_PICTURE, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, userServicesAddress + setProfilePic, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -276,7 +311,7 @@ public class UserServices {
         m.put("username", username);
         final JSONObject jsonBody = new JSONObject(m);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, IP + URL_SET_USERNAME, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, userServicesAddress + setUsername, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {

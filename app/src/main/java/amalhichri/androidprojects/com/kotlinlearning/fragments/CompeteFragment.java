@@ -36,7 +36,7 @@ import amalhichri.androidprojects.com.kotlinlearning.services.CompetitionService
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Configuration;
 
-public class FragmentCompeteMain extends Fragment {
+public class CompeteFragment extends Fragment {
 
     MultiStateToggleButton toggle_view;
     Spinner orderSpinner;
@@ -65,7 +65,7 @@ public class FragmentCompeteMain extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_compete_main, container, false);
+        return inflater.inflate(R.layout.fragment_compete, container, false);
     }
 
     @Override
@@ -296,13 +296,11 @@ public class FragmentCompeteMain extends Fragment {
 
     public void attachSwipeRefreshListener(){
         competeSwipeRefresh.setColorSchemeColors(
-                getContext().getResources().getColor(R.color.md_material_blue_600),
-                getContext().getResources().getColor(R.color.refresh_progress_2),
-                getContext().getResources().getColor(R.color.refresh_progress_3));
+                getContext().getResources().getColor(R.color.base_color_1),
+                getContext().getResources().getColor(R.color.base_color_2));
         competeAnswerSwipeRefresh.setColorSchemeColors(
-                getContext().getResources().getColor(R.color.md_material_blue_600),
-                getContext().getResources().getColor(R.color.refresh_progress_2),
-                getContext().getResources().getColor(R.color.refresh_progress_3));
+                getContext().getResources().getColor(R.color.base_color_1),
+                getContext().getResources().getColor(R.color.base_color_2));
 
         competeSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -554,7 +552,7 @@ public class FragmentCompeteMain extends Fragment {
             @Override
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.root_compete,new FragmentCompeteAdd())
+                        .replace(R.id.root_compete,new AddCompetitionFragment())
                         .addToBackStack(null)
                         .commit();
             }

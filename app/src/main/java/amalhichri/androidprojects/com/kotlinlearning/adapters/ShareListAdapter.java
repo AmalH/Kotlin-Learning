@@ -35,9 +35,9 @@ import me.originqiu.library.FlowLayout;
 
 public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.ShareItem_ViewHolder> {
 
-    ArrayList<ForumQuestion> forumQuestionsList;
-    Context context;
-    String userid;
+    private ArrayList<ForumQuestion> forumQuestionsList;
+    private Context context;
+    private String userid;
 
     public ShareListAdapter(ArrayList<ForumQuestion> forum_list, Context context){
         this.forumQuestionsList=forum_list;
@@ -47,19 +47,21 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
 
     @Override
     public ShareItem_ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.share_list_item,parent,false);
-        ShareItem_ViewHolder shareItem_viewHolder = new ShareItem_ViewHolder(view);
+        ShareItem_ViewHolder shareItem_viewHolder = new ShareItem_ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.share_list_item,parent,false));
         return shareItem_viewHolder;
     }
 
 
     @Override
     public void onBindViewHolder(final ShareItem_ViewHolder holder, final int position) {
+
+        /** post data **/
         holder.title.setText(forumQuestionsList.get(position).getSubject());
         holder.nbviews.setText(forumQuestionsList.get(position).getViews_string());
         holder.rating.setText(forumQuestionsList.get(position).getRatingString());
         holder.createed.setText(forumQuestionsList.get(position).getCreated_string());
 
+        /** user data **/
         if(forumQuestionsList.get(position).getId_User().equals(userid))
             holder.user_name.setText("me");
         else
@@ -69,35 +71,34 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
             Picasso.with(context).load(Uri.parse(forumQuestionsList.get(position).getUser_picture_url())).into(holder.user_picture);
         else{
             String item=forumQuestionsList.get(position).getUser_name();
-            holder.user_picture.setImageDrawable(UserServices.getInstance().getEmptyProfimePicture(item));
+            holder.user_picture.setImageDrawable(UserServices.getInstance().getPlaceholderProfilePic(item));
         }
-        //split tags
+        /** tags **/
         String[] array = forumQuestionsList.get(position).getTags().split(",");
-
-        //init tags layout
         holder.tags_layout.removeAllViews();
-        //fill tags
         for(String s : array){
             TextView t = new TextView(context);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins(5,5,5,5);
             t.setLayoutParams(lp);
             t.setText(s);
-            t.setBackgroundColor(context.getResources().getColor(R.color.material_deep_teal_50));
+            t.setBackgroundResource(R.drawable.button_background2);
+           // t.setBackgroundColor(context.getResources().getColor(R.color.material_deep_teal_50));
             t.setTextColor(context.getResources().getColor(R.color.cardview_light_background));
             t.setGravity(View.TEXT_ALIGNMENT_CENTER);
             t.setPaddingRelative(5,3,5,3);
             t.setTextSize(TypedValue.COMPLEX_UNIT_DIP ,13);
             holder.tags_layout.addView(t);
         }
-        //view content
+
+
+        /** itemview click **/
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AppCompatActivity activity=(AppCompatActivity) context;
-
-                final ForumShowFragment fs =new ForumShowFragment();
-                fs.setF(forumQuestionsList.get(position));
+                final ForumShowFragment forumQuestion =new ForumShowFragment();
+                forumQuestion.setContent(forumQuestionsList.get(position));
                 ForumServices.getInstance().markViewForum(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                         context, forumQuestionsList.get(position).getId(), new ServerCallbacks() {
                             @Override
@@ -122,10 +123,8 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
                                 //  Toast.makeText(context,"not marked",Toast.LENGTH_LONG).show();
                             }
                         });
-
-
                 activity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.root_share_fragment,fs)
+                        .replace(R.id.root_share_fragment,forumQuestion)
                         .addToBackStack(null)
                         .commit();
             }
@@ -142,8 +141,6 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
         CircleImageView user_picture;
         TextView title,user_name,nbviews,rating,createed;
         FlowLayout tags_layout;
-
-
         public ShareItem_ViewHolder(View itemView) {
             super(itemView);
             user_picture= itemView.findViewById(R.id.forum_postedBy_img);

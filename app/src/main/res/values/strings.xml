@@ -29,9 +29,9 @@
               Arrays
     *****************************-->
     <string-array name="forum_orderby">
-        <item>Rating</item>
-        <item>Views</item>
-        <item>Date</item>
+        <item>Top rated</item>
+        <item>Most viewed</item>
+        <item>Latest</item>
     </string-array>
     <string-array name="compete_toogle">
         <item>Competitions </item>

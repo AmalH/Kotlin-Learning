@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
-import amalhichri.androidprojects.com.kotlinlearning.fragments.FragmentCompeteShow;
+import amalhichri.androidprojects.com.kotlinlearning.fragments.CompetitionFragment;
 import amalhichri.androidprojects.com.kotlinlearning.models.Competition;
 import amalhichri.androidprojects.com.kotlinlearning.models.CompetitionAnswer;
 
@@ -54,7 +54,7 @@ public class CompetitionAnswerAdapter extends RecyclerView.Adapter<CompetitionAn
 
                 Competition c = new Competition();
                 c.setId(CompetitionsList.get(position).getId_competition());
-                FragmentCompeteShow competeShow = new FragmentCompeteShow();
+                CompetitionFragment competeShow = new CompetitionFragment();
                 competeShow.setCompetition(c);
 
                 activity.getSupportFragmentManager().beginTransaction()

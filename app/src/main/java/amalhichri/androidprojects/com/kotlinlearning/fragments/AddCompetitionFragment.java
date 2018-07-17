@@ -26,7 +26,7 @@ import amalhichri.androidprojects.com.kotlinlearning.services.CompetitionService
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 
 
-public class FragmentCompeteAdd extends Fragment {
+public class AddCompetitionFragment extends Fragment {
 
 
     TextView title,content;
@@ -41,7 +41,7 @@ public class FragmentCompeteAdd extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_compete_add, container, false);
+        return inflater.inflate(R.layout.fragment_add_competition, container, false);
     }
 
     @Override

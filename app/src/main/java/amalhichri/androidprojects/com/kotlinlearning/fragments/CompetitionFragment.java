@@ -39,7 +39,7 @@ import io.github.kbiakov.codeview.adapters.Options;
 import io.github.kbiakov.codeview.highlight.ColorTheme;
 
 
-public class FragmentCompeteShow extends Fragment {
+public class CompetitionFragment extends Fragment {
 
     private Competition competition;
     private CompetitionAnswer answer;
@@ -50,7 +50,7 @@ public class FragmentCompeteShow extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         FirebaseAuth.getInstance().getCurrentUser().reload();
-        return inflater.inflate(R.layout.fragment_compete_show, container, false);
+        return inflater.inflate(R.layout.fragment_competition, container, false);
     }
 
     @Override

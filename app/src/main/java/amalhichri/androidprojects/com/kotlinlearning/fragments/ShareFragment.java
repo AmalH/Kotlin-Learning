@@ -34,205 +34,133 @@ import amalhichri.androidprojects.com.kotlinlearning.utils.Configuration;
 
 public class ShareFragment extends Fragment {
 
-    private RecyclerView forumRececyclerView;
+    private RecyclerView forumQustsRecyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<ForumQuestion> listForum;
-
-    private static int loaded_length;
-    private boolean loading = true,loadwhile_empty=true;
-    private int pastVisiblesItems, visibleItemCount, totalItemCount,orderby;
+    private ArrayList<ForumQuestion> forumQuestionsList;
+    private static int nbOfLoadedQuestions;
+    private boolean loading = true, loadWhileEmpty =true;
+    private int pastVisiblesItems, visibleItemCount,orderby, totalItemCount;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loaded_length=0;
+        nbOfLoadedQuestions =0;
     }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-       // ((SearchView)getActivity().findViewById(R.id.searchKey_forum)).onActionViewExpanded();
-        /*((SearchView)getActivity().findViewById(R.id.searchKey_forum)).setIconifiedByDefault(true);
-        (getActivity().findViewById(R.id.searchKey_forum)).setFocusable(true);
-        ((SearchView)getActivity().findViewById(R.id.searchKey_forum)).setIconified(false);
-        ((SearchView)getActivity().findViewById(R.id.searchKey_forum)).clearFocus();
-        (getActivity().findViewById(R.id.searchKey_forum)).requestFocusFromTouch();*/
-
-        /** list **/
-        forumRececyclerView = getActivity().findViewById(R.id.forum_recycler_view_share);
+        
+        forumQustsRecyclerView = getActivity().findViewById(R.id.recyclerViewShare);
         layoutManager = new LinearLayoutManager(getContext());
-        forumRececyclerView.setLayoutManager(layoutManager);
-        listForum=new ArrayList<>();
-        loaded_length=0;
+        forumQustsRecyclerView.setLayoutManager(layoutManager);
+        forumQuestionsList =new ArrayList<>();
+        nbOfLoadedQuestions =0;
         DefaultItemAnimator animator = new DefaultItemAnimator() {
             @Override
             public boolean canReuseUpdatedViewHolder(RecyclerView.ViewHolder viewHolder) {
                 return true;
             }
         };
-        forumRececyclerView.setItemAnimator(animator);
+        forumQustsRecyclerView.setItemAnimator(animator);
         adapter = new ShareListAdapter(new ArrayList<ForumQuestion>(),getActivity());
-        forumRececyclerView.setAdapter(adapter);
-        setActionListenerToAdd();
-
-        //forum loads in first time in here
-        setActionListenerToOrderBySpinner();
-
-        //setSubmitListener fo search
-        setOnsearchListener();
-
-        ((SwipeRefreshLayout)getActivity().findViewById(R.id.share_refresh)).setColorSchemeColors(
-                getContext().getResources().getColor(R.color.refresh_progress_1),
-                getContext().getResources().getColor(R.color.refresh_progress_2),
-                getContext().getResources().getColor(R.color.refresh_progress_3));
+        forumQustsRecyclerView.setAdapter(adapter);
 
 
-        ((SwipeRefreshLayout)getActivity().findViewById(R.id.share_refresh)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+       /** adding a forum question **/
+        getActivity().findViewById(R.id.addFormQuestionBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.root_share_fragment,new AddForumFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        /** ordering forum questions **/
+        ((Spinner)getActivity().findViewById(R.id.orderbySpinnerShare)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                orderby=i+1;
+                //load forum
+                if(Configuration.isOnline(getContext()))
+                {
+                    loadForumQuestions(0,((SearchView)getActivity().findViewById(R.id.searchViewShare)).getQuery().toString());
+                }
+                else
+                    forumQustsRecyclerView.setVisibility(View.GONE);
+                getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        /** searchview **/
+        ((SearchView)getActivity().findViewById(R.id.searchViewShare)).setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                if(Configuration.isOnline(getContext())){
+
+                    loadForumQuestions(0,s.trim().toLowerCase());
+
+                    loadWhileEmpty =true;
+                }
+
+                else
+                    Toast.makeText(getContext(),"No connection",Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if(Configuration.isOnline(getContext())&& !s.trim().isEmpty() && loadWhileEmpty){
+                    forumQuestionsList.clear();
+                    nbOfLoadedQuestions =0;
+                    forumQustsRecyclerView.removeAllViews();
+                    loadForumQuestions(0,s.trim().toLowerCase());
+                    loadWhileEmpty =false;
+                }
+                else{
+                    loading=false;
+                }
+                return true;
+            }
+        });
+
+        /** swipe refresh **/
+        ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(Configuration.isOnline(getContext())){
-                    loaded_length=0;
-                    //Log.d("loaded",loaded_length+"by refresh");
-                    load_forum(0,((SearchView)getActivity().findViewById(R.id.searchKey_forum)).getQuery().toString());
+                    nbOfLoadedQuestions =0;
+                    loadForumQuestions(0,((SearchView)getActivity().findViewById(R.id.searchViewShare)).getQuery().toString());
                 }
                 else
                 {
-                    getActivity().findViewById(R.id.no_connection_shareFragment).setVisibility(View.VISIBLE);
-                    forumRececyclerView.setVisibility(View.GONE);
-                    ((SwipeRefreshLayout)getActivity().findViewById(R.id.share_refresh)).setRefreshing(false);
+                    getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
+                    forumQustsRecyclerView.setVisibility(View.GONE);
+                    ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setRefreshing(false);
                     loading=false;
                 }
             }
         });
-        attach_scrollListener();
+        ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setColorSchemeColors(
+                getContext().getResources().getColor(R.color.base_color_2),
+                getContext().getResources().getColor(R.color.base_color_1));
 
-    }
-
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_share, container, false);
-        loaded_length=0;
-        return v;
-    }
-
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            if(Configuration.isOnline(getContext()) && forumRececyclerView.getChildCount()==0) {
-                loaded_length = 0;
-                getActivity().findViewById(R.id.no_connection_shareFragment).setVisibility(View.GONE);
-                load_forum(0, ((SearchView)getActivity().findViewById(R.id.searchKey_forum)).getQuery().toString());
-            }
-        }
-    }
-
-
-    public synchronized void  load_forum(final int start_at, String query){
-        if(start_at==0)
-        {
-            loaded_length=0;
-            forumRececyclerView.removeAllViews();
-            listForum.clear();
-        }
-        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-            ((SwipeRefreshLayout)getActivity().findViewById(R.id.share_refresh)).setRefreshing(true);
-            ForumServices.getInstance().getTopForums("dZb3TxK1x5dqQJkq7ve0d683VoA3",
-                    getActivity().getApplicationContext(),start_at,query,orderby,
-                    new ServerCallbacks() {
-                        @Override
-                        public void onSuccess(JSONObject result) {
-                            boolean goShow=true;
-                            JSONArray array = new JSONArray();
-                            try {
-                                array = result.getJSONArray("forum");
-                            } catch (JSONException e) {
-                                Toast.makeText(getContext(),"Server error while loading forum , please report",Toast.LENGTH_SHORT).show();
-                                goShow=false;
-                            }
-                            for(int i = 0 ; i < array.length() ; i++){
-                                try {
-                                    /** parse forum and add it to the arraylist**/
-                                    listForum.add(ForumServices.parse_(array.getJSONObject(i)));
-                                } catch (JSONException e) {
-                                    Toast.makeText(getContext(),"Application error while loading forum , please report",Toast.LENGTH_SHORT).show();
-                                    goShow=false;
-                                }
-                            }
-                            /** All the work will be here **/
-                            if(goShow) {
-                                getActivity().findViewById(R.id.no_connection_shareFragment).setVisibility(View.GONE);
-                                forumRececyclerView.setVisibility(View.VISIBLE);
-                                if(loaded_length==0){
-                                    //Log.d("loaded",loaded_length+"new load");
-                                    adapter=new ShareListAdapter(listForum,getContext());
-                                    forumRececyclerView.setAdapter(adapter);
-                                }
-                                else{
-                                    //Log.d("loaded",loaded_length+"old load : "+loaded_length+"     "+forumRececyclerView+"   "+adapter);
-                                    if(adapter==null){
-                                        adapter=new ShareListAdapter(listForum,getContext());
-                                        forumRececyclerView.setAdapter(adapter);
-                                    }
-                                    else
-                                    { adapter.notifyDataSetChanged();}
-                                }
-                                //addCalculated
-                                if(loaded_length==0) loaded_length+=array.length();
-                                else
-                                    loaded_length+=10;
-                            }
-                            else{
-                                getActivity().findViewById(R.id.no_connection_shareFragment).setVisibility(View.VISIBLE);
-                                forumRececyclerView.setVisibility(View.GONE);
-                            }
-                            if(listForum.size()==0){
-                                getActivity().findViewById(R.id.no_connection_shareFragment).setVisibility(View.VISIBLE);
-                                forumRececyclerView.setVisibility(View.GONE);
-                            }
-                            ((SwipeRefreshLayout)getActivity().findViewById(R.id.share_refresh)).setRefreshing(false);
-                            loading=false;
-                        }
-
-                        @Override
-                        public void onError(VolleyError result) {
-                            if (result.networkResponse == null) {
-                                Toast.makeText(getContext(),"error class"+result.getClass().getName(),Toast.LENGTH_SHORT).show();
-                            }
-                            Toast.makeText(getContext(),"----"+result.getClass(),Toast.LENGTH_SHORT).show();
-                            getActivity().findViewById(R.id.no_connection_shareFragment).setVisibility(View.VISIBLE);
-                            forumRececyclerView.setVisibility(View.GONE);
-                            ((SwipeRefreshLayout)getActivity().findViewById(R.id.share_refresh)).setRefreshing(false);
-                            loading=false;
-                        }
-
-                        @Override
-                        public void onWrong(JSONObject result) {
-                            Toast.makeText(getContext(),"error----"+result.toString(),Toast.LENGTH_SHORT).show();
-                            getActivity().findViewById(R.id.no_connection_shareFragment).setVisibility(View.VISIBLE);
-                            forumRececyclerView.setVisibility(View.GONE);
-                            ((SwipeRefreshLayout)getActivity().findViewById(R.id.share_refresh)).setRefreshing(false);
-                            loading=false;
-                        }
-                    });
-        }
-
-    }
-
-    public void attach_scrollListener(){
+        /** scroll listener for the recyclerView **/
         loading =false;
-        forumRececyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        forumQustsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(dy > 0) //check for scroll down
+                if(dy > 0)
                 {
                     visibleItemCount = layoutManager.getChildCount();
                     totalItemCount = layoutManager.getItemCount();
@@ -244,9 +172,7 @@ public class ShareFragment extends Fragment {
                         {
                             loading=true;
                             if(adapter!=null) {
-                                //Log.d("loaded",loaded_length+"by search");
-                                load_forum(loaded_length, ((SearchView)getActivity().findViewById(R.id.searchKey_forum)).getQuery().toString());
-                                // //Log.d("loading","loading_more");
+                                loadForumQuestions(nbOfLoadedQuestions, ((SearchView)getActivity().findViewById(R.id.searchViewShare)).getQuery().toString());
                             }
                         }
                     }
@@ -254,76 +180,113 @@ public class ShareFragment extends Fragment {
             }
         });
     }
-    public void  setActionListenerToAdd(){
-        getActivity().findViewById(R.id.add_forum).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //loaded_length=0;
-                AddForumFragment af= new AddForumFragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.root_share_fragment,af)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_share, container, false);
+        nbOfLoadedQuestions =0;
+        return v;
     }
 
-    public void setActionListenerToOrderBySpinner(){
-        ((Spinner)getActivity().findViewById(R.id.orderby_forum)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                orderby=i+1;
-                //load forum
-                if(Configuration.isOnline(getContext()))
-                {
-                    load_forum(0,((SearchView)getActivity().findViewById(R.id.searchKey_forum)).getQuery().toString());
-                }
-                else
-                    forumRececyclerView.setVisibility(View.GONE);
-                getActivity().findViewById(R.id.no_connection_shareFragment).setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if(Configuration.isOnline(getContext()) && forumQustsRecyclerView.getChildCount()==0) {
+                nbOfLoadedQuestions = 0;
+                getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.GONE);
+                loadForumQuestions(0, ((SearchView)getActivity().findViewById(R.id.searchViewShare)).getQuery().toString());
 
             }
-        });
+        }
     }
 
-    public void setOnsearchListener(){
-        ((SearchView)getActivity().findViewById(R.id.searchKey_forum)).setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                if(Configuration.isOnline(getContext())){
 
-                    load_forum(0,s.trim().toLowerCase());
+    /** this method load forum items and push it to showList **/
+    public synchronized void loadForumQuestions(final int start_at, String query){
+        if(start_at==0)
+        {
+            nbOfLoadedQuestions =0;
+            forumQustsRecyclerView.removeAllViews();
+            forumQuestionsList.clear();
+        }
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setRefreshing(true);
+            ForumServices.getInstance().getTopForums(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                    getActivity().getApplicationContext(),start_at,query,orderby,
+                    new ServerCallbacks() {
+                        @Override
+                        public void onSuccess(JSONObject result) {
+                            boolean showLoadedData=true;
+                            JSONArray array = new JSONArray();
+                            try {
+                                array = result.getJSONArray("forum");
+                            } catch (JSONException e) {
+                                Toast.makeText(getContext(),"Server error while loading forum , please report",Toast.LENGTH_SHORT).show();
+                                showLoadedData=false;
+                            }
+                            for(int i = 0 ; i < array.length() ; i++){
+                                try {
+                                    /** parse forum and add it to the arraylist**/
+                                    forumQuestionsList.add(ForumServices.parse_(array.getJSONObject(i)));
+                                } catch (JSONException e) {
+                                    Toast.makeText(getContext(),"Application error while loading forum , please report",Toast.LENGTH_SHORT).show();
+                                    showLoadedData=false;
+                                }
+                            }
+                            /** if there is data to display **/
+                            if(showLoadedData) {
+                                getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.GONE);
+                                if(nbOfLoadedQuestions ==0){
+                                    adapter=new ShareListAdapter(forumQuestionsList,getContext());
+                                    forumQustsRecyclerView.setAdapter(adapter);
+                                } else{
+                                    if(adapter==null){
+                                        adapter=new ShareListAdapter(forumQuestionsList,getContext());
+                                        forumQustsRecyclerView.setAdapter(adapter);
+                                    }
+                                    else
+                                    { adapter.notifyDataSetChanged();}
+                                }
+                                if(nbOfLoadedQuestions ==0)
+                                    nbOfLoadedQuestions +=array.length();
+                                else
+                                    nbOfLoadedQuestions +=10;
+                            }
+                            else{
+                                getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
+                                forumQustsRecyclerView.setVisibility(View.GONE);
+                            }
 
-                    loadwhile_empty=true;
-                }
+                            /** if there is no data to display **/
+                            if(forumQuestionsList.size()==0){
+                                getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
+                                forumQustsRecyclerView.setVisibility(View.GONE);
+                            }
+                            ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setRefreshing(false);
+                            loading=false;
+                        }
 
-                else
-                    Toast.makeText(getContext(),"No connection",Toast.LENGTH_SHORT).show();
-                return true;
-            }
+                        @Override
+                        public void onError(VolleyError result) {
+                            getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
+                            forumQustsRecyclerView.setVisibility(View.GONE);
+                            ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setRefreshing(false);
+                            loading=false;
+                        }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                if(Configuration.isOnline(getContext())&& !s.trim().isEmpty() && loadwhile_empty){
-                    listForum.clear();
-                    loaded_length=0;
-                    forumRececyclerView.removeAllViews();
-                    //Log.d("loaded",loaded_length+"by search query");
-                    load_forum(0,s.trim().toLowerCase());
-                    loadwhile_empty=false;
-                }
-                else{
-                    loading=false;
-                }
-                return true;
-            }
-        });
+                        @Override
+                        public void onWrong(JSONObject result) {
+                            getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
+                            forumQustsRecyclerView.setVisibility(View.GONE);
+                            ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setRefreshing(false);
+                            loading=false;
+                        }
+                    });
+        }
+
     }
-
 
 }

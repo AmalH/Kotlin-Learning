@@ -20,7 +20,7 @@ import amalhichri.androidprojects.com.kotlinlearning.models.UserDb;
 public class DataBaseHandler extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION=2;
-    public static final String DATABASE_NAME="ikotlin";
+    public static final String DATABASE_NAME="id3651345_ikotlin";
     public static final String TABLE_USER="user";
     public static final String TABLE_COURSE="course";
     public static DataBaseHandler sInstance;

@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
-import amalhichri.androidprojects.com.kotlinlearning.fragments.FragmentCompeteShow;
+import amalhichri.androidprojects.com.kotlinlearning.fragments.CompetitionFragment;
 import amalhichri.androidprojects.com.kotlinlearning.models.Competition;
 import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -59,7 +59,7 @@ public class CompetitionAdapter extends RecyclerView.Adapter<CompetitionAdapter.
             Picasso.with(context).load(Uri.parse(CompetitionsList.get(position).getProfile_picture())).into(holder.user_picture);
         else{
             String item=CompetitionsList.get(position).getUsername();
-            holder.user_picture.setImageDrawable(UserServices.getInstance().getEmptyProfimePicture(item));
+            holder.user_picture.setImageDrawable(UserServices.getInstance().getPlaceholderProfilePic(item));
         }
 
         //view content
@@ -68,7 +68,7 @@ public class CompetitionAdapter extends RecyclerView.Adapter<CompetitionAdapter.
             public void onClick(View view) {
                 AppCompatActivity activity=(AppCompatActivity) context;
 
-                FragmentCompeteShow competeShow= new FragmentCompeteShow();
+                CompetitionFragment competeShow= new CompetitionFragment();
 
                 competeShow.setCompetition(CompetitionsList.get(position));
 

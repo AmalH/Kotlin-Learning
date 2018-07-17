@@ -64,11 +64,10 @@ public class Statics {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    UserServices.getInstance().registerUserWebService(auth.getCurrentUser().getUid(),fullName,email,activity,new ServerCallbacks(){
+                    UserServices.getInstance().registerUser(auth.getCurrentUser().getUid(),fullName,email,pictureUrl,activity,new ServerCallbacks(){
                         @Override
                         public void onSuccess(JSONObject result) {
-                            UserDb user;
-                            user=UserServices.getInstance().get_user_from_json(result);
+                            UserDb user=UserServices.getInstance().get_user_from_json(result);
                             DataBaseHandler.getInstance(activity).saveUser(user);
                             Toast.makeText(activity, "Successfully Joined to iKotlin ! Login ?", Toast.LENGTH_LONG).show();
                             (new Handler()).postDelayed(new Runnable() {

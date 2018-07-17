@@ -61,7 +61,6 @@ public class SignupActivity extends Activity {
         //initializing facebook api
         facebookApiInit();
 
-        // material editTexts error msgs
         (findViewById(R.id.emailSignupTxt)).setOnKeyListener(new View.OnKeyListener(){
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -107,13 +106,12 @@ public class SignupActivity extends Activity {
         Statics.signUp(((EditText) findViewById(R.id.emailSignupTxt)).getText().toString(),
                 ((EditText) findViewById(R.id.pswSignupTxt)).getText().toString(),
                 ((EditText) findViewById(R.id.fullNameTxt)).getText().toString(),
-                null,
+                "",
                 SignupActivity.this);
     }
 
     /** Linkedin signup **/
     public void signUpWithLinkedin(View v){
-       // String url = "https://api.linkedin.com/v1/people/~?format=json";
         String url = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,picture-url,email-address)";
         final APIHelper apiHelper = APIHelper.getInstance(getApplicationContext());
         apiHelper.getRequest(this, url, new ApiListener() {
@@ -121,7 +119,7 @@ public class SignupActivity extends Activity {
             public void onApiSuccess(ApiResponse apiResponse) {
                 /**  create User object from the linkedin profile **/
                  userFromLinkedIn = (new Gson()).fromJson(apiResponse.getResponseDataAsJson().toString(),User.class);
-                // Toast.makeText(getApplicationContext(), "Success 1 "+userFromLinkedIn, Toast.LENGTH_LONG).show();
+                 Toast.makeText(getApplicationContext(), "Success 1 "+userFromLinkedIn, Toast.LENGTH_LONG).show();
             }
             @Override
             public void onApiError(LIApiError liApiError) {
@@ -133,7 +131,7 @@ public class SignupActivity extends Activity {
             @Override
             public void onAuthSuccess() {
                 /** signup to firebase with that user **/
-               //Toast.makeText(getApplicationContext(), "success 2 "+userFromLinkedIn.toString(), Toast.LENGTH_LONG).show();
+               //Toast.makeText(getApplicationContext(), "success 2 "+userFromLinkedIn.getPictureUrl(), Toast.LENGTH_LONG).show();
                 Statics.signUp(userFromLinkedIn.getEmailAddress(),userFromLinkedIn.getId(),userFromLinkedIn.getFirstName()+" "+userFromLinkedIn.getLastName(),userFromLinkedIn.getPictureUrl(),SignupActivity.this);
             }
             @Override
@@ -143,7 +141,6 @@ public class SignupActivity extends Activity {
         }, true);
 
     }
-    // asking for permission to get Linkedin profile data
     private static Scope buildScope() {
         return Scope.build(Scope.R_BASICPROFILE, Scope.R_EMAILADDRESS);
     }
@@ -180,22 +177,21 @@ public class SignupActivity extends Activity {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
                                 try {
-                                    Log.d("OBJECT",object.toString());
-                                    //if facebook account is based on phone number / or containes no email
                                     if(object.isNull("email")){
                                         Statics.signUp(null,String.valueOf(object.getInt("id")),
                                                 object.getString("first_name")+" "+object.getString("last_name"),
-                                                object.getJSONObject("picture").getJSONObject("data").getString("url")
+                                                "https://graph.facebook.com/v3.0"+String.valueOf(object.getInt("id"))+"/picture?type=large"
                                                 ,SignupActivity.this);
-                                      SignupActivity.this.runOnUiThread(new Runnable() {
+                                       SignupActivity.this.runOnUiThread(new Runnable() {
                                             public void run() {
                                                 Toast.makeText(SignupActivity.this, "Sign up failed! \n Please provide a Facebook account with email!", Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                     }else
                                         Statics.signUp(object.getString("email"),String.valueOf(object.getInt("id")),
-                                                object.getString("first_name")+" "+object.getString("last_name"),object.getJSONObject("picture").getJSONObject("data").getString("url") ,SignupActivity.this);
-                                    //Log.d("Picture","-------"+object.getJSONObject("picture").getJSONObject("data").getString("url"));
+                                                object.getString("first_name")+" "+object.getString("last_name"),
+                                                "https://graph.facebook.com/v3.0"+String.valueOf(object.getInt("id"))+"/picture?type=large",
+                                                SignupActivity.this);
                                 } catch (JSONException e) {
                                   Log.d("ERROR","---------- "+e.getMessage());
                                 }
