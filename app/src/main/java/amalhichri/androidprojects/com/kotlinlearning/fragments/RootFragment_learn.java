@@ -1,60 +1,60 @@
 package amalhichri.androidprojects.com.kotlinlearning.fragments;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import com.android.volley.VolleyError;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
-import amalhichri.androidprojects.com.kotlinlearning.utils.AllCourses;
+import amalhichri.androidprojects.com.kotlinlearning.services.CoursesServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 
 
 public class RootFragment_learn extends Fragment {
 
-    /**
-     * fragment added to load/switch fragments in the first tab of HomePage tabLayout
-     * call  getFragmentManager.replace ( SOME_ROOT_LAYOUT, My new fragment to load ! )
-     *
-     * LearnFragment_Chapter / LearnFragment_course / LearnFragment_noCourses... are all being switched inside  R.layout.fragment_root_fragment_learn
-     * **/
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View v = inflater.inflate(R.layout.fragment_root_learn, container, false);
-        /**
-         * if user has never added a course to his list he finds the ui LearnFragment_noCourses()
-         * ( with the button Start new course in center ... )
-         * else he find the ui  LearnFragment_currentUserCourses() with his courses list !
-         */
-        SharedPreferences coursesPrefs = getContext().getSharedPreferences("takenCoursesPrefs",0);
-        if (coursesPrefs.contains("takenCourses")){
-            /** get all current user's taken courses from sharedPrefs**/
-            StringTokenizer st = new StringTokenizer(coursesPrefs.getString("takenCourses",null), ",");
-            List<Integer> coursesTaken = new ArrayList<>();
-            while(st.hasMoreElements()){
-                coursesTaken.add(Integer.parseInt(st.nextToken()));
+        CoursesServices.getInstance().hasStartedCourse("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), new ServerCallbacks() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                Log.d("RES ","---------"+result.toString());
+                try {
+                    if(result.getJSONArray("courses").length()==0)
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.root_learFragment,new LearnFragment_nocourses()).commitAllowingStateLoss();
+                    else
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.root_learFragment,new LearnFragment_currentUserCourses()).commitAllowingStateLoss();
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(),"Server error "+e.getMessage(),Toast.LENGTH_SHORT).show();
+                }
             }
-            Log.d("test 9",String.valueOf(coursesTaken.size()));
-            Log.d("test 9++",coursesTaken.toString());
-            /** add them to currentUserCourses list and notify the adapter**/
-            LearnFragment_currentUserCourses currentUserCoursesFragment = new LearnFragment_currentUserCourses();
-            for(int i=0;i<coursesTaken.size();i++){
-                Log.d("test 10",String.valueOf(coursesTaken.get(i)));
-                currentUserCoursesFragment.currentUserCourses.add(AllCourses.getCourse(coursesTaken.get(i)));
+
+            @Override
+            public void onError(VolleyError result) {
+                Toast.makeText(getContext(),"ERROR! "+result.getMessage(),Toast.LENGTH_SHORT);
             }
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.root_learFragment,currentUserCoursesFragment).commitAllowingStateLoss();;
-        }
-        else if (!coursesPrefs.contains("takenCourses")){
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.root_learFragment,new LearnFragment_noCourses()).commitAllowingStateLoss();;
-        }
+
+            @Override
+            public void onWrong(JSONObject result) {
+                Toast.makeText(getContext(),"ERROR 2"+result.toString(),Toast.LENGTH_SHORT);
+            }
+        });
          return v;
     }
 

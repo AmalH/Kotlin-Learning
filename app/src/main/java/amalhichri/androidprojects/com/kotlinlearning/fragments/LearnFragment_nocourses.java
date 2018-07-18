@@ -17,7 +17,7 @@ import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.CoursesListAdapter;
 
 
-public class LearnFragment extends Fragment {
+public class LearnFragment_nocourses extends Fragment {
 
     private List<String> courses;
     private HashMap<String,List> chapters;
@@ -31,10 +31,9 @@ public class LearnFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_learn, container, false);
+        View v = inflater.inflate(R.layout.fragment_learn_nocourses, container, false);
         this.fgMgr=getFragmentManager();
         this.dialog = new Dialog(getActivity());
-        //dialog.getWindow().setBackgroundDrawableResource(R.drawable.test);
         this.dialog.setContentView(R.layout.courseslist_view);
         prepareListData();
         this.lvCourses=dialog.findViewById(R.id.expandableLvw);
@@ -51,8 +50,8 @@ public class LearnFragment extends Fragment {
     }
     // ---------- utils methods
     private void prepareListData(){
-        courses = new ArrayList<String>();
-        chapters = new HashMap<String, List>();
+        courses = new ArrayList<>();
+        chapters = new HashMap<>();
 
         courses.add("Overview");
         courses.add("Getting started");
