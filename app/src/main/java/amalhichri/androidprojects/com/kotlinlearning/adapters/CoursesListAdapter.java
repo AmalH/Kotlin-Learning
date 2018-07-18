@@ -3,6 +3,7 @@ package amalhichri.androidprojects.com.kotlinlearning.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,15 +11,23 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.lucasurbas.listitemview.ListItemView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.fragments.LearnFragment_currentUserCourses;
+import amalhichri.androidprojects.com.kotlinlearning.services.CoursesServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 import amalhichri.androidprojects.com.kotlinlearning.utils.AllCourses;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
 public class CoursesListAdapter extends BaseExpandableListAdapter {
 
@@ -86,29 +95,57 @@ public class CoursesListAdapter extends BaseExpandableListAdapter {
             convertView = ((LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.courseslist_item, null);
         ((TextView) convertView.findViewById(R.id.listTitle_text)).setText(title);
         ((ImageView)convertView.findViewById(R.id.courseIcon)).setImageResource(courseIcon);
-        /** if a courses list item is clicked
-         * switch LearnFragment_noCourses with LearnFragment_currentUserCourse
-         * and update the takenCoursesPrefs
-         * **/
 
         ((ListItemView) convertView. findViewById(R.id.coursesListItem )).setOnMenuItemClickListener(new ListItemView.OnMenuItemClickListener() {
             @Override
             public void onActionMenuItemSelected(final MenuItem item) {
                 if(item.getItemId()== R.id.action_startcourse){
 
-                    //if(!DataBaseHandler.getInstance(context).courseExist("dZb3TxK1x5dqQJkq7ve0d683VoA3",groupPosition)){
-                        //DataBaseHandler.getInstance(context).addCourse("dZb3TxK1x5dqQJkq7ve0d683VoA3",groupPosition);
-                        /** switch fragments to display courses list **/
-                        AppCompatActivity activity=(AppCompatActivity) context;
-                        LearnFragment_currentUserCourses currentUserCourses = new LearnFragment_currentUserCourses();
-                        currentUserCourses.currentUserCourses.add(AllCourses.getCourse(groupPosition));
-                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.root_learFragment,currentUserCourses).addToBackStack(null).commit();
-                   /* }else{
-                        /** will change later on to snackbar or smthin gpresentable
-                        Toast toast = Toast.makeText( context, "You already started this course.", Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        toast.show();
-                    }*/
+                    CoursesServices.getInstance().hasStartedAcourse(Statics.auth.getCurrentUser().getUid(), String.valueOf(groupPosition), context, new ServerCallbacks() {
+                                @Override
+                                public void onSuccess(JSONObject result) {
+                                    Log.d("RES 2 ","---------"+groupPosition);
+                                    try {
+                                        if(result.getJSONArray("courses").length()==0){
+                                            CoursesServices.getInstance().addCourseToUser(Statics.auth.getCurrentUser().getUid(), String.valueOf(groupPosition), context, new ServerCallbacks() {
+                                                @Override
+                                                public void onSuccess(JSONObject result) {
+                                                    Log.d("RES 3 ","---------"+result.toString());
+                                                    // update ui
+                                                    LearnFragment_currentUserCourses currentUserCourses = new LearnFragment_currentUserCourses();
+                                                    currentUserCourses.currentUserCourses.add(AllCourses.getCourse(groupPosition));
+                                                    ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction().replace(R.id.root_learFragment,currentUserCourses).addToBackStack(null).commit();
+                                                }
+
+                                                @Override
+                                                public void onError(VolleyError result) {
+                                                    Toast.makeText(context,"Error "+result.getClass().getName(),Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                @Override
+                                                public void onWrong(JSONObject result) {
+                                                    Toast.makeText(context,"Error "+result.toString(),Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
+                                        }
+                                        else
+                                            Toast.makeText( context, "You already started this course.", Toast.LENGTH_SHORT).show();
+                                    } catch (JSONException e) {
+                                        Toast.makeText(context,"Server error "+e.getMessage(),Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onError(VolleyError result) {
+                                    Toast.makeText(context,"Error "+result.getMessage(),Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onWrong(JSONObject result) {
+                                    Toast.makeText(context,"Error "+result.toString(),Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 }
                 if(item.getItemId()== R.id.action_share){
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);

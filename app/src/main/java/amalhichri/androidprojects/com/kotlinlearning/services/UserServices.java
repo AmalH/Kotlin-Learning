@@ -24,22 +24,10 @@ import amalhichri.androidprojects.com.kotlinlearning.utils.AppSingleton;
 
 public class UserServices {
 
-    private static String userServicesAddress;
-    private static final String registerUser= "/register";
-    //private static final String userLogin= "/authentification";
-    private static final String setProfilePic="/setprofilepicture";
-    private static final String setUsername="/setusername";
-    private static final String getUser="/getUser?id=";
-    private static UserServices INSTANCE = new UserServices();
-
-    private UserServices()
-    {
-        userServicesAddress = "http://192.168.1.5:80/ikotlinBackEnd/web/users";
-    }
-
+    private static UserServices this_ = new UserServices();
 
     public static synchronized UserServices getInstance()
-    {	return INSTANCE;
+    {	return this_;
     }
 
     public void registerUser(String id, String username, String email, String pictureUrl, Context context , final ServerCallbacks serverCallbacks){
@@ -50,7 +38,7 @@ public class UserServices {
         m.put("pictureUrl", pictureUrl);
         final JSONObject jsonBody = new JSONObject(m);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, userServicesAddress + registerUser, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://192.168.1.5:80/ikotlinBackEnd/web/users/register", jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -84,7 +72,7 @@ public class UserServices {
     public void getUserById(String id, Context context, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, userServicesAddress + getUser +id, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://192.168.1.5:80/ikotlinBackEnd/web/users/getUser?id="+id, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -115,12 +103,12 @@ public class UserServices {
     }
 
     public Drawable getPlaceholderProfilePic(String item){
-        ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
+        ColorGenerator generator = ColorGenerator.MATERIAL;
         int color = generator.getColor(item);
         TextDrawable drawable = TextDrawable.builder()
                 .beginConfig()
-                .width(60)  // width in px
-                .height(60) // height in px
+                .width(60)
+                .height(60)
                 .endConfig()
                 .buildRect(String.valueOf(item.charAt(0)).toUpperCase()+ String.valueOf(item.charAt(1)), color);
         return drawable;
@@ -225,7 +213,7 @@ public class UserServices {
             }
         }
         return false;
-    }*/
+    }
 
 
     public Drawable getRatingINPicture(String item){
@@ -311,6 +299,6 @@ public class UserServices {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "name");
-    }
+    }*/
 
 }

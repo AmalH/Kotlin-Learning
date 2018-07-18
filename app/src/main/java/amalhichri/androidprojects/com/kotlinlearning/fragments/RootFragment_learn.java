@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.services.CoursesServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
 
 public class RootFragment_learn extends Fragment {
@@ -31,7 +32,7 @@ public class RootFragment_learn extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_root_learn, container, false);
-        CoursesServices.getInstance().hasStartedCourse("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), new ServerCallbacks() {
+        CoursesServices.getInstance().getAllUserCourses(Statics.auth.getCurrentUser().getUid(), getContext(), new ServerCallbacks() {
             @Override
             public void onSuccess(JSONObject result) {
                 Log.d("RES ","---------"+result.toString());

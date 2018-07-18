@@ -22,8 +22,6 @@ import amalhichri.androidprojects.com.kotlinlearning.models.Course;
 
 public class CurrentUserCoursesList_Adapter extends BaseAdapter {
 
-    /** adapter for the the list to be shown if user is enrolled to courses **/
-
     private Context context;
     private ArrayList<Course> currentUserCourses;
 
@@ -48,11 +46,6 @@ public class CurrentUserCoursesList_Adapter extends BaseAdapter {
         return position;
     }
 
-
-    /*** if reset list is clicked : remove listItem
-     * + update Statics.loggedUser_startedLearning in case all items are removed !
-     * + perform course rest in DB
-     * ***/
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final View rowView= ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.currentusercourses_list_item,parent, false);
