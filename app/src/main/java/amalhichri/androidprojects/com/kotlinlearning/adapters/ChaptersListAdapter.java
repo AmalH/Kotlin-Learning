@@ -18,8 +18,6 @@ import amalhichri.androidprojects.com.kotlinlearning.utils.AllCourses;
 
 public class ChaptersListAdapter extends BaseAdapter {
 
-    /** this adapter is to load data dynamically in LinearLayout @+id/courseChaptersLayout from fragment_learn_course.xml **/
-
     private Context context;
     private int coursePosition;
     private Course course;

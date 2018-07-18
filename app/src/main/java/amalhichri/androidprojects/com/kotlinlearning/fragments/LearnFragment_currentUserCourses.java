@@ -80,11 +80,12 @@ public class LearnFragment_currentUserCourses extends Fragment {
             public void onSuccess(JSONObject result) {
 
                 try {
-                    if(!(result.getJSONArray("courses").length()==0))
-                        for(int i = 0 ; i < result.getJSONArray("courses").length() ; i++){
-                            currentUserCourses.add(AllCourses.getCourse(Integer.parseInt(((JSONObject)result.getJSONArray("courses").get(i)).getString("courseindic"))));
+                    if (!(result.getJSONArray("courses").length() == 0))
+                        for (int i = 0; i < result.getJSONArray("courses").length(); i++) {
+                            /** load courses **/
+                            currentUserCourses.add(AllCourses.getCourse(Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(i)).getString("courseindic"))));
                         }
-                } catch (JSONException e) {
+                }catch (JSONException e) {
                     Toast.makeText(getContext(),"Server error "+e.getMessage(),Toast.LENGTH_SHORT).show();
                 }
             }

@@ -89,5 +89,19 @@ public class Course {
     public void setIconId(int iconId) {
         this.iconId = iconId;
     }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "chaptersList=" + chaptersList +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", completedChaptersNb=" + completedChaptersNb +
+                ", badgesEarnedNb=" + badgesEarnedNb +
+                ", timeToFinish=" + timeToFinish +
+                ", advancement=" + advancement +
+                ", iconId=" + iconId +
+                '}';
+    }
 }
 

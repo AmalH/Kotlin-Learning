@@ -47,7 +47,6 @@ public class LearnFragment_course extends Fragment {
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-               //loadSingleChapterContentData(view,finalI);
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.root_learFragment, ChapterFragment.newInstance(coursePosition,finalI)).addToBackStack(null).commit();
                 }
             });
