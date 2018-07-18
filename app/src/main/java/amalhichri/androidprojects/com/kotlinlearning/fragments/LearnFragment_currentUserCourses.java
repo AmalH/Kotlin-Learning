@@ -18,13 +18,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.CurrentUserCoursesList_Adapter;
 import amalhichri.androidprojects.com.kotlinlearning.models.Course;
 import amalhichri.androidprojects.com.kotlinlearning.services.CoursesServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
-import amalhichri.androidprojects.com.kotlinlearning.utils.AllCourses;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
 
@@ -34,6 +34,7 @@ public class LearnFragment_currentUserCourses extends Fragment {
     public static ArrayList<Course> currentUserCourses = new ArrayList<>();
     public static CurrentUserCoursesList_Adapter listAdapter;
     private Dialog coursesListDialog;
+    private HashMap<Integer,Integer> nbBadges = new HashMap<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,42 +49,21 @@ public class LearnFragment_currentUserCourses extends Fragment {
         final View view= inflater.inflate(R.layout.fragment_learn_currentusercourses, container, false);
         ((ListView)view.findViewById(R.id.myCoursesLv)).setAdapter(listAdapter);
 
-        /** open course Learn_Fragment ui on list item click **/
-       ((ListView)view.findViewById(R.id.myCoursesLv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.root_learFragment, LearnFragment_course.newInstance(courseTitleToCoursePosition(((TextView)view.findViewById(R.id.userCourseTitle)).getText().toString())))
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-
-        /** addCoursesBtn click**/
-        view.findViewById(R.id.moreCoursesBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                coursesListDialog.show();
-            }
-        });
-
-        return view;
-    }
-
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        /** get courses from database **/
+        /** get chapters nb + badge nb **/
         CoursesServices.getInstance().getAllUserCourses(Statics.auth.getCurrentUser().getUid(), getContext(), new ServerCallbacks() {
             @Override
             public void onSuccess(JSONObject result) {
-
                 try {
                     if (!(result.getJSONArray("courses").length() == 0))
                         for (int i = 0; i < result.getJSONArray("courses").length(); i++) {
-                            /** load courses **/
-                            currentUserCourses.add(AllCourses.getCourse(Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(i)).getString("courseindic"))));
+                            /** set chapters nb + badge nb **/
+                            if (Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(i)).getString("finishedchapter")) == 100) {
+                            }else{
+                                /** update course */
+                                nbBadges.put(Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(i)).getString("courseindic"))
+                                        ,Integer.parseInt(((JSONObject)result.getJSONArray("courses").get(i)).getString("finishedchapter")));
+                                Toast.makeText(getContext(), "All | ---------" + nbBadges, Toast.LENGTH_SHORT).show();
+                            }
                         }
                 }catch (JSONException e) {
                     Toast.makeText(getContext(),"Server error "+e.getMessage(),Toast.LENGTH_SHORT).show();
@@ -100,6 +80,28 @@ public class LearnFragment_currentUserCourses extends Fragment {
 
             }
         });
+
+        /** open course Learn_Fragment ui on list item click **/
+       ((ListView)view.findViewById(R.id.myCoursesLv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.root_learFragment, LearnFragment_course.newInstance(courseTitleToCoursePosition(((TextView)view.findViewById(R.id.userCourseTitle)).getText().toString()), nbBadges.get(courseTitleToCoursePosition(((TextView)view.findViewById(R.id.userCourseTitle)).getText().toString()))))
+                        .addToBackStack(null)
+                        .commit();
+               Toast.makeText(getContext(),"----- "+courseTitleToCoursePosition(((TextView)view.findViewById(R.id.userCourseTitle)).getText().toString()),Toast.LENGTH_SHORT);
+            }
+        });
+
+        /** addCoursesBtn click**/
+        view.findViewById(R.id.moreCoursesBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                coursesListDialog.show();
+            }
+        });
+
+        return view;
     }
 
     /** used to get clicked course's position **/

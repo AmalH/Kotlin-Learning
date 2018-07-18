@@ -19,9 +19,10 @@ public class LearnFragment_course extends Fragment {
     private static int coursePosition;
     public static CourseHeaderAdapter headerAdapter;
 
-    public static LearnFragment_course newInstance(int coursePosition) {  /** got the clicked course position for previous ui (LearnFragment_CurrentUserCourses) **/
+    public static LearnFragment_course newInstance(int coursePosition,int badgesNb) {  /** got the clicked course position for previous ui (LearnFragment_CurrentUserCourses) **/
         Bundle args = new Bundle();
         args.putInt("coursePosition",coursePosition);
+        args.putInt("badgesEarned",badgesNb);
         LearnFragment_course fragment = new LearnFragment_course();
         fragment.setArguments(args);
         return fragment;
@@ -31,7 +32,7 @@ public class LearnFragment_course extends Fragment {
         this.coursePosition= getArguments().getInt("coursePosition");
         final View view = inflater.inflate(R.layout.fragment_learn_course, container, false);
         ChaptersListAdapter scrollViewAdapter = new ChaptersListAdapter(getContext(),this.coursePosition);
-        headerAdapter = new CourseHeaderAdapter(getContext(),this.coursePosition);
+        headerAdapter = new CourseHeaderAdapter(getContext(),this.coursePosition, getArguments().getInt("badgesEarned"));
 
        /** filling the course header **/
         for (int i = 0; i < headerAdapter.getCount(); i++) {
@@ -47,6 +48,7 @@ public class LearnFragment_course extends Fragment {
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                   /** **/
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.root_learFragment, ChapterFragment.newInstance(coursePosition,finalI)).addToBackStack(null).commit();
                 }
             });
@@ -58,4 +60,5 @@ public class LearnFragment_course extends Fragment {
         }
         return view;
     }
+
 }
