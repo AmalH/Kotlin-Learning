@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
-import amalhichri.androidprojects.com.kotlinlearning.models.Course;
 import amalhichri.androidprojects.com.kotlinlearning.utils.AllCourses;
 
 
@@ -20,7 +19,6 @@ public class ChaptersListAdapter extends BaseAdapter {
 
     private Context context;
     private int coursePosition;
-    private Course course;
 
 
     public ChaptersListAdapter(Context context, int coursePosition){

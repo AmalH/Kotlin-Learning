@@ -25,13 +25,6 @@ public class RootFragment_learn extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View v = inflater.inflate(R.layout.fragment_root_learn, container, false);
         CoursesServices.getInstance().getAllUserCourses(Statics.auth.getCurrentUser().getUid(), getContext(), new ServerCallbacks() {
             @Override
             public void onSuccess(JSONObject result) {
@@ -56,8 +49,14 @@ public class RootFragment_learn extends Fragment {
                 Toast.makeText(getContext(),"ERROR 2"+result.toString(),Toast.LENGTH_SHORT);
             }
         });
-         return v;
     }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+         return inflater.inflate(R.layout.fragment_root_learn, container, false);
+    }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

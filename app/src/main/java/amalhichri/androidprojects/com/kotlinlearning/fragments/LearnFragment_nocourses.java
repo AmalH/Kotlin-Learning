@@ -2,8 +2,8 @@ package amalhichri.androidprojects.com.kotlinlearning.fragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,32 +21,31 @@ public class LearnFragment_nocourses extends Fragment {
 
     private List<String> courses;
     private HashMap<String,List> chapters;
-
     private int[] icons = new int[]{R.drawable.ic_overview,R.drawable.ic_start,R.drawable.ic_basics,R.drawable.ic_classesobjects,
             R.drawable.ic_functions,R.drawable.ic_others,R.drawable.ic_java,R.drawable.ic_javascript};
-
     private static Dialog dialog;
-    public static FragmentManager fgMgr;
-    public static ExpandableListView lvCourses;
+    private static ExpandableListView lvCourses;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_learn_nocourses, container, false);
-        this.fgMgr=getFragmentManager();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         this.dialog = new Dialog(getActivity());
         this.dialog.setContentView(R.layout.courseslist_view);
         prepareListData();
         this.lvCourses=dialog.findViewById(R.id.expandableLvw);
         this.lvCourses.setAdapter(new CoursesListAdapter(getContext(), courses, chapters,icons));
-        v.findViewById(R.id.openCoursesBtn).setOnClickListener(new View.OnClickListener() {
+        getActivity().findViewById(R.id.openCoursesBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.show();
             }
 
         });
+    }
 
-        return v;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_learn_nocourses, container, false);
     }
     // ---------- utils methods
     private void prepareListData(){

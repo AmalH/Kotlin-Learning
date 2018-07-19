@@ -22,12 +22,13 @@ public class CourseHeaderAdapter extends BaseAdapter {
     /** this adapter is to load data dynamiacally in the linearLayout @+id/courseHeaderLayout from fragment_learn_course.xml **/
 
     private Context context;
-    private int coursePosition,badgesNb;
+    private int coursePosition;
+    private int nbOfChaptersFinished;
 
-    public CourseHeaderAdapter(final Context context, final int coursePosition, int badgesNb){
+    public CourseHeaderAdapter(final Context context, final int coursePosition,int nbOfChaptersFinished){
         this.context=context;
         this.coursePosition=coursePosition;
-        this.badgesNb = badgesNb;
+        this.nbOfChaptersFinished = nbOfChaptersFinished;
     }
 
     @Override
@@ -51,7 +52,7 @@ public class CourseHeaderAdapter extends BaseAdapter {
 
         ((TextView) rowView.findViewById(R.id.courseTitle)).setText("Course "+ String.valueOf(coursePosition+1)+": "+  AllCourses.getCourse(coursePosition).getTitle());
         ((TextView) rowView.findViewById(R.id.courseDescription)).setText( AllCourses.getCourse(coursePosition).getDescription());
-        ((TextView) rowView.findViewById(R.id.nbbadgesEarned_course)).setText(String.valueOf(badgesNb));
+        ((TextView) rowView.findViewById(R.id.nbbadgesEarned_course)).setText(String.valueOf(nbOfChaptersFinished));
         ((TextView) rowView.findViewById(R.id.nbChaptersFinished)).setText(String.valueOf(AllCourses.getCourse(coursePosition).getCompletedChaptersNb()));
         ((TextView) rowView.findViewById(R.id.timeNeeded_course)).setText(String.valueOf(AllCourses.getCourse(coursePosition).getTimeToFinish()));
         ((com.daimajia.numberprogressbar.NumberProgressBar) rowView.findViewById(R.id.courseProgress)).setProgress((AllCourses.getCourse(coursePosition).getAdvancement()));

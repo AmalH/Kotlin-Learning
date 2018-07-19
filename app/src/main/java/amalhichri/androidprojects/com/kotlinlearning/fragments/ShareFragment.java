@@ -182,9 +182,8 @@ public class ShareFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_share, container, false);
         nbOfLoadedQuestions =0;
-        return v;
+        return inflater.inflate(R.layout.fragment_share, container, false);
     }
 
 

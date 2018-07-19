@@ -20,22 +20,19 @@ import amalhichri.androidprojects.com.kotlinlearning.models.CompetitionAnswer;
  */
 
 public class CompetitionAnswerAdapter extends RecyclerView.Adapter<CompetitionAnswerAdapter.CompetitionAnswerItem_ViewHolder> {
-    ArrayList<CompetitionAnswer> CompetitionsList;
-    Context context;
-    String userid;
+
+    private ArrayList<CompetitionAnswer> CompetitionsList;
+    private Context context;
 
     public CompetitionAnswerAdapter(ArrayList<CompetitionAnswer> c_list, Context context) {
         this.CompetitionsList = c_list;
         this.context = context;
-        userid = "dZb3TxK1x5dqQJkq7ve0d683VoA3";
-                //FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     @Override
     public CompetitionAnswerAdapter.CompetitionAnswerItem_ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.competition_answer_item, parent, false);
-        CompetitionAnswerAdapter.CompetitionAnswerItem_ViewHolder shareItem_viewHolder = new CompetitionAnswerAdapter.CompetitionAnswerItem_ViewHolder(view);
-
+        CompetitionAnswerAdapter.CompetitionAnswerItem_ViewHolder shareItem_viewHolder =
+                new CompetitionAnswerAdapter.CompetitionAnswerItem_ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.competition_answer_item, parent, false));
         return shareItem_viewHolder;
     }
 
@@ -44,21 +41,17 @@ public class CompetitionAnswerAdapter extends RecyclerView.Adapter<CompetitionAn
         holder.title.setText(CompetitionsList.get(position).getCompetition_title());
         holder.createed.setText(CompetitionsList.get(position).getCreated_string());
         holder.level.setText(CompetitionsList.get(position).getCompetiton_level() + "");
-
-
-        //view content
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppCompatActivity activity = (AppCompatActivity) context;
 
-                Competition c = new Competition();
-                c.setId(CompetitionsList.get(position).getId_competition());
-                CompetitionFragment competeShow = new CompetitionFragment();
-                competeShow.setCompetition(c);
+                Competition competition = new Competition();
+                competition.setId(CompetitionsList.get(position).getId_competition());
+                CompetitionFragment competitionFragment = new CompetitionFragment();
+                competitionFragment.setCompetition(competition);
 
-                activity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.root_compete, competeShow)
+                ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.root_compete, competitionFragment)
                         .addToBackStack(null)
                         .commit();
             }

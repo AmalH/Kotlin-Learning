@@ -12,12 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.google.firebase.auth.FirebaseAuth;
 
 import org.honorato.multistatetogglebutton.MultiStateToggleButton;
 import org.honorato.multistatetogglebutton.ToggleButton;
@@ -38,33 +36,22 @@ import amalhichri.androidprojects.com.kotlinlearning.utils.Configuration;
 
 public class CompeteFragment extends Fragment {
 
-    MultiStateToggleButton toggle_view;
-    Spinner orderSpinner;
-    Button bL1,bL2,bL3,bL4,bL5,bL6;
-    RecyclerView competitionsRecyclerView,answersRecyclerView;
-    SwipeRefreshLayout competeSwipeRefresh,competeAnswerSwipeRefresh;
 
-    static int level=1;
-    int order=1;
-    int toggle=0;
-    int lastToggle = -1;
-    int lastOrder = -1;
+    private RecyclerView competitionsRecyclerView,answersRecyclerView;
+    private SwipeRefreshLayout competeSwipeRefresh,competeAnswerSwipeRefresh;
+    private RecyclerView.LayoutManager layoutCompetition,layoutAnswer;
+    private CompetitionAdapter competitionAdapter;
+    private CompetitionAnswerAdapter answersAdapter;
 
-    int loaded_length_competition=0,loaded_length_answers=0;
-    int pastVisiblesItems, visibleItemCount, totalItemCount;
-    boolean loading;
+    private int order=1,toggle=0,lastToggle = -1,lastOrder = -1, loadedLengthCompetition =0, loadedLengthAnswers =0,pastVisiblesItems, visibleItemCount, totalItemCount;
+    private boolean loading;
 
-    RecyclerView.LayoutManager layoutCompetition,layoutAnswer;
-    CompetitionAdapter competitionAdapter;
-    CompetitionAnswerAdapter answersAdapter;
-
-    ArrayList<Competition> competitionList;
-    ArrayList<CompetitionAnswer> answersList;
+    private ArrayList<Competition> competitionList;
+    private ArrayList<CompetitionAnswer> answersList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_compete, container, false);
     }
 
@@ -72,22 +59,13 @@ public class CompeteFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        toggle_view = getActivity().findViewById(R.id.compete_toggle);
-        orderSpinner=getActivity().findViewById(R.id.compete_orderby);
-        bL1=getActivity().findViewById(R.id.compete_level_1);
-        bL2=getActivity().findViewById(R.id.compete_level_2);
-        bL3=getActivity().findViewById(R.id.compete_level_3);
-        bL4=getActivity().findViewById(R.id.compete_level_4);
-        bL5=getActivity().findViewById(R.id.compete_level_5);
-        bL6=getActivity().findViewById(R.id.compete_level_6);
         competitionsRecyclerView = getActivity().findViewById(R.id.compete_competitions);
         answersRecyclerView = getActivity().findViewById(R.id.compete_answers);
         competeSwipeRefresh=getActivity().findViewById(R.id.compete_swipeRefresh);
         competeAnswerSwipeRefresh=getActivity().findViewById(R.id.competeanswer_swipeRefresh);
 
-        toggle_view.enableMultipleChoice(false);
-        toggle_view.setValue(0);
-        bL1.setBackgroundColor(getContext().getResources().getColor(R.color.base_color_2));
+        ((MultiStateToggleButton)getActivity().findViewById(R.id.compete_toggle)).enableMultipleChoice(false);
+        ((MultiStateToggleButton)getActivity().findViewById(R.id.compete_toggle)).setValue(0);
 
         DefaultItemAnimator animator = new DefaultItemAnimator() {
             @Override
@@ -96,8 +74,6 @@ public class CompeteFragment extends Fragment {
             }
         };
         competitionsRecyclerView.setItemAnimator(animator);
-        //answersRecyclerView.setItemAnimator(animator);
-
         layoutCompetition = new LinearLayoutManager(getContext());
         layoutAnswer = new LinearLayoutManager(getContext());
         competitionsRecyclerView.setLayoutManager(layoutCompetition);
@@ -105,208 +81,23 @@ public class CompeteFragment extends Fragment {
         competitionList=new ArrayList<>();
         answersList=new ArrayList<>();
 
-        /** temp */
         competitionAdapter = new CompetitionAdapter(new ArrayList<Competition>(),getActivity());
         answersAdapter = new CompetitionAnswerAdapter(new ArrayList<CompetitionAnswer>(),getActivity());
         competitionsRecyclerView.setAdapter(competitionAdapter);
         answersRecyclerView.setAdapter(answersAdapter);
 
-        attachSwipeRefreshListener();
-        attachLevelButtonsListeners();
-        attachToggleListener();
-        attachspinnerListener();
-        attachaddListener();
-        attachcompetitionScrollListener();
-        attachAnswerScrollListener();
-
-    }
-
-    public synchronized void LoadList(){
-        if (Configuration.isOnline(getContext())){
-
-            switch (toggle){
-                case 0:
-                    competitionsRecyclerView.setVisibility(View.VISIBLE);
-                    answersRecyclerView.setVisibility(View.GONE);
-                    competeSwipeRefresh.setRefreshing(true);
-                    if(loaded_length_competition==0){
-                        competitionsRecyclerView.removeAllViews();
-                        competitionList.clear();
-                    }
-                    CompetitionServices.getInstance().getCompetitions("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), loaded_length_competition, level, order, new ServerCallbacks() {
-                        @Override
-                        public void onSuccess(JSONObject result) {
-                            boolean goShow=true;
-                            JSONArray array = new JSONArray();
-                            try {
-                                array = result.getJSONArray("competitions");
-                            } catch (JSONException e) {
-                                Toast.makeText(getContext(),"Server error while loading competitions , please report", Toast.LENGTH_SHORT).show();
-                                goShow=false;
-                            }
-                            if(array.length()==0) goShow=false;
-                            for(int i = 0 ; i < array.length() ; i++){
-                                try {
-                                    /** parse forum and add it to the arraylist**/
-                                    //Log.d("compet",CompetitionServices.parse_(array.getJSONObject(i)).toString());
-                                    competitionList.add(CompetitionServices.parse_(array.getJSONObject(i)));
-                                } catch (JSONException e) {
-                                    Toast.makeText(getContext(),"Application error while loading competition , please report", Toast.LENGTH_SHORT).show();
-                                    goShow=false;
-                                }
-                            }
-                            /** All the work will be here **/
-                            if(goShow) {
-                                competeAnswerSwipeRefresh.setVisibility(View.GONE);
-                                competeSwipeRefresh.setVisibility(View.VISIBLE);
-                                if(loaded_length_competition==0){
-                                    //Log.d("loaded",loaded_length_competition+"new load");
-                                    competitionAdapter=new CompetitionAdapter(competitionList,getContext());
-                                    competitionsRecyclerView.setAdapter(competitionAdapter);
-                                }
-                                else{
-                                    //Log.d("loaded",loaded_length_competition+"old load : "+loaded_length_competition+"     "+forumRececyclerView+"   "+adapter);
-                                    if(competitionAdapter==null){
-                                        competitionAdapter=new CompetitionAdapter(competitionList,getContext());
-                                        competitionsRecyclerView.setAdapter(competitionAdapter);
-                                    }
-                                    else
-                                        competitionAdapter.notifyDataSetChanged();
-                                }
-                                //addCalculated
-                                //Log.d("restult",array.length()+" #  "+loaded_length_competition);
-                                if(loaded_length_competition==0) loaded_length_competition+=array.length();
-                                else
-                                    loaded_length_competition+=10;
-                            }
-                            competeAnswerSwipeRefresh.setRefreshing(false);
-                            competeSwipeRefresh.setRefreshing(false);
-                            loading=false;
-                            enableLevels();
-                        }
-
-                        @Override
-                        public void onError(VolleyError result) {
-                            loading=false;
-                            competeAnswerSwipeRefresh.setRefreshing(false);
-                            competeSwipeRefresh.setRefreshing(false);
-                            enableLevels();
-                        }
-
-                        @Override
-                        public void onWrong(JSONObject result) {
-                            loading=false;
-                            competeAnswerSwipeRefresh.setRefreshing(false);
-                            competeSwipeRefresh.setRefreshing(false);
-                            enableLevels();
-                        }
-                    });
-
-                    break;
-                case 1:
-                    competitionsRecyclerView.setVisibility(View.GONE);
-                    answersRecyclerView.setVisibility(View.VISIBLE);
-                    competeAnswerSwipeRefresh.setRefreshing(true);
-                   if(loaded_length_answers==0){
-                       answersRecyclerView.removeAllViews();
-                       answersList.clear();
-                    }
-                    CompetitionServices.getInstance().getCompetitionsAnswers(FirebaseAuth.getInstance().getCurrentUser().getUid(), getContext(), loaded_length_answers, level, new ServerCallbacks() {
-                        @Override
-                        public void onSuccess(JSONObject result) {
-                            boolean goShow=true;
-                            JSONArray array = new JSONArray();
-                            try {
-                                array = result.getJSONArray("competitions");
-                            } catch (JSONException e) {
-                                Toast.makeText(getContext(),"Server error while loading competitions , please report", Toast.LENGTH_SHORT).show();
-                                goShow=false;
-                            }
-                           // Log.d("loaded",result+"");Log.d("loaded",""+loaded_length_answers);
-                            //Log.d("loaded",array.toString());
-                            if(array.length()==0) goShow=false;
-                            //Log.d("loaded",goShow+"");
-                            for(int i = 0 ; i < array.length() ; i++){
-                                try {
-                                    /** parse forum and add it to the arraylist**/
-                                    //Log.d("compet",CompetitionServices.parseAnswer_(array.getJSONObject(i)).toString());
-                                    answersList.add(CompetitionServices.parseAnswer_(array.getJSONObject(i)));
-                                } catch (JSONException e) {
-                                    Toast.makeText(getContext(),"Application error while loading competition , please report", Toast.LENGTH_SHORT).show();
-                                    goShow=false;
-                                }
-                            }
-                            //Log.d("loaded",goShow+"");
-                            /** All the work will be here **/
-                            if(goShow) {
-                                competeAnswerSwipeRefresh.setVisibility(View.VISIBLE);
-                                competeSwipeRefresh.setVisibility(View.GONE);
-                                if(loaded_length_answers==0){
-                                    //Log.d("loaded",answersList.toString());
-                                    answersAdapter=new CompetitionAnswerAdapter(answersList,getContext());
-                                    answersRecyclerView.setAdapter(answersAdapter);
-                                }
-                                else{
-                                    //Log.d("loaded",loaded_length_competition+"old load : "+loaded_length_competition+"     "+forumRececyclerView+"   "+adapter);
-                                    if(answersAdapter==null){
-                                        answersAdapter=new CompetitionAnswerAdapter(answersList,getContext());
-                                        answersRecyclerView.setAdapter(answersAdapter);
-                                    }
-                                    else
-                                        answersAdapter.notifyDataSetChanged();
-                                }
-                                //addCalculated
-                                if(loaded_length_answers==0) loaded_length_answers+=array.length();
-                                else
-                                    loaded_length_answers+=10;
-                            }
-                            competeAnswerSwipeRefresh.setRefreshing(false);
-                            competeSwipeRefresh.setRefreshing(false);
-                            loading=false;
-                            enableLevels();
-                        }
-
-                        @Override
-                        public void onError(VolleyError result) {
-                            loading=false;
-                            competeAnswerSwipeRefresh.setRefreshing(false);
-                            competeSwipeRefresh.setRefreshing(false);
-                            enableLevels();
-                        }
-
-                        @Override
-                        public void onWrong(JSONObject result) {
-                            loading=false;
-                            competeAnswerSwipeRefresh.setRefreshing(false);
-                            competeSwipeRefresh.setRefreshing(false);
-                            enableLevels();
-                        }
-                    });
-
-
-                    break;
-            }
-        }
-        else{
-            loading=false;
-            competeAnswerSwipeRefresh.setRefreshing(false);
-            competeSwipeRefresh.setRefreshing(false);
-        }
-    }
-
-    public void attachSwipeRefreshListener(){
+        /** swipe refresh layout **/
         competeSwipeRefresh.setColorSchemeColors(
                 getContext().getResources().getColor(R.color.base_color_1),
                 getContext().getResources().getColor(R.color.base_color_2));
         competeAnswerSwipeRefresh.setColorSchemeColors(
                 getContext().getResources().getColor(R.color.base_color_1),
                 getContext().getResources().getColor(R.color.base_color_2));
-
         competeSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(Configuration.isOnline(getContext())){
-                    loaded_length_competition=0;
+                    loadedLengthCompetition =0;
                     LoadList();
                 }
                 else
@@ -316,12 +107,11 @@ public class CompeteFragment extends Fragment {
                 }
             }
         });
-
         competeAnswerSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(Configuration.isOnline(getContext())){
-                    loaded_length_answers=0;
+                    loadedLengthAnswers =0;
                     LoadList();
                 }
                 else
@@ -332,17 +122,31 @@ public class CompeteFragment extends Fragment {
             }
         });
 
-    }
-
-
-    public void attachspinnerListener(){
-        orderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /** compete answer toggle **/
+        ((MultiStateToggleButton)getActivity().findViewById(R.id.compete_toggle)).setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int value) {
+                toggle=value;
+                loadedLengthCompetition =0;
+                loadedLengthAnswers =0;
+                if(value==1)
+                    getActivity().findViewById(R.id.compete_orderby).setVisibility(View.GONE);
+                else
+                    getActivity().findViewById(R.id.compete_orderby).setVisibility(View.VISIBLE);
+                if(lastToggle!=value) {
+                    LoadList();
+                    lastToggle= value;
+                }
+            }
+        });
+       /** orderby spinner **/
+        ((Spinner)getActivity().findViewById(R.id.compete_orderby)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 order=i+1;
                 if(toggle==0 && lastOrder!= order){
-                    loaded_length_competition=0;
-                    loaded_length_answers=0;
+                    loadedLengthCompetition =0;
+                    loadedLengthAnswers =0;
                     LoadList();
                     lastOrder = order;
                 }
@@ -353,173 +157,47 @@ public class CompeteFragment extends Fragment {
 
             }
         });
-    }
 
-    public void attachToggleListener(){
-        toggle_view.setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
-            @Override
-            public void onValueChanged(int value) {
-                toggle=value;
-                loaded_length_competition=0;
-                loaded_length_answers=0;
-                if(value==1)
-                    orderSpinner.setVisibility(View.GONE);
-                else
-                    orderSpinner.setVisibility(View.VISIBLE);
-                disabbleLevels();
-                if(lastToggle!=value) {
-                    LoadList();
-                    lastToggle= value;
-                }
-            }
-        });
-    }
-
-    public void attachLevelButtonsListeners(){
-        bL1.setOnClickListener(new View.OnClickListener() {
+        /** add contest **/
+        getActivity().findViewById(R.id.compete_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                disabbleLevels();
-                level=1;
-
-                bL2.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL3.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL4.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL5.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL6.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-
-                bL1.setBackgroundColor(getContext().getResources().getColor(R.color.base_color_2));
-                loaded_length_competition=0;
-                loaded_length_answers=0;
-                LoadList();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.root_compete,new AddCompetitionFragment())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
-        bL2.setOnClickListener(new View.OnClickListener() {
+        /** recyclerView onScroll **/
+        loading =false;
+        competitionsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onClick(View view) {
-                disabbleLevels();
-                level=2;
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(dy > 0) //check for scroll down
+                {
+                    visibleItemCount = layoutCompetition.getChildCount();
+                    totalItemCount = layoutCompetition.getItemCount();
+                    pastVisiblesItems = ((LinearLayoutManager)layoutCompetition).findFirstVisibleItemPosition();
 
-                bL1.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL3.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL4.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL5.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL6.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-
-                bL2.setBackgroundColor(getContext().getResources().getColor(R.color.base_color_2));
-                loaded_length_competition=0;
-                loaded_length_answers=0;
-                LoadList();
-            }
-        });
-
-        bL3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                disabbleLevels();
-                level=3;
-
-                bL2.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL1.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL4.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL5.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL6.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-
-                bL3.setBackgroundColor(getContext().getResources().getColor(R.color.base_color_2));
-                loaded_length_competition=0;
-                loaded_length_answers=0;
-                LoadList();
-            }
-        });
-
-        bL4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                disabbleLevels();
-                level=4;
-
-                bL2.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL3.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL1.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL5.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL6.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-
-                bL4.setBackgroundColor(getContext().getResources().getColor(R.color.base_color_2));
-                loaded_length_competition=0;
-                loaded_length_answers=0;
-                LoadList();
-            }
-        });
-
-        bL5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                disabbleLevels();
-                level=5;
-
-                bL2.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL3.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL4.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL1.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL6.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-
-                bL5.setBackgroundColor(getContext().getResources().getColor(R.color.base_color_2));
-                loaded_length_competition=0;
-                loaded_length_answers=0;
-                LoadList();
-            }
-        });
-
-        bL6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                disabbleLevels();
-                level=6;
-
-                bL2.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL3.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL4.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL5.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                bL1.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-
-                bL6.setBackgroundColor(getContext().getResources().getColor(R.color.base_color_2));
-                loaded_length_competition=0;
-                loaded_length_answers=0;
-                LoadList();
-            }
-        });
-    }
-
-    public void attachcompetitionScrollListener(){
-            loading =false;
-            competitionsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                    if(dy > 0) //check for scroll down
+                    if (Configuration.isOnline(getContext())&& !loading)
                     {
-                        visibleItemCount = layoutCompetition.getChildCount();
-                        totalItemCount = layoutCompetition.getItemCount();
-                        pastVisiblesItems = ((LinearLayoutManager)layoutCompetition).findFirstVisibleItemPosition();
-
-                        if (Configuration.isOnline(getContext())&& !loading)
+                        if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount-4)
                         {
-                            if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount-4)
-                            {
-                                loading=true;
-                                if(competitionAdapter!=null)
-                                    //Log.d("loaded",loaded_length+"by search");
-                                    LoadList();
-                                // //Log.d("loading","loading_more");
-                            }
+                            loading=true;
+                            if(competitionAdapter!=null)
+                                //Log.d("loaded",loaded_length+"by search");
+                                LoadList();
+                            // //Log.d("loading","loading_more");
                         }
                     }
                 }
-            });
-    }
+            }
+        });
 
-    public void attachAnswerScrollListener(){
+
+        /** answer recyclerView scroll listener **/
         loading =false;
         answersRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -545,122 +223,171 @@ public class CompeteFragment extends Fragment {
                 }
             }
         });
+
     }
 
-    public void attachaddListener(){
-        getActivity().findViewById(R.id.compete_add).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.root_compete,new AddCompetitionFragment())
-                        .addToBackStack(null)
-                        .commit();
+    private synchronized void LoadList(){
+        if (Configuration.isOnline(getContext())){
+
+            switch (toggle){
+                case 0:
+                    competitionsRecyclerView.setVisibility(View.VISIBLE);
+                    answersRecyclerView.setVisibility(View.GONE);
+                    competeSwipeRefresh.setRefreshing(true);
+                    if(loadedLengthCompetition ==0){
+                        competitionsRecyclerView.removeAllViews();
+                        competitionList.clear();
+                    }
+                    CompetitionServices.getInstance().getCompetitions("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), loadedLengthCompetition, 1, order, new ServerCallbacks() {
+                        @Override
+                        public void onSuccess(JSONObject result) {
+                            boolean showLoadedData =true;
+                            try {
+                            if((result.getJSONArray("competitions")).length()==0) showLoadedData =false;
+                            for(int i = 0 ; i < (result.getJSONArray("competitions")).length() ; i++){
+                                try {
+                                    competitionList.add(CompetitionServices.parse_((result.getJSONArray("competitions")).getJSONObject(i)));
+                                } catch (JSONException e) {
+                                    Toast.makeText(getContext(),"Application error while loading competition , please report", Toast.LENGTH_SHORT).show();
+                                    showLoadedData =false;
+                                }
+                            }
+                            if(showLoadedData) {
+                                competeAnswerSwipeRefresh.setVisibility(View.GONE);
+                                competeSwipeRefresh.setVisibility(View.VISIBLE);
+                                if(loadedLengthCompetition ==0){
+                                    competitionAdapter=new CompetitionAdapter(competitionList,getContext());
+                                    competitionsRecyclerView.setAdapter(competitionAdapter);
+                                }
+                                else{
+                                    if(competitionAdapter==null){
+                                        competitionAdapter=new CompetitionAdapter(competitionList,getContext());
+                                        competitionsRecyclerView.setAdapter(competitionAdapter);
+                                    }
+                                    else
+                                        competitionAdapter.notifyDataSetChanged();
+                                }
+                                if(loadedLengthCompetition ==0) loadedLengthCompetition +=(result.getJSONArray("competitions")).length();
+                                else
+                                    loadedLengthCompetition +=10;
+                            }
+                            competeAnswerSwipeRefresh.setRefreshing(false);
+                            competeSwipeRefresh.setRefreshing(false);
+                            loading=false;
+                            } catch (JSONException e) {
+                                Toast.makeText(getContext(),"Server error while loading competitions , please report", Toast.LENGTH_SHORT).show();
+                                //showLoadedData =false;
+                            }
+                        }
+
+                        @Override
+                        public void onError(VolleyError result) {
+                            loading=false;
+                            competeAnswerSwipeRefresh.setRefreshing(false);
+                            competeSwipeRefresh.setRefreshing(false);
+                        }
+
+                        @Override
+                        public void onWrong(JSONObject result) {
+                            loading=false;
+                            competeAnswerSwipeRefresh.setRefreshing(false);
+                            competeSwipeRefresh.setRefreshing(false);
+                        }
+                    });
+
+                    break;
+                case 1:
+                    competitionsRecyclerView.setVisibility(View.GONE);
+                    answersRecyclerView.setVisibility(View.VISIBLE);
+                    competeAnswerSwipeRefresh.setRefreshing(true);
+                   if(loadedLengthAnswers ==0){
+                       answersRecyclerView.removeAllViews();
+                       answersList.clear();
+                    }
+                    CompetitionServices.getInstance().getCompetitionsAnswers("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), loadedLengthAnswers,0, new ServerCallbacks() {
+                        @Override
+                        public void onSuccess(JSONObject result) {
+                            boolean goShow=true;
+                            JSONArray array = new JSONArray();
+                            try {
+                                array = result.getJSONArray("competitions");
+                            } catch (JSONException e) {
+                                Toast.makeText(getContext(),"Server error while loading competitions , please report", Toast.LENGTH_SHORT).show();
+                                goShow=false;
+                            }
+                           // Log.d("loaded",result+"");Log.d("loaded",""+loadedLengthAnswers);
+                            //Log.d("loaded",array.toString());
+                            if(array.length()==0) goShow=false;
+                            //Log.d("loaded",goShow+"");
+                            for(int i = 0 ; i < array.length() ; i++){
+                                try {
+                                    /** parse forum and add it to the arraylist**/
+                                    //Log.d("compet",CompetitionServices.parseAnswer_(array.getJSONObject(i)).toString());
+                                    answersList.add(CompetitionServices.parseAnswer_(array.getJSONObject(i)));
+                                } catch (JSONException e) {
+                                    Toast.makeText(getContext(),"Application error while loading competition , please report", Toast.LENGTH_SHORT).show();
+                                    goShow=false;
+                                }
+                            }
+                            //Log.d("loaded",goShow+"");
+                            /** All the work will be here **/
+                            if(goShow) {
+                                competeAnswerSwipeRefresh.setVisibility(View.VISIBLE);
+                                competeSwipeRefresh.setVisibility(View.GONE);
+                                if(loadedLengthAnswers ==0){
+                                    //Log.d("loaded",answersList.toString());
+                                    answersAdapter=new CompetitionAnswerAdapter(answersList,getContext());
+                                    answersRecyclerView.setAdapter(answersAdapter);
+                                }
+                                else{
+                                    //Log.d("loaded",loadedLengthCompetition+"old load : "+loadedLengthCompetition+"     "+forumRececyclerView+"   "+adapter);
+                                    if(answersAdapter==null){
+                                        answersAdapter=new CompetitionAnswerAdapter(answersList,getContext());
+                                        answersRecyclerView.setAdapter(answersAdapter);
+                                    }
+                                    else
+                                        answersAdapter.notifyDataSetChanged();
+                                }
+                                //addCalculated
+                                if(loadedLengthAnswers ==0) loadedLengthAnswers +=array.length();
+                                else
+                                    loadedLengthAnswers +=10;
+                            }
+                            competeAnswerSwipeRefresh.setRefreshing(false);
+                            competeSwipeRefresh.setRefreshing(false);
+                            loading=false;
+                        }
+
+                        @Override
+                        public void onError(VolleyError result) {
+                            loading=false;
+                            competeAnswerSwipeRefresh.setRefreshing(false);
+                            competeSwipeRefresh.setRefreshing(false);
+                        }
+
+                        @Override
+                        public void onWrong(JSONObject result) {
+                            loading=false;
+                            competeAnswerSwipeRefresh.setRefreshing(false);
+                            competeSwipeRefresh.setRefreshing(false);
+                        }
+                    });
+                    break;
             }
-        });
+        }
+        else{
+            loading=false;
+            competeAnswerSwipeRefresh.setRefreshing(false);
+            competeSwipeRefresh.setRefreshing(false);
+        }
     }
-
-
-    public void disabbleLevels(){
-        bL1.setEnabled(false);
-        bL2.setEnabled(false);
-        bL3.setEnabled(false);
-        bL4.setEnabled(false);
-        bL5.setEnabled(false);
-        bL6.setEnabled(false);
-    }
-
-    public void enableLevels(){
-        bL1.setEnabled(true);
-        bL2.setEnabled(true);
-        bL3.setEnabled(true);
-        bL4.setEnabled(true);
-        bL5.setEnabled(true);
-        bL6.setEnabled(true);
-    }
-
 
     @Override
     public void onResume() {
         super.onResume();
-        loaded_length_answers=0;
-        loaded_length_competition=0;
+        loadedLengthAnswers =0;
+        loadedLengthCompetition =0;
         LoadList();
-        colorcurrentLevel();
-
     }
 
-    public void colorcurrentLevel(){
-        switch (level){
-            case 1:
-
-                    bL2.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL3.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL4.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL5.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL6.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-
-                    bL1.setBackgroundColor(getContext().getResources().getColor(R.color.base_color_2));
-            break;
-
-            case 2:
-
-                    bL1.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL3.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL4.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL5.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL6.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-
-                    bL2.setBackgroundColor(getContext().getResources().getColor(R.color.base_color_2));
-                    loaded_length_competition=0;
-                    loaded_length_answers=0;
-             break;
-            case 3:
-
-                    bL2.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL1.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL4.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL5.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL6.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-
-                    bL3.setBackgroundColor(getContext().getResources().getColor(R.color.base_color_2));
-                    loaded_length_competition=0;
-                    loaded_length_answers=0;
-             break;
-            case 4:
-                    bL2.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL3.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL1.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL5.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL6.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-
-                    bL4.setBackgroundColor(getContext().getResources().getColor(R.color.base_color_2));
-                    loaded_length_competition=0;
-                    loaded_length_answers=0;
-            break;
-            case 5:
-
-                    bL2.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL3.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL4.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL1.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL6.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-
-                    bL5.setBackgroundColor(getContext().getResources().getColor(R.color.base_color_2));
-                    loaded_length_competition=0;
-                    loaded_length_answers=0;
-             break;
-
-            case 6:
-                    bL2.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL3.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL4.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL5.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-                    bL1.setBackgroundColor(getContext().getResources().getColor(R.color.material_blue_grey_80));
-
-                    bL6.setBackgroundColor(getContext().getResources().getColor(R.color.base_color_2));
-                    loaded_length_competition=0;
-                    loaded_length_answers=0;
-             break;
-        }
-    }
 }

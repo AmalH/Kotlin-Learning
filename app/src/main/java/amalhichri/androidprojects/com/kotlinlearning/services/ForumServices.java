@@ -43,7 +43,7 @@ public class ForumServices {
         Log.d("BEFORE","BEFORE");
         final JSONObject jsonBody = new JSONObject();
             JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                    (Request.Method.GET, "http://192.168.1.5:80/ikotlinBackEnd/web/forums/getAllQuestions?id="+id+"&start="+start+"&orderby="+orderby+"&keysearch="+search, jsonBody, new Response.Listener<JSONObject>() {
+                    (Request.Method.GET, "http://192.168.43.166:80/ikotlinBackEnd/web/forums/getAllQuestions?id="+id+"&start="+start+"&orderby="+orderby+"&keysearch="+search, jsonBody, new Response.Listener<JSONObject>() {
 
                         @Override
                         public void onResponse(JSONObject response) {
@@ -133,7 +133,7 @@ public class ForumServices {
         final JSONObject jsonBody = new JSONObject(m);
         Log.d("body",jsonBody.toString());
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.1.5:80/ikotlinBackEnd/web/forums/addQuestion", jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://192.168.43.166:80/ikotlinBackEnd/web/forums/addQuestion", jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -175,7 +175,7 @@ public class ForumServices {
         final JSONObject jsonBody = new JSONObject(m);
         Log.d("body",jsonBody.toString());
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.1.5:80/ikotlinBackEnd/web/forums/editQuestion", jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://192.168.43.166:80/ikotlinBackEnd/web/forums/editQuestion", jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -209,7 +209,7 @@ public class ForumServices {
         final JSONObject jsonBody = new JSONObject();
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.1.5:80/ikotlinBackEnd/web/forums/getCommments?id="+id+"&questionId="+questionId+"&start="+start, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://192.168.43.166:80/ikotlinBackEnd/web/forums/getCommments?id="+id+"&questionId="+questionId+"&start="+start, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -271,7 +271,7 @@ public class ForumServices {
         final JSONObject jsonBody = new JSONObject(m);
         Log.d("body",jsonBody.toString());
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.1.5:80/ikotlinBackEnd/web/forums/addComment", jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://192.168.43.166:80/ikotlinBackEnd/web/forums/addComment", jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -304,7 +304,7 @@ public class ForumServices {
     public void upvoteForum (String id, Context context, int questionId, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.1.5:80/ikotlinBackEnd/web/forums/questionUpvotes?id="+id+"&questionId="+questionId, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://192.168.43.166:80/ikotlinBackEnd/web/forums/questionUpvotes?id="+id+"&questionId="+questionId, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -343,7 +343,7 @@ public class ForumServices {
     public void downvoteForum (String id, Context context, int questionId, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.1.5:80/ikotlinBackEnd/web/forums/questionDownvotes?id="+id+"&questionId="+questionId, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://192.168.43.166:80/ikotlinBackEnd/web/forums/questionDownvotes?id="+id+"&questionId="+questionId, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -383,7 +383,7 @@ public class ForumServices {
     public void upvoteComment (String id, Context context, int commentid, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.1.5:80/ikotlinBackEnd/web/forums/getCommentUpvotes?id="+id+"&commentid="+commentid, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://192.168.43.166:80/ikotlinBackEnd/web/forums/getCommentUpvotes?id="+id+"&commentid="+commentid, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -422,7 +422,7 @@ public class ForumServices {
     public void downvoteComment (String id, Context context, int commentid, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.1.5:80/ikotlinBackEnd/web/forums/getCommentDownvotes?id="+id+"&commentid="+commentid, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://192.168.43.166:80/ikotlinBackEnd/web/forums/getCommentDownvotes?id="+id+"&commentid="+commentid, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -461,7 +461,7 @@ public class ForumServices {
     public void markViewForum (String id, Context context, int questionId, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.1.5:80/ikotlinBackEnd/web/forums/markQuestionAsSeen?id="+id+"&questionId="+questionId, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://192.168.43.166:80/ikotlinBackEnd/web/forums/markQuestionAsSeen?id="+id+"&questionId="+questionId, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -494,7 +494,7 @@ public class ForumServices {
     public void getForum (String id, Context context, int questionId, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.1.5:80/ikotlinBackEnd/web/forums/getSingleQuestion?id="+id+"&questionId="+questionId, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://192.168.43.166:80/ikotlinBackEnd/web/forums/getSingleQuestion?id="+id+"&questionId="+questionId, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -527,7 +527,7 @@ public class ForumServices {
     public void delForum (String id, Context context, int questionId, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.1.5:80/ikotlinBackEnd/web/forums" +"/deleteQuestion?id="+id+"&questionId="+questionId, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://192.168.43.166:80/ikotlinBackEnd/web/forums" +"/deleteQuestion?id="+id+"&questionId="+questionId, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
