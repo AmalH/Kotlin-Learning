@@ -54,6 +54,7 @@
                 app:civ_border_width="2dp"
                 app:civ_border_color="#60FFB417"/>
             <TextView
+                android:id="@+id/userName_Feedback"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/userImg_Feedback"

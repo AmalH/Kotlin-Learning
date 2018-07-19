@@ -27,13 +27,18 @@
         android:layout_margin="20dp"
         android:layout_below="@+id/startedCoursesTv"
         />
+
     <com.rey.material.widget.FloatingActionButton
         android:id="@+id/moreCoursesBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fab_backgroundColor="@color/base_color_1"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_margin="16dp"
+        android:clickable="true"
+        android:elevation="9dp"
+        app:fab_backgroundColor="@color/base_color_2"
         app:fab_iconSrc="@drawable/ic_add_course"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"/>
+
+
 </RelativeLayout>

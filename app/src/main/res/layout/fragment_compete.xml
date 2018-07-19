@@ -1,5 +1,4 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -13,22 +12,19 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="8"
             android:layout_gravity="start|top"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="3dp"
-            >
-            <View
-                android:layout_width="2dp"
-                android:layout_height="match_parent">
-            </View>
+            android:gravity="center_horizontal">
             <org.honorato.multistatetogglebutton.MultiStateToggleButton
-                android:id="@+id/compete_toggle"
-                android:layout_width="wrap_content"
+                android:id="@+id/competeToggleBtn"
+                android:layout_width="250dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
-                app:values="@array/compete_toogle"
+                android:gravity="center_vertical"
+                app:values="@array/competeToggle"
                 app:mstbColorPressedBackground="@color/base_color_2"
                 app:mstbColorNotPressedBackground="@color/material_blue_grey_80"
                 app:mstbColorPressedText="@color/comment_background"
@@ -36,10 +32,10 @@
 
                 />
             <Spinner
-                android:id="@+id/compete_orderby"
+                android:id="@+id/competeOrderbySpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:entries="@array/compete_orderby"
+                android:entries="@array/competeOrderby"
                 android:layout_marginLeft="5dp"
                 >
 
@@ -58,9 +54,10 @@
 
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/compete_swipeRefresh"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="88"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
                 >
 
                 <android.support.v7.widget.RecyclerView
@@ -88,14 +85,15 @@
         </LinearLayout>
 
     </LinearLayout>
+
     <com.rey.material.widget.FloatingActionButton
         android:id="@+id/compete_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_margin="16dp"
         android:clickable="true"
         android:elevation="9dp"
-        app:fab_backgroundColor="@color/base_color_1"
+        app:fab_backgroundColor="@color/base_color_2"
         app:fab_iconSrc="@drawable/ic_action_add_forum"
         android:layout_gravity="end|bottom" />
 

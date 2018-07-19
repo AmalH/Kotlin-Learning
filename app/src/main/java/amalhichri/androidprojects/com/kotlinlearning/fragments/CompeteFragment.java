@@ -64,8 +64,8 @@ public class CompeteFragment extends Fragment {
         competeSwipeRefresh=getActivity().findViewById(R.id.compete_swipeRefresh);
         competeAnswerSwipeRefresh=getActivity().findViewById(R.id.competeanswer_swipeRefresh);
 
-        ((MultiStateToggleButton)getActivity().findViewById(R.id.compete_toggle)).enableMultipleChoice(false);
-        ((MultiStateToggleButton)getActivity().findViewById(R.id.compete_toggle)).setValue(0);
+        ((MultiStateToggleButton)getActivity().findViewById(R.id.competeToggleBtn)).enableMultipleChoice(false);
+        ((MultiStateToggleButton)getActivity().findViewById(R.id.competeToggleBtn)).setValue(0);
 
         DefaultItemAnimator animator = new DefaultItemAnimator() {
             @Override
@@ -123,16 +123,16 @@ public class CompeteFragment extends Fragment {
         });
 
         /** compete answer toggle **/
-        ((MultiStateToggleButton)getActivity().findViewById(R.id.compete_toggle)).setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
+        ((MultiStateToggleButton)getActivity().findViewById(R.id.competeToggleBtn)).setOnValueChangedListener(new ToggleButton.OnValueChangedListener() {
             @Override
             public void onValueChanged(int value) {
                 toggle=value;
                 loadedLengthCompetition =0;
                 loadedLengthAnswers =0;
                 if(value==1)
-                    getActivity().findViewById(R.id.compete_orderby).setVisibility(View.GONE);
+                    getActivity().findViewById(R.id.competeOrderbySpinner).setVisibility(View.GONE);
                 else
-                    getActivity().findViewById(R.id.compete_orderby).setVisibility(View.VISIBLE);
+                    getActivity().findViewById(R.id.competeOrderbySpinner).setVisibility(View.VISIBLE);
                 if(lastToggle!=value) {
                     LoadList();
                     lastToggle= value;
@@ -140,7 +140,7 @@ public class CompeteFragment extends Fragment {
             }
         });
        /** orderby spinner **/
-        ((Spinner)getActivity().findViewById(R.id.compete_orderby)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        ((Spinner)getActivity().findViewById(R.id.competeOrderbySpinner)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 order=i+1;

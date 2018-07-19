@@ -28,22 +28,22 @@
     <!-- ***********************
               Arrays
     *****************************-->
-    <string-array name="forum_orderby">
+    <string-array name="forumOrderby">
         <item>Top rated</item>
         <item>Most viewed</item>
         <item>Latest</item>
     </string-array>
-    <string-array name="compete_toogle">
-        <item>Competitions </item>
-        <item>My answers </item>
+    <string-array name="competeToggle">
+        <item>Contests </item>
+        <item>My solutions </item>
     </string-array>
 
-    <string-array name="compete_orderby">
-        <item>Date</item>
+    <string-array name="competeOrderby">
+        <item>Latest</item>
         <item>Solved</item>
     </string-array>
 
-    <string-array name="compete_levels">
+    <string-array name="competeLevels">
         <item>1</item>
         <item>2</item>
         <item>3</item>
