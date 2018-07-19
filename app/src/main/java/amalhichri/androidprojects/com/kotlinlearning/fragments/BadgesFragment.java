@@ -46,12 +46,7 @@ public class BadgesFragment extends Fragment {
                 "Win 10 challenges", "Post 5 questions with at least 5 upvotes each", "Answer your own question and get 5 upvotes","Post an answer and get an upvote","Get 10 upvotes on your code",
                 "Leave a comment with 5 upvotes", "Post 10 answers with at least 5 upvotes each", "Post 5 codes with at least 5 upvotes each","Get 100 upvotes on your answer","Post 15 codes with at least 3 upvotes each"};
         String[] badgesDescriptions_Grid = new String[]{"","","","","","","","","","","","","","","","","","","",""};
-        /*ImageView[] badgesIcons = new ImageView[]{ generateImageView(R.drawable.ic_badge_accountverified),generateImageView(R.drawable.ic_badge_engaged_locked),generateImageView(R.drawable.ic_badge_acheiver),generateImageView(R.drawable.ic_badge_gettingstarted)
-                ,generateImageView(R.drawable.ic_badge_course_master),generateImageView(R.drawable.ic_badge_asker),generateImageView(R.drawable.ic_badge_good_question),generateImageView(R.drawable.ic_badge_master),
-                generateImageView(R.drawable.ic_badge_top_question),generateImageView(R.drawable.ic_badge_good_answer),generateImageView(R.drawable.ic_badge_guru),generateImageView(R.drawable.ic_badge_question_master),
-                generateImageView(R.drawable.ic_badge_self_learner),generateImageView(R.drawable.ic_badge_answerer),generateImageView(R.drawable.ic_badge_developer),generateImageView(R.drawable.ic_badge_contributor),
-                generateImageView(R.drawable.ic_badge_teacher),generateImageView(R.drawable.ic_badge_coder),generateImageView(R.drawable.ic_badge_popular_answer),generateImageView(R.drawable.ic_badge_code_ninja),
-        };*/
+
          int[] badgesIcons= new int[]{
                 R.drawable.ic_badge_accountverified_unlocked,R.drawable.ic_badge_engaged_unlocked,R.drawable.ic_badge_acheiver_unlocked,R.drawable.ic_badge_gettingstarted_unlocked,
                 R.drawable.ic_badge_course_master_unlocked,R.drawable.ic_badge_asker_unlocked,R.drawable.ic_badge_good_question_unlocked,R.drawable.ic_badge_master_unlocked,
@@ -59,7 +54,7 @@ public class BadgesFragment extends Fragment {
                 R.drawable.ic_badge_self_learne_unlockedr,R.drawable.ic_badge_answerer_unlocked,R.drawable.ic_badge_developer_unlocked,R.drawable.ic_badge_contributor_unlocked,
                 R.drawable.ic_badge_teacher_unlocked,R.drawable.ic_badge_coder_unlocked,R.drawable.ic_badge_popular_answer_unlocked,R.drawable.ic_badge_code_ninja_unlocked};
 
-      badgesGridView.setLayoutAnimation(getgridlayoutAnim());
+        badgesGridView.setLayoutAnimation(getgridlayoutAnim());
         badgesGridView.setAdapter(new BadgesAdapter(getContext(),badgesDescriptions_Grid,badgesDescriptions_Grid,badgesIcons));
         badgesLv.setAdapter(new BadgesAdapter(getContext(),badgesDescriptions,badgesNames,badgesIcons));
         /** switching between listView and gridView button click **/
@@ -68,12 +63,12 @@ public class BadgesFragment extends Fragment {
             public void onClick(View v) {
                 switch (view.findViewById(R.id.badgesGridView).getVisibility()){
                     case View.VISIBLE:
-                        v.setBackgroundResource(R.drawable.ic_list);
+                        v.setBackgroundResource(R.drawable.ic_grid);
                         badgesGridView.setVisibility(View.GONE);
                         badgesLv.setVisibility(View.VISIBLE);
                         break;
                     case View.GONE:
-                        v.setBackgroundResource(R.drawable.ic_grid);
+                        v.setBackgroundResource(R.drawable.ic_list);
                         badgesGridView.setVisibility(View.VISIBLE);
                         badgesLv.setVisibility(View.GONE);
                 }

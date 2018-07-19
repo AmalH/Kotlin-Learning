@@ -14,7 +14,7 @@ import amalhichri.androidprojects.com.kotlinlearning.fragments.SkillsFragment;
 public class ProfileTabsAdapter extends FragmentPagerAdapter {
 
     private int NUM_ITEMS = 2;
-    private String[] titles= new String[]{"3\nSkills","5\nBadges"};
+    private String[] titles= new String[]{"0\nSkills","5\nBadges"};
 
     public ProfileTabsAdapter(FragmentManager fm) {
         super(fm);

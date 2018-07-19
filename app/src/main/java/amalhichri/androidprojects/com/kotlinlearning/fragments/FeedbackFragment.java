@@ -32,8 +32,6 @@ public class FeedbackFragment extends Fragment {
 
     private ArrayAdapter<String> spinnerAdapter;
     private List<String> feedBackTypes= new ArrayList<>();
-    private static String imgUrl;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {

@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.HomePageTabsAdapter;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class HomeActivity extends AppCompatActivity {
@@ -61,6 +62,13 @@ public class HomeActivity extends AppCompatActivity {
         tablayout.setupWithViewPager(vpPager);
         setUpTabIcons(tablayout);
 
+        /** **/
+        tablayout.post(new Runnable() {
+            @Override
+            public void run() {
+                Statics.setTabIndicator(tablayout,7,7);
+            }
+        });
 
         /** change title in actionBar depending on tabSelected **/
         tablayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

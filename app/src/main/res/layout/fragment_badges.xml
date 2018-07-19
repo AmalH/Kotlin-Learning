@@ -12,19 +12,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fontPath="fonts/graublau_slab.ttf"
+            fontPath="fonts/open_sans_regular.ttf"
             android:textStyle="bold"
             android:gravity="center"
-            android:textSize="7pt"
+            android:textSize="8pt"
             android:textColor="@color/base_color_1"
-            android:text="You're almost there Chapmpion!: "
+            android:text="You're almost there Chapmpion ! "
             tools:ignore="MissingPrefix" />
         <ImageButton
             android:id="@+id/gridListSwitchBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/ic_list"/>
+            android:background="@drawable/ic_grid"/>
     </RelativeLayout>
     <GridView
         android:id="@+id/badgesGridView"
@@ -36,13 +36,14 @@
         android:verticalSpacing="20dp"
         android:horizontalSpacing="20dp"
         android:stretchMode="columnWidth"
-        android:gravity="center"></GridView>
+        android:gravity="center"
+        android:visibility="gone"></GridView>
     <ListView
         android:id="@+id/badgesListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:divider="#00FFFFFF"
-        android:visibility="gone"></ListView>
+        android:visibility="visible"></ListView>
 
 </LinearLayout>

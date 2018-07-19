@@ -11,7 +11,7 @@ import android.net.NetworkInfo;
 public class Configuration {
 
     //public final static String IP="http://ikotlin.000webhostapp.com/web/";
-    public final static String IP="http://192.168.43.166/ikotlinBackEnd/web/";
+    public final static String IP="http://192.168.1.3/ikotlinBackEnd/web/";
 
     // TCP/HTTP/DNS (depending on the port, 53=DNS, 80=HTTP, etc.)
     public static boolean isOnline(Context context) {
