@@ -50,7 +50,6 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_profile_placeholder"
                 app:civ_border_width="2dp"
                 app:civ_border_color="#60FFB417"/>
             <TextView
@@ -60,7 +59,6 @@
                 android:layout_toEndOf="@id/userImg_Feedback"
                 android:layout_marginLeft="15dp"
                 android:layout_centerVertical="true"
-                android:text="Amal Hichri"
                 android:textSize="9pt"/>
         </RelativeLayout>
 

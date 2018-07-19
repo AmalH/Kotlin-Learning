@@ -2,9 +2,7 @@ package amalhichri.androidprojects.com.kotlinlearning.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,42 +32,37 @@ public class FeedbackFragment extends Fragment {
 
     private ArrayAdapter<String> spinnerAdapter;
     private List<String> feedBackTypes= new ArrayList<>();
+    private static String imgUrl;
 
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+
+        final View v = inflater.inflate(R.layout.fragment_feedback, container, false);
+
+
         UserServices.getInstance().getUserById(Statics.auth.getCurrentUser().getUid(),getActivity(),new ServerCallbacks() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    ((TextView)  getActivity().findViewById(R.id.userName_Feedback)).setText((result.getString("username")));
-                    if (result.getString("picture") != null) {
-                        Picasso.with(getActivity()).load(Uri.parse(result.getString("picture"))).into((ImageView)getActivity().findViewById(R.id.userImgProfile));
-                    }
+                    ((TextView) v.findViewById(R.id.userName_Feedback)).setText((result.getString("username")));
+                    if (result.getString("picture") != null)
+                        Picasso.with(getActivity()).load(result.getString("picture")).into((ImageView)v.findViewById(R.id.userImg_Feedback));
                     if (result.getString("picture").isEmpty())
-                        ((ImageView) getActivity().findViewById(R.id.userImg_Feedback)).setImageDrawable(UserServices.getInstance().getPlaceholderProfilePic(result.getString("username")));
+                        ((ImageView) v.findViewById(R.id.userImg_Feedback)).setImageDrawable(UserServices.getInstance().getPlaceholderProfilePic(result.getString("username")));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
             @Override
             public void onError(VolleyError result) {
-                Toast.makeText(getActivity(),"error class"+result.getClass().getName(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(container.getContext(),"error class"+result.getClass().getName(),Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onWrong(JSONObject result) {
                 Toast.makeText(getActivity(),"error----"+result.toString(),Toast.LENGTH_SHORT).show();
             }
         });
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        final View v = inflater.inflate(R.layout.fragment_feedback, container, false);
-
 
 
         /** settings feedback type spinner **/
