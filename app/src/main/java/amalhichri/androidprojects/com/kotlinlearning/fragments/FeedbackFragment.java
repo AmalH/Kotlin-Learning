@@ -47,7 +47,7 @@ public class FeedbackFragment extends Fragment {
                     if (result.getString("picture") != null)
                         Picasso.with(getActivity()).load(result.getString("picture")).into((ImageView)v.findViewById(R.id.userImg_Feedback));
                     if (result.getString("picture").isEmpty())
-                        ((ImageView) v.findViewById(R.id.userImg_Feedback)).setImageDrawable(UserServices.getInstance().getPlaceholderProfilePic(result.getString("username")));
+                        ((ImageView) v.findViewById(R.id.userImg_Feedback)).setImageDrawable(Statics.getPlaceholderProfilePic(result.getString("username")));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

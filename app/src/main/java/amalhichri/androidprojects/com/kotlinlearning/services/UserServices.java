@@ -1,10 +1,7 @@
 package amalhichri.androidprojects.com.kotlinlearning.services;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -38,7 +35,7 @@ public class UserServices {
         m.put("pictureUrl", pictureUrl);
         final JSONObject jsonBody = new JSONObject(m);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.1.3:80/ikotlinBackEnd/web/users/register", jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://192.168.43.166/ikotlinBackEnd/web/users/register", jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -68,11 +65,10 @@ public class UserServices {
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "Register");
     }
 
-
     public void getUserById(String id, Context context, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.1.3:80/ikotlinBackEnd/web/users/getUser?id="+id, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://192.168.43.166/ikotlinBackEnd/web/users/getUser?id="+id, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -102,18 +98,37 @@ public class UserServices {
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "GetUser");
     }
 
-    public Drawable getPlaceholderProfilePic(String item){
-        ColorGenerator generator = ColorGenerator.MATERIAL;
-        int color = generator.getColor(item);
-        TextDrawable drawable = TextDrawable.builder()
-                .beginConfig()
-                .width(60)
-                .height(60)
-                .endConfig()
-                .buildRect(String.valueOf(item.charAt(0)).toUpperCase()+ String.valueOf(item.charAt(1)), color);
-        return drawable;
-    }
+    public void assignBadge(String id,String badgeindic, Context context, final ServerCallbacks serverCallbacks){
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.POST, "http://192.168.43.166/IkotlinBackend/web/users/addbadge?id="+id+"&badgeindic="+badgeindic, new JSONObject(), new Response.Listener<JSONObject>() {
 
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        if (!response.has("Error")){
+                            //ok
+                            serverCallbacks.onSuccess(response);
+                        }
+                        else{
+                            //wrong entries
+                            serverCallbacks.onWrong(response);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //connection problem
+                        serverCallbacks.onError(error);
+                    }
+                });
+        jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                3,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AssignBadge");
+    }
 
      /*public void markLoggedUserWebService(String id, Context context , final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();

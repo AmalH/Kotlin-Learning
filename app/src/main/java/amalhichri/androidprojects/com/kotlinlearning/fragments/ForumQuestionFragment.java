@@ -38,8 +38,8 @@ import amalhichri.androidprojects.com.kotlinlearning.models.Answer;
 import amalhichri.androidprojects.com.kotlinlearning.models.ForumQuestion;
 import amalhichri.androidprojects.com.kotlinlearning.services.ForumServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
-import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Configuration;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.github.kbiakov.codeview.CodeView;
 import io.github.kbiakov.codeview.adapters.Options;
@@ -351,7 +351,7 @@ public class ForumQuestionFragment extends Fragment {
                                     Picasso.with(getContext()).load(Uri.parse(content.getUser_picture_url())).into(picture);
                                 else {
                                     String item = content.getUser_name();
-                                    ((ImageView) getActivity().findViewById(R.id.forumQuestionUserPic)).setImageDrawable(UserServices.getInstance().getPlaceholderProfilePic(item));
+                                    ((ImageView) getActivity().findViewById(R.id.forumQuestionUserPic)).setImageDrawable(Statics.getPlaceholderProfilePic(item));
                                 }
 
                                 //split tags

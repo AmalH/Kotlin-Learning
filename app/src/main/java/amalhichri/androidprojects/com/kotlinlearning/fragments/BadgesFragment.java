@@ -33,7 +33,6 @@ public class BadgesFragment extends Fragment {
 
         Log.d("badgeToActivate", String.valueOf(iconPos));
 
-
                 /** settings badges listView / gridView **/
         String[] badgesNames = new String[] {
                 "Verified Account", "Engaged in!", "Achiever","Just getting started","Course master",

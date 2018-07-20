@@ -32,7 +32,7 @@ import amalhichri.androidprojects.com.kotlinlearning.models.CompetitionAnswer;
 import amalhichri.androidprojects.com.kotlinlearning.services.CompetitionServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 import amalhichri.androidprojects.com.kotlinlearning.services.StringCallbacks;
-import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.github.kbiakov.codeview.CodeView;
 import io.github.kbiakov.codeview.adapters.Options;
@@ -101,7 +101,7 @@ public class CompetitionFragment extends Fragment {
         if (competition.getProfile_picture() != null)
             Picasso.with(getContext()).load(Uri.parse(competition.getProfile_picture())).into((CircleImageView)getActivity().findViewById(R.id.compete_show_user_picture));
         else {
-            ((ImageView)getActivity().findViewById(R.id.compete_show_user_picture)).setImageDrawable(UserServices.getInstance().getPlaceholderProfilePic(competition.getUsername()));
+            ((ImageView)getActivity().findViewById(R.id.compete_show_user_picture)).setImageDrawable(Statics.getPlaceholderProfilePic(competition.getUsername()));
         }
     }
 

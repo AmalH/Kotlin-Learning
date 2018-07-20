@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.utils.AllCourses;
@@ -56,12 +58,8 @@ public class ChapterAdapter extends BaseAdapter {
 
         final View rowView= ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.chapteradapter_item, parent, false);
 
-        // icons filter to grey
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation(0);
-        //(rowView.findViewById(R.id.chapterStartedIcon)).getBackground().setColorFilter(new ColorMatrixColorFilter(matrix));
-        //(rowView.findViewById(R.id.chapterDoneIcon)).getBackground().setColorFilter(new ColorMatrixColorFilter(matrix));
-        //
         final String chapterTitle = AllCourses.getCourse(coursePosition).getChaptersList().get(chapterPosition).getTitle();
         ((TextView) rowView.findViewById(R.id.oneChapter_title)).setText(chapterTitle);
         ((WebView)(rowView.findViewById(R.id.chapterContentWebView))).loadUrl(getChapterContentFilePath());
@@ -75,7 +73,6 @@ public class ChapterAdapter extends BaseAdapter {
                     ((TextView) rowView.findViewById(R.id.chapterStartedText)).setText("finished");
                     ((TextView) rowView.findViewById(R.id.chapterStartedText)).setTextColor( Color.parseColor("#e99631"));
                     ((TextView) rowView.findViewById(R.id.chapterStartedText)).setText("started");
-                    // assign badge
                 }
             }
         });
@@ -84,11 +81,35 @@ public class ChapterAdapter extends BaseAdapter {
         (rowView.findViewById(R.id.chapterDoneIcon)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // icon filter
+                // test
+                Toast.makeText(context,"CLICKED ",Toast.LENGTH_SHORT);
+                Log.d("MADE IT-----","---CLICKED");
+                /** add badge to database
+                UserServices.getInstance().assignBadge(Statics.auth.getCurrentUser().getUid(), String.valueOf(position), context, new ServerCallbacks() {
+                    @Override
+                    public void onSuccess(JSONObject result) {
+                        Log.d("------","--+ "+result.toString());
+                        Toast.makeText(context,"SUCCESS "+result.toString(),Toast.LENGTH_SHORT);
+                    }
+
+                    @Override
+                    public void onError(VolleyError result) {
+                        Log.d("------","--+ "+result.getClass().getName());
+                        Toast.makeText(context,"FAILURE 1 "+result.getClass().getName(),Toast.LENGTH_SHORT);
+                    }
+
+                    @Override
+                    public void onWrong(JSONObject result) {
+                        Log.d("------","--+ "+result.toString());
+                        Toast.makeText(context,"FAILURE 2 "+result.toString(),Toast.LENGTH_SHORT);
+                    }
+                });
+                **/
+                /** icon filter
                 ( rowView.findViewById(R.id.chapterDoneIcon)).getBackground().clearColorFilter();
                 ((TextView) rowView.findViewById(R.id.chapterDoneTxt)).setText("finished");
                 ((TextView) rowView.findViewById(R.id.chapterDoneTxt)).setTextColor( Color.parseColor("#e99631"));
-                ( rowView.findViewById(R.id.chapterDoneIcon)).setEnabled(false);
+                ( rowView.findViewById(R.id.chapterDoneIcon)).setEnabled(false);**/
             }
         });
         return rowView;

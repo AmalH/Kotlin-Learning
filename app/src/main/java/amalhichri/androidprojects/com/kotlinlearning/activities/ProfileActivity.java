@@ -87,7 +87,7 @@ public class ProfileActivity extends AppCompatActivity {
                         Picasso.with(getApplicationContext()).load(Uri.parse(result.getString("picture"))).into((ImageView) findViewById(R.id.userImgProfile));
                     }
                     if (result.getString("picture").isEmpty())
-                        ((ImageView) findViewById(R.id.userImgProfile)).setImageDrawable(UserServices.getInstance().getPlaceholderProfilePic(result.getString("username")));
+                        ((ImageView) findViewById(R.id.userImgProfile)).setImageDrawable(Statics.getPlaceholderProfilePic(result.getString("username")));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

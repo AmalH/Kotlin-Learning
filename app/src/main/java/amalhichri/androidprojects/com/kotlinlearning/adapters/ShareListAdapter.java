@@ -25,7 +25,7 @@ import amalhichri.androidprojects.com.kotlinlearning.fragments.ForumQuestionFrag
 import amalhichri.androidprojects.com.kotlinlearning.models.ForumQuestion;
 import amalhichri.androidprojects.com.kotlinlearning.services.ForumServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
-import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.originqiu.library.FlowLayout;
 
@@ -71,7 +71,7 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
             Picasso.with(context).load(Uri.parse(forumQuestionsList.get(position).getUser_picture_url())).into(holder.user_picture);
         else{
             String item=forumQuestionsList.get(position).getUser_name();
-            holder.user_picture.setImageDrawable(UserServices.getInstance().getPlaceholderProfilePic(item));
+            holder.user_picture.setImageDrawable(Statics.getPlaceholderProfilePic(item));
         }
         /** tags **/
         String[] array = forumQuestionsList.get(position).getTags().split(",");

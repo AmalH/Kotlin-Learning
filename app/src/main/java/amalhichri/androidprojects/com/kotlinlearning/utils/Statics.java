@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -13,6 +14,8 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.android.volley.VolleyError;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -156,7 +159,20 @@ public class Statics {
         }
     }
 
-   private static void prepareCoursesListData(){
+    public static Drawable getPlaceholderProfilePic(String item){
+        ColorGenerator generator = ColorGenerator.MATERIAL;
+        int color = generator.getColor(item);
+        TextDrawable drawable = TextDrawable.builder()
+                .beginConfig()
+                .width(60)
+                .height(60)
+                .endConfig()
+                .buildRect(String.valueOf(item.charAt(0)).toUpperCase()+ String.valueOf(item.charAt(1)), color);
+        return drawable;
+    }
+
+
+    private static void prepareCoursesListData(){
         courses = new ArrayList<>();
         chapters = new HashMap<>();
 

@@ -52,7 +52,7 @@ public class LearnFragment_course extends Fragment {
                                     == coursePosition) {
                                 /** update data **/
                                 nbOfChaptersCompleted = Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(coursePosition)).getString("finishedchapter"));
-                                Toast.makeText(getContext(),String.valueOf(coursePosition),Toast.LENGTH_SHORT).show();
+                              //  Toast.makeText(getActivity(),String.valueOf(coursePosition),Toast.LENGTH_SHORT).show();
 
                                 /** if nbOf ChaptersCompleted is 0 **/
                                 if (Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(i)).getString("finishedchapter")) == 100) {
@@ -106,38 +106,7 @@ public class LearnFragment_course extends Fragment {
 
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser)
-        /** get chapters nb + badge nb **/
-            CoursesServices.getInstance().getAllUserCourses(Statics.auth.getCurrentUser().getUid(), getContext(), new ServerCallbacks() {
-                @Override
-                public void onSuccess(JSONObject result) {
-                    try {
-                        if (!(result.getJSONArray("courses").length() == 0))
-                        /** set chapters nb + badge nb **/
-                            if (Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(coursePosition)).getString("finishedchapter")) == 100) {
-                            }else{
-                                /** update course */
-                                nbOfChaptersCompleted = Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(coursePosition)).getString("finishedchapter"));
-                            }
-                    }catch (JSONException e) {
-                        Toast.makeText(getContext(),"Server error "+e.getMessage(),Toast.LENGTH_SHORT).show();
-                    }
-                }
 
-                @Override
-                public void onError(VolleyError result) {
-
-                }
-
-                @Override
-                public void onWrong(JSONObject result) {
-
-                }
-            });
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
