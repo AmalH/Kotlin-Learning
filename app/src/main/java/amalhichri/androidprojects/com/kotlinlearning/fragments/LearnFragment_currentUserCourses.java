@@ -78,19 +78,6 @@ public class LearnFragment_currentUserCourses extends Fragment {
         });
     }
 
-   /* @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser  && isResumed()) {
-            Log.d("---------","-- VISIBLE");
-            if(Configuration.isOnline(getContext()) && listAdapter.getCount()==0) {
-                nbOfLoadedCourses = 0;
-                getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.GONE);
-                loadCurrentUserCourses();
-            }
-        }
-    }*/
-
 
     private void loadCurrentUserCourses() {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {

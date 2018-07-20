@@ -13,7 +13,6 @@ import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
@@ -75,7 +74,7 @@ public class ChapterAdapter extends BaseAdapter {
         (( rowView.findViewById(R.id.chapterContentScrollView))).getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener(){
             @Override public void onScrollChanged() {
                 if ((((ScrollView)(rowView.findViewById(R.id.chapterContentScrollView))).getChildAt(0).getBottom() >= (rowView.findViewById(R.id.chapterContentScrollView).getHeight() + rowView.findViewById(R.id.chapterContentScrollView).getScrollY()))) {
-                    // icon's filter + change text
+                    /** icons filter + change text **/
                     ( rowView.findViewById(R.id.chapterStartedIcon)).getBackground().clearColorFilter();
                     ((TextView) rowView.findViewById(R.id.chapterStartedText)).setText("finished");
                     ((TextView) rowView.findViewById(R.id.chapterStartedText)).setTextColor( Color.parseColor("#e99631"));
@@ -88,32 +87,30 @@ public class ChapterAdapter extends BaseAdapter {
         (rowView.findViewById(R.id.chapterDoneIcon)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /** assign engagedIn badge**/
-                UserServices.getInstance().assignBadge(Statics.auth.getCurrentUser().getUid(), String.valueOf(1), context, new ServerCallbacks() {
-                    @Override
-                    public void onSuccess(JSONObject result) {
-                        Log.d("------","--+ "+result.toString());
-                        Toast.makeText(context,"SUCCESS "+result.toString(),Toast.LENGTH_SHORT);
-                    }
-
-                    @Override
-                    public void onError(VolleyError result) {
-                        Log.d("------","--+ "+result.getClass().getName());
-                        Toast.makeText(context,"FAILURE 1 "+result.getClass().getName(),Toast.LENGTH_SHORT);
-                    }
-
-                    @Override
-                    public void onWrong(JSONObject result) {
-                        Log.d("------","--+ "+result.toString());
-                        Toast.makeText(context,"FAILURE 2 "+result.toString(),Toast.LENGTH_SHORT);
-                    }
-                });
-
-                /** icon filter **/
+                /** icons filter **/
                 ( rowView.findViewById(R.id.chapterDoneIcon)).getBackground().clearColorFilter();
                 ((TextView) rowView.findViewById(R.id.chapterDoneTxt)).setText("finished");
                 ((TextView) rowView.findViewById(R.id.chapterDoneTxt)).setTextColor( Color.parseColor("#e99631"));
                 ( rowView.findViewById(R.id.chapterDoneIcon)).setEnabled(false);
+                /** update database **/
+                /** increment finished chapters number **/
+                UserServices.getInstance().incrementFinishedChaptersNumber(Statics.auth.getCurrentUser().getUid(),
+                        String.valueOf(coursePosition), context, new ServerCallbacks() {
+                            @Override
+                            public void onSuccess(JSONObject result) {
+                                Log.d("YES---","----"+result.toString());
+                            }
+
+                            @Override
+                            public void onError(VolleyError result) {
+                                Log.d("NO---","----  "+result.getClass().getName());
+                            }
+
+                            @Override
+                            public void onWrong(JSONObject result) {
+                                Log.d("NOO---","----"+result.toString());
+                            }
+                        });
             }
         });
         return rowView;

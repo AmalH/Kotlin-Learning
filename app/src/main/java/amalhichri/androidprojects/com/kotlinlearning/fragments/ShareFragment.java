@@ -80,7 +80,7 @@ public class ShareFragment extends Fragment {
         });
 
         /** ordering forum questions **/
-        ((Spinner)getActivity().findViewById(R.id.orderbySpinnerShare)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        ((Spinner)getActivity().findViewById(R.id.orderbySpinnerShare)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()  {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
@@ -137,7 +137,7 @@ public class ShareFragment extends Fragment {
         ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if(Configuration.isOnline(getContext())){
+                 if(Configuration.isOnline(getContext())){
                     nbOfLoadedQuestions =0;
                     loadForumQuestions(0,((SearchView)getActivity().findViewById(R.id.searchViewShare)).getQuery().toString());
                 }

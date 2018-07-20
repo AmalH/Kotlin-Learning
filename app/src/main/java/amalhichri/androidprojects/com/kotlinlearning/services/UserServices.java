@@ -162,6 +162,39 @@ public class UserServices {
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AssignBadge");
     }
 
+    public void incrementFinishedChaptersNumber(String id,String courseindic, Context context, final ServerCallbacks serverCallbacks){
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.POST, "http://192.168.43.166:80/iKotlinbackend/Web/courses/finishedChapter?id="+id+"&courseindic="+courseindic, new JSONObject(), new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        if (!response.has("Error")){
+                            //ok
+                            serverCallbacks.onSuccess(response);
+                        }
+                        else{
+                            //wrong entries
+                            serverCallbacks.onWrong(response);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //connection problem
+                        serverCallbacks.onError(error);
+                    }
+                });
+        jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
+                10000,
+                3,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AssignBadge");
+    }
+
+
      /*public void markLoggedUserWebService(String id, Context context , final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
 

@@ -3,10 +3,12 @@ package amalhichri.androidprojects.com.kotlinlearning.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.tn.amalhichri.library.Parallaxor;
@@ -26,7 +28,7 @@ public class LearnFragment_course extends Fragment {
 
     private static int coursePosition;
     public static CourseHeaderAdapter headerAdapter;
-    private int nbOfChaptersCompleted=1;
+    private int nbOfChaptersCompleted, nbOfBadgesEarned;
 
     public static LearnFragment_course newInstance(int coursePosition) {  /** got the clicked course position for previous ui (LearnFragment_CurrentUserCourses) **/
         Bundle args = new Bundle();
@@ -39,41 +41,7 @@ public class LearnFragment_course extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        /** get chapters nb + badge nb **/
-        CoursesServices.getInstance().getAllUserCourses(Statics.auth.getCurrentUser().getUid(), getContext(), new ServerCallbacks() {
-            @Override
-            public void onSuccess(JSONObject result) {
-                try {
-                    if (!(result.getJSONArray("courses").length() == 0))
-                        for(int i=0;i<result.getJSONArray("courses").length();i++){
-                            /** find current course **/
-                            if (Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(i)).getString("courseindic"))
-                                    == coursePosition) {
-                                /** update data **/
-                                nbOfChaptersCompleted = Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(coursePosition)).getString("finishedchapter"));
-                              //  Toast.makeText(getActivity(),String.valueOf(coursePosition),Toast.LENGTH_SHORT).show();
 
-                                /** if nbOf ChaptersCompleted is 0 **/
-                                if (Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(i)).getString("finishedchapter")) == 100) {
-                                }
-                            }
-                        }
-
-                }catch (JSONException e) {
-                   // Toast.makeText(getActivity(),"Server error "+e.getMessage(),Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onError(VolleyError result) {
-
-            }
-
-            @Override
-            public void onWrong(JSONObject result) {
-
-            }
-        });
         /** **/
         ChaptersListAdapter scrollViewAdapter = new ChaptersListAdapter(getContext(),this.coursePosition);
         headerAdapter = new CourseHeaderAdapter(getContext(),this.coursePosition, nbOfChaptersCompleted);
@@ -108,10 +76,44 @@ public class LearnFragment_course extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         this.coursePosition= getArguments().getInt("coursePosition");
-        final View view = inflater.inflate(R.layout.fragment_learn_course, container, false);
-        return view;
+        final View v = inflater.inflate(R.layout.fragment_learn_course, container, false);
+        if(getUserVisibleHint()){
+            /** get chapters nb + badge nb **/
+            CoursesServices.getInstance().getAllUserCourses(Statics.auth.getCurrentUser().getUid(), getContext(), new ServerCallbacks() {
+                @Override
+                public void onSuccess(JSONObject result) {
+                    try {
+                        if (!(result.getJSONArray("courses").length() == 0))
+                            for(int i=0;i<result.getJSONArray("courses").length();i++){
+                                /** find current course **/
+                                if (Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(i)).getString("courseindic")) == coursePosition) {
+                                    /** update nb of chapters and badges  **/
+                                    nbOfChaptersCompleted = Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(coursePosition)).getString("finishedchapter"));
+                                    ((TextView)v.findViewById(R.id.nbChaptersFinished)).setText(String.valueOf(nbOfChaptersCompleted));
+                                    nbOfBadgesEarned= Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(coursePosition)).getString("earnedbadge"));
+                                    ((TextView)v.findViewById(R.id.nbbadgesEarned_course)).setText(String.valueOf(nbOfBadgesEarned));
+                                }
+                            }
+                    }catch (JSONException e) {
+                        // Toast.makeText(getActivity(),"Server error "+e.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onError(VolleyError result) {
+                    Log.d("Error","------- "+result.getClass().getName());
+                }
+
+                @Override
+                public void onWrong(JSONObject result) {
+                    Log.d("Wrong","------ "+result.toString());
+                }
+            });
+        }
+
+        return v;
     }
 
 }

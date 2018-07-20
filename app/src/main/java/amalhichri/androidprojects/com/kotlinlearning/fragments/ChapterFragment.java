@@ -1,14 +1,24 @@
 package amalhichri.androidprojects.com.kotlinlearning.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
+
+import com.android.volley.VolleyError;
+
+import org.json.JSONObject;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.ChapterAdapter;
+import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
+import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
 
 public class ChapterFragment extends Fragment {
@@ -26,19 +36,41 @@ public class ChapterFragment extends Fragment {
         return fragment;
     }
 
+    /** will change this **/
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        /** assign engagedIn badge**/
+        UserServices.getInstance().assignBadge(Statics.auth.getCurrentUser().getUid(), String.valueOf(1),getActivity(), new ServerCallbacks() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                Log.d("------","--+ "+result.toString());
+                Toast.makeText(getActivity(),"SUCCESS "+result.toString(),Toast.LENGTH_SHORT);
+            }
+
+            @Override
+            public void onError(VolleyError result) {
+                Log.d("------","--+ "+result.getClass().getName());
+                Toast.makeText(getActivity(),"FAILURE 1 "+result.getClass().getName(),Toast.LENGTH_SHORT);
+            }
+
+            @Override
+            public void onWrong(JSONObject result) {
+                Log.d("------","--+ "+result.toString());
+                Toast.makeText(getActivity(),"FAILURE 2 "+result.toString(),Toast.LENGTH_SHORT);
+            }
+        });
+
+    }
+
+    /** will change this **/
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.fragment_chapter, container, false);
 
-       /* engagedInBadgeUnlockedAltert = Alerter.create(getActivity())
-                .setTitle("Engaged in !")
-                .setTitleTypeface(Typeface.createFromAsset(getContext().getAssets(), "fonts/graublau_slab_bold.ttf"))
-                .enableSwipeToDismiss()
-                .setText("Congrats! \n You unlocked your Engaged in badge \n for completing a chapter !                                                                                                                  " )
-                .setTextTypeface(Typeface.createFromAsset(getContext().getAssets(), "fonts/graublau_slab.ttf"))
-                .setDuration(1000)
-                .setIcon(R.drawable.ic_badge_engaged);*/
         chapter_adapter = new ChapterAdapter(getContext(),getArguments().getInt("courseNb"),getArguments().getInt("chapterNb"));
         /** filling the course header **/
         for (int i = 0; i < chapter_adapter.getCount(); i++) {
