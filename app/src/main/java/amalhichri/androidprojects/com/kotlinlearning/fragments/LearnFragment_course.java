@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.tn.amalhichri.library.Parallaxor;
@@ -61,7 +60,7 @@ public class LearnFragment_course extends Fragment {
                         }
 
                 }catch (JSONException e) {
-                    Toast.makeText(getContext(),"Server error "+e.getMessage(),Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getActivity(),"Server error "+e.getMessage(),Toast.LENGTH_SHORT).show();
                 }
             }
 

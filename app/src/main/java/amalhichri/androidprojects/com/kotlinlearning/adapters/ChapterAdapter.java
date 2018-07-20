@@ -15,8 +15,15 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+
+import org.json.JSONObject;
+
 import amalhichri.androidprojects.com.kotlinlearning.R;
+import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
+import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
 import amalhichri.androidprojects.com.kotlinlearning.utils.AllCourses;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
 /**
  * Created by Amal on 26/11/2017.
@@ -81,11 +88,8 @@ public class ChapterAdapter extends BaseAdapter {
         (rowView.findViewById(R.id.chapterDoneIcon)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // test
-                Toast.makeText(context,"CLICKED ",Toast.LENGTH_SHORT);
-                Log.d("MADE IT-----","---CLICKED");
-                /** add badge to database
-                UserServices.getInstance().assignBadge(Statics.auth.getCurrentUser().getUid(), String.valueOf(position), context, new ServerCallbacks() {
+                /** assign engagedIn badge**/
+                UserServices.getInstance().assignBadge(Statics.auth.getCurrentUser().getUid(), String.valueOf(1), context, new ServerCallbacks() {
                     @Override
                     public void onSuccess(JSONObject result) {
                         Log.d("------","--+ "+result.toString());
@@ -104,12 +108,12 @@ public class ChapterAdapter extends BaseAdapter {
                         Toast.makeText(context,"FAILURE 2 "+result.toString(),Toast.LENGTH_SHORT);
                     }
                 });
-                **/
-                /** icon filter
+
+                /** icon filter **/
                 ( rowView.findViewById(R.id.chapterDoneIcon)).getBackground().clearColorFilter();
                 ((TextView) rowView.findViewById(R.id.chapterDoneTxt)).setText("finished");
                 ((TextView) rowView.findViewById(R.id.chapterDoneTxt)).setTextColor( Color.parseColor("#e99631"));
-                ( rowView.findViewById(R.id.chapterDoneIcon)).setEnabled(false);**/
+                ( rowView.findViewById(R.id.chapterDoneIcon)).setEnabled(false);
             }
         });
         return rowView;

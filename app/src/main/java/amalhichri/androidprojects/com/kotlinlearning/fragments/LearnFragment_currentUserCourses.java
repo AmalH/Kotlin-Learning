@@ -3,7 +3,6 @@ package amalhichri.androidprojects.com.kotlinlearning.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,6 @@ import amalhichri.androidprojects.com.kotlinlearning.models.Course;
 import amalhichri.androidprojects.com.kotlinlearning.services.CoursesServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 import amalhichri.androidprojects.com.kotlinlearning.utils.AllCourses;
-import amalhichri.androidprojects.com.kotlinlearning.utils.Configuration;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
 
@@ -49,7 +47,6 @@ public class LearnFragment_currentUserCourses extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if(getUserVisibleHint()){
-            Log.d("------visible---","-----");
             loadCurrentUserCourses();
         }
         return inflater.inflate(R.layout.fragment_learn_currentusercourses, container, false);
@@ -60,7 +57,7 @@ public class LearnFragment_currentUserCourses extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         nbOfLoadedCourses = 0;
-        loadCurrentUserCourses();
+        //loadCurrentUserCourses();
 
         /** open course Learn_Fragment ui on list item click **/
         ((ListView) getActivity().findViewById(R.id.myCoursesLv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -81,7 +78,7 @@ public class LearnFragment_currentUserCourses extends Fragment {
         });
     }
 
-    @Override
+   /* @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser  && isResumed()) {
@@ -92,11 +89,10 @@ public class LearnFragment_currentUserCourses extends Fragment {
                 loadCurrentUserCourses();
             }
         }
-    }
+    }*/
 
 
     private void loadCurrentUserCourses() {
-        nbOfLoadedCourses = 0;
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             CoursesServices.getInstance().getAllUserCourses(Statics.auth.getCurrentUser().getUid(), getContext(), new ServerCallbacks() {
                 @Override
@@ -104,10 +100,10 @@ public class LearnFragment_currentUserCourses extends Fragment {
                     boolean showLoadedData = true;
                     try {
                         if (!(result.getJSONArray("courses").length() == 0))
+                            currentUserCourses.clear(); // will switch this to a better solution later on !
                             for (int i = 0; i < result.getJSONArray("courses").length(); i++) {
                                 currentUserCourses.add(AllCourses.getCourse(Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(i)).getString("courseindic"))));
                             }
-
 
                         if (showLoadedData) {
                             if (nbOfLoadedCourses == 0) {

@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import amalhichri.androidprojects.com.kotlinlearning.R;
 
 /**
@@ -21,9 +23,9 @@ public class BadgesAdapter extends ArrayAdapter {
     private final Context context;
     private final String[] badgesNames;
     private final String[] badgesDescriptions;
-    private final int[] badgesIcons;
+    private final ArrayList<Integer> badgesIcons;
 
-    public BadgesAdapter(@NonNull Context context, String[] badgesDescriptions, String[]badgesNames, @NonNull int[] badgesIcons) {
+    public BadgesAdapter(@NonNull Context context, String[] badgesDescriptions, String[]badgesNames, @NonNull ArrayList<Integer> badgesIcons) {
         super(context, -1, badgesDescriptions);
         this.context = context;
         this.badgesDescriptions = badgesDescriptions;
@@ -35,8 +37,7 @@ public class BadgesAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View rowView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.badgeslist_row, parent, false);
-        ((ImageView)rowView.findViewById(R.id.badgeIcon)).setImageResource(badgesIcons[position]);
-        //((LinearLayout)rowView.findViewById(R.id.badgeIconHolder)).addView(iv);
+        ((ImageView)rowView.findViewById(R.id.badgeIcon)).setImageResource(badgesIcons.get(position));
         ((TextView)rowView.findViewById(R.id.badgeDescription)).setText(badgesDescriptions[position]);
         ((TextView)rowView.findViewById(R.id.badgeName)).setText(badgesNames[position]);
         return rowView;
