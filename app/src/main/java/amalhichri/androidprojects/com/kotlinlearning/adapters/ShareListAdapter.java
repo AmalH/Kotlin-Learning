@@ -85,8 +85,8 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
             t.setBackgroundResource(R.drawable.button_background2);
             t.setTextColor(context.getResources().getColor(R.color.cardview_light_background));
             t.setGravity(View.TEXT_ALIGNMENT_CENTER);
-            t.setPadding(3,3,3,3);
-            t.setTextSize(TypedValue.COMPLEX_UNIT_DIP ,13);
+            t.setPadding(12,5,12,5);
+            t.setTextSize(TypedValue.COMPLEX_UNIT_DIP ,11);
             holder.tags_layout.addView(t);
         }
 

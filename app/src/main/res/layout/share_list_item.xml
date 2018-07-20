@@ -5,19 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
-    android:paddingTop="5dp">
+    android:paddingTop="2dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/forum_postedBy_img"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="6dp"
         android:src="@drawable/ic_profile_placeholder" />
 
     <TextView
         android:id="@+id/postTile"
-        fontPath="fonts/open_sans_regular.ttf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="3.5dp"
@@ -25,35 +24,24 @@
         android:text="How to build android app in 1 month"
         android:textSize="15dp"
         android:textStyle="bold"
-        tools:ignore="MissingPrefix" />
-
-    <TextView
-        android:id="@+id/postedby_passive"
-        fontPath="fonts/open_sans_light.ttf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/forum_postedBy_name"
-        android:layout_alignBottom="@+id/forum_postedBy_name"
-        android:layout_alignStart="@+id/postTile"
-        android:text="Posted by: "
-        android:textSize="11.5dp"
-        android:textStyle="bold"
+        android:textColor="#7e7e7e"
+        fontPath="fonts/open_sans_regular.ttf"
         tools:ignore="MissingPrefix" />
 
     <TextView
         android:id="@+id/forum_postedBy_name"
-        fontPath="fonts/open_sans_light.ttf"
+        fontPath="fonts/open_sans_regular.ttf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/postTile"
-        android:layout_marginStart="1dp"
-        android:layout_toEndOf="@+id/postedby_passive"
-        android:fontFamily="@fonts/graublau_slab"
-        android:text="username"
-        android:textColor="#696969"
+        android:layout_below="@id/postTile"
+        android:layout_alignStart="@+id/postTile"
+        android:text="Posted by: "
         android:textSize="12dp"
         android:textStyle="bold"
+        android:textColor="@color/base_color_1"
         tools:ignore="MissingPrefix" />
+
+
 
     <me.originqiu.library.FlowLayout
         android:id="@+id/tags_layout"
@@ -62,7 +50,7 @@
         android:layout_alignParentBottom="false"
         android:layout_alignParentTop="false"
         android:layout_alignStart="@+id/postTile"
-        android:layout_below="@+id/postedby_passive"
+        android:layout_below="@+id/forum_postedBy_name"
         android:layout_marginLeft="2dp"
         android:layout_marginTop="3dp"
         android:layout_toRightOf="@+id/forum_postedBy_img"
@@ -88,13 +76,14 @@
 
         <TextView
             android:id="@+id/nbViews"
-            fontPath="fonts/open_sans_light.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:layout_marginTop="3dp"
+            android:textColor="#7e7e7e"
             android:text="3"
-            android:textSize="10dp"
+            android:textSize="12dp"
+            fontPath="fonts/open_sans_regular.ttf"
             tools:ignore="MissingPrefix" />
 
         <ImageView
@@ -107,14 +96,15 @@
 
         <TextView
             android:id="@+id/nbVotes"
-            fontPath="fonts/open_sans_light.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
             android:textStyle="bold"
             android:layout_marginTop="3dp"
+            android:textColor="#7e7e7e"
             android:text="+5"
-            android:textSize="10dp"
+            android:textSize="12dp"
+            fontPath="fonts/open_sans_regular.ttf"
             tools:ignore="MissingPrefix" />
 
         <ImageView
@@ -125,14 +115,15 @@
 
         <TextView
             android:id="@+id/forumQstnCreated"
-            fontPath="fonts/open_sans_light.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:layout_marginTop="3dp"
+            android:textColor="#7e7e7e"
             android:text="4 days"
-            android:textSize="10dp"
+            android:textSize="12dp"
             android:layout_marginLeft="2dp"
+            fontPath="fonts/open_sans_regular.ttf"
             tools:ignore="MissingPrefix" />
 
     </LinearLayout>

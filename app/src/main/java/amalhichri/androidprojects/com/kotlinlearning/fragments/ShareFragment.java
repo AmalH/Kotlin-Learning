@@ -1,6 +1,7 @@
 package amalhichri.androidprojects.com.kotlinlearning.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -102,6 +103,7 @@ public class ShareFragment extends Fragment {
         });
 
         /** searchview **/
+        ((SearchView)getActivity().findViewById(R.id.searchViewShare)).setQueryHint("Search...");
         ((SearchView)getActivity().findViewById(R.id.searchViewShare)).setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -132,7 +134,14 @@ public class ShareFragment extends Fragment {
                 return true;
             }
         });
-
+        ((SearchView)getActivity().findViewById(R.id.searchViewShare)).onActionViewExpanded();
+        ((SearchView)getActivity().findViewById(R.id.searchViewShare)).setIconified(false);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                (getActivity().findViewById(R.id.searchViewShare)).clearFocus();
+            }
+        }, 300);
         /** swipe refresh **/
         ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

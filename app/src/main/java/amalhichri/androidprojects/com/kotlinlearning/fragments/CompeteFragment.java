@@ -90,9 +90,6 @@ public class CompeteFragment extends Fragment {
         competeSwipeRefresh.setColorSchemeColors(
                 getContext().getResources().getColor(R.color.base_color_1),
                 getContext().getResources().getColor(R.color.base_color_2));
-        competeAnswerSwipeRefresh.setColorSchemeColors(
-                getContext().getResources().getColor(R.color.base_color_1),
-                getContext().getResources().getColor(R.color.base_color_2));
         competeSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

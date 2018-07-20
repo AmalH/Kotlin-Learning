@@ -15,7 +15,7 @@
             android:id="@+id/holder1"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="0.5dp"
             android:orientation="horizontal"
             android:background="@drawable/sharelist_header_background">
 
@@ -23,6 +23,7 @@
                 android:id="@+id/searchViewShare"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:theme="@style/cursorStyle"
                 android:layout_weight="23" />
 
             <Spinner
