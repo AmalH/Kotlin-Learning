@@ -1,8 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -60,6 +59,7 @@
                                 android:text="subject..."
                                 android:textSize="15dp"
                                 android:layout_weight="75"
+                                android:textColor="#212121"
                                 />
                             <ImageView
                                 android:layout_width="20dp"
@@ -155,6 +155,7 @@
                         android:layout_height="wrap_content"
                         android:text="Answered "
                         android:layout_margin="10dp"
+                        android:textColor="#212121"
                         />
                     <com.rey.material.widget.ImageView
                         android:layout_width="20dp"
@@ -220,14 +221,14 @@
                     android:text="Arguments "
                     android:layout_margin="4dp"
                     android:textSize="13dp"
+                    android:textColor="#212121"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="(Arguments must be separated with spaces)"
                     android:layout_margin="3dp"
-                    
-                    android:textColor="@color/liv_gray_active_icon"
+                    android:textColor="#212121"
                     android:textSize="11dp"
                     />
             </LinearLayout>
@@ -244,19 +245,26 @@
                 />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/compete_run"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="10"
-                android:gravity="end"
-                >
-                <Button
-                    android:id="@+id/compete_run"
-                    android:layout_width="0dp"
+                android:gravity="center_vertical"
+                android:layout_gravity="end"
+                android:paddingTop="15dp"
+                android:layout_marginRight="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Run on server"
-                    android:layout_weight="4"
-                    />
+                    android:text="Run "
+                    android:layout_marginBottom="2dp"
+                    android:textStyle="bold"
+                    android:textSize="7pt"
+                    android:backgroundTint="@color/float_transparent"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_run"/>
             </LinearLayout>
 
         </LinearLayout>
