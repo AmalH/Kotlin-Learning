@@ -1,191 +1,183 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-<ScrollView
-    android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="100"
-        android:paddingLeft="10dp"
-        android:paddingRight="15dp">
+        android:layout_height="match_parent">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_weight="1"
-        android:text="Post a new Question"
-        fontPath="fonts/open_sans_regular.ttf"
-        android:textColor="@color/base_color_1"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="10pt"
-        tools:ignore="MissingPrefix"/>
-</LinearLayout>
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Subject"
-    android:layout_marginLeft="5dp"
-    android:layout_marginTop="30dp"
-    android:textColor="#212121"
-    fontPath="fonts/open_sans_regular.ttf"
-    android:textSize="17dip"
-    android:textStyle="bold"
-    tools:ignore="MissingPrefix"
-    />
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_weight="5"
-    android:layout_marginRight="5dp"
-    android:layout_marginLeft="5dp"
-    >
-    <EditText
-        android:id="@+id/add_forum_subject"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="some bug..."
-            android:textSize="15dp"
-        fontPath="fonts/graublau_slab.ttf"
-        tools:ignore="MissingPrefix" />
-</LinearLayout>
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tags"
-        android:textColor="#212121"
-        fontPath="fonts/open_sans_regular.ttf"
-        android:textSize="17dip"
-        android:textStyle="bold"
-        tools:ignore="MissingPrefix"
-        android:layout_marginTop="15dp"
-
-        />
-
-    <me.originqiu.library.EditTag
-        android:id="@+id/add_forum_tags_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:foregroundGravity="center"
-        app:input_layout="@layout/forumtaginput_view"
-        app:tag_layout="@layout/single_tag_item"
-        />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Content"
-        android:textColor="#212121"
-        fontPath="fonts/open_sans_regular.ttf"
-        android:textSize="17dip"
-        android:textStyle="bold"
-        tools:ignore="MissingPrefix"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="15dp"
-        />
-
-
-    <EditText
-        android:id="@+id/add_forum_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:hint="I have a bug in my kotlin program..."
-        android:textSize="15dp"
-        fontPath="fonts/graublau_slab.ttf"
-        tools:ignore="MissingPrefix"
-        android:layout_marginRight="5dp"
-        />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="15dp"
-            >
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="15dp"
+            android:weightSum="100">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    fontPath="fonts/open_sans_regular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Ask question"
+                    android:textColor="@color/base_color_1"
+                    android:textSize="10pt"
+                    android:textStyle="bold"
+                    tools:ignore="MissingPrefix" />
+            </LinearLayout>
 
             <TextView
+                fontPath="fonts/open_sans_regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add code snippet"
-                android:gravity="center"
-                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="30dp"
+                android:text="Subject:"
                 android:textColor="#212121"
+                android:textSize="17dip"
+                android:textStyle="bold"
+                tools:ignore="MissingPrefix" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="5"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/add_forum_subject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="some bug..."
+                    android:inputType="textPersonName"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView2"
                 fontPath="fonts/open_sans_regular.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Tags:"
+                android:textColor="#212121"
                 android:textSize="17dip"
                 android:textStyle="bold"
                 tools:ignore="MissingPrefix"
+
                 />
 
-            <ToggleButton
-                android:id="@+id/forum_add_tooggle_code"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:text="ToggleButton"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                />
+            <me.originqiu.library.EditTag
+                android:id="@+id/add_forum_tags_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:foregroundGravity="center"
+                app:input_layout="@layout/forumtaginput_view"
+                app:tag_layout="@layout/single_tag_item" />
+
+            <TextView
+                android:id="@+id/textView3"
+                fontPath="fonts/open_sans_regular.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="20dp"
+                android:text="Content:"
+                android:textColor="#212121"
+                android:textSize="17dip"
+                android:textStyle="bold"
+                tools:ignore="MissingPrefix" />
+
+
+            <EditText
+                android:id="@+id/add_forum_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:ems="10"
+                android:hint="I have a bug in my kotlin program..."
+                android:inputType="textMultiLine"
+                android:textSize="15dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    fontPath="fonts/open_sans_regular.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:text="Add code snippet ?"
+                    android:textColor="#212121"
+                    android:textSize="17dip"
+                    android:textStyle="bold"
+                    tools:ignore="MissingPrefix" />
+
+                <ToggleButton
+                    android:id="@+id/forum_add_tooggle_code"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:textOff="No"
+                    android:textOn="Yes" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/forum_add_code_static"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Code"
+                fontPath="fonts/graublau_slab_bold.ttf"
+                tools:ignore="MissingPrefix"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="12dp"
+                android:textSize="16sp"
+                android:visibility="gone"/>
+
+            <EditText
+                android:id="@+id/forum_add_code_editor"
+                fontPath="fonts/graublau_slab.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:inputType="textMultiLine"
+                android:textSize="15dp"
+                android:visibility="gone"
+                tools:ignore="MissingPrefix" />
+
+
+            <Button
+                android:id="@+id/add_forum_submit"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:text="Post"
+                android:textAllCaps="false"
+                android:textColor="@color/base_color_1"
+                android:textSize="8pt" />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/forum_add_code_static"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Code"
-            fontPath="fonts/graublau_slab_bold.ttf"
-            tools:ignore="MissingPrefix"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="12dp"
-            android:textSize="16sp"
-            android:visibility="gone"
-            />
-
-        <EditText
-            android:id="@+id/forum_add_code_editor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:inputType="textMultiLine"
-            android:textSize="15dp"
-            android:visibility="gone"
-            fontPath="fonts/graublau_slab.ttf"
-            tools:ignore="MissingPrefix"
-            />
-
-
-        <Button
-            android:id="@+id/add_forum_submit"
-            android:layout_width="100dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="130dp"
-            android:layout_marginBottom="10dp"
-            android:textAllCaps="false"
-            android:text="Post"
-            android:layout_gravity="end"
-            android:background="@drawable/button_background2"
-            android:textColor="@color/base_color_2"
-            />
-
-</LinearLayout>
-</ScrollView>
+    </ScrollView>
 </FrameLayout>

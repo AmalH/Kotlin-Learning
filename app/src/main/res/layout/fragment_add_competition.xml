@@ -6,124 +6,104 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:weightSum="100"
-        android:layout_margin="3dp"
-        android:background="@color/md_divider_white"
-        >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageButton
-            android:id="@+id/add_compete_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:src="@drawable/ic_action_back_to"
-            android:layout_marginRight="-50dp"
-            android:scaleType="fitCenter"
-            android:background="@color/float_transparent"
-            />
-
-        <TextView
-            android:id="@+id/textView4"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Post a new competition"
-            android:textSize="22dp"
-            android:textColor="@color/base_color_1"
-            android:gravity="center"
-            fontPath="fonts/graublau_slab.ttf"
-            tools:ignore="MissingPrefix"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Title"
-            android:layout_marginTop="10dp"
-            android:textSize="16sp"
-            android:layout_marginLeft="5dp"
-            />
-        <EditText
-            android:id="@+id/compete_add_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Hello world"
-            android:textSize="15dp"
-            />
+            android:layout_margin="3dp"
+            android:background="@color/md_divider_white"
+            android:orientation="vertical"
+            android:weightSum="100">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Level"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:textSize="16sp"
-            />
-        <Spinner
-            android:id="@+id/compete_add_level"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:entries="@array/competeLevels"
-            android:layout_marginTop="5dp"
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Problem"
-            tools:ignore="MissingPrefix"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="12dp"
-            android:textSize="16sp"
-            />
+                <TextView
+                    android:id="@+id/textView4"
+                    fontPath="fonts/graublau_slab.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="New contest"
+                    android:textColor="@color/base_color_1"
+                    android:textSize="10pt"
+                    tools:ignore="MissingPrefix" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    fontPath="fonts/open_sans_regular.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Title:"
+                    android:textColor="#212121"
+                    android:textSize="17dip"
+                    android:textStyle="bold"
+                    tools:ignore="MissingPrefix" />
+
+                <EditText
+                    android:id="@+id/compete_add_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Hello world"
+                    android:textSize="15dp" />
 
 
-        <EditText
-            android:id="@+id/compete_add_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textMultiLine"
-            android:hint="A program that do..."
-            android:textSize="15dp"
-            android:layout_weight="60"
-            tools:ignore="MissingPrefix"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            />
-
-        <Button
-            android:id="@+id/compete_add_submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Post"
-            android:background="@color/float_transparent"
-            android:layout_gravity="end"
-            android:layout_marginRight="20dp"
-            />
-
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/textView3"
+                    fontPath="fonts/open_sans_regular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Problem:"
+                    android:textColor="#212121"
+                    android:textSize="17dip"
+                    android:textStyle="bold"
+                    tools:ignore="MissingPrefix" />
 
 
+                <EditText
+                    android:id="@+id/compete_add_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="60"
+                    android:ems="10"
+                    android:hint="A program that do..."
+                    android:inputType="textMultiLine"
+                    android:textSize="15dp"
+                    tools:ignore="MissingPrefix" />
 
-    </LinearLayout>
+                <Button
+                    android:id="@+id/compete_add_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="50dp"
+                    android:layout_weight="1"
+                    android:text="Post"
+                    android:textAllCaps="false"
+                    android:textColor="@color/base_color_1"
+                    android:textSize="8pt" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
     </ScrollView>
 </FrameLayout>

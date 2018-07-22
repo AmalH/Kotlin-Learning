@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.androidprojects.esprit.ikotlin.fragments.AddForumFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,35 +21,37 @@
                     android:id="@+id/textView4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Edit post"
-                    android:textSize="22dp"
-                    android:textColor="@color/base_color_1"
+                    fontPath="fonts/open_sans_regular.ttf"
                     android:gravity="center"
-                    fontPath="fonts/graublau_slab.ttf"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:text="Edit question"
+                    android:textColor="@color/base_color_1"
+                    android:textSize="10pt"
+                    android:textStyle="bold"
                     tools:ignore="MissingPrefix"/>
                 <ImageButton
                     android:id="@+id/edit_forum_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_action_delete"
+                    android:src="@drawable/ic_delete_post"
                     android:background="@color/float_transparent"
                     android:layout_marginRight="10dp"
-                    android:padding="5dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="15dp"
                     />
 
             </LinearLayout>
             <TextView
+                fontPath="fonts/open_sans_regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Subject"
-                fontPath="fonts/graublau_slab_bold.ttf"
-                tools:ignore="MissingPrefix"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:textSize="16sp"
-                />
+                android:layout_marginTop="30dp"
+                android:text="Subject:"
+                android:textColor="#212121"
+                android:textSize="17dip"
+                android:textStyle="bold"
+                tools:ignore="MissingPrefix"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -73,17 +74,16 @@
 
             </LinearLayout>
             <TextView
-                android:layout_marginTop="10dp"
-                android:id="@+id/textView2"
+                fontPath="fonts/open_sans_regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Tags"
-                fontPath="fonts/graublau_slab_bold.ttf"
-                tools:ignore="MissingPrefix"
-                android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
-                android:textSize="16sp"
+                android:layout_marginTop="30dp"
+                android:text="Tags:"
+                android:textColor="#212121"
+                android:textSize="17dip"
+                android:textStyle="bold"
+                tools:ignore="MissingPrefix"
                 />
 
             <me.originqiu.library.EditTag
@@ -101,15 +101,16 @@
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="match_parent"
+                fontPath="fonts/open_sans_regular.ttf"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Content"
-                fontPath="fonts/graublau_slab_bold.ttf"
-                tools:ignore="MissingPrefix"
-                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="12dp"
-                android:textSize="16sp"
+                android:layout_marginTop="30dp"
+                android:text="Content:"
+                android:textColor="#212121"
+                android:textSize="17dip"
+                android:textStyle="bold"
+                tools:ignore="MissingPrefix"
                 />
 
 
@@ -135,23 +136,25 @@
                 >
 
                 <TextView
+                    fontPath="fonts/open_sans_regular.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add code snippet"
+                    android:layout_gravity="center_vertical"
                     android:gravity="center"
-                    fontPath="fonts/graublau_slab_bold.ttf"
-                    tools:ignore="MissingPrefix"
-                    android:layout_marginTop="12dp"
-                    android:textSize="16sp"
-                    />
+                    android:text="Add code snippet ?"
+                    android:textColor="#212121"
+                    android:textSize="17dip"
+                    android:textStyle="bold"
+                    tools:ignore="MissingPrefix"/>
 
                 <ToggleButton
                     android:id="@+id/forum_edit_tooggle_code"
-                    android:layout_width="50dp"
+                    android:layout_width="80dp"
                     android:layout_height="40dp"
-                    android:text="ToggleButton"
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
+                    android:textOff="No"
+                    android:textOn="Yes"
                     />
 
             </LinearLayout>
@@ -185,13 +188,15 @@
 
             <Button
                 android:id="@+id/edit_forum_submit"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Save"
-                android:background="@color/float_transparent"
                 android:layout_gravity="end"
-                android:layout_marginRight="20dp"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:text="Save"
+                android:textAllCaps="false"
+                android:textColor="@color/base_color_1"
+                android:textSize="8pt"
                 />
 
         </LinearLayout>

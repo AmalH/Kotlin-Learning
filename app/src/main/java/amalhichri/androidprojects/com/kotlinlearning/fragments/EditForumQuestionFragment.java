@@ -145,7 +145,7 @@ public class EditForumQuestionFragment extends Fragment {
                 new AlertDialog.Builder(getActivity())
                         .setTitle("Delete")
                         .setMessage("Do you want to Delete")
-                        .setIcon(R.drawable.ic_action_delete)
+                        .setIcon(R.drawable.ic_delete_post)
                         .setPositiveButton("Delete now", new DialogInterface.OnClickListener() {
                             public void onClick(final DialogInterface dialog, int whichButton) {
                                 progressDialog.setMessage("Deleting");

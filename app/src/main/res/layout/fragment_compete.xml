@@ -26,11 +26,9 @@
                 android:gravity="center_vertical"
                 app:values="@array/competeToggle"
                 app:mstbColorPressedBackground="@color/base_color_2"
-                app:mstbColorNotPressedBackground="@color/material_blue_grey_80"
+                app:mstbColorNotPressedBackground="@color/base_color_1"
                 app:mstbColorPressedText="@color/comment_background"
-                app:mstbColorNotPressedText="@color/liv_gray_active_icon"
-
-                />
+                app:mstbColorNotPressedText="@color/liv_gray_active_icon"/>
             <Spinner
                 android:id="@+id/competeOrderbySpinner"
                 android:layout_width="wrap_content"
