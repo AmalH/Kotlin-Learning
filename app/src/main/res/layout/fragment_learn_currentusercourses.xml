@@ -14,12 +14,11 @@
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:text="Courses started"
-        fontPath="fonts/graublau_slab.ttf"
+        fontPath="fonts/open_sans_regular.ttf"
         android:textColor="@color/base_color_1"
         android:textStyle="bold"
         android:textSize="10pt"
         tools:ignore="MissingPrefix" />
-        @fontPath=""/>
     <ListView
         android:id="@+id/myCoursesLv"
         android:layout_width="fill_parent"
@@ -36,7 +35,7 @@
         android:clickable="true"
         android:elevation="9dp"
         app:fab_backgroundColor="@color/base_color_2"
-        app:fab_iconSrc="@drawable/ic_add_course"
+        app:fab_iconSrc="@drawable/ic_action_add_forum"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"/>
 

@@ -48,7 +48,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:singleLine="false"
-                android:text="Aiming to make its users learn and have fun at the same time, iKotlin was developed by two mobile software engineering students at the Higher Private school of Engineering and Technology ESPRIT."/>
+                fontPath="fonts/open_sans_light.ttf"
+                tools:ignore="MissingPrefix"
+                android:textSize="7pt"
+                android:text="Aiming to make its users learn and have fun at the same time, iKotlin was developed by a mobile software engineering student at the Higher Private school of Engineering and Technology ESPRIT."/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -63,7 +66,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="20dp"
-                    android:text="Version: 1.0.0"/>
+                    android:textStyle="bold"
+                    android:text="Version: 1.0.0"
+                    android:textSize="9pt"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
@@ -74,10 +79,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="20dp"
-                    android:text="Connect with us"/>
+                    android:textStyle="bold"
+                    android:textSize="9pt"
+                    android:text="Developer"/>
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="-15dp"
                     android:orientation="horizontal">
                     <RelativeLayout
                         android:id="@+id/developer1Info"
@@ -86,34 +94,51 @@
                         android:layout_marginLeft="20dp">
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/developer1Img"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
                             android:src="@drawable/ic_developer1_test"/>
                         <TextView
                             android:id="@+id/developer1Name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/developer1Img"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="7dp"
                             android:text="Amal Hichri"
-                            android:textSize="5pt"/>
-                        <TextView
-                            android:layout_width="wrap_content"
+                            fontPath="fonts/open_sans_regular.ttf"
+                            tools:ignore="MissingPrefix"
+                            android:textSize="7pt"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/developer1Img"
-                            android:layout_below="@+id/developer1Name"
+                            android:layout_below="@id/developer1Name"
                             android:layout_marginLeft="5dp"
-                            android:text="Tunisia"
-                            android:textSize="5pt"/>
+                            android:gravity="center_vertical"
+                            fontPath="fonts/open_sans_light.ttf"
+                            tools:ignore="MissingPrefix"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:src="@drawable/ic_email_aboutus"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="2dp"
+                                android:text="hichri.amal@hotmail.fr"
+                                android:singleLine="true"
+                                android:textSize="6pt"/>
+                        </LinearLayout>
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/developer1Img"
                             android:orientation="vertical"
                             android:gravity="center_horizontal"
-                            android:layout_marginTop="5dp">
+                            android:layout_marginTop="7dp">
                             <View
-                                android:layout_width="100dp"
+                                android:layout_width="180dp"
                                 android:layout_height="0.5dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginLeft="7dp"
@@ -122,51 +147,32 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:paddingTop="5dp">
+                                android:layout_marginLeft="-30dp"
+                                android:paddingTop="7dp">
                                 <ImageButton
-                                    android:id="@+id/developer1GitBtn"
+                                    android:id="@+id/developerWebsiteBtn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="20dp"
+                                    android:src="@drawable/ic_website"
+                                    android:background="@null"/>
+                                <ImageButton
+                                    android:id="@+id/developerGitBtn"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginRight="20dp"
                                     android:src="@drawable/ic_git_about"
-                                    android:background="@null"
-                                    android:onClick="imgBtnsClick"/>
+                                    android:background="@null"/>
                                 <ImageButton
-                                    android:id="@+id/developer1LinkedInBtn"
+                                    android:id="@+id/developerLinkedInBtn"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginRight="20dp"
                                     android:src="@drawable/ic_linkedin_about"
-                                    android:background="@null"
-                                    android:onClick="imgBtnsClick"/>
-                                <ImageButton
-                                    android:id="@+id/developer1TwitterkBtn"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_twitter_about"
-                                    android:background="@null"
-                                    android:onClick="imgBtnsClick"/>
+                                    android:background="@null"/>
 
                             </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginLeft="5dp"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal">
-                                <ImageView
-                                    android:layout_width="10dp"
-                                    android:layout_height="10dp"
-                                    android:src="@drawable/ic_email_aboutus"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:paddingLeft="2dp"
-                                    android:text="hichri.amal@hotmail.fr"
-                                    android:singleLine="true"
-                                    android:textSize="4.5pt"/>
-                            </LinearLayout>
+
                         </LinearLayout>
                     </RelativeLayout>
 

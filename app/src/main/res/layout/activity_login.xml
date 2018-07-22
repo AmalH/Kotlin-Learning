@@ -20,11 +20,10 @@
         android:textColor="@color/base_color_1"
         android:gravity="center"
         fontPath="fonts/graublau_slab.ttf"
-        android:textSize="40dp"
+        android:textSize="37dp"
         style="bold"
         tools:ignore="MissingPrefix" />
 
-    <!-- form -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

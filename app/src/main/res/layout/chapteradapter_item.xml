@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -6,78 +7,67 @@
     <RelativeLayout
         android:id="@+id/titleLayout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:background="#efefef">
+        android:layout_height="40dp"
+        android:background="#efefef"
+        android:orientation="horizontal">
+
         <TextView
             android:id="@+id/oneChapter_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@fonts/graublau_slab_bold"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
             android:textColor="@color/base_color_1"
-            android:textSize="10pt"
-            android:text="test test"
-            android:layout_centerInParent="true"/>
+            android:textSize="9pt"/>
     </RelativeLayout>
 
     <ScrollView
         android:id="@+id/chapterContentScrollView"
         android:layout_width="match_parent"
         android:layout_height="410dp"
-        android:fillViewport="true"
-        android:layout_below="@id/titleLayout">
+        android:layout_below="@id/titleLayout"
+        android:fillViewport="true">
+
         <WebView
             android:id="@+id/chapterContentWebView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:paddingLeft="5dp"
-            android:paddingRight="5dp"/>
+            android:paddingRight="5dp" />
     </ScrollView>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#efefef"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
         android:layout_below="@id/chapterContentScrollView"
-        android:layout_alignParentBottom="true">
-        <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="7dp"
-        android:orientation="vertical"
-        android:gravity="center">
-        <ImageButton
-            android:id="@+id/chapterStartedIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_chapter_started"/>
-        <TextView
-            android:id="@+id/chapterStartedText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="unstarted"/>
-    </LinearLayout>
+        android:background="#efefef"
+        android:orientation="horizontal">
+
+
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="8dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
             android:layout_marginRight="7dp"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
+
             <ImageButton
                 android:id="@+id/chapterDoneIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_chapter_done"/>
+                android:background="@drawable/ic_chapter_done" />
+
             <TextView
                 android:id="@+id/chapterDoneTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="done reading ?"/>
+                android:textStyle="bold"
+                android:textColor="@color/base_color_1"
+                tools:ignore="MissingPrefix"
+                android:text="Done reading ?"/>
         </LinearLayout>
 
     </RelativeLayout>

@@ -26,24 +26,24 @@
         android:layout_marginTop="15dp"
         android:layout_weight="1"
         android:text="Post a new Question"
-        android:textSize="20dp"
+        fontPath="fonts/open_sans_regular.ttf"
         android:textColor="@color/base_color_1"
         android:gravity="center"
-        fontPath="fonts/graublau_slab.ttf"
         android:textStyle="bold"
+        android:textSize="10pt"
         tools:ignore="MissingPrefix"/>
 </LinearLayout>
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="Subject"
-    fontPath="fonts/graublau_slab.ttf"
-    android:textStyle="bold"
-    tools:ignore="MissingPrefix"
     android:layout_marginLeft="5dp"
     android:layout_marginTop="30dp"
-    android:textSize="22sp"
-    android:textColor="#99000000"
+    android:textColor="#212121"
+    fontPath="fonts/open_sans_regular.ttf"
+    android:textSize="17dip"
+    android:textStyle="bold"
+    tools:ignore="MissingPrefix"
     />
 
 <LinearLayout
@@ -69,12 +69,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tags"
-        fontPath="fonts/graublau_slab.ttf"
+        android:textColor="#212121"
+        fontPath="fonts/open_sans_regular.ttf"
+        android:textSize="17dip"
         android:textStyle="bold"
         tools:ignore="MissingPrefix"
         android:layout_marginTop="15dp"
-        android:textSize="20sp"
-        android:textColor="#99000000"
+
         />
 
     <me.originqiu.library.EditTag
@@ -92,13 +93,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Content"
-        fontPath="fonts/graublau_slab.ttf"
+        android:textColor="#212121"
+        fontPath="fonts/open_sans_regular.ttf"
+        android:textSize="17dip"
         android:textStyle="bold"
         tools:ignore="MissingPrefix"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="15dp"
-        android:textSize="20sp"
-        android:textColor="#99000000"
         />
 
 
@@ -127,12 +128,12 @@
                 android:layout_height="wrap_content"
                 android:text="Add code snippet"
                 android:gravity="center"
-                fontPath="fonts/graublau_slab.ttf"
+                android:layout_gravity="center_vertical"
+                android:textColor="#212121"
+                fontPath="fonts/open_sans_regular.ttf"
+                android:textSize="17dip"
                 android:textStyle="bold"
                 tools:ignore="MissingPrefix"
-                android:layout_gravity="center_vertical"
-                android:textSize="20sp"
-                android:textColor="#99000000"
                 />
 
             <ToggleButton
@@ -177,10 +178,12 @@
             android:layout_width="100dp"
             android:layout_height="35dp"
             android:layout_marginTop="130dp"
+            android:layout_marginBottom="10dp"
+            android:textAllCaps="false"
             android:text="Post"
-            android:background="#953b5670"
             android:layout_gravity="end"
-            android:layout_marginRight="12dp"
+            android:background="@drawable/button_background2"
+            android:textColor="@color/base_color_2"
             />
 
 </LinearLayout>

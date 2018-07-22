@@ -27,12 +27,16 @@ public class AllCourses {
                 chapters.add(AllChapters.course1_chapter3);
                 chapters.add(AllChapters.course1_chapter4);
                 course=new Course(chapters,"Overview","This course containes 4 chapters. Introducing the 4 major applications of Kotlin language", R.drawable.ic_overview);
+                // just testing
+                course.setAdvancement(40);
                 break;
             case 1:
                 chapters.add(AllChapters.course2_chapter1);
                 chapters.add(AllChapters.course2_chapter2);
                 chapters.add(AllChapters.course2_chapter3);
                 course=new Course(chapters,"Getting started","This course containes 4 chapters. Introducing the 4 major applications of Kotlin language",R.drawable.ic_start);
+                // just testing
+                course.setAdvancement(20);
                 break;
             case 2:
                 chapters.add(AllChapters.course3_chapter1);
@@ -55,6 +59,7 @@ public class AllCourses {
                 chapters.add(AllChapters.course5_chapter3);
                 chapters.add(AllChapters.course5_chapter4);
                 course=new Course(chapters,"Functions and Lambdas","This course containes 4 chapters. Introducing the 4 major applications of Kotlin language",R.drawable.ic_functions);
+                course.setAdvancement(80);
                 break;
             case 5:
                 chapters.add(AllChapters.course6_chapter1);chapters.add(AllChapters.course6_chapter2);

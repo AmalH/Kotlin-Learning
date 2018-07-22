@@ -2,16 +2,13 @@ package amalhichri.androidprojects.com.kotlinlearning.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.webkit.WebView;
 import android.widget.BaseAdapter;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -70,18 +67,6 @@ public class ChapterAdapter extends BaseAdapter {
         ((TextView) rowView.findViewById(R.id.oneChapter_title)).setText(chapterTitle);
         ((WebView)(rowView.findViewById(R.id.chapterContentWebView))).loadUrl(getChapterContentFilePath());
 
-        /** when user starts reading chapter **/
-        (( rowView.findViewById(R.id.chapterContentScrollView))).getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener(){
-            @Override public void onScrollChanged() {
-                if ((((ScrollView)(rowView.findViewById(R.id.chapterContentScrollView))).getChildAt(0).getBottom() >= (rowView.findViewById(R.id.chapterContentScrollView).getHeight() + rowView.findViewById(R.id.chapterContentScrollView).getScrollY()))) {
-                    /** icons filter + change text **/
-                    ( rowView.findViewById(R.id.chapterStartedIcon)).getBackground().clearColorFilter();
-                    ((TextView) rowView.findViewById(R.id.chapterStartedText)).setText("finished");
-                    ((TextView) rowView.findViewById(R.id.chapterStartedText)).setTextColor( Color.parseColor("#e99631"));
-                    ((TextView) rowView.findViewById(R.id.chapterStartedText)).setText("started");
-                }
-            }
-        });
 
         /** if user clicks 'finished reading' **/
         (rowView.findViewById(R.id.chapterDoneIcon)).setOnClickListener(new View.OnClickListener() {
@@ -90,7 +75,7 @@ public class ChapterAdapter extends BaseAdapter {
                 /** icons filter **/
                 ( rowView.findViewById(R.id.chapterDoneIcon)).getBackground().clearColorFilter();
                 ((TextView) rowView.findViewById(R.id.chapterDoneTxt)).setText("finished");
-                ((TextView) rowView.findViewById(R.id.chapterDoneTxt)).setTextColor( Color.parseColor("#e99631"));
+                //((TextView) rowView.findViewById(R.id.chapterDoneTxt)).setTextColor( Color.parseColor("#e99631"));
                 ( rowView.findViewById(R.id.chapterDoneIcon)).setEnabled(false);
                 /** update database **/
                 /** increment finished chapters number **/

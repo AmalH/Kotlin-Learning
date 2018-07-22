@@ -1,14 +1,13 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="7dp"
     android:clipChildren="false"
     android:clipToPadding="false"
+    android:gravity="center"
     android:orientation="vertical"
-    android:gravity="center">
+    android:padding="7dp">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
@@ -32,22 +31,22 @@
 
             <TextView
                 android:id="@+id/ratus_header"
+                fontPath="fonts/graublau_slab.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="15dp"
-                fontPath="fonts/graublau_slab.ttf"
-                android:textSize="10pt"
                 android:text="Rate iKotlin"
+                android:textSize="10pt"
                 tools:ignore="MissingPrefix" />
 
             <TextView
                 android:id="@+id/ratingDescription1"
+                fontPath="fonts/open_sans_regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
-                fontPath="fonts/open_sans_regular.ttf"
                 android:text="Your opinion matters to us"
                 android:textColor="@color/base_color_1"
                 android:textSize="10pt"
@@ -60,11 +59,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                fontPath="fonts/open_sans_light.ttf"
                 android:gravity="center"
-                android:text="We work super hard to make iKotlin \n better for you, and would love to know: \n how would you rate our app ?"
+                android:text="We work super hard to make iKotlin \n better for you, and would love to know: \n how would you rate it ?"
                 android:textSize="7pt"
                 android:textStyle="bold"
+                fontPath="fonts/open_sans_light.ttf"
                 tools:ignore="MissingPrefix" />
 
             <RatingBar
@@ -85,22 +84,10 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
-                android:background="@color/base_color_1"
+                android:background="@drawable/button_background2"
                 android:text="Submit"
+                android:textAllCaps="false"
                 android:textColor="@color/base_color_2" />
-
-           <!-- <TextView
-                android:id="@+id/cancelRatingTvw"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                fontPath="fonts/open_sans_regular.ttf"
-                android:text="No, Thanks"
-                android:textColor="@color/base_color_2"
-                android:textSize="7pt"
-                android:textStyle="bold"
-                tools:ignore="MissingPrefix" />-->
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
