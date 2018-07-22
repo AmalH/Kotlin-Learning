@@ -53,8 +53,6 @@ public class Statics {
 
     public static FirebaseAuth auth = FirebaseAuth.getInstance();
     public static DatabaseReference usersTable = FirebaseDatabase.getInstance().getReference("users");
-    //public static DatabaseReference takenCoursesTable = FirebaseDatabase.getInstance().getReference().child("takenCourses");
-    public static DatabaseReference startedChaptersTable = FirebaseDatabase.getInstance().getReference().child("startedChapters");
     static List<String> courses=new ArrayList<>();
     static HashMap<String,List> chapters= new HashMap<>();
 
