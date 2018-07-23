@@ -1,6 +1,6 @@
 <html>
 	<body>
-	<article role="main" class="page-content g-9">
+	<article role="main" class="page-currentQuestion g-9">
 		<h2 id="calling-kotlin-from-javascript">Calling Kotlin from JavaScript<a class="anchor" href="#calling-kotlin-from-javascript"></a></h2>
 		<p>Kotlin compiler generates normal JavaScript classes, functions and properties you can freely use from
 			JavaScript code. Nevertheless, there are some subtle things you should remember.</p>
@@ -65,7 +65,7 @@
 			<li><code>kotlin.Char</code> is mapped to JavaScript Number representing character code.</li>
 			<li>
 				<p>Kotlin can't distinguish between numeric types at run time (except for <code>kotlin.Long</code>), i.e. the following code works:</p>
-				<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">content</span>() {
+				<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">currentQuestion</span>() {
     <span class="cm-keyword">val</span> <span class="cm-def">x</span>: <span class="cm-variable">Int</span> <span class="cm-operator">=</span> <span class="cm-number">23</span>
     <span class="cm-keyword">val</span> <span class="cm-def">y</span>: <span class="cm-variable">Any</span> <span class="cm-operator">=</span> <span class="cm-variable">x</span>
     <span class="cm-variable">println</span>(<span class="cm-variable">y</span> <span class="cm-keyword">as</span> <span class="cm-variable-3">Float</span>)

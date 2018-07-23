@@ -23,7 +23,6 @@
         android:paddingLeft="5dp"
         android:textSize="6pt"
         android:textStyle="bold"
-        android:fontFamily="@fonts/open_sans_regular"
         android:text="test test test test"/>
     <TextView
         android:id="@+id/badgeDescription"
@@ -31,7 +30,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingLeft="6dp"
-        android:fontFamily="@fonts/open_sans_regular"
         android:textSize="6pt"/>
     </LinearLayout>
 

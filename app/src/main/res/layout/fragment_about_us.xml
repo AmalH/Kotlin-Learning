@@ -10,7 +10,7 @@
     android:orientation="vertical"
     android:gravity="center">
     <android.support.v7.widget.CardView
-        android:id="@+id/card_view"
+        android:id="@+id/cardView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginTop="10dp"
@@ -28,7 +28,7 @@
             android:layout_height="fill_parent"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/aboutUs_Header"
+                android:id="@+id/aboutUsHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -61,7 +61,7 @@
                     android:layout_height="0.5dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
-                    android:background="@color/base_color_1" />
+                    android:background="@color/baseColor1" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -74,7 +74,7 @@
                     android:layout_height="0.5dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
-                    android:background="@color/base_color_1" />
+                    android:background="@color/baseColor1" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -88,20 +88,20 @@
                     android:layout_marginTop="-15dp"
                     android:orientation="horizontal">
                     <RelativeLayout
-                        android:id="@+id/developer1Info"
+                        android:id="@+id/developerInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="20dp">
                         <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/developer1Img"
+                            android:id="@+id/developerImg"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:src="@drawable/ic_developer1_test"/>
                         <TextView
-                            android:id="@+id/developer1Name"
+                            android:id="@+id/developerName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/developer1Img"
+                            android:layout_toRightOf="@id/developerImg"
                             android:layout_marginTop="8dp"
                             android:layout_marginLeft="7dp"
                             android:text="Amal Hichri"
@@ -111,8 +111,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/developer1Img"
-                            android:layout_below="@id/developer1Name"
+                            android:layout_toRightOf="@id/developerImg"
+                            android:layout_below="@id/developerName"
                             android:layout_marginLeft="5dp"
                             android:gravity="center_vertical"
                             fontPath="fonts/open_sans_light.ttf"
@@ -133,7 +133,7 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/developer1Img"
+                            android:layout_below="@id/developerImg"
                             android:orientation="vertical"
                             android:gravity="center_horizontal"
                             android:layout_marginTop="7dp">
@@ -142,7 +142,7 @@
                                 android:layout_height="0.5dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginLeft="7dp"
-                                android:background="@color/base_color_1" />
+                                android:background="@color/baseColor1" />
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

@@ -45,8 +45,8 @@ public class ChaptersListAdapter extends BaseAdapter {
         View rowView= ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.chapterslist_item, parent, false);
         ((TextView) rowView.findViewById(R.id.chapterTitle)).setText("Chapter "+ String.valueOf(position+1)+" _ "+  AllCourses.getCourse(coursePosition).getChaptersList().get(position).getTitle());
         ((TextView) rowView.findViewById(R.id.chapterDescription)).setText( AllCourses.getCourse(coursePosition).getChaptersList().get(position).getDescription());
-        ((TextView) rowView.findViewById(R.id.nbbadgesEarned_chapter)).setText(String.valueOf(AllCourses.getCourse(coursePosition).getChaptersList().get(position).getNbBadges()));
-        ((TextView) rowView.findViewById(R.id.timeNeeded_chapter)).setText(String.valueOf(AllCourses.getCourse(coursePosition).getChaptersList().get(position).getTimeTocomplete()));
+        ((TextView) rowView.findViewById(R.id.nbbadgesEarnedChapter)).setText(String.valueOf(AllCourses.getCourse(coursePosition).getChaptersList().get(position).getNbBadges()));
+        ((TextView) rowView.findViewById(R.id.timeNeededChapter)).setText(String.valueOf(AllCourses.getCourse(coursePosition).getChaptersList().get(position).getTimeTocomplete()));
         return rowView;
     }
 }

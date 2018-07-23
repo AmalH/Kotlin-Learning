@@ -1,5 +1,6 @@
 package amalhichri.androidprojects.com.kotlinlearning.fragments;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -57,7 +58,6 @@ public class LearnFragment_currentUserCourses extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         nbOfLoadedCourses = 0;
-        //loadCurrentUserCourses();
 
         /** open course Learn_Fragment ui on list item click **/
         ((ListView) getActivity().findViewById(R.id.myCoursesLv)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -69,6 +69,7 @@ public class LearnFragment_currentUserCourses extends Fragment {
                         .commit();
             }
         });
+        ((ListView) getActivity().findViewById(R.id.myCoursesLv)).setDivider(new ColorDrawable(0x545454));
         /** addCoursesBtn click**/
         getActivity().findViewById(R.id.moreCoursesBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +112,6 @@ public class LearnFragment_currentUserCourses extends Fragment {
                         }
                     } catch (JSONException e) {
                         Toast.makeText(getContext(), "Server error " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        showLoadedData = false;
                     }
                 }
 
@@ -129,9 +129,6 @@ public class LearnFragment_currentUserCourses extends Fragment {
         }
     }
 
-    /**
-     * used to get clicked course's position
-     **/
     private int courseTitleToCoursePosition(String title) {
         int pos = -1;
         switch (title) {

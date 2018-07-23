@@ -16,8 +16,8 @@ import com.android.volley.VolleyError;
 import org.json.JSONObject;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
+import amalhichri.androidprojects.com.kotlinlearning.services.CoursesServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
-import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
 import amalhichri.androidprojects.com.kotlinlearning.utils.AllCourses;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
@@ -27,8 +27,6 @@ import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
 public class ChapterAdapter extends BaseAdapter {
 
-
-    /** this adapter is to load data dynamiacally in the linearLayout @+id/courseHeaderLayout from fragment_learn_course.xml **/
 
     private Context context;
     private int coursePosition,chapterPosition;
@@ -75,11 +73,10 @@ public class ChapterAdapter extends BaseAdapter {
                 /** icons filter **/
                 ( rowView.findViewById(R.id.chapterDoneIcon)).getBackground().clearColorFilter();
                 ((TextView) rowView.findViewById(R.id.chapterDoneTxt)).setText("finished");
-                //((TextView) rowView.findViewById(R.id.chapterDoneTxt)).setTextColor( Color.parseColor("#e99631"));
                 ( rowView.findViewById(R.id.chapterDoneIcon)).setEnabled(false);
                 /** update database **/
                 /** increment finished chapters number **/
-                UserServices.getInstance().incrementFinishedChaptersNumber(Statics.auth.getCurrentUser().getUid(),
+                CoursesServices.incrementFinishedChaptersNumber(Statics.auth.getCurrentUser().getUid(),
                         String.valueOf(coursePosition), context, new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {
@@ -96,6 +93,22 @@ public class ChapterAdapter extends BaseAdapter {
                                 Log.d("NOO---","----"+result.toString());
                             }
                         });
+                CoursesServices.getInstance().incrementEarnedBadgesNumber(Statics.auth.getCurrentUser().getUid(), String.valueOf(coursePosition), context, new ServerCallbacks() {
+                    @Override
+                    public void onSuccess(JSONObject result) {
+                        Log.d("Succeded---","----"+result.toString());
+                    }
+
+                    @Override
+                    public void onError(VolleyError result) {
+                        Log.d("Failed---","----  "+result.getClass().getName());
+                    }
+
+                    @Override
+                    public void onWrong(JSONObject result) {
+                        Log.d("Wrong---","----"+result.toString());
+                    }
+                });
             }
         });
         return rowView;

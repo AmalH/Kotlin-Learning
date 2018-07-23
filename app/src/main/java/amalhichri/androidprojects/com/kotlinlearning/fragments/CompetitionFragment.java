@@ -29,7 +29,7 @@ import java.util.Map;
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.models.Competition;
 import amalhichri.androidprojects.com.kotlinlearning.models.CompetitionAnswer;
-import amalhichri.androidprojects.com.kotlinlearning.services.CompetitionServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.CompetitionsServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 import amalhichri.androidprojects.com.kotlinlearning.services.StringCallbacks;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
@@ -66,12 +66,12 @@ public class CompetitionFragment extends Fragment {
 
 
     public void loadCompetition() {
-        CompetitionServices.getInstance().getCompetition("dZb3TxK1x5dqQJkq7ve0d683VoA3",
+        CompetitionsServices.getInstance().getCompetition("dZb3TxK1x5dqQJkq7ve0d683VoA3",
                 getContext(), competition.getId(), new ServerCallbacks() {
                     @Override
                     public void onSuccess(JSONObject result) {
                         try {
-                            competition = CompetitionServices.parse_(result.getJSONArray("resp").getJSONObject(0));
+                            competition = CompetitionsServices.jsonToCompetition(result.getJSONArray("resp").getJSONObject(0));
                             fillCompetition();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -92,38 +92,38 @@ public class CompetitionFragment extends Fragment {
 
     public void fillCompetition() {
 
-        ((TextView)getActivity().findViewById(R.id.compete_subject)).setText(competition.getTitle());
-        ((TextView)getActivity().findViewById(R.id.compete_solved_txt)).setText(competition.getSolvedString());
-        ((TextView)getActivity().findViewById(R.id.compete_show_content)).setText(competition.getContent());
-        ((TextView)getActivity().findViewById(R.id.compete_show_username)).setText(competition.getUsername());
-        ((TextView)getActivity().findViewById(R.id.compete_show_created)).setText(competition.getCreated_string());
+        ((TextView)getActivity().findViewById(R.id.competeSubject)).setText(competition.getTitle());
+        ((TextView)getActivity().findViewById(R.id.competeSolvedTxt)).setText(competition.getSolvedString());
+        ((TextView)getActivity().findViewById(R.id.competeShowContent)).setText(competition.getContent());
+        ((TextView)getActivity().findViewById(R.id.competeShowUsername)).setText(competition.getUsername());
+        ((TextView)getActivity().findViewById(R.id.competeShowCreated)).setText(competition.getCreated_string());
 
         if (competition.getProfile_picture() != null)
-            Picasso.with(getContext()).load(Uri.parse(competition.getProfile_picture())).into((CircleImageView)getActivity().findViewById(R.id.compete_show_user_picture));
+            Picasso.with(getContext()).load(Uri.parse(competition.getProfile_picture())).into((CircleImageView)getActivity().findViewById(R.id.competeShowUserPicture));
         else {
-            ((ImageView)getActivity().findViewById(R.id.compete_show_user_picture)).setImageDrawable(Statics.getPlaceholderProfilePic(competition.getUsername()));
+            ((ImageView)getActivity().findViewById(R.id.competeShowUserPicture)).setImageDrawable(Statics.getPlaceholderProfilePic(competition.getUsername()));
         }
     }
 
     public void loadAnswer() {
         progressDialog.setMessage("Loading your answer, please wait.");
         progressDialog.show();
-        CompetitionServices.getInstance().getCompetitionAnswer("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), competition.getId(), new ServerCallbacks() {
+        CompetitionsServices.getInstance().getCompetitionAnswer("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), competition.getId(), new ServerCallbacks() {
             @Override
             public void onSuccess(JSONObject result) {
-                getActivity().findViewById(R.id.compete_answer_code_view).setVisibility(View.VISIBLE);
-                getActivity().findViewById(R.id.compete_layout_answerd).setVisibility(View.VISIBLE);
-                getActivity().findViewById(R.id.compete_add_answer).setVisibility(View.GONE);
-                getActivity().findViewById(R.id.compete_add_content).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.competeAnswerCodeView).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.competeLayoutAnswered).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.competeAddAnswer).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.competeAddContent).setVisibility(View.GONE);
                 try {
                     if (result.getJSONArray("resp").length() > 0) {
-                        answer = CompetitionServices.parseAnswer_(result.getJSONArray("resp").getJSONObject(0));
+                        answer = CompetitionsServices.jsonToCompetitionAnswer(result.getJSONArray("resp").getJSONObject(0));
                         fillanswer();
                     } else {
-                        getActivity().findViewById(R.id.compete_answer_code_view).setVisibility(View.GONE);
-                        getActivity().findViewById(R.id.compete_layout_answerd).setVisibility(View.GONE);
-                        getActivity().findViewById(R.id.compete_add_answer).setVisibility(View.VISIBLE);
-                        getActivity().findViewById(R.id.compete_add_content).setVisibility(View.VISIBLE);
+                        getActivity().findViewById(R.id.competeAnswerCodeView).setVisibility(View.GONE);
+                        getActivity().findViewById(R.id.competeLayoutAnswered).setVisibility(View.GONE);
+                        getActivity().findViewById(R.id.competeAddAnswer).setVisibility(View.VISIBLE);
+                        getActivity().findViewById(R.id.competeAddContent).setVisibility(View.VISIBLE);
                         Toast.makeText(getContext(), "Not solved yet", Toast.LENGTH_LONG).show();
                     }
 
@@ -138,10 +138,10 @@ public class CompetitionFragment extends Fragment {
 
             @Override
             public void onError(VolleyError result) {
-                getActivity().findViewById(R.id.compete_answer_code_view).setVisibility(View.GONE);
-                getActivity().findViewById(R.id.compete_layout_answerd).setVisibility(View.GONE);
-                getActivity().findViewById(R.id.compete_add_answer).setVisibility(View.GONE);
-                getActivity().findViewById(R.id.compete_add_content).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.competeAnswerCodeView).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.competeLayoutAnswered).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.competeAddAnswer).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.competeAddContent).setVisibility(View.GONE);
                 Toast.makeText(getContext(), "error", Toast.LENGTH_LONG).show();
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
@@ -150,10 +150,10 @@ public class CompetitionFragment extends Fragment {
 
             @Override
             public void onWrong(JSONObject result) {
-                getActivity().findViewById(R.id.compete_answer_code_view).setVisibility(View.GONE);
-                getActivity().findViewById(R.id.compete_layout_answerd).setVisibility(View.GONE);
-                getActivity().findViewById(R.id.compete_add_answer).setVisibility(View.VISIBLE);
-                getActivity().findViewById(R.id.compete_add_content).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.competeAnswerCodeView).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.competeLayoutAnswered).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.competeAddAnswer).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.competeAddContent).setVisibility(View.VISIBLE);
                 Toast.makeText(getContext(), "wrong", Toast.LENGTH_LONG).show();
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
@@ -164,10 +164,10 @@ public class CompetitionFragment extends Fragment {
 
     public void fillanswer() {
         answer.setCreated(Calendar.getInstance());
-        ((TextView)getActivity().findViewById(R.id.answer_date)).setText(answer.getCreated_string());
-        ((TextView)getActivity().findViewById(R.id.compete_add_content)).setText(answer.getContent());
+        ((TextView)getActivity().findViewById(R.id.answerDate)).setText(answer.getCreated_string());
+        ((TextView)getActivity().findViewById(R.id.competeAddContent)).setText(answer.getContent());
         if (answer.getContent() != null) {
-            ((CodeView)getActivity().findViewById(R.id.compete_answer_code_view)).setOptions(Options.Default.get(getContext())
+            ((CodeView)getActivity().findViewById(R.id.competeAnswerCodeView)).setOptions(Options.Default.get(getContext())
                     .withLanguage("java")
                     .withCode(answer.getContent())
                     .withTheme(ColorTheme.DEFAULT));
@@ -175,19 +175,19 @@ public class CompetitionFragment extends Fragment {
     }
 
     public void attachAddListener() {
-        getActivity().findViewById(R.id.compete_add_answer).setOnClickListener(new View.OnClickListener() {
+        getActivity().findViewById(R.id.competeAddAnswer).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 progressDialog.setMessage("Saving your answer, please wait.");
                 progressDialog.show();
                 //add
-                if (((TextView)getActivity().findViewById(R.id.compete_add_content)).getText() != null)
-                    if (((TextView)getActivity().findViewById(R.id.compete_add_content)).getText().toString().trim().length() > 0) {
+                if (((TextView)getActivity().findViewById(R.id.competeAddContent)).getText() != null)
+                    if (((TextView)getActivity().findViewById(R.id.competeAddContent)).getText().toString().trim().length() > 0) {
                         if (!editnow) {
                             answer = new CompetitionAnswer();
                             answer.setId_competition(competition.getId());
-                            answer.setContent(((TextView)getActivity().findViewById(R.id.compete_add_content)).getText().toString().replaceAll("[\r\n]", "\n"));
-                            CompetitionServices.getInstance().addAnswer(getContext(), answer, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
+                            answer.setContent(((TextView)getActivity().findViewById(R.id.competeAddContent)).getText().toString().replaceAll("[\r\n]", "\n"));
+                            CompetitionsServices.getInstance().addAnswer(getContext(), answer, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
                                 @Override
                                 public void onSuccess(JSONObject result) {
                                     loadAnswer();
@@ -214,14 +214,14 @@ public class CompetitionFragment extends Fragment {
                             });
                         } else {
                             editnow = false;
-                            answer.setContent(((TextView)getActivity().findViewById(R.id.compete_add_content)).getText().toString().replaceAll("[\r\n]", "\n"));
-                            CompetitionServices.getInstance().editAnswer(getContext(), answer, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
+                            answer.setContent(((TextView)getActivity().findViewById(R.id.competeAddContent)).getText().toString().replaceAll("[\r\n]", "\n"));
+                            CompetitionsServices.getInstance().editAnswer(getContext(), answer, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
                                 @Override
                                 public void onSuccess(JSONObject result) {
-                                    getActivity().findViewById(R.id.compete_answer_code_view).setVisibility(View.GONE);
-                                    getActivity().findViewById(R.id.compete_layout_answerd).setVisibility(View.GONE);
-                                    getActivity().findViewById(R.id.compete_add_answer).setVisibility(View.VISIBLE);
-                                    getActivity().findViewById(R.id.compete_add_content).setVisibility(View.VISIBLE);
+                                    getActivity().findViewById(R.id.competeAnswerCodeView).setVisibility(View.GONE);
+                                    getActivity().findViewById(R.id.competeLayoutAnswered).setVisibility(View.GONE);
+                                    getActivity().findViewById(R.id.competeAddAnswer).setVisibility(View.VISIBLE);
+                                    getActivity().findViewById(R.id.competeAddContent).setVisibility(View.VISIBLE);
                                     answer.setCreated(Calendar.getInstance());
                                     loadAnswer();
                                     if (progressDialog.isShowing()) {
@@ -250,25 +250,25 @@ public class CompetitionFragment extends Fragment {
             }
         });
 
-        getActivity().findViewById(R.id.compete_edit_answer).setOnClickListener(new View.OnClickListener() {
+        getActivity().findViewById(R.id.competeEditAnswer).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().findViewById(R.id.compete_answer_code_view).setVisibility(View.GONE);
-                getActivity().findViewById(R.id.compete_layout_answerd).setVisibility(View.GONE);
-                getActivity().findViewById(R.id.compete_add_answer).setVisibility(View.VISIBLE);
-                getActivity().findViewById(R.id.compete_add_content).setVisibility(View.VISIBLE);
-                ((TextView)getActivity().findViewById(R.id.compete_add_content)).setText(answer.getContent());
+                getActivity().findViewById(R.id.competeAnswerCodeView).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.competeLayoutAnswered).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.competeAddAnswer).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.competeAddContent).setVisibility(View.VISIBLE);
+                ((TextView)getActivity().findViewById(R.id.competeAddContent)).setText(answer.getContent());
                 editnow = true;
             }
         });
 
-        getActivity().findViewById(R.id.compete_run).setOnClickListener(new View.OnClickListener() {
+        getActivity().findViewById(R.id.competeRun).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().findViewById(R.id.compete_run).setEnabled(false);
+                getActivity().findViewById(R.id.competeRun).setEnabled(false);
                 progressDialog.setMessage("Running code, please wait.");
                 progressDialog.show();
-                final String s=((TextView)getActivity().findViewById(R.id.compete_add_content)).getText().toString().replaceAll("[\r\n]", "\n");
+                final String s=((TextView)getActivity().findViewById(R.id.competeAddContent)).getText().toString().replaceAll("[\r\n]", "\n");
                // s=s.replaceAll("\\s+","+");
                 Map<String, String> m = new HashMap<String, String>();
                 m.put("text", s);
@@ -280,12 +280,12 @@ public class CompetitionFragment extends Fragment {
                 JSONObject FullBody = new JSONObject();
                 try {
                     FullBody.put("files", jsonArray);
-                    FullBody.put("args", ((TextView)getActivity().findViewById(R.id.compete_args)).getText().toString());
-                    CompetitionServices.getInstance().tryCode(getContext(), FullBody, new StringCallbacks() {
+                    FullBody.put("args", ((TextView)getActivity().findViewById(R.id.competeArguments)).getText().toString());
+                    CompetitionsServices.getInstance().compileCode(getContext(), FullBody, new StringCallbacks() {
                         @Override
                         public void onSuccess(String result) {
-                            getActivity().findViewById(R.id.compete_run).setEnabled(true);
-                            getActivity().findViewById(R.id.compete_response).setVisibility(View.VISIBLE);
+                            getActivity().findViewById(R.id.competeRun).setEnabled(true);
+                            getActivity().findViewById(R.id.competeResponse).setVisibility(View.VISIBLE);
                             //Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
                             JSONObject jsOResponse,subs;
                             JSONArray subsar;
@@ -294,8 +294,8 @@ public class CompetitionFragment extends Fragment {
                                jsOResponse =new JSONObject(result);
                                 //Log.d("tryko",jsOResponse.toString());
                                if(jsOResponse.has("text")){
-                                   ((TextView)getActivity().findViewById(R.id.compete_response)).setText(jsOResponse.get("text").toString().replaceAll("<[^>]+>", ""));
-                                   getActivity().findViewById(R.id.compete_response).setBackgroundColor(getActivity().getResources().getColor(R.color.success_background));
+                                   ((TextView)getActivity().findViewById(R.id.competeResponse)).setText(jsOResponse.get("text").toString().replaceAll("<[^>]+>", ""));
+                                   getActivity().findViewById(R.id.competeResponse).setBackgroundColor(getActivity().getResources().getColor(R.color.successBackground));
                                }
                                 else {
                                    //Log.d("tryko",jsOResponse.toString());
@@ -331,10 +331,10 @@ public class CompetitionFragment extends Fragment {
                                            if(line.length()>0) err+="\n\tIn line : "+line;
                                            if(chr.length()>0) err+="\n\tCharacter: "+chr;
 
-                                           ((TextView)getActivity().findViewById(R.id.compete_response)).setText(err);
+                                           ((TextView)getActivity().findViewById(R.id.competeResponse)).setText(err);
                                        } else
-                                           ((TextView)getActivity().findViewById(R.id.compete_response)).setText("Compilation error !");
-                                       getActivity().findViewById(R.id.compete_response).setBackgroundColor(getActivity().getResources().getColor(R.color.error_background));
+                                           ((TextView)getActivity().findViewById(R.id.competeResponse)).setText("Compilation error !");
+                                       getActivity().findViewById(R.id.competeResponse).setBackgroundColor(getActivity().getResources().getColor(R.color.errorBackground));
                                    }
                                }
                             //Log.d("tryko",jsOResponse.toString());
@@ -360,15 +360,15 @@ public class CompetitionFragment extends Fragment {
                                        if(line.length()>0)err+="\n\tIn line  : "+line;
                                        if(cause.length()>0)err+="\n\tCause   : "+cause;
 
-                                       ((TextView)getActivity().findViewById(R.id.compete_response)).setText(err);
-                                       (getActivity().findViewById(R.id.compete_response)).setBackgroundColor(getActivity().getResources().getColor(R.color.error_background));
+                                       ((TextView)getActivity().findViewById(R.id.competeResponse)).setText(err);
+                                       (getActivity().findViewById(R.id.competeResponse)).setBackgroundColor(getActivity().getResources().getColor(R.color.errorBackground));
                                    }
                                }
 
                                 Log.d("kotlinResponse",jsOResponse.toString());
                             } catch (JSONException e) {
-                                ((TextView)getActivity().findViewById(R.id.compete_response)).setText("Parsing error !");
-                                getActivity().findViewById(R.id.compete_response).setBackgroundColor(getActivity().getResources().getColor(R.color.paper_background));
+                                ((TextView)getActivity().findViewById(R.id.competeResponse)).setText("Parsing error !");
+                                getActivity().findViewById(R.id.competeResponse).setBackgroundColor(getActivity().getResources().getColor(R.color.paperBackground));
                             }
 
 
@@ -380,16 +380,16 @@ public class CompetitionFragment extends Fragment {
 
                         @Override
                         public void onError(VolleyError result) {
-                            getActivity().findViewById(R.id.compete_run).setEnabled(true);
-                            ((TextView)getActivity().findViewById(R.id.compete_response)).setText("Please retry...");
-                            getActivity().findViewById(R.id.compete_response).setBackgroundColor(getActivity().getResources().getColor(R.color.paper_background));
+                            getActivity().findViewById(R.id.competeRun).setEnabled(true);
+                            ((TextView)getActivity().findViewById(R.id.competeResponse)).setText("Please retry...");
+                            getActivity().findViewById(R.id.competeResponse).setBackgroundColor(getActivity().getResources().getColor(R.color.paperBackground));
                             if (progressDialog.isShowing()) {
                                 progressDialog.dismiss();
                             }
                         }
                     });
                 } catch (JSONException e) {
-                    getActivity().findViewById(R.id.compete_run).setEnabled(true);
+                    getActivity().findViewById(R.id.competeRun).setEnabled(true);
                     e.printStackTrace();
                     Toast.makeText(getContext(), "Error while running on server\n Please report", Toast.LENGTH_SHORT).show();
                     if (progressDialog.isShowing()) {

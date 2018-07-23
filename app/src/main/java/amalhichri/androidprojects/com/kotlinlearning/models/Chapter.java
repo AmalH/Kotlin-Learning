@@ -15,10 +15,11 @@ public class Chapter {
     private int quizzId;
 
 
-    public Chapter(String title, String description, int orderInCouse) {
+    public Chapter(String title, String description, int orderInCouse,int timeTocomplete) {
         this.title=title;
         this.description=description;
         this.orderInCouse=orderInCouse;
+        this.timeTocomplete = timeTocomplete;
     }
 
     public String getTitle() {

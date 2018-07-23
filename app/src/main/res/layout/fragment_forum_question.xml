@@ -125,8 +125,7 @@
                                     android:id="@+id/forumQstnContent"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="content"
-                                    android:fontFamily="@fonts/graublau_slab"
+                                    android:text="currentQuestion"
                                     android:layout_marginBottom="5dp"
                                     />
                                 <io.github.kbiakov.codeview.CodeView
@@ -210,15 +209,15 @@
     </ScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
 
-    <android.support.design.widget.FloatingActionButton
+
+    <com.rey.material.widget.FloatingActionButton
         android:id="@+id/addCommentBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_margin="16dp"
         android:clickable="true"
         android:elevation="9dp"
+        app:fab_backgroundColor="@color/baseColor2"
         android:src="@drawable/ic_action_add_comment"
-        app:layout_anchorGravity="left|right|end"
-        android:layout_gravity="end|bottom"
-        />
+        android:layout_gravity="end|bottom" />
 </FrameLayout>

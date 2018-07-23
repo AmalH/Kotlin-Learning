@@ -19,11 +19,11 @@ import amalhichri.androidprojects.com.kotlinlearning.utils.AppSingleton;
  * Created by Amal on 19/11/2017.
  */
 
-public class UserServices {
+public class UsersServices {
 
-    private static UserServices this_ = new UserServices();
+    private static UsersServices this_ = new UsersServices();
 
-    public static synchronized UserServices getInstance()
+    public static synchronized UsersServices getInstance()
     {	return this_;
     }
 
@@ -91,8 +91,8 @@ public class UserServices {
                     }
                 });
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                10000,//timeout
-                3,//retry
+                10000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "GetUser");
@@ -100,7 +100,7 @@ public class UserServices {
 
     public void assignBadge(String id,String badgeindic, Context context, final ServerCallbacks serverCallbacks){
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.1.3/IkotlinBackend/web/users/addbadge?id="+id+"&badgeindic="+badgeindic, new JSONObject(), new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://192.168.1.3/IkotlinBackend/web/users/addBadge?id="+id+"&badgeindic="+badgeindic, new JSONObject(), new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -126,13 +126,12 @@ public class UserServices {
                 10000,
                 3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AssignBadge");
     }
 
     public void isHasBadge(String id,String badgeindic,Context context, final ServerCallbacks serverCallbacks){
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.1.3/IkotlinBackend/web/users/hasbadge?id="+id+"&badgeindic="+badgeindic, new JSONObject(), new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://192.168.1.3/IkotlinBackend/web/users/hasBadge?id="+id+"&badgeindic="+badgeindic, new JSONObject(), new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -162,37 +161,7 @@ public class UserServices {
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AssignBadge");
     }
 
-    public void incrementFinishedChaptersNumber(String id,String courseindic, Context context, final ServerCallbacks serverCallbacks){
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.43.166:80/iKotlinbackend/Web/courses/finishedChapter?id="+id+"&courseindic="+courseindic, new JSONObject(), new Response.Listener<JSONObject>() {
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        if (!response.has("Error")){
-                            //ok
-                            serverCallbacks.onSuccess(response);
-                        }
-                        else{
-                            //wrong entries
-                            serverCallbacks.onWrong(response);
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //connection problem
-                        serverCallbacks.onError(error);
-                    }
-                });
-        jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                10000,
-                3,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AssignBadge");
-    }
 
 
      /*public void markLoggedUserWebService(String id, Context context , final ServerCallbacks serverCallbacks){
@@ -228,12 +197,12 @@ public class UserServices {
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "logging");
     }
-   public UserDb get_user_from_json(JSONObject json){
+   public User get_user_from_json(JSONObject json){
         //datetimeparser
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
         Calendar cal = Calendar.getInstance();
 
-        UserDb user = new UserDb();
+        User user = new User();
         try {
             JSONObject uj=json.getJSONObject("user");
             user.setId(uj.getString("id"));

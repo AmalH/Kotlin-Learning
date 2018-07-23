@@ -44,7 +44,7 @@ public class LearnFragment_course extends Fragment {
 
         /** **/
         ChaptersListAdapter scrollViewAdapter = new ChaptersListAdapter(getContext(),this.coursePosition);
-        headerAdapter = new CourseHeaderAdapter(getContext(),this.coursePosition, nbOfChaptersCompleted);
+        headerAdapter = new CourseHeaderAdapter(getContext(),this.coursePosition, nbOfChaptersCompleted,nbOfBadgesEarned);
 
         /** filling the course header **/
         for (int i = 0; i < headerAdapter.getCount(); i++) {
@@ -90,10 +90,10 @@ public class LearnFragment_course extends Fragment {
                                 /** find current course **/
                                 if (Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(i)).getString("courseindic")) == coursePosition) {
                                     /** update nb of chapters and badges  **/
-                                    nbOfChaptersCompleted = Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(coursePosition)).getString("finishedchapter"));
+                                    nbOfChaptersCompleted = Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(coursePosition)).getString("finishedchapters"));
                                     ((TextView)v.findViewById(R.id.nbChaptersFinished)).setText(String.valueOf(nbOfChaptersCompleted));
-                                    nbOfBadgesEarned= Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(coursePosition)).getString("earnedbadge"));
-                                    ((TextView)v.findViewById(R.id.nbbadgesEarned_course)).setText(String.valueOf(nbOfBadgesEarned));
+                                    nbOfBadgesEarned= Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(coursePosition)).getString("earnedbadges"));
+                                    ((TextView)v.findViewById(R.id.nbbadgesEarnedCourse)).setText(String.valueOf(nbOfBadgesEarned));
                                 }
                             }
                     }catch (JSONException e) {

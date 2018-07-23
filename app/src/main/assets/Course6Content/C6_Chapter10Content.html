@@ -1,6 +1,6 @@
 <html>
 	<body>
-	<article role="main" class="page-content g-9">
+	<article role="main" class="page-currentQuestion g-9">
 		<h2 id="annotations">Annotations<a class="anchor" href="#annotations"></a></h2>
 		<h2 id="annotation-declaration">Annotation Declaration<a class="anchor" href="#annotation-declaration"></a></h2>
 		<p>Annotations are means of attaching metadata to code. To declare an annotation, put the <em class="keyword">annotation</em> modifier in front of a class:</p>
@@ -87,7 +87,7 @@
 			which uses annotations for concurrency control.</p>
 		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">annotation</span> <span class="cm-keyword">class</span> <span class="cm-def">Suspendable</span>
 
-<span class="cm-keyword">val</span> <span class="cm-def">content</span> <span class="cm-operator">=</span> <span class="cm-variable">@Suspendable</span> { <span class="cm-variable">Fiber</span>.<span class="cm-variable">sleep</span>(<span class="cm-number">10</span>) }
+<span class="cm-keyword">val</span> <span class="cm-def">currentQuestion</span> <span class="cm-operator">=</span> <span class="cm-variable">@Suspendable</span> { <span class="cm-variable">Fiber</span>.<span class="cm-variable">sleep</span>(<span class="cm-number">10</span>) }
 </code></pre>
 		<h2 id="annotation-use-site-targets">Annotation Use-site Targets<a class="anchor" href="#annotation-use-site-targets"></a></h2>
 		<p>When you're annotating a property or a primary constructor parameter, there are multiple Java elements which are
@@ -144,7 +144,7 @@
     <span class="cm-variable">@get</span>:<span class="cm-variable">Rule</span> <span class="cm-keyword">val</span> <span class="cm-def">tempFolder</span> <span class="cm-operator">=</span> <span class="cm-variable">TemporaryFolder</span>()
 
     <span class="cm-variable">@Test</span> <span class="cm-keyword">fun</span> <span class="cm-def">simple</span>() {
-        <span class="cm-keyword">val</span> <span class="cm-def">content</span> <span class="cm-operator">=</span> <span class="cm-variable">tempFolder</span>.<span class="cm-variable">newFile</span>()
+        <span class="cm-keyword">val</span> <span class="cm-def">currentQuestion</span> <span class="cm-operator">=</span> <span class="cm-variable">tempFolder</span>.<span class="cm-variable">newFile</span>()
         <span class="cm-variable">assertEquals</span>(<span class="cm-number">42</span>, <span class="cm-variable">getTheAnswer</span>())
     }
 }

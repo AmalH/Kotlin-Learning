@@ -1,158 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="3dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/comment_postedBy_img"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/ic_profile_placeholder" />
+
+    <TextView
+        android:id="@+id/answerToPostContent"
+        fontPath="fonts/graublau_slab.ttf"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp">
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/comment_postedBy_img"
+        android:paddingRight="12dp"
+        android:text="How to build android app in 1 month"
+        android:textColor="#000"
+        android:textSize="13dp"
+        tools:ignore="MissingPrefix" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/comment_postedBy_img"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginRight="4dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:src="@drawable/ic_profile_placeholder"/>
+    <TextView
+        android:id="@+id/postedbyPassive"
+        fontPath="fonts/graublau_slab.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/comment_postedBy_name"
+        android:layout_alignBottom="@+id/comment_postedBy_name"
+        android:layout_alignStart="@+id/answerToPostContent"
+        android:layout_marginLeft="2dp"
+        android:text="Posted by: "
+        android:textSize="11.5dp"
+        tools:ignore="MissingPrefix" />
+
+    <TextView
+        android:id="@+id/comment_postedBy_name"
+        fontPath="fonts/graublau_slab.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/answerToPostContent"
+        android:layout_marginStart="1dp"
+        android:layout_toEndOf="@+id/postedbyPassive"
+        android:text="username"
+        android:textColor="#696969"
+        android:textSize="12dp"
+        tools:ignore="MissingPrefix" />
+
+
+    <LinearLayout
+        android:id="@+id/tags_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentTop="false"
+        android:layout_below="@+id/postedbyPassive"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@+id/comment_postedBy_img"
+        android:orientation="horizontal"></LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/postInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tags_layout"
+        android:layout_marginBottom="1dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@id/comment_postedBy_img"
+        android:orientation="horizontal">
+
+
+        <ImageButton
+            android:id="@+id/comment_up_arrow"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@color/float_transparent"
+            android:src="@drawable/ic_upvote" />
+
         <TextView
-            android:id="@+id/commentContent"
+            android:id="@+id/comment_rating"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="How to build android app in 1 month"
-            android:layout_toRightOf="@id/comment_postedBy_img"
-            android:layout_marginLeft="5dp"
-            android:textColor="#000"
-            android:textSize="13dp"
-            fontPath="fonts/graublau_slab.ttf"
-            tools:ignore="MissingPrefix"
-            android:layout_marginBottom="5dp"
-            android:paddingRight="12dp"
-            />
+            android:layout_height="15dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:text="5"
+
+            android:textColor="#000" />
+
+        <ImageButton
+            android:id="@+id/comment_down_arrow"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@color/float_transparent"
+            android:rotation="180"
+            android:src="@drawable/ic_upvote" />
+
+
+        <ImageView
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_calendar" />
+
         <TextView
-            android:id="@+id/postedby_passive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/comment_postedBy_name"
-            android:layout_alignBottom="@+id/comment_postedBy_name"
-            android:layout_alignStart="@+id/commentContent"
-            android:text="Posted by: "
-            android:textSize="11.5dp"
+            android:id="@+id/comment_created"
             fontPath="fonts/graublau_slab.ttf"
-            tools:ignore="MissingPrefix"
-            android:layout_marginLeft="2dp"/>
-
-        <TextView
-            android:id="@+id/comment_postedBy_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/commentContent"
-            android:layout_marginStart="1dp"
-            android:layout_toEndOf="@+id/postedby_passive"
-            android:text="username"
-            android:textColor="#696969"
-            fontPath="fonts/graublau_slab.ttf"
-            tools:ignore="MissingPrefix"
-            android:textSize="12dp" />
+            android:layout_gravity="center"
+            android:text="2017-06-02"
+            android:textSize="11dp"
+            tools:ignore="MissingPrefix" />
 
-
-        <LinearLayout
-            android:id="@+id/tags_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="false"
-            android:layout_alignParentTop="false"
-            android:layout_below="@+id/postedby_passive"
-            android:layout_toRightOf="@+id/comment_postedBy_img"
-            android:orientation="horizontal"
-            android:layout_marginTop="3dp"
-            android:layout_marginLeft="7dp"
-            >
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/postInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tags_layout"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="1dp"
-            android:layout_toRightOf="@id/comment_postedBy_img"
-            android:orientation="horizontal">
-
-
-
-            <ImageButton
-                android:id="@+id/comment_up_arrow"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_upvote"
-                android:background="@color/float_transparent"
-                />
-
-            <TextView
-                android:id="@+id/comment_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="15dp"
-                android:layout_marginLeft="18dp"
-                android:layout_marginRight="18dp"
-                android:text="5"
-                android:layout_gravity="center"
-
-                android:textColor="#000" />
-
-            <ImageButton
-                android:id="@+id/comment_down_arrow"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_upvote"
-                android:rotation="180"
-                android:background="@color/float_transparent"/>
-
-
-
-            <ImageView
-                android:layout_width="17dp"
-                android:layout_height="17dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="5dp"
-                android:src="@drawable/ic_calendar"
-                android:layout_gravity="center"/>
-
-            <TextView
-                android:id="@+id/comment_created"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2017-06-02"
-                android:textSize="11dp"
-                android:layout_gravity="center"
-                fontPath="fonts/graublau_slab.ttf"
-                tools:ignore="MissingPrefix"
-                />
-
-        </LinearLayout>
+    </LinearLayout>
 
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_alignStart="@+id/answerToPostContent"
         android:layout_below="@id/postInfo"
-        android:layout_alignStart="@+id/commentContent"
         android:layout_marginTop="5dp"
         android:background="#bdbdbd"></View>
 
-    <!--<ImageButton
-        android:id="@+id/deleComment"
-        android:layout_width="14dp"
+    <ImageButton
+        android:id="@+id/delePostComment"
+        android:layout_width="15dp"
         android:layout_height="15dp"
-        android:layout_marginRight="5dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
         android:background="@color/float_transparent"
-        android:padding="2dp"
-        card_view:srcCompat="@drawable/ic_action_delete_x"
-        android:visibility="gone"/>-->
+        card_view:srcCompat="@drawable/ic_delete_post" />
 
-    </RelativeLayout>
+</RelativeLayout>

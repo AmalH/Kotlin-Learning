@@ -30,7 +30,7 @@ import amalhichri.androidprojects.com.kotlinlearning.adapters.CompetitionAdapter
 import amalhichri.androidprojects.com.kotlinlearning.adapters.CompetitionAnswerAdapter;
 import amalhichri.androidprojects.com.kotlinlearning.models.Competition;
 import amalhichri.androidprojects.com.kotlinlearning.models.CompetitionAnswer;
-import amalhichri.androidprojects.com.kotlinlearning.services.CompetitionServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.CompetitionsServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Configuration;
 
@@ -59,10 +59,10 @@ public class CompeteFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        competitionsRecyclerView = getActivity().findViewById(R.id.compete_competitions);
-        answersRecyclerView = getActivity().findViewById(R.id.compete_answers);
-        competeSwipeRefresh=getActivity().findViewById(R.id.compete_swipeRefresh);
-        competeAnswerSwipeRefresh=getActivity().findViewById(R.id.competeanswer_swipeRefresh);
+        competitionsRecyclerView = getActivity().findViewById(R.id.competeCompetitions);
+        answersRecyclerView = getActivity().findViewById(R.id.competeAnswers);
+        competeSwipeRefresh=getActivity().findViewById(R.id.competeSwipeRefresh);
+        competeAnswerSwipeRefresh=getActivity().findViewById(R.id.competeAnswerSwipeRefresh);
 
         ((MultiStateToggleButton)getActivity().findViewById(R.id.competeToggleBtn)).enableMultipleChoice(false);
         ((MultiStateToggleButton)getActivity().findViewById(R.id.competeToggleBtn)).setValue(0);
@@ -88,8 +88,8 @@ public class CompeteFragment extends Fragment {
 
         /** swipe refresh layout **/
         competeSwipeRefresh.setColorSchemeColors(
-                getContext().getResources().getColor(R.color.base_color_1),
-                getContext().getResources().getColor(R.color.base_color_2));
+                getContext().getResources().getColor(R.color.baseColor1),
+                getContext().getResources().getColor(R.color.baseColor2));
         competeSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -156,7 +156,7 @@ public class CompeteFragment extends Fragment {
         });
 
         /** add contest **/
-        getActivity().findViewById(R.id.compete_add).setOnClickListener(new View.OnClickListener() {
+        getActivity().findViewById(R.id.competeAdd).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager().beginTransaction()
@@ -235,7 +235,7 @@ public class CompeteFragment extends Fragment {
                         competitionsRecyclerView.removeAllViews();
                         competitionList.clear();
                     }
-                    CompetitionServices.getInstance().getCompetitions("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), loadedLengthCompetition, 1, order, new ServerCallbacks() {
+                    CompetitionsServices.getInstance().getCompetitions("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), loadedLengthCompetition, 1, order, new ServerCallbacks() {
                         @Override
                         public void onSuccess(JSONObject result) {
                             boolean showLoadedData =true;
@@ -243,7 +243,7 @@ public class CompeteFragment extends Fragment {
                             if((result.getJSONArray("competitions")).length()==0) showLoadedData =false;
                             for(int i = 0 ; i < (result.getJSONArray("competitions")).length() ; i++){
                                 try {
-                                    competitionList.add(CompetitionServices.parse_((result.getJSONArray("competitions")).getJSONObject(i)));
+                                    competitionList.add(CompetitionsServices.jsonToCompetition((result.getJSONArray("competitions")).getJSONObject(i)));
                                 } catch (JSONException e) {
                                     Toast.makeText(getContext(),"Application error while loading competition , please report", Toast.LENGTH_SHORT).show();
                                     showLoadedData =false;
@@ -301,7 +301,7 @@ public class CompeteFragment extends Fragment {
                        answersRecyclerView.removeAllViews();
                        answersList.clear();
                     }
-                    CompetitionServices.getInstance().getCompetitionsAnswers("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), loadedLengthAnswers,0, new ServerCallbacks() {
+                    CompetitionsServices.getInstance().getCompetitionsAnswers("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), loadedLengthAnswers,0, new ServerCallbacks() {
                         @Override
                         public void onSuccess(JSONObject result) {
                             boolean goShow=true;
@@ -319,8 +319,8 @@ public class CompeteFragment extends Fragment {
                             for(int i = 0 ; i < array.length() ; i++){
                                 try {
                                     /** parse forum and add it to the arraylist**/
-                                    //Log.d("compet",CompetitionServices.parseAnswer_(array.getJSONObject(i)).toString());
-                                    answersList.add(CompetitionServices.parseAnswer_(array.getJSONObject(i)));
+                                    //Log.d("compet",CompetitionsServices.jsonToCompetitionAnswer(array.getJSONObject(i)).toString());
+                                    answersList.add(CompetitionsServices.jsonToCompetitionAnswer(array.getJSONObject(i)));
                                 } catch (JSONException e) {
                                     Toast.makeText(getContext(),"Application error while loading competition , please report", Toast.LENGTH_SHORT).show();
                                     goShow=false;

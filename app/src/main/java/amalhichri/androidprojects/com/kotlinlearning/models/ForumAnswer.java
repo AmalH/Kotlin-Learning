@@ -6,7 +6,7 @@ import java.util.Calendar;
  * Created by Odil on 21/12/2017.
  */
 
-public class Answer {
+public class ForumAnswer {
     private int id;
     private String content;
     private Calendar created;
@@ -15,7 +15,7 @@ public class Answer {
     private String username;
     private String userpicture;
 
-    public Answer(int id, String content, Calendar created, long rating, String userid, String username, String userpicture) {
+    public ForumAnswer(int id, String content, Calendar created, long rating, String userid, String username, String userpicture) {
         this.id = id;
         this.content = content;
         this.created = created;
@@ -24,7 +24,7 @@ public class Answer {
         this.username = username;
         this.userpicture = userpicture;
     }
-    public Answer(int id, String content, Calendar created, long rating, String userid, String username) {
+    public ForumAnswer(int id, String content, Calendar created, long rating, String userid, String username) {
         this.id = id;
         this.content = content;
         this.created = created;
@@ -111,7 +111,7 @@ public class Answer {
 
     @Override
     public String toString() {
-        return "Answer{" +
+        return "ForumAnswer{" +
                 "id=" + id +
                 ", content='" + content + '\'' +
                 ", created=" + created +

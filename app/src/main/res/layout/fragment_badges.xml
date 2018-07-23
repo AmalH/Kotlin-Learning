@@ -16,7 +16,7 @@
             android:textStyle="bold"
             android:gravity="center"
             android:textSize="8pt"
-            android:textColor="@color/base_color_1"
+            android:textColor="@color/baseColor1"
             android:text="You're almost there Chapmpion ! "
             tools:ignore="MissingPrefix" />
         <ImageButton

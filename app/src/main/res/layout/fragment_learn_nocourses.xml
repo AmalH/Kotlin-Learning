@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="60px"
         android:background="@drawable/button_background"
-        android:textColor="@color/base_color_1"
+        android:textColor="@color/baseColor1"
         android:layout_marginTop="20px"
         android:textSize="8pt"
         android:text="Start a course"

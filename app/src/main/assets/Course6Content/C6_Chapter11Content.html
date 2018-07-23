@@ -1,6 +1,6 @@
 <html>
 	<body>
-    <article role="main" class="page-content g-9">
+    <article role="main" class="page-currentQuestion g-9">
         <h2 id="reflection">Reflection<a class="anchor" href="#reflection"></a></h2>
         <p>Reflection is a set of language and library features that allows for introspecting the structure of your own program at runtime.
             Kotlin makes functions and properties first-class citizens in the language, and introspecting them (i.e. learning a name or
@@ -50,11 +50,11 @@
             e.g. <code>String::toCharArray</code> gives us an extension function for type <code>String</code>: <code>String.() -&gt; CharArray</code>.</p>
         <h2 id="example-function-composition">Example: Function Composition<a class="anchor" href="#example-function-composition"></a></h2>
         <p>Consider the following function:</p>
-        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-variable">A</span>, <span class="cm-variable">B</span>, <span class="cm-variable">C</span><span class="cm-operator">&gt;</span> <span class="cm-variable">compose</span>(<span class="cm-variable">content</span>: (<span class="cm-variable">B</span>) <span class="cm-operator">-&gt;</span> <span class="cm-variable">C</span>, <span class="cm-variable">g</span>: (<span class="cm-variable">A</span>) <span class="cm-operator">-&gt;</span> <span class="cm-variable">B</span>): (<span class="cm-variable">A</span>) <span class="cm-operator">-&gt;</span> <span class="cm-variable">C</span> {
-    <span class="cm-keyword">return</span> { <span class="cm-variable">x</span> <span class="cm-operator">-&gt;</span> <span class="cm-variable">content</span>(<span class="cm-variable">g</span>(<span class="cm-variable">x</span>)) }
+        <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-operator">&lt;</span><span class="cm-variable">A</span>, <span class="cm-variable">B</span>, <span class="cm-variable">C</span><span class="cm-operator">&gt;</span> <span class="cm-variable">compose</span>(<span class="cm-variable">currentQuestion</span>: (<span class="cm-variable">B</span>) <span class="cm-operator">-&gt;</span> <span class="cm-variable">C</span>, <span class="cm-variable">g</span>: (<span class="cm-variable">A</span>) <span class="cm-operator">-&gt;</span> <span class="cm-variable">B</span>): (<span class="cm-variable">A</span>) <span class="cm-operator">-&gt;</span> <span class="cm-variable">C</span> {
+    <span class="cm-keyword">return</span> { <span class="cm-variable">x</span> <span class="cm-operator">-&gt;</span> <span class="cm-variable">currentQuestion</span>(<span class="cm-variable">g</span>(<span class="cm-variable">x</span>)) }
 }
 </code></pre>
-        <p>It returns a composition of two functions passed to it: <code>compose(content, g) = content(g(*))</code>.
+        <p>It returns a composition of two functions passed to it: <code>compose(currentQuestion, g) = currentQuestion(g(*))</code>.
             Now, you can apply it to callable references:</p>
         <pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">fun</span> <span class="cm-def">length</span>(<span class="cm-variable">s</span>: <span class="cm-variable-3">String</span>) <span class="cm-operator">=</span> <span class="cm-variable">s</span>.<span class="cm-variable">length</span>
 

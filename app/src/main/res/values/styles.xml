@@ -1,7 +1,7 @@
 <resources>
 
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/base_color_1</item>
+        <item name="colorPrimary">@color/baseColor1</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
         <!--<item name="android:actionOverflowButtonStyle">@style/MyCustomTheme.OverFlow</item>-->
     </style>
@@ -14,7 +14,7 @@
     </style>-->
 
     <style name="cursorStyle" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorControlActivated">@color/base_color_2</item>
+        <item name="colorControlActivated">@color/baseColor2</item>
     </style>
     <style name="SettingsTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/SettingsActionBar</item>

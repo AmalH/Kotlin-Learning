@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.models.ForumQuestion;
-import amalhichri.androidprojects.com.kotlinlearning.services.ForumServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.ForumsServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 import me.originqiu.library.EditTag;
 
@@ -54,12 +54,12 @@ public class AddForumFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         subject=getActivity().findViewById(R.id.add_forum_subject);
-        content=getActivity().findViewById(R.id.add_forum_content);
-        tags=getActivity().findViewById(R.id.add_forum_tags_input);
-        submitButton=getActivity().findViewById(R.id.add_forum_submit);
-        toggleCode=getActivity().findViewById(R.id.forum_add_tooggle_code);
-        code_content=getActivity().findViewById(R.id.forum_add_code_editor);
-        static_code_contetnt=getActivity().findViewById(R.id.forum_add_code_static);
+        content=getActivity().findViewById(R.id.addForumContent);
+        tags=getActivity().findViewById(R.id.addQuestionTagsInput);
+        submitButton=getActivity().findViewById(R.id.addForumSubmit);
+        toggleCode=getActivity().findViewById(R.id.forumAddTooggleCode);
+        code_content=getActivity().findViewById(R.id.forumAddCodeEditor);
+        static_code_contetnt=getActivity().findViewById(R.id.forumAddCodeStatic);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,8 +87,8 @@ public class AddForumFragment extends Fragment {
                 }
 
                if(!isCodeEmpty && !f.getContent().isEmpty() && !f.getTags().isEmpty() && !f.getSubject().isEmpty()){
-                   // if(Configuration.isOnline(getContext()) && UserServices.getInstance().is_verified(getContext()))
-                        ForumServices.getInstance().addForum(getContext(), f, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
+                   // if(Configuration.isOnline(getContext()) && UsersServices.getInstance().is_verified(getContext()))
+                        ForumsServices.getInstance().addForumPost(getContext(), f, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {
                                 Toast.makeText(getContext(),"Submitted...", Toast.LENGTH_SHORT).show();

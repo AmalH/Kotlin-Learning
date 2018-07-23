@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.models.Competition;
-import amalhichri.androidprojects.com.kotlinlearning.services.CompetitionServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.CompetitionsServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 
 
@@ -40,19 +40,19 @@ public class AddCompetitionFragment extends Fragment {
 
         progressDialog = new ProgressDialog(getActivity());
 
-        getActivity().findViewById(R.id.compete_add_submit).setOnClickListener(new View.OnClickListener() {
+        getActivity().findViewById(R.id.competeAddSubmit).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
-                if(!((EditText)getActivity().findViewById(R.id.compete_add_title)).getText().toString().isEmpty() && !((EditText)getActivity().findViewById(R.id.compete_add_content)).getText().toString().isEmpty()){
+                if(!((EditText)getActivity().findViewById(R.id.compete_add_title)).getText().toString().isEmpty() && !((EditText)getActivity().findViewById(R.id.competeAddContent)).getText().toString().isEmpty()){
                     String t=((EditText)getActivity().findViewById(R.id.compete_add_title)).getText().toString().trim();
-                    String p=((EditText)getActivity().findViewById(R.id.compete_add_content)).getText().toString().trim();
+                    String p=((EditText)getActivity().findViewById(R.id.competeAddContent)).getText().toString().trim();
                     if(!t.isEmpty() && !p.isEmpty()){
 
                         final Competition c=new Competition();
                         c.setTitle(((EditText)getActivity().findViewById(R.id.compete_add_title)).getText().toString());
-                        c.setContent(((EditText)getActivity().findViewById(R.id.compete_add_content)).getText().toString());
+                        c.setContent(((EditText)getActivity().findViewById(R.id.competeAddContent)).getText().toString());
 
                         new AlertDialog.Builder(getActivity())
                                 .setTitle("Post problemset")
@@ -62,7 +62,7 @@ public class AddCompetitionFragment extends Fragment {
                                     public void onClick(final DialogInterface dialog, int whichButton) {
                                         progressDialog.setMessage("Posting...");
                                         progressDialog.show();
-                                        CompetitionServices.getInstance().addCompetition(getContext(),c, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
+                                        CompetitionsServices.getInstance().addCompetition(getContext(),c, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
                                             @Override
                                             public void onSuccess(JSONObject result) {
                                                 dialog.dismiss();

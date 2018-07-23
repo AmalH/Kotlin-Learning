@@ -19,11 +19,12 @@ public class Course {
 
 
 
-    public Course(ArrayList<Chapter> chaptersList, String title, String description, int iconId) {
+    public Course(ArrayList<Chapter> chaptersList, String title, String description,int timeToFinish, int iconId) {
         this.chaptersList = chaptersList;
         this.title = title;
         this.description = description;
         this.iconId=iconId;
+        this.timeToFinish = timeToFinish;
     }
 
     public ArrayList<Chapter> getChaptersList() {

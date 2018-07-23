@@ -2,18 +2,15 @@
 <resources>
 
 
-    <!-- app base colors -->
     <color name="primaryDark">#16374b</color>
-    <color name="base_color_1">#3b5670</color>
-    <color name="base_color_2">#e99631</color>
+    <color name="baseColor1">#3b5670</color>
+    <color name="baseColor2">#e99631</color>
 
-    <!-- backgrounds -->
     <color name="main_background">#f2f2f2</color>
-    <color name="comment_background">#f4f2f2</color>
+    <color name="commentBackground">#f4f2f2</color>
 
-    <!-- others -->
-    <color name="paper_background">#d6eff7</color>
-    <color name="success_background">#d5ffd9</color>
-    <color name="error_background">#f7d6d8</color>
+    <color name="paperBackground">#d6eff7</color>
+    <color name="successBackground">#d5ffd9</color>
+    <color name="errorBackground">#f7d6d8</color>
 
 </resources>

@@ -6,13 +6,12 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/comment_post_content"
+            android:id="@+id/answerToPostContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textMultiLine"
             android:hint="Such a good question, here is the solution..."
             android:textSize="14dp"
-            android:fontFamily="@fonts/graublau_slab"
             />
 </LinearLayout>

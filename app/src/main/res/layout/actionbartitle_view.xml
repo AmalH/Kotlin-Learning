@@ -10,7 +10,7 @@
         android:id="@+id/actionBarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/base_color_2"
+        android:textColor="@color/baseColor2"
         fontPath="fonts/graublau_slab_bold.ttf"
         android:textSize="11pt"
         tools:ignore="MissingPrefix" />

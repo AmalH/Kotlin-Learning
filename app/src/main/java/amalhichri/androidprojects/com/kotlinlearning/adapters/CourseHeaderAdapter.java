@@ -25,7 +25,7 @@ public class CourseHeaderAdapter extends BaseAdapter {
     private int coursePosition;
     private int nbOfChaptersFinished;
 
-    public CourseHeaderAdapter(final Context context, final int coursePosition,int nbOfChaptersFinished){
+    public CourseHeaderAdapter(final Context context, final int coursePosition,int nbOfChaptersFinished,int nbOfBadgesEarned){
         this.context=context;
         this.coursePosition=coursePosition;
         this.nbOfChaptersFinished = nbOfChaptersFinished;
@@ -52,9 +52,9 @@ public class CourseHeaderAdapter extends BaseAdapter {
 
         ((TextView) rowView.findViewById(R.id.courseTitle)).setText("Course "+ String.valueOf(coursePosition+1)+": "+  AllCourses.getCourse(coursePosition).getTitle());
         ((TextView) rowView.findViewById(R.id.courseDescription)).setText( AllCourses.getCourse(coursePosition).getDescription());
-        ((TextView) rowView.findViewById(R.id.nbbadgesEarned_course)).setText(String.valueOf(nbOfChaptersFinished));
+        ((TextView) rowView.findViewById(R.id.nbbadgesEarnedCourse)).setText(String.valueOf(nbOfChaptersFinished));
         ((TextView) rowView.findViewById(R.id.nbChaptersFinished)).setText(String.valueOf(AllCourses.getCourse(coursePosition).getCompletedChaptersNb()));
-        ((TextView) rowView.findViewById(R.id.timeNeeded_course)).setText(String.valueOf(AllCourses.getCourse(coursePosition).getTimeToFinish()));
+        ((TextView) rowView.findViewById(R.id.timeNeededCourse)).setText(String.valueOf(AllCourses.getCourse(coursePosition).getTimeToFinish()));
         ((com.daimajia.numberprogressbar.NumberProgressBar) rowView.findViewById(R.id.courseProgress)).setProgress((AllCourses.getCourse(coursePosition).getAdvancement()));
         ((ImageView) rowView.findViewById(R.id.courseIcon)).setImageResource(AllCourses.getCourse(coursePosition).getIconId());
         return rowView;

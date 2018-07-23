@@ -17,7 +17,7 @@ import org.json.JSONObject;
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.ChapterAdapter;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
-import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.UsersServices;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
 
@@ -41,7 +41,7 @@ public class ChapterFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         /** assign engagedIn badge**/
-        UserServices.getInstance().assignBadge(Statics.auth.getCurrentUser().getUid(), String.valueOf(1),getActivity(), new ServerCallbacks() {
+        UsersServices.getInstance().assignBadge(Statics.auth.getCurrentUser().getUid(), String.valueOf(1),getActivity(), new ServerCallbacks() {
             @Override
             public void onSuccess(JSONObject result) {
                 Log.d("------","--+ "+result.toString());

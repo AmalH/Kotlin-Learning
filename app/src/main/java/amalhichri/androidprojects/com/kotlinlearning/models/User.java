@@ -1,15 +1,33 @@
 package amalhichri.androidprojects.com.kotlinlearning.models;
 
+import java.util.Calendar;
+
 /**
  * Created by Amal on 14/11/2017.
  */
 
 public class User {
 
-    private String id,emailAddress,pictureUrl,firstName,lastName,password;  //fields to match with LinkedIn API
-                                           // for facebook API we just read the json response object without switching it to a User object
+    private String id,username,emailAddress,pictureUrl,firstName,lastName;
+    private Calendar created,last_loggued;
+    private boolean confirmed;
+    private int skill_learner,skill_challenger,skill_coder;
 
     public User() {
+    }
+
+    public User(String id, String username, String emailAddress, Calendar last_loggued,
+                String pictureUrl, int skill_learner, int skill_challenger, int skill_coder, boolean confirmed, Calendar created) {
+        this.id = id;
+        this.username = username;
+        this.emailAddress = emailAddress;
+        this.pictureUrl = pictureUrl;
+        this.created = created;
+        this.last_loggued = last_loggued;
+        this.confirmed = confirmed;
+        this.skill_learner = skill_learner;
+        this.skill_challenger = skill_challenger;
+        this.skill_coder = skill_coder;
     }
 
     public String getId() {
@@ -20,19 +38,75 @@ public class User {
         this.id = id;
     }
 
-    public String getEmailAddress() {
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
         return emailAddress;
     }
 
-    public void setEmailAddress(String emailAddress) {
+    public void setEmail(String emailAddress) {
         this.emailAddress = emailAddress;
     }
 
-    public String getPictureUrl() {
+    public String getPictureURL() {
         return pictureUrl;
     }
 
     public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
+    public Calendar getCreated() {
+        return created;
+    }
+
+    public void setCreated(Calendar created) {
+        this.created = created;
+    }
+
+    public Calendar getLast_loggued() {
+        return last_loggued;
+    }
+
+    public void setLast_loggued(Calendar last_loggued) {
+        this.last_loggued = last_loggued;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+
+    public int getSkill_learner() {
+        return skill_learner;
+    }
+
+    public void setSkill_learner(int skill_learner) {
+        this.skill_learner = skill_learner;
+    }
+
+    public int getSkill_challenger() {
+        return skill_challenger;
+    }
+
+    public void setSkill_challenger(int skill_challenger) {
+        this.skill_challenger = skill_challenger;
+    }
+
+    public int getSkill_coder() {
+        return skill_coder;
+    }
+
+    public void setPicUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
     }
 
@@ -52,24 +126,25 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getPassword() {
-        return password;
+    public void setSkill_coder(int skill_coder) {
+        this.skill_coder = skill_coder;
     }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    // just for test
 
     @Override
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
+                ", username='" + username + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
                 ", pictureUrl='" + pictureUrl + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", created=" + created +
+                ", last_loggued=" + last_loggued +
+                ", confirmed=" + confirmed +
+                ", skill_learner=" + skill_learner +
+                ", skill_challenger=" + skill_challenger +
+                ", skill_coder=" + skill_coder +
                 '}';
     }
 }

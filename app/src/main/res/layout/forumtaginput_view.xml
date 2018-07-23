@@ -16,5 +16,5 @@
     android:layout_marginRight="4dp"
     android:hint="Add tag and press done"
     android:imeOptions="actionDone"
-    android:textColor="@color/base_color_1"
+    android:textColor="@color/baseColor1"
     android:textSize="15dp"/>

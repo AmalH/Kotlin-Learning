@@ -1,6 +1,6 @@
 <html>
 	<body>
-	<article role="main" class="page-content g-9">
+	<article role="main" class="page-currentQuestion g-9">
 		<h2 id="type-aliases">Type aliases<a class="anchor" href="#type-aliases"></a></h2>
 		<p>Type aliases provide alternative names for existing types.
 			If the type name is too long you can introduce a different shorter name and use the new one instead.</p>
@@ -35,8 +35,8 @@
 <span class="cm-keyword">fun</span> <span class="cm-def">foo</span>(<span class="cm-variable">p</span>: <span class="cm-variable">Predicate</span><span class="cm-operator">&lt;</span><span class="cm-variable">Int</span><span class="cm-operator">&gt;</span>) <span class="cm-operator">=</span> <span class="cm-variable">p</span>(<span class="cm-number">42</span>)
 
 <span class="cm-keyword">fun</span> <span class="cm-def">main</span>(<span class="cm-variable">args</span>: <span class="cm-variable">Array</span><span class="cm-operator">&lt;</span><span class="cm-variable-3">String</span><span class="cm-operator">&gt;</span>) {
-    <span class="cm-keyword">val</span> <span class="cm-def">content</span>: (<span class="cm-variable">Int</span>) <span class="cm-operator">-&gt;</span> <span class="cm-variable-3">Boolean</span> <span class="cm-operator">=</span> { <span class="cm-variable">it</span> <span class="cm-operator">&gt;</span> <span class="cm-number">0</span> }
-    <span class="cm-variable">println</span>(<span class="cm-variable">foo</span>(<span class="cm-variable">content</span>)) <span class="cm-comment">// prints "true"</span>
+    <span class="cm-keyword">val</span> <span class="cm-def">currentQuestion</span>: (<span class="cm-variable">Int</span>) <span class="cm-operator">-&gt;</span> <span class="cm-variable-3">Boolean</span> <span class="cm-operator">=</span> { <span class="cm-variable">it</span> <span class="cm-operator">&gt;</span> <span class="cm-number">0</span> }
+    <span class="cm-variable">println</span>(<span class="cm-variable">foo</span>(<span class="cm-variable">currentQuestion</span>)) <span class="cm-comment">// prints "true"</span>
 
     <span class="cm-keyword">val</span> <span class="cm-def">p</span>: <span class="cm-variable">Predicate</span><span class="cm-operator">&lt;</span><span class="cm-variable">Int</span><span class="cm-operator">&gt;</span> <span class="cm-operator">=</span> { <span class="cm-variable">it</span> <span class="cm-operator">&gt;</span> <span class="cm-number">0</span> }
     <span class="cm-variable">println</span>(<span class="cm-variable">listOf</span>(<span class="cm-number">1</span>, <span class="cm-operator">-</span><span class="cm-number">2</span>).<span class="cm-variable">filter</span>(<span class="cm-variable">p</span>)) <span class="cm-comment">// prints "[1]"</span>

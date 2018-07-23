@@ -25,9 +25,9 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center_vertical"
                 app:values="@array/competeToggle"
-                app:mstbColorPressedBackground="@color/base_color_2"
-                app:mstbColorNotPressedBackground="@color/base_color_1"
-                app:mstbColorPressedText="@color/comment_background"
+                app:mstbColorPressedBackground="@color/baseColor2"
+                app:mstbColorNotPressedBackground="@color/baseColor1"
+                app:mstbColorPressedText="@color/commentBackground"
                 app:mstbColorNotPressedText="@color/liv_gray_active_icon"/>
             <Spinner
                 android:id="@+id/competeOrderbySpinner"
@@ -51,7 +51,7 @@
             >
 
             <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/compete_swipeRefresh"
+                android:id="@+id/competeSwipeRefresh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="12dp"
@@ -59,21 +59,21 @@
                 >
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/compete_competitions"
+                    android:id="@+id/competeCompetitions"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
             </android.support.v4.widget.SwipeRefreshLayout>
 
             <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/competeanswer_swipeRefresh"
+                android:id="@+id/competeAnswerSwipeRefresh"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="88"
                 >
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/compete_answers"
+                    android:id="@+id/competeAnswers"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="visible"/>
@@ -85,13 +85,13 @@
     </LinearLayout>
 
     <com.rey.material.widget.FloatingActionButton
-        android:id="@+id/compete_add"
+        android:id="@+id/competeAdd"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_margin="16dp"
         android:clickable="true"
         android:elevation="9dp"
-        app:fab_backgroundColor="@color/base_color_2"
+        app:fab_backgroundColor="@color/baseColor2"
         app:fab_iconSrc="@drawable/ic_action_add_forum"
         android:layout_gravity="end|bottom" />
 

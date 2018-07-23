@@ -88,11 +88,11 @@ public class CompetitionAdapter extends RecyclerView.Adapter<CompetitionAdapter.
 
         public CompetitionItem_ViewHolder(View itemView) {
             super(itemView);
-            user_picture= itemView.findViewById(R.id.compete_postedBy_img);
-            title= itemView.findViewById(R.id.compete_postTile);
-            user_name=itemView.findViewById(R.id.compete_postedBy_name);
-            solved=itemView.findViewById(R.id.compete_nbsolve);
-            createed=itemView.findViewById(R.id.compete_created);
+            user_picture= itemView.findViewById(R.id.competePostedByImg);
+            title= itemView.findViewById(R.id.competePostTitle);
+            user_name=itemView.findViewById(R.id.competePostedByName);
+            solved=itemView.findViewById(R.id.competeNbSolve);
+            createed=itemView.findViewById(R.id.competeCreated);
         }
 
     }

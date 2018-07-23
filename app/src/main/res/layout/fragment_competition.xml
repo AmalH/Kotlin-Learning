@@ -9,15 +9,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:weightSum="100"
-            android:layout_margin="8dp"
-            >
+            android:layout_margin="8dp">
             <android.support.v7.widget.CardView
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
@@ -53,7 +51,7 @@
                             android:layout_marginBottom="5dp"
                             >
                             <TextView
-                                android:id="@+id/compete_subject"
+                                android:id="@+id/competeSubject"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:text="subject..."
@@ -67,7 +65,7 @@
                                 android:src="@drawable/ic_briefcase"
                                 android:layout_gravity="center"/>
                             <TextView
-                                android:id="@+id/compete_solved_txt"
+                                android:id="@+id/competeSolvedTxt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="13dp"
@@ -79,10 +77,10 @@
                         </LinearLayout>
 
                         <TextView
-                            android:id="@+id/compete_show_content"
+                            android:id="@+id/competeShowContent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="content"
+                            android:text="currentQuestion"
                             android:layout_marginBottom="5dp"
                             />
 
@@ -99,7 +97,7 @@
                                 android:orientation="vertical"
                                 >
                                 <TextView
-                                    android:id="@+id/compete_show_username"
+                                    android:id="@+id/competeShowUsername"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="name"
@@ -108,7 +106,7 @@
                                     tools:ignore="MissingPrefix"
                                     />
                                 <TextView
-                                    android:id="@+id/compete_show_created"
+                                    android:id="@+id/competeShowCreated"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="created"
@@ -118,7 +116,7 @@
                                     />
                             </LinearLayout>
                             <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/compete_show_user_picture"
+                                android:id="@+id/competeShowUserPicture"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_marginLeft="5dp"
@@ -130,7 +128,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/compete_myanswer"
+                android:id="@+id/myAnswer"
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -145,7 +143,7 @@
 
 
                 <LinearLayout
-                    android:id="@+id/compete_layout_answerd"
+                    android:id="@+id/competeLayoutAnswered"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -165,15 +163,14 @@
                         android:src="@drawable/ic_calendar"
                         />
                     <TextView
-                        android:id="@+id/answer_date"
+                        android:id="@+id/answerDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        
                         android:text="date"
                         />
                     <ImageButton
-                        android:id="@+id/compete_edit_answer"
+                        android:id="@+id/competeEditAnswer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_action_edit"
@@ -184,14 +181,14 @@
                 </LinearLayout>
 
                 <io.github.kbiakov.codeview.CodeView
-                    android:id="@+id/compete_answer_code_view"
+                    android:id="@+id/competeAnswerCodeView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     >
                 </io.github.kbiakov.codeview.CodeView>
                 <EditText
-                    android:id="@+id/compete_add_content"
+                    android:id="@+id/competeAddContent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:ems="10"
@@ -200,7 +197,7 @@
                     android:visibility="gone"
                     />
                 <Button
-                    android:id="@+id/compete_add_answer"
+                    android:id="@+id/competeAddAnswer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Save"
@@ -234,18 +231,18 @@
             </LinearLayout>
 
             <EditText
-                android:id="@+id/compete_args"
+                android:id="@+id/competeArguments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint=" Args..."
                 android:layout_margin="4dp"
                 android:textSize="14sp"
                 android:padding="10dp"
-                android:background="@color/paper_background"
+                android:background="@color/paperBackground"
                 />
 
             <LinearLayout
-                android:id="@+id/compete_run"
+                android:id="@+id/competeRun"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -270,7 +267,7 @@
         </LinearLayout>
 
             <TextView
-                android:id="@+id/compete_response"
+                android:id="@+id/competeResponse"
                 android:gravity="left"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -278,7 +275,7 @@
                 android:layout_margin="6dp"
                 android:editable="false"
                 android:textSize="14sp"
-                android:background="@color/paper_background"
+                android:background="@color/paperBackground"
                 android:visibility="gone"
                 />
         </LinearLayout>

@@ -15,7 +15,7 @@
         android:layout_centerHorizontal="true"
         android:text="Courses started"
         fontPath="fonts/open_sans_regular.ttf"
-        android:textColor="@color/base_color_1"
+        android:textColor="@color/baseColor1"
         android:textStyle="bold"
         android:textSize="10pt"
         tools:ignore="MissingPrefix" />
@@ -24,8 +24,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:layout_below="@+id/startedCoursesTv"
-        />
+        android:layout_below="@+id/startedCoursesTv"/>
 
     <com.rey.material.widget.FloatingActionButton
         android:id="@+id/moreCoursesBtn"
@@ -34,7 +33,7 @@
         android:layout_margin="16dp"
         android:clickable="true"
         android:elevation="9dp"
-        app:fab_backgroundColor="@color/base_color_2"
+        app:fab_backgroundColor="@color/baseColor2"
         app:fab_iconSrc="@drawable/ic_action_add_forum"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"/>

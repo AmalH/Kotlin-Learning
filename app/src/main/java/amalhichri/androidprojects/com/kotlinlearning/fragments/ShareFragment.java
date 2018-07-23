@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.ShareListAdapter;
 import amalhichri.androidprojects.com.kotlinlearning.models.ForumQuestion;
-import amalhichri.androidprojects.com.kotlinlearning.services.ForumServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.ForumsServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Configuration;
 
@@ -158,8 +158,8 @@ public class ShareFragment extends Fragment {
             }
         });
         ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setColorSchemeColors(
-                getContext().getResources().getColor(R.color.base_color_2),
-                getContext().getResources().getColor(R.color.base_color_1));
+                getContext().getResources().getColor(R.color.baseColor2),
+                getContext().getResources().getColor(R.color.baseColor1));
 
         /** scroll listener for the recyclerView **/
         loading =false;
@@ -219,7 +219,7 @@ public class ShareFragment extends Fragment {
         }
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
             ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setRefreshing(true);
-            ForumServices.getInstance().getTopForums(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+            ForumsServices.getInstance().getTopForumPosts(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                     getActivity().getApplicationContext(),start_at,query,orderby,
                     new ServerCallbacks() {
                         @Override
@@ -235,7 +235,7 @@ public class ShareFragment extends Fragment {
                             for(int i = 0 ; i < array.length() ; i++){
                                 try {
                                     /** parse forum and add it to the arraylist**/
-                                    forumQuestionsList.add(ForumServices.parse_(array.getJSONObject(i)));
+                                    forumQuestionsList.add(ForumsServices.jsonToForumQuestion(array.getJSONObject(i)));
                                 } catch (JSONException e) {
                                     Toast.makeText(getContext(),"Application error while loading forum , please report",Toast.LENGTH_SHORT).show();
                                     showLoadedData=false;

@@ -69,7 +69,7 @@ public class CompetitionAnswerAdapter extends RecyclerView.Adapter<CompetitionAn
 
         public CompetitionAnswerItem_ViewHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.competeanswer_postTile);
+            title = itemView.findViewById(R.id.competitionAnswerTitle);
             level = itemView.findViewById(R.id.competeanswer_level);
             createed = itemView.findViewById(R.id.competeanswer_created);
         }

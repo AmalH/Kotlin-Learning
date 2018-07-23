@@ -21,22 +21,20 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/textView4"
-                    fontPath="fonts/open_sans_regular.ttf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="Ask question"
-                    android:textColor="@color/base_color_1"
+                    android:textColor="@color/baseColor1"
                     android:textSize="10pt"
                     android:textStyle="bold"
+                    fontPath="fonts/open_sans_regular.ttf"
                     tools:ignore="MissingPrefix" />
             </LinearLayout>
 
             <TextView
-                fontPath="fonts/open_sans_regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -45,6 +43,7 @@
                 android:textColor="#212121"
                 android:textSize="17dip"
                 android:textStyle="bold"
+                fontPath="fonts/open_sans_regular.ttf"
                 tools:ignore="MissingPrefix" />
 
             <LinearLayout
@@ -65,8 +64,6 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView2"
-                fontPath="fonts/open_sans_regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -75,11 +72,10 @@
                 android:textSize="17dip"
                 android:textStyle="bold"
                 tools:ignore="MissingPrefix"
-
-                />
+            fontPath="fonts/open_sans_regular.ttf"/>
 
             <me.originqiu.library.EditTag
-                android:id="@+id/add_forum_tags_input"
+                android:id="@+id/addQuestionTagsInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -88,8 +84,6 @@
                 app:tag_layout="@layout/single_tag_item" />
 
             <TextView
-                android:id="@+id/textView3"
-                fontPath="fonts/open_sans_regular.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -98,11 +92,12 @@
                 android:textColor="#212121"
                 android:textSize="17dip"
                 android:textStyle="bold"
-                tools:ignore="MissingPrefix" />
+                tools:ignore="MissingPrefix"
+                fontPath="fonts/open_sans_regular.ttf"/>
 
 
             <EditText
-                android:id="@+id/add_forum_content"
+                android:id="@+id/addForumContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
@@ -119,7 +114,6 @@
                 android:layout_marginTop="20dp">
 
                 <TextView
-                    fontPath="fonts/open_sans_regular.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -128,10 +122,11 @@
                     android:textColor="#212121"
                     android:textSize="17dip"
                     android:textStyle="bold"
-                    tools:ignore="MissingPrefix" />
+                    tools:ignore="MissingPrefix"
+                    fontPath="fonts/open_sans_regular.ttf"/>
 
                 <ToggleButton
-                    android:id="@+id/forum_add_tooggle_code"
+                    android:id="@+id/forumAddTooggleCode"
                     android:layout_width="80dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
@@ -142,7 +137,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/forum_add_code_static"
+                android:id="@+id/forumAddCodeStatic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Code"
@@ -155,7 +150,7 @@
                 android:visibility="gone"/>
 
             <EditText
-                android:id="@+id/forum_add_code_editor"
+                android:id="@+id/forumAddCodeEditor"
                 fontPath="fonts/graublau_slab.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -167,7 +162,7 @@
 
 
             <Button
-                android:id="@+id/add_forum_submit"
+                android:id="@+id/addForumSubmit"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -175,7 +170,7 @@
                 android:gravity="center"
                 android:text="Post"
                 android:textAllCaps="false"
-                android:textColor="@color/base_color_1"
+                android:textColor="@color/baseColor1"
                 android:textSize="8pt" />
 
         </LinearLayout>

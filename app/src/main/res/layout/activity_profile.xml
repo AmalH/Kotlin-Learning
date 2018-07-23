@@ -7,12 +7,12 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:weightSum="1"
-    >
+    tools:context=".activities.ProfileActivity">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:background="@color/base_color_1"
+        android:background="@color/baseColor1"
         android:orientation="horizontal">
 
         <ImageButton
@@ -31,7 +31,7 @@
             android:scaleType="centerCrop"
             android:layout_centerInParent="true"
             app:civ_border_width="2dp"
-            app:civ_border_color="@color/base_color_2"/>
+            app:civ_border_color="@color/baseColor2"/>
 
         <TextView
             android:id="@+id/fullNameInProfile"
@@ -42,7 +42,7 @@
             android:layout_below="@+id/userImgProfile"
             android:textSize="20dp"
             fontPath="fonts/graublau_slab.ttf"
-            android:textColor="@color/base_color_2"
+            android:textColor="@color/baseColor2"
             android:src="@drawable/ic_profile"
             tools:ignore="MissingPrefix" />
         <ProgressBar
@@ -54,7 +54,7 @@
             android:layout_centerHorizontal="true"
             style="?android:attr/progressBarStyleHorizontal"
             android:backgroundTint="#30000000"
-            android:progressTint="@color/base_color_2"
+            android:progressTint="@color/baseColor2"
             android:scaleY="2"
             android:progress="20"
             android:max="100"/>
@@ -65,9 +65,9 @@
         android:id="@+id/profileTabs"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        app:tabSelectedTextColor="@color/base_color_2"
-        app:tabIndicatorColor="@color/base_color_2"
-        android:background="@color/base_color_1"
+        app:tabSelectedTextColor="@color/baseColor2"
+        app:tabIndicatorColor="@color/baseColor2"
+        android:background="@color/baseColor1"
         app:tabTextAppearance="@style/ProfileTabsTextStyle"
         app:tabMode="fixed"
         app:tabGravity="fill">

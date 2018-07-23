@@ -21,7 +21,6 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.Gson;
 import com.linkedin.platform.APIHelper;
 import com.linkedin.platform.LISessionManager;
 import com.linkedin.platform.errors.LIApiError;
@@ -38,7 +37,6 @@ import org.json.JSONObject;
 import java.util.Arrays;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
-import amalhichri.androidprojects.com.kotlinlearning.models.User;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -48,7 +46,7 @@ public class SignupActivity extends Activity {
     private LoginManager mLoginManager;
     private AccessTokenTracker mAccessTokenTracker;
     private CallbackManager mFacebookCallbackManager;
-    private static User userFromLinkedIn;
+    private static String userEmail,userId,username,pictureUrl;
 
 
     @Override
@@ -118,21 +116,29 @@ public class SignupActivity extends Activity {
             @Override
             public void onApiSuccess(ApiResponse apiResponse) {
                 /**  create User object from the linkedin profile **/
-                 userFromLinkedIn = (new Gson()).fromJson(apiResponse.getResponseDataAsJson().toString(),User.class);
-                 Toast.makeText(getApplicationContext(), "Success 1 "+userFromLinkedIn, Toast.LENGTH_LONG).show();
+                try {
+                    userEmail = apiResponse.getResponseDataAsJson().getString("emailAddress").toString();
+                    userId = apiResponse.getResponseDataAsJson().getString("id").toString();
+                    username =  apiResponse.getResponseDataAsJson().getString("firstName").toString()
+                            +" "+apiResponse.getResponseDataAsJson().getString("lastName").toString();
+                    pictureUrl = apiResponse.getResponseDataAsJson().getString("pictureUrl").toString();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                 Toast.makeText(getApplicationContext(), "Success 1 "+userId+" "+userEmail, Toast.LENGTH_LONG).show();
             }
             @Override
             public void onApiError(LIApiError liApiError) {
                 Toast.makeText(getApplicationContext(), "Error! "+liApiError.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-        // managing api response
+
+
         LISessionManager.getInstance(getApplicationContext()).init(this, buildScope(), new AuthListener() {
             @Override
             public void onAuthSuccess() {
                 /** signup to firebase with that user **/
-               //Toast.makeText(getApplicationContext(), "success 2 "+userFromLinkedIn.getPictureUrl(), Toast.LENGTH_LONG).show();
-                Statics.signUp(userFromLinkedIn.getEmailAddress(),userFromLinkedIn.getId(),userFromLinkedIn.getFirstName()+" "+userFromLinkedIn.getLastName(),userFromLinkedIn.getPictureUrl(),SignupActivity.this);
+                Statics.signUp(userEmail,userId,username,pictureUrl,SignupActivity.this);
             }
             @Override
             public void onAuthError(LIAuthError error) {

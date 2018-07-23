@@ -23,7 +23,7 @@ import org.json.JSONObject;
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.ProfileTabsAdapter;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
-import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.UsersServices;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -78,7 +78,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        UserServices.getInstance().getUserById(Statics.auth.getCurrentUser().getUid(), this, new ServerCallbacks() {
+        UsersServices.getInstance().getUserById(Statics.auth.getCurrentUser().getUid(), this, new ServerCallbacks() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {

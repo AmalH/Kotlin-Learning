@@ -2,7 +2,9 @@ package amalhichri.androidprojects.com.kotlinlearning.adapters;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +22,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
-import amalhichri.androidprojects.com.kotlinlearning.models.Answer;
-import amalhichri.androidprojects.com.kotlinlearning.services.ForumServices;
+import amalhichri.androidprojects.com.kotlinlearning.models.ForumAnswer;
+import amalhichri.androidprojects.com.kotlinlearning.services.ForumsServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -31,12 +33,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.CommentItem_ViewHolder> {
 
-    ArrayList<Answer> forumAnswersList= new ArrayList<>();
-    Context context;
-    String userid;
-    ProgressDialog progressDialog;
+    private ArrayList<ForumAnswer> forumAnswersList;
+    private Context context;
+    private ProgressDialog progressDialog;
 
-    public CommentsAdapter(ArrayList<Answer> forum_list, Context context){
+    public CommentsAdapter(ArrayList<ForumAnswer> forum_list, Context context){
         this.forumAnswersList=forum_list;
         this.context=context;
     }
@@ -45,8 +46,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
     public CommentsAdapter.CommentItem_ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.share_comment_item,parent,false);
         CommentsAdapter.CommentItem_ViewHolder shareItem_viewHolder = new CommentsAdapter.CommentItem_ViewHolder(view);
-        userid ="ljDQhORWgjaxrZcHZbpLR1vyfaF2";
-//        userid= FirebaseAuth.getInstance().getCurrentUser().getUid();
         progressDialog=new ProgressDialog(context);
         return shareItem_viewHolder;
     }
@@ -64,11 +63,11 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         else
         {
             String item=forumAnswersList.get(position).getUsername();
-           // holder.user_picture.setImageDrawable(UserServices.getInstance().getEmptyProfimePicture(item));
+           // holder.user_picture.setImageDrawable(UsersServices.getInstance().getEmptyProfimePicture(item));
         }
 
         //check to add delete button
-        if(userid.equals(forumAnswersList.get(position).getUserid())){
+        if(("dZb3TxK1x5dqQJkq7ve0d683VoA3").equals(forumAnswersList.get(position).getUserid())){
             holder.delete.setVisibility(View.VISIBLE);
         }
 
@@ -85,7 +84,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
             @Override
             public void onClick(View view) {
                 //FirebaseAuth.getInstance().getCurrentUser().getUid()
-                ForumServices.getInstance().upvoteComment("dZb3TxK1x5dqQJkq7ve0d683VoA3",
+                ForumsServices.getInstance().upvoteForumPostComment("dZb3TxK1x5dqQJkq7ve0d683VoA3",
                         context, forumAnswersList.get(position).getId(), new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {
@@ -122,7 +121,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
             public void onClick(View view) {
 
                 //FirebaseAuth.getInstance().getCurrentUser().getUid()
-                ForumServices.getInstance().downvoteComment("ljDQhORWgjaxrZcHZbpLR1vyfaF2",
+                ForumsServices.getInstance().downvoteForumPostComment("ljDQhORWgjaxrZcHZbpLR1vyfaF2",
                         context, forumAnswersList.get(position).getId(), new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {
@@ -154,39 +153,42 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
             }
         });
 
-       /* holder.delete.setOnClickListener(new View.OnClickListener() {
+        holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 new AlertDialog.Builder(context)
                         //set message, title, and icon
                         .setTitle("Delete")
                         .setMessage("Do you want to delete this comment")
-                        .setIcon(R.drawable.ic_action_delete)
+                        .setIcon(R.drawable.ic_delete_post)
                         .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             public void onClick(final DialogInterface dialog, int whichButton) {
                                 progressDialog.setMessage("Deleting");
                                 progressDialog.show();
 
-                                ForumServices.getInstance().delComment(userid, context, forumAnswersList.get(position).getId(), new ServerCallbacks() {
+                                ForumsServices.getInstance().deleteComment(
+                                        "dZb3TxK1x5dqQJkq7ve0d683VoA3", context, forumAnswersList.get(position).getId(), new ServerCallbacks() {
                                     @Override
                                     public void onSuccess(JSONObject result) {
                                         if(progressDialog.isShowing())
                                         progressDialog.dismiss();
-                                        holder.itemView.setVisibility(View.GONE);
+                                        forumAnswersList.remove(position);
+                                        notifyDataSetChanged();
+                                        //holder.itemView.setVisibility(View.GONE);
                                     }
 
                                     @Override
                                     public void onError(VolleyError result) {
                                         if(progressDialog.isShowing())
                                         progressDialog.dismiss();
-                                        //Toast.makeText(context,result.toString(),Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context,result.getClass().getName(),Toast.LENGTH_SHORT).show();
                                     }
 
                                     @Override
                                     public void onWrong(JSONObject result) {
                                         if(progressDialog.isShowing())
                                         progressDialog.dismiss();
-                                        //Toast.makeText(context,result.toString(),Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context,result.toString(),Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             }
@@ -199,7 +201,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
                         })
                         .show();
             }
-        });*/
+        });
 
     }
 
@@ -216,13 +218,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         public CommentItem_ViewHolder(View itemView) {
             super(itemView);
             user_picture= itemView.findViewById(R.id.comment_postedBy_img);
-            content= itemView.findViewById(R.id.commentContent);
+            content= itemView.findViewById(R.id.answerToPostContent);
             user_name=itemView.findViewById(R.id.comment_postedBy_name);
             rating=itemView.findViewById(R.id.comment_rating);
             createed=itemView.findViewById(R.id.comment_created);
             upvote=itemView.findViewById(R.id.comment_up_arrow);
             downvote=itemView.findViewById(R.id.comment_down_arrow);
-           // delete=itemView.findViewById(R.id.deleComment);
+            delete=itemView.findViewById(R.id.delePostComment);
         }
 
     }

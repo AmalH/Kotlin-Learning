@@ -10,7 +10,7 @@
     android:orientation="vertical"
     android:gravity="center">
     <android.support.v7.widget.CardView
-        android:id="@+id/card_view"
+        android:id="@+id/cardView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginTop="10dp"
@@ -56,7 +56,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textSize="7pt"
                 android:backgroundTint="#163b5670"
-                android:textColor="@color/base_color_1"
+                android:textColor="@color/baseColor1"
                 android:textStyle="bold"
                 fontPath="fonts/open_sans_regular.ttf"
                 android:text="Email"/>
@@ -69,7 +69,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textSize="7pt"
                 android:backgroundTint="#163b5670"
-                android:textColor="@color/base_color_1"
+                android:textColor="@color/baseColor1"
                 android:textStyle="bold"
                 fontPath="fonts/open_sans_regular.ttf"
                 android:text="SMS"/>
@@ -81,7 +81,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_gravity="center_horizontal"
                 android:textSize="7pt"
-                android:textColor="@color/base_color_1"
+                android:textColor="@color/baseColor1"
                 android:textStyle="bold"
                 fontPath="fonts/open_sans_regular.ttf"
                 android:text="Share"/>

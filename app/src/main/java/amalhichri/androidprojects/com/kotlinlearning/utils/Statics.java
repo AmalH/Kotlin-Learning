@@ -38,7 +38,7 @@ import amalhichri.androidprojects.com.kotlinlearning.activities.HomeActivity;
 import amalhichri.androidprojects.com.kotlinlearning.activities.LoginActivity;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.CoursesListAdapter;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
-import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.UsersServices;
 
 /**
  * Created by Amal on 30/11/2017.
@@ -70,7 +70,7 @@ public class Statics {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    UserServices.getInstance().registerUser(auth.getCurrentUser().getUid(),fullName,email,pictureUrl,activity,new ServerCallbacks(){
+                    UsersServices.getInstance().registerUser(auth.getCurrentUser().getUid(),fullName,email,pictureUrl,activity,new ServerCallbacks(){
                         @Override
                         public void onSuccess(JSONObject result) {
                             Toast.makeText(activity, "Successfully Joined to iKotlin ! Login ?", Toast.LENGTH_LONG).show();

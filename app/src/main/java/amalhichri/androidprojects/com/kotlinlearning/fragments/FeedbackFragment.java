@@ -24,7 +24,7 @@ import java.util.List;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
-import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.UsersServices;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
 
@@ -39,7 +39,7 @@ public class FeedbackFragment extends Fragment {
         final View v = inflater.inflate(R.layout.fragment_feedback, container, false);
 
 
-        UserServices.getInstance().getUserById(Statics.auth.getCurrentUser().getUid(),getActivity(),new ServerCallbacks() {
+        UsersServices.getInstance().getUserById(Statics.auth.getCurrentUser().getUid(),getActivity(),new ServerCallbacks() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
@@ -67,7 +67,7 @@ public class FeedbackFragment extends Fragment {
         feedBackTypes.add("General feedback");feedBackTypes.add("Bug report");feedBackTypes.add("Suggestion");feedBackTypes.add("Other");
         spinnerAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(),R.layout.customspinner_view, feedBackTypes);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ((Spinner)v.findViewById(R.id.feedback_type)).setAdapter(spinnerAdapter);
+        ((Spinner)v.findViewById(R.id.feedbackType)).setAdapter(spinnerAdapter);
         (v.findViewById(R.id.sendFeedbackBtn)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +75,7 @@ public class FeedbackFragment extends Fragment {
                 Email.setType("text/email");
                 Email.putExtra(Intent.EXTRA_EMAIL, new String[] { "ikotlin.team@gmail.com" });
                 Email.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
-                Email.putExtra(Intent.EXTRA_TEXT, "Feedback Type: " + ((Spinner)v.findViewById(R.id.feedback_type)).getSelectedItem().toString()
+                Email.putExtra(Intent.EXTRA_TEXT, "Feedback Type: " + ((Spinner)v.findViewById(R.id.feedbackType)).getSelectedItem().toString()
                 +"\nContent: "+((EditText)v.findViewById(R.id.feedback_content)).getText().toString());
                 startActivity(Intent.createChooser(Email, "Send Feedback:"));
             }

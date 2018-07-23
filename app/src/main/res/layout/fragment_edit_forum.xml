@@ -18,7 +18,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:id="@+id/textView4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     fontPath="fonts/open_sans_regular.ttf"
@@ -26,12 +25,12 @@
                     android:layout_marginTop="15dp"
                     android:layout_weight="1"
                     android:text="Edit question"
-                    android:textColor="@color/base_color_1"
+                    android:textColor="@color/baseColor1"
                     android:textSize="10pt"
                     android:textStyle="bold"
                     tools:ignore="MissingPrefix"/>
                 <ImageButton
-                    android:id="@+id/edit_forum_delete"
+                    android:id="@+id/deleteForumQuestion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_delete_post"
@@ -62,7 +61,7 @@
                 android:layout_marginLeft="5dp"
                 >
                 <EditText
-                    android:id="@+id/edit_forum_subject"
+                    android:id="@+id/editQuestionTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="15"
@@ -87,7 +86,7 @@
                 />
 
             <me.originqiu.library.EditTag
-                android:id="@+id/edit_forum_tags_input"
+                android:id="@+id/editForumQuestionTags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -100,7 +99,6 @@
                 />
 
             <TextView
-                android:id="@+id/textView3"
                 fontPath="fonts/open_sans_regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -115,7 +113,7 @@
 
 
             <EditText
-                android:id="@+id/edit_forum_content"
+                android:id="@+id/editForumQstContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -148,7 +146,7 @@
                     tools:ignore="MissingPrefix"/>
 
                 <ToggleButton
-                    android:id="@+id/forum_edit_tooggle_code"
+                    android:id="@+id/editForumCodeToggle"
                     android:layout_width="80dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
@@ -160,7 +158,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/forum_edit_code_static"
+                android:id="@+id/editForumCodeStatic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Code"
@@ -174,7 +172,7 @@
                 />
 
             <EditText
-                android:id="@+id/forum_edit_code_editor"
+                android:id="@+id/editForumCodeEditor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -187,7 +185,7 @@
                 />
 
             <Button
-                android:id="@+id/edit_forum_submit"
+                android:id="@+id/editForumSaveBtn"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -195,7 +193,7 @@
                 android:gravity="center"
                 android:text="Save"
                 android:textAllCaps="false"
-                android:textColor="@color/base_color_1"
+                android:textColor="@color/baseColor1"
                 android:textSize="8pt"
                 />
 

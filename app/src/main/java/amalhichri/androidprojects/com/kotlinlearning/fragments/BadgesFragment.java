@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.adapters.BadgesAdapter;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
-import amalhichri.androidprojects.com.kotlinlearning.services.UserServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.UsersServices;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import cn.pedant.SweetAlert.Rotate3dAnimation;
 
@@ -45,9 +45,9 @@ public class BadgesFragment extends Fragment {
                 "Guru", "Question Master", "Self Learner","Answerer","Developer",
                 "Contributor", "Teacher", "Coder","Popular answer","Code ninja"};
         badgesDescriptions = new String[] {
-                "Verify your account's email address", "Complete a chapter", "Complete a course","Win a challenge","Complete 10 courses",
-                "Post a question and get an upvote", "Get 5 upvotes on your question", "Win 5 challenges","Get 20 upvotes on your question","Get 5 upvotes on your answer",
-                "Win 10 challenges", "Post 5 questions with at least 5 upvotes each", "Answer your own question and get 5 upvotes","Post an answer and get an upvote","Get 10 upvotes on your code",
+                "Verify your account's email address", "Complete a chapter", "Complete a course","Win a contest","Complete 5 courses",
+                "Post a question and get an upvote", "Get 5 upvotes on your question", "Win 5 contests","Get 20 upvotes on your question","Get 5 upvotes on your answer",
+                "Win 10 contests", "Post 5 questions with at least 5 upvotes each", "ForumAnswer your own question and get 5 upvotes","Post an answer and get an upvote","Get 10 upvotes on your code",
                 "Leave a comment with 5 upvotes", "Post 10 answers with at least 5 upvotes each", "Post 5 codes with at least 5 upvotes each","Get 100 upvotes on your answer","Post 15 codes with at least 3 upvotes each"};
         badgesDescriptions_Grid = new String[]{"","","","","","","","","","","","","","","","","","","",""};
     }
@@ -110,7 +110,7 @@ public class BadgesFragment extends Fragment {
     }
 
     private void activateBadges(final int badgeIndic){
-        UserServices.getInstance().isHasBadge(Statics.auth.getCurrentUser().getUid(), String.valueOf(badgeIndic), getActivity(), new ServerCallbacks() {
+        UsersServices.getInstance().isHasBadge(Statics.auth.getCurrentUser().getUid(), String.valueOf(badgeIndic), getActivity(), new ServerCallbacks() {
             @Override
             public void onSuccess(JSONObject result) {
                 try {

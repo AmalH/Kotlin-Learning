@@ -25,7 +25,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.Gson;
 import com.linkedin.platform.APIHelper;
 import com.linkedin.platform.LISessionManager;
 import com.linkedin.platform.errors.LIApiError;
@@ -43,7 +42,6 @@ import org.json.JSONObject;
 import java.util.Arrays;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
-import amalhichri.androidprojects.com.kotlinlearning.models.User;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -180,11 +178,12 @@ public class LoginActivity extends Activity {
         apiHelper.getRequest(this, url, new ApiListener() {
             @Override
             public void onApiSuccess(ApiResponse apiResponse) {
-                // create User object from the linkedin profile
-                Gson gson = new Gson();
-                final User userFromLinkedIn = gson.fromJson(apiResponse.getResponseDataAsJson().toString(),User.class);
-                // login to firebase with that user
-                Statics.signIn(userFromLinkedIn.getEmailAddress(), userFromLinkedIn.getId(),LoginActivity.this);
+                try {
+                    Statics.signIn(apiResponse.getResponseDataAsJson().getString("emailAddress").toString()
+                            ,apiResponse.getResponseDataAsJson().getString("id").toString(),LoginActivity.this);
+                    } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

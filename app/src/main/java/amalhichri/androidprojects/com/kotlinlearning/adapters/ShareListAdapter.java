@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.fragments.ForumQuestionFragment;
 import amalhichri.androidprojects.com.kotlinlearning.models.ForumQuestion;
-import amalhichri.androidprojects.com.kotlinlearning.services.ForumServices;
+import amalhichri.androidprojects.com.kotlinlearning.services.ForumsServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -97,8 +97,8 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
             public void onClick(View view) {
                 AppCompatActivity activity=(AppCompatActivity) context;
                 final ForumQuestionFragment forumQuestionFragment =new ForumQuestionFragment();
-                forumQuestionFragment.setContent(forumQuestionsList.get(position));
-                ForumServices.getInstance().markViewForum(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                forumQuestionFragment.setCurrentQuestion(forumQuestionsList.get(position));
+                ForumsServices.getInstance().markSeenForum(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                         context, forumQuestionsList.get(position).getId(), new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {

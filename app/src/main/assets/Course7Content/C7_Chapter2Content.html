@@ -1,7 +1,7 @@
 <html>
 	<body>
 	</body>
-	<article role="main" class="page-content g-9">
+	<article role="main" class="page-currentQuestion g-9">
 		<h2 id="calling-kotlin-from-java">Calling Kotlin from Java<a class="anchor" href="#calling-kotlin-from-java"></a></h2>
 		<p>Kotlin code can be called from Java easily.</p>
 		<h2 id="properties">Properties<a class="anchor" href="#properties"></a></h2>
@@ -229,7 +229,7 @@
 		<p>The annotation also works for constructors, static methods etc. It can't be used on abstract methods, including methods
 			defined in interfaces.</p>
 		<pre><code class="code _highlighted cm-s-default" data-lang="text/x-kotlin"><span class="cm-keyword">class</span> <span class="cm-def">Foo</span> <span class="cm-def">@JvmOverloads</span> <span class="cm-keyword">constructor</span>(<span class="cm-variable">x</span>: <span class="cm-variable">Int</span>, <span class="cm-variable">y</span>: <span class="cm-variable-3">Double</span> <span class="cm-operator">=</span> <span class="cm-number">0.0</span>) {
-    <span class="cm-variable">@JvmOverloads</span> <span class="cm-keyword">fun</span> <span class="cm-def">content</span>(<span class="cm-variable">a</span>: <span class="cm-variable-3">String</span>, <span class="cm-variable">b</span>: <span class="cm-variable">Int</span> <span class="cm-operator">=</span> <span class="cm-number">0</span>, <span class="cm-variable">c</span>: <span class="cm-variable-3">String</span> <span class="cm-operator">=</span> <span class="cm-string">"abc"</span>) {
+    <span class="cm-variable">@JvmOverloads</span> <span class="cm-keyword">fun</span> <span class="cm-def">currentQuestion</span>(<span class="cm-variable">a</span>: <span class="cm-variable-3">String</span>, <span class="cm-variable">b</span>: <span class="cm-variable">Int</span> <span class="cm-operator">=</span> <span class="cm-number">0</span>, <span class="cm-variable">c</span>: <span class="cm-variable-3">String</span> <span class="cm-operator">=</span> <span class="cm-string">"abc"</span>) {
         ...
     }
 }
@@ -242,9 +242,9 @@
 <span class="cm-variable">Foo</span>(<span class="cm-variable-3">int</span> <span class="cm-variable">x</span>)
 
 <span class="cm-comment">// Methods</span>
-<span class="cm-variable-3">void</span> <span class="cm-def">content</span>(<span class="cm-variable-3">String</span> <span class="cm-variable">a</span>, <span class="cm-variable-3">int</span> <span class="cm-variable">b</span>, <span class="cm-variable-3">String</span> <span class="cm-variable">c</span>) { }
-<span class="cm-variable-3">void</span> <span class="cm-def">content</span>(<span class="cm-variable-3">String</span> <span class="cm-variable">a</span>, <span class="cm-variable-3">int</span> <span class="cm-variable">b</span>) { }
-<span class="cm-variable-3">void</span> <span class="cm-def">content</span>(<span class="cm-variable-3">String</span> <span class="cm-variable">a</span>) { }
+<span class="cm-variable-3">void</span> <span class="cm-def">currentQuestion</span>(<span class="cm-variable-3">String</span> <span class="cm-variable">a</span>, <span class="cm-variable-3">int</span> <span class="cm-variable">b</span>, <span class="cm-variable-3">String</span> <span class="cm-variable">c</span>) { }
+<span class="cm-variable-3">void</span> <span class="cm-def">currentQuestion</span>(<span class="cm-variable-3">String</span> <span class="cm-variable">a</span>, <span class="cm-variable-3">int</span> <span class="cm-variable">b</span>) { }
+<span class="cm-variable-3">void</span> <span class="cm-def">currentQuestion</span>(<span class="cm-variable-3">String</span> <span class="cm-variable">a</span>) { }
 </code></pre>
 		<p>Note that, as described in <a href="classes.html#secondary-constructors">Secondary Constructors</a>, if a class has default
 			values for all constructor parameters, a public no-argument constructor will be generated for it. This works even

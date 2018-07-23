@@ -61,7 +61,7 @@ public class CoursesListAdapter extends BaseExpandableListAdapter {
         final String childText = (String) getChild(groupPosition, childPosition);
         if (convertView == null)
             convertView = ((LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.courseslist_item_expanded, null);
-        ((TextView) convertView.findViewById(R.id.listItem_text)).setText(childText);
+        ((TextView) convertView.findViewById(R.id.listItemTxt)).setText(childText);
         return convertView;
     }
 
@@ -93,7 +93,7 @@ public class CoursesListAdapter extends BaseExpandableListAdapter {
 
         if (convertView == null)
             convertView = ((LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.courseslist_item, null);
-        ((TextView) convertView.findViewById(R.id.listTitle_text)).setText(title);
+        ((TextView) convertView.findViewById(R.id.listTitle)).setText(title);
         ((ImageView)convertView.findViewById(R.id.courseIcon)).setImageResource(courseIcon);
 
         ((ListItemView) convertView. findViewById(R.id.coursesListItem )).setOnMenuItemClickListener(new ListItemView.OnMenuItemClickListener() {
