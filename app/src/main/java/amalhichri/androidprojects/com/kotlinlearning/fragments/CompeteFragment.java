@@ -201,7 +201,7 @@ public class CompeteFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(dy > 0) //check for scroll down
+                if(dy > 0)
                 {
                     visibleItemCount = layoutAnswer.getChildCount();
                     totalItemCount = layoutAnswer.getItemCount();
@@ -213,9 +213,7 @@ public class CompeteFragment extends Fragment {
                         {
                             loading=true;
                             if(answersAdapter!=null)
-                                //Log.d("loaded",loaded_length+"by search");
                                 LoadList();
-                            // //Log.d("loading","loading_more");
                         }
                     }
                 }

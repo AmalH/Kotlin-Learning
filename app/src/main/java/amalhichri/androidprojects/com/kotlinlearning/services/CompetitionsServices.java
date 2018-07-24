@@ -44,17 +44,15 @@ public class CompetitionsServices {
         final JSONObject jsonBody = new JSONObject();
 
         final JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.43.166/ikotlinBackEnd/web/competition/getcompetitions?id=" + id + "&start=" + start + "&order=" + orderby + "&level=" + level, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://192.168.43.166/ikotlinBackEnd/web/competitions/getcompetitions?id=" + id + "&start=" + start + "&order=" + orderby + "&level=" + level, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -62,65 +60,66 @@ public class CompetitionsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
 
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        //Log.d("compet",jsObjRequest.toString());
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "getCompetitions");
     }
 
+    public void addCompetition(Context context, Competition competition, String id, final ServerCallbacks serverCallbacks){
+        Map<String, String> m = new HashMap<String, String>();
+        m.put("id", id);
+        m.put("title", competition.getTitle());
+        m.put("content", competition.getContent());
+        m.put("level", "1");
+        final JSONObject jsonBody = new JSONObject(m);
 
-    public static Competition jsonToCompetition(JSONObject o){
-        Competition competition = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
-        Calendar cal = Calendar.getInstance();
-        try {
-            cal.setTime(sdf.parse(o.getString("created")));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        String content="";
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.POST, "http://192.168.43.166/ikotlinBackEnd/web/competitions/addcompetition", jsonBody, new Response.Listener<JSONObject>() {
 
-        try {
+                    @Override
+                    public void onResponse(JSONObject response) {
 
-            if(o.has("content")) content=o.getString("content");
+                        if (!response.has("Error")){
+                            serverCallbacks.onSuccess(response);
+                        }
+                        else{
+                            serverCallbacks.onWrong(response);
+                        }
+                    }
+                }, new Response.ErrorListener() {
 
-            competition = new Competition(o.getInt("id"),o.getString("user_id"),content,
-                    cal,o.getInt("level"),o.getString("title"),o.getString("user_name"));
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        serverCallbacks.onError(error);
+                    }
+                });
+        jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                3,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-            if(o.has("user_picture")) competition.setProfile_picture(o.getString("user_picture"));
-            if(o.has("solved")) competition.setSolved(o.getLong("solved")); else competition.setSolved(0);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.d("parsing_Compete_problem",o.toString());
-        }
-        return competition;
+        AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AddCompetition");
     }
 
     public void getCompetitionsAnswers(String id, Context context, int start, int level, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
 
         final JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET,  "http://192.168.43.166/ikotlinBackEnd/web/competition/getanswers?id=" + id + "&start=" + start + "&level=" + level, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET,  "http://192.168.43.166/ikotlinBackEnd/web/competitions/getanswers?id=" + id + "&start=" + start + "&level=" + level, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -128,60 +127,22 @@ public class CompetitionsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
 
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        //Log.d("compet",jsObjRequest.toString());
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "getCompetitionsAnswers");
-    }
-
-    public static CompetitionAnswer jsonToAnswer(JSONObject o){
-        CompetitionAnswer a = null;
-
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
-        Calendar cal = Calendar.getInstance();
-        try {
-            cal.setTime(sdf.parse(o.getString("created")));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        String content="";
-
-        try {
-
-            if(o.has("content")) content=o.getString("content");
-
-            a = new CompetitionAnswer(o.getInt("id"),cal);
-            if(o.has("idcompetition")) a.setId_competition(o.getInt("idcompetition"));
-            if(o.has("competitiontitle")) a.setCompetition_title(o.getString("competitiontitle"));
-            if(o.has("competitionlevel")) a.setCompetiton_level(o.getInt("competitionlevel"));
-            if(o.has("user_id")) a.setId_user(o.getString("user_id"));
-            if(o.has("user_name")) a.setUsername(o.getString("user_name"));
-            if(o.has("user_picture")) a.setProfile_picture(o.getString("user_picture"));
-            a.setContent(content);
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.d("parsing_Compete_problem",o.toString());
-        }
-        return a;
     }
 
     public void getCompetition(String id, Context context, int idcompetition, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
 
         final JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET,  "http://192.168.43.166/ikotlinBackEnd/web/competition/getcompetition?id=" + id + "&idcompetition=" +idcompetition, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET,  "http://192.168.43.166/ikotlinBackEnd/web/competitions/getcompetition?id=" + id + "&idcompetition=" +idcompetition, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -216,7 +177,7 @@ public class CompetitionsServices {
         final JSONObject jsonBody = new JSONObject();
 
         final JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.43.166/ikotlinBackEnd/web/competition/getanswer?id=" + id + "&idanswer=" +idanswer, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://192.168.43.166/ikotlinBackEnd/web/competitions/getanswer?id=" + id + "&idanswer=" +idanswer, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -255,7 +216,7 @@ public class CompetitionsServices {
         final JSONObject jsonBody = new JSONObject(m);
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.43.166/ikotlinBackEnd/web/competition/addanswer", jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://192.168.43.166/ikotlinBackEnd/web/competitions/addanswer", jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -285,44 +246,7 @@ public class CompetitionsServices {
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AddAnswer");
     }
 
-    public void addCompetition(Context context, Competition competition, String id, final ServerCallbacks serverCallbacks){
-        Map<String, String> m = new HashMap<String, String>();
-        m.put("id", id);
-        m.put("title", competition.getTitle());
-        m.put("content", competition.getContent());
-        m.put("level", "1");
-        final JSONObject jsonBody = new JSONObject(m);
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.43.166/ikotlinBackEnd/web/competition/addcompetition", jsonBody, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        if (!response.has("Error")){
-                            //ok
-                            serverCallbacks.onSuccess(response);
-                        }
-                        else{
-                            //wrong entries
-                            serverCallbacks.onWrong(response);
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //connection problem
-                        serverCallbacks.onError(error);
-                    }
-                });
-        jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AddCompetition");
-    }
 
     public void editAnswer (Context context, CompetitionAnswer answer, String id, final ServerCallbacks serverCallbacks){
         Map<String, String> m = new HashMap<String, String>();
@@ -333,7 +257,7 @@ public class CompetitionsServices {
         final JSONObject jsonBody = new JSONObject(m);
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.43.166/ikotlinBackEnd/web/competition/editanswer", jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://192.168.43.166/ikotlinBackEnd/web/competitions/editanswer", jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -433,5 +357,71 @@ public class CompetitionsServices {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsonObjRequest, "runCode");
+    }
+
+    public static Competition jsonToCompetition(JSONObject o){
+        Competition competition = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
+        Calendar cal = Calendar.getInstance();
+        try {
+            cal.setTime(sdf.parse(o.getString("created")));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String content="";
+
+        try {
+
+            if(o.has("content")) content=o.getString("content");
+
+            competition = new Competition(o.getInt("id"),o.getString("user_id"),content,
+                    cal,o.getInt("level"),o.getString("title"),o.getString("user_name"));
+
+            if(o.has("user_picture")) competition.setProfile_picture(o.getString("user_picture"));
+            if(o.has("solved")) competition.setSolved(o.getLong("solved")); else competition.setSolved(0);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.d("parsing_Compete_problem",o.toString());
+        }
+        return competition;
+    }
+
+    public static CompetitionAnswer jsonToAnswer(JSONObject o){
+        CompetitionAnswer a = null;
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault());
+        Calendar cal = Calendar.getInstance();
+        try {
+            cal.setTime(sdf.parse(o.getString("created")));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String content="";
+
+        try {
+
+            if(o.has("content")) content=o.getString("content");
+
+            a = new CompetitionAnswer(o.getInt("id"),cal);
+            if(o.has("idcompetition")) a.setId_competition(o.getInt("idcompetition"));
+            if(o.has("competitiontitle")) a.setCompetition_title(o.getString("competitiontitle"));
+            if(o.has("competitionlevel")) a.setCompetiton_level(o.getInt("competitionlevel"));
+            if(o.has("user_id")) a.setId_user(o.getString("user_id"));
+            if(o.has("user_name")) a.setUsername(o.getString("user_name"));
+            if(o.has("user_picture")) a.setProfile_picture(o.getString("user_picture"));
+            a.setContent(content);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.d("parsing_Compete_problem",o.toString());
+        }
+        return a;
     }
 }
