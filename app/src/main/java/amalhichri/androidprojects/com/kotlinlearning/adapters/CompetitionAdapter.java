@@ -47,7 +47,7 @@ public class CompetitionAdapter extends RecyclerView.Adapter<CompetitionAdapter.
         holder.solved.setText(CompetitionsList.get(position).getSolvedString());
         holder.createed.setText(CompetitionsList.get(position).getCreated_string());
 
-        if(CompetitionsList.get(position).getId_user().equals("dZb3TxK1x5dqQJkq7ve0d683VoA3"))
+        if(CompetitionsList.get(position).getId_user().equals(Statics.auth.getCurrentUser().getUid()))
             holder.user_name.setText("me");
         else
             holder.user_name.setText(CompetitionsList.get(position).getUser_name_captalized());

@@ -21,7 +21,6 @@
             android:layout_marginRight="4dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:src="@drawable/ic_profile_placeholder"
             />
 
         <TextView

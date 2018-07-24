@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,7 +69,8 @@ public class ForumQuestionFragment extends Fragment {
         if(isVisible()){
             getActivity().findViewById(R.id.forumQstUpVote).setBackgroundResource(R.drawable.ic_arrow_up);
             getActivity().findViewById(R.id.forumQstnDownVote).setBackgroundResource(R.drawable.ic_arrow_down);
-
+            ((ImageView)getActivity().findViewById(R.id.addCommentBtn)).setImageResource(R.drawable.ic_send_comment);
+            (getActivity().findViewById(R.id.addCommentBtn)).setEnabled(false);
         }
         return inflater.inflate(R.layout.fragment_forum_question, container, false);
     }
@@ -78,6 +82,8 @@ public class ForumQuestionFragment extends Fragment {
 
         getActivity().findViewById(R.id.forumQstUpVote).setBackgroundResource(R.drawable.ic_arrow_up);
         getActivity().findViewById(R.id.forumQstnDownVote).setBackgroundResource(R.drawable.ic_arrow_down);
+       ((ImageView)getActivity().findViewById(R.id.addCommentBtn)).setImageResource(R.drawable.ic_send_comment);
+        (getActivity().findViewById(R.id.addCommentBtn)).setEnabled(false);
 
         adapter = new CommentsAdapter(new ArrayList<ForumAnswer>(), getContext());
         picture = getActivity().findViewById(R.id.forumQuestionUserPic);
@@ -91,7 +97,7 @@ public class ForumQuestionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getActivity().findViewById(R.id.forumQstUpVote).setEnabled(false);
-                ForumsServices.getInstance().upvoteForumPost("dZb3TxK1x5dqQJkq7ve0d683VoA3",
+                ForumsServices.getInstance().upvoteForumPost(Statics.auth.getCurrentUser().getUid(),
                         getContext(), currentQuestion.getId(), new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {
@@ -125,7 +131,7 @@ public class ForumQuestionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getActivity().findViewById(R.id.forumQstnDownVote).setEnabled(false);
-                ForumsServices.getInstance().downvoteForumPost("dZb3TxK1x5dqQJkq7ve0d683VoA3",
+                ForumsServices.getInstance().downvoteForumPost(Statics.auth.getCurrentUser().getUid(),
                         getContext(), currentQuestion.getId(), new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {
@@ -195,15 +201,37 @@ public class ForumQuestionFragment extends Fragment {
         });
 
         /** add comment btn **/
+       ((EditText)getActivity().findViewById(R.id.commentToForumContent)).addTextChangedListener(new TextWatcher() {
+           @Override
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+           }
+
+           @Override
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+               ((ImageView)getActivity().findViewById(R.id.addCommentBtn)).setImageResource(R.drawable.ic_send_comment_selected);
+               (getActivity().findViewById(R.id.addCommentBtn)).setEnabled(true);
+           }
+
+           @Override
+           public void afterTextChanged(Editable s) {
+           }
+       });
         getActivity().findViewById(R.id.addCommentBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String answerContent = ((TextView)getActivity().findViewById(R.id.commentToForumContent)).getText().toString().trim();
+                final String answerContent = ((EditText)getActivity().findViewById(R.id.commentToForumContent)).getText().toString().trim();
                 ForumsServices.getInstance().addForumPostAnswer(getContext(), answerContent, currentQuestion.getId(), Statics.auth.getCurrentUser().getUid(), new ServerCallbacks() {
                     @Override
                     public void onSuccess(JSONObject result) {
                         loadComments(0);
                         ((EditText)getActivity().findViewById(R.id.commentToForumContent)).setText("");
+                        (getActivity().findViewById(R.id.forumQstnScrollView)).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((ScrollView)getActivity().findViewById(R.id.forumQstnScrollView)).fullScroll(View.FOCUS_DOWN);
+                            }
+                        });
                     }
 
                     @Override
@@ -229,7 +257,7 @@ public class ForumQuestionFragment extends Fragment {
 
         ((SwipeRefreshLayout) getActivity().findViewById(R.id.commentsRefreshLayout)).setRefreshing(true);
         if (Configuration.isOnline(getContext()))
-            ForumsServices.getInstance().getForumPostComments("dZb3TxK1x5dqQJkq7ve0d683VoA3",
+            ForumsServices.getInstance().getForumPostComments(Statics.auth.getCurrentUser().getUid(),
                     getContext(), start_at, currentQuestion.getId(), new ServerCallbacks() {
                         @Override
                         public void onSuccess(JSONObject result) {
@@ -333,7 +361,7 @@ public class ForumQuestionFragment extends Fragment {
                 Toast.makeText(getActivity(), "error----" + result.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-        ForumsServices.getInstance().getForumPost("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), currentQuestion.getId(),
+        ForumsServices.getInstance().getForumPost(Statics.auth.getCurrentUser().getUid(), getContext(), currentQuestion.getId(),
                 new ServerCallbacks() {
                     @Override
                     public void onSuccess(JSONObject result) {
@@ -344,7 +372,7 @@ public class ForumQuestionFragment extends Fragment {
                             } else
                                 selfVote = 0;
                             if (getContext() != null) {
-                                if (currentQuestion.getId_User().equals("dZb3TxK1x5dqQJkq7ve0d683VoA3"))
+                                if (currentQuestion.getId_User().equals(Statics.auth.getCurrentUser().getUid()))
                                     mine = true;
                                 ((TextView) getActivity().findViewById(R.id.forumQstRatingShow)).setText((currentQuestion.getRating() > 0 ? "+" + currentQuestion.getRating() : currentQuestion.getRating() + ""));
                                 ((TextView) getActivity().findViewById(R.id.forumQstViews)).setText(currentQuestion.getViews() + "");

@@ -148,7 +148,7 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
             nbviews=itemView.findViewById(R.id.nbViews);
             rating=itemView.findViewById(R.id.nbVotes);
             createed=itemView.findViewById(R.id.forumQstnCreated);
-            tags_layout=itemView.findViewById(R.id.tags_layout);
+            tags_layout=itemView.findViewById(R.id.tagsLayout);
 
         }
 

@@ -24,6 +24,7 @@ import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.models.ForumQuestion;
 import amalhichri.androidprojects.com.kotlinlearning.services.ForumsServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import me.originqiu.library.EditTag;
 
 
@@ -103,7 +104,7 @@ public class EditForumQuestionFragment extends Fragment {
                 else question.setCode(null);
 
                 if(!isCodeEmpty && !question.getContent().isEmpty() && !question.getTags().isEmpty()){
-                    ForumsServices.getInstance().editForumPost(getContext(), question, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
+                    ForumsServices.getInstance().editForumPost(getContext(), question, Statics.auth.getCurrentUser().getUid(), new ServerCallbacks() {
                         @Override
                         public void onSuccess(JSONObject result) {
                             getFragmentManager().popBackStack();
@@ -150,7 +151,7 @@ public class EditForumQuestionFragment extends Fragment {
                             public void onClick(final DialogInterface dialog, int whichButton) {
                                 progressDialog.setMessage("Deleting");
                                 progressDialog.show();
-                                ForumsServices.getInstance().deleteForumPost("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), question.getId(), new ServerCallbacks() {
+                                ForumsServices.getInstance().deleteForumPost(Statics.auth.getCurrentUser().getUid(), getContext(), question.getId(), new ServerCallbacks() {
                                     @Override
                                     public void onSuccess(JSONObject result) {
                                         dialog.dismiss();

@@ -73,7 +73,7 @@ public class CompetitionFragment extends Fragment {
                             answer = new CompetitionAnswer();
                             answer.setId_competition(competition.getId());
                             answer.setContent(((TextView) getActivity().findViewById(R.id.compete_add_content)).getText().toString().replaceAll("[\r\n]", "\n"));
-                            CompetitionsServices.getInstance().addAnswer(getContext(), answer, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
+                            CompetitionsServices.getInstance().addAnswer(getContext(), answer, Statics.auth.getCurrentUser().getUid(), new ServerCallbacks() {
                                 @Override
                                 public void onSuccess(JSONObject result) {
                                     loadAnswer();
@@ -101,7 +101,7 @@ public class CompetitionFragment extends Fragment {
                         } else {
                             editnow = false;
                             answer.setContent(((TextView) getActivity().findViewById(R.id.compete_add_content)).getText().toString().replaceAll("[\r\n]", "\n"));
-                            CompetitionsServices.getInstance().editAnswer(getContext(), answer, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
+                            CompetitionsServices.getInstance().editAnswer(getContext(), answer, Statics.auth.getCurrentUser().getUid(), new ServerCallbacks() {
                                 @Override
                                 public void onSuccess(JSONObject result) {
                                     getActivity().findViewById(R.id.competitionAnswerCodeView).setVisibility(View.GONE);
@@ -292,7 +292,7 @@ public class CompetitionFragment extends Fragment {
 
 
     private void loadCompetition() {
-        CompetitionsServices.getInstance().getCompetition("dZb3TxK1x5dqQJkq7ve0d683VoA3",
+        CompetitionsServices.getInstance().getCompetition(Statics.auth.getCurrentUser().getUid(),
                 getContext(), competition.getId(), new ServerCallbacks() {
                     @Override
                     public void onSuccess(JSONObject result) {
@@ -329,7 +329,7 @@ public class CompetitionFragment extends Fragment {
     private void loadAnswer() {
         progressDialog.setMessage("Loading your answer, please wait.");
         progressDialog.show();
-        CompetitionsServices.getInstance().getCompetitionAnswer("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), competition.getId(), new ServerCallbacks() {
+        CompetitionsServices.getInstance().getCompetitionAnswer(Statics.auth.getCurrentUser().getUid(), getContext(), competition.getId(), new ServerCallbacks() {
             @Override
             public void onSuccess(JSONObject result) {
                 getActivity().findViewById(R.id.competitionAnswerCodeView).setVisibility(View.VISIBLE);

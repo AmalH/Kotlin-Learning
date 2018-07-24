@@ -21,6 +21,7 @@ import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.models.Competition;
 import amalhichri.androidprojects.com.kotlinlearning.services.CompetitionsServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
 
 public class AddCompetitionFragment extends Fragment {
@@ -62,7 +63,7 @@ public class AddCompetitionFragment extends Fragment {
                                     public void onClick(final DialogInterface dialog, int whichButton) {
                                         progressDialog.setMessage("Posting...");
                                         progressDialog.show();
-                                        CompetitionsServices.getInstance().addCompetition(getContext(),c, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
+                                        CompetitionsServices.getInstance().addCompetition(getContext(),c, Statics.auth.getCurrentUser().getUid(), new ServerCallbacks() {
                                             @Override
                                             public void onSuccess(JSONObject result) {
                                                 dialog.dismiss();

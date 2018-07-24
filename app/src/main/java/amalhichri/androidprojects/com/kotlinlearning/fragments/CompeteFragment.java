@@ -33,6 +33,7 @@ import amalhichri.androidprojects.com.kotlinlearning.models.CompetitionAnswer;
 import amalhichri.androidprojects.com.kotlinlearning.services.CompetitionsServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Configuration;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
 public class CompeteFragment extends Fragment {
 
@@ -235,7 +236,7 @@ public class CompeteFragment extends Fragment {
                         competitionsRecyclerView.removeAllViews();
                         competitionList.clear();
                     }
-                    CompetitionsServices.getInstance().getCompetitions("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), loadedLengthCompetition, 1, order, new ServerCallbacks() {
+                    CompetitionsServices.getInstance().getCompetitions(Statics.auth.getCurrentUser().getUid(), getContext(), loadedLengthCompetition, 1, order, new ServerCallbacks() {
                         @Override
                         public void onSuccess(JSONObject result) {
                             boolean showLoadedData =true;
@@ -301,7 +302,7 @@ public class CompeteFragment extends Fragment {
                        answersRecyclerView.removeAllViews();
                        answersList.clear();
                     }
-                    CompetitionsServices.getInstance().getCompetitionsAnswers("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), loadedLengthAnswers,0, new ServerCallbacks() {
+                    CompetitionsServices.getInstance().getCompetitionsAnswers(Statics.auth.getCurrentUser().getUid(), getContext(), loadedLengthAnswers,0, new ServerCallbacks() {
                         @Override
                         public void onSuccess(JSONObject result) {
                             boolean goShow=true;

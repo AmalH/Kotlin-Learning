@@ -21,6 +21,7 @@ import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.models.ForumQuestion;
 import amalhichri.androidprojects.com.kotlinlearning.services.ForumsServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import me.originqiu.library.EditTag;
 
 public class AddForumFragment extends Fragment {
@@ -88,7 +89,7 @@ public class AddForumFragment extends Fragment {
 
                if(!isCodeEmpty && !f.getContent().isEmpty() && !f.getTags().isEmpty() && !f.getSubject().isEmpty()){
                    // if(Configuration.isOnline(getContext()) && UsersServices.getInstance().is_verified(getContext()))
-                        ForumsServices.getInstance().addForumPost(getContext(), f, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
+                        ForumsServices.getInstance().addForumPost(getContext(), f, Statics.auth.getCurrentUser().getUid(), new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {
                                 Toast.makeText(getContext(),"Submitted...", Toast.LENGTH_SHORT).show();

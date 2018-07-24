@@ -92,7 +92,6 @@ public class ShareFragment extends Fragment {
                 }
                 else
                     forumQustsRecyclerView.setVisibility(View.GONE);
-               // getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -228,7 +227,6 @@ public class ShareFragment extends Fragment {
                             }
                             /** if there is data to display **/
                             if(showLoadedData) {
-                               // getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.GONE);
                                 if(nbOfLoadedQuestions ==0){
                                     adapter=new ShareListAdapter(forumQuestionsList,getContext());
                                     forumQustsRecyclerView.setAdapter(adapter);
@@ -246,7 +244,6 @@ public class ShareFragment extends Fragment {
                                     nbOfLoadedQuestions +=10;
                             }
                             else{
-                               // getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
                                 forumQustsRecyclerView.setVisibility(View.GONE);
                             }
 
@@ -261,7 +258,6 @@ public class ShareFragment extends Fragment {
 
                         @Override
                         public void onError(VolleyError result) {
-                            //getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
                             forumQustsRecyclerView.setVisibility(View.GONE);
                             ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setRefreshing(false);
                             loading=false;
@@ -269,7 +265,6 @@ public class ShareFragment extends Fragment {
 
                         @Override
                         public void onWrong(JSONObject result) {
-                          //  getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
                             forumQustsRecyclerView.setVisibility(View.GONE);
                             ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setRefreshing(false);
                             loading=false;

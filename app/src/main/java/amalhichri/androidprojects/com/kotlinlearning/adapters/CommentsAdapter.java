@@ -25,6 +25,7 @@ import amalhichri.androidprojects.com.kotlinlearning.R;
 import amalhichri.androidprojects.com.kotlinlearning.models.ForumAnswer;
 import amalhichri.androidprojects.com.kotlinlearning.services.ForumsServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
+import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -63,11 +64,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         else
         {
             String item=forumAnswersList.get(position).getUsername();
-           // holder.user_picture.setImageDrawable(UsersServices.getInstance().getEmptyProfimePicture(item));
         }
 
-        //check to add delete button
-        if(("dZb3TxK1x5dqQJkq7ve0d683VoA3").equals(forumAnswersList.get(position).getUserid())){
+        if((Statics.auth.getCurrentUser().getUid()).equals(forumAnswersList.get(position).getUserid())){
             holder.delete.setVisibility(View.VISIBLE);
         }
 
@@ -83,8 +82,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         holder.upvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //FirebaseAuth.getInstance().getCurrentUser().getUid()
-                ForumsServices.getInstance().upvoteForumPostComment("dZb3TxK1x5dqQJkq7ve0d683VoA3",
+                ForumsServices.getInstance().upvoteForumPostComment(Statics.auth.getCurrentUser().getUid(),
                         context, forumAnswersList.get(position).getId(), new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {
@@ -157,24 +155,21 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
             @Override
             public void onClick(final View view) {
                 new AlertDialog.Builder(context)
-                        //set message, title, and icon
-                        .setTitle("Delete")
-                        .setMessage("Do you want to delete this comment")
-                        .setIcon(R.drawable.ic_delete_post)
-                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        .setTitle("Remove post")
+                        .setMessage("Are you sure you want to remove this post ?")
+                        .setPositiveButton("Remove", new DialogInterface.OnClickListener() {
                             public void onClick(final DialogInterface dialog, int whichButton) {
-                                progressDialog.setMessage("Deleting");
+                                progressDialog.setMessage("Removing...");
                                 progressDialog.show();
 
                                 ForumsServices.getInstance().deleteComment(
-                                        "dZb3TxK1x5dqQJkq7ve0d683VoA3", context, forumAnswersList.get(position).getId(), new ServerCallbacks() {
+                                        Statics.auth.getCurrentUser().getUid(), context, forumAnswersList.get(position).getId(), new ServerCallbacks() {
                                     @Override
                                     public void onSuccess(JSONObject result) {
                                         if(progressDialog.isShowing())
                                         progressDialog.dismiss();
                                         forumAnswersList.remove(position);
                                         notifyDataSetChanged();
-                                        //holder.itemView.setVisibility(View.GONE);
                                     }
 
                                     @Override
@@ -194,7 +189,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
                             }
 
                         })
-                        .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                             }
@@ -217,14 +212,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
         public CommentItem_ViewHolder(View itemView) {
             super(itemView);
-            user_picture= itemView.findViewById(R.id.comment_postedBy_img);
-            content= itemView.findViewById(R.id.answerToPostContent);
-            user_name=itemView.findViewById(R.id.comment_postedBy_name);
-            rating=itemView.findViewById(R.id.comment_rating);
-            createed=itemView.findViewById(R.id.comment_created);
-            upvote=itemView.findViewById(R.id.comment_up_arrow);
-            downvote=itemView.findViewById(R.id.comment_down_arrow);
-            delete=itemView.findViewById(R.id.delePostComment);
+            user_picture= itemView.findViewById(R.id.commentPostedByImg);
+            content= itemView.findViewById(R.id.commentContent);
+            user_name=itemView.findViewById(R.id.commentPostedByName);
+            rating=itemView.findViewById(R.id.commentRating);
+            createed=itemView.findViewById(R.id.commentCreated);
+            upvote=itemView.findViewById(R.id.commentUpVote);
+            downvote=itemView.findViewById(R.id.commentDownVote);
+            delete=itemView.findViewById(R.id.deleteCommentBtn);
         }
 
     }
