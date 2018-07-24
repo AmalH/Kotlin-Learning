@@ -42,7 +42,7 @@
                         android:gravity="center_horizontal"
                         android:textSize="8.5pt"
                         tools:ignore="MissingPrefix" />
-                    <me.biubiubiu.justifytext.library.JustifyTextView
+                   <!-- <me.biubiubiu.justifytext.library.JustifyTextView
                         android:id="@+id/chapterDescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -50,14 +50,14 @@
                         android:textStyle="italic"
                         android:textSize="14dp"
                         android:layout_below="@id/chapterTitle"
-                        android:layout_centerHorizontal="true"/>
+                        android:layout_centerHorizontal="true"/>-->
                     <LinearLayout
                         android:id="@+id/chapterInfoLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="7dp"
-                        android:layout_below="@id/chapterDescription"
+                        android:layout_below="@id/chapterTitle"
                         android:orientation="horizontal">
                         <RelativeLayout
                             android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
-                                    android:textSize="18dp"
+                                    android:textSize="15dp"
                                     android:text="3"/>
                                 <ImageView
                                     android:layout_width="wrap_content"
@@ -88,7 +88,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/iconsLayout2"
                                 android:layout_marginTop="5dp"
-                                android:text="badges earned"
+                                android:text="Badges earned"
                                 android:layout_centerHorizontal="true"
                                 android:textStyle="bold"
                                 fontPath="fonts/open_sans_regular.ttf"
@@ -109,7 +109,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
-                                    android:textSize="18dp"
+                                    android:textSize="15dp"
                                     android:text="3"/>
                                 <ImageView
                                     android:layout_width="wrap_content"
@@ -123,7 +123,7 @@
                                 android:layout_below="@id/iconsLayout3"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="5dp"
-                                android:text="minutes"
+                                android:text="Minutes"
                                 android:textStyle="bold"
                                 fontPath="fonts/open_sans_regular.ttf"
                                 android:textSize="11dp"

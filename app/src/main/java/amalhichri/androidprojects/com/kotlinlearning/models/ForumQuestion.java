@@ -98,7 +98,7 @@ public class ForumQuestion {
         else if(days<2 ) return days+" day";
         else if(days<30) return days+" days";
         else {
-            return ((int) days/30)+" month and "+((int)days%30)+" day";
+            return ((int) days/30)+" months, "+((int)days%30)+" day";
         }
     }
 

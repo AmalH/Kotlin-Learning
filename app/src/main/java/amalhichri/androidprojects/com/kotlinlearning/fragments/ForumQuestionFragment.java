@@ -3,7 +3,6 @@ package amalhichri.androidprojects.com.kotlinlearning.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,15 +12,13 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.VolleyError;
-import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
@@ -37,6 +34,7 @@ import amalhichri.androidprojects.com.kotlinlearning.models.ForumAnswer;
 import amalhichri.androidprojects.com.kotlinlearning.models.ForumQuestion;
 import amalhichri.androidprojects.com.kotlinlearning.services.ForumsServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
+import amalhichri.androidprojects.com.kotlinlearning.services.UsersServices;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Configuration;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -65,12 +63,21 @@ public class ForumQuestionFragment extends Fragment {
                              Bundle savedInstanceState) {
         FirebaseAuth.getInstance().getCurrentUser().reload();
         mine = false;
+        if(isVisible()){
+            getActivity().findViewById(R.id.forumQstUpVote).setBackgroundResource(R.drawable.ic_arrow_up);
+            getActivity().findViewById(R.id.forumQstnDownVote).setBackgroundResource(R.drawable.ic_arrow_down);
+
+        }
         return inflater.inflate(R.layout.fragment_forum_question, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
+        getActivity().findViewById(R.id.forumQstUpVote).setBackgroundResource(R.drawable.ic_arrow_up);
+        getActivity().findViewById(R.id.forumQstnDownVote).setBackgroundResource(R.drawable.ic_arrow_down);
 
         adapter = new CommentsAdapter(new ArrayList<ForumAnswer>(), getContext());
         picture = getActivity().findViewById(R.id.forumQuestionUserPic);
@@ -79,10 +86,8 @@ public class ForumQuestionFragment extends Fragment {
 
         ((RecyclerView) getActivity().findViewById(R.id.commentsContainer)).setAdapter(adapter);
 
-        ((TextView) getActivity().findViewById(R.id.commentsNbTv)).setText("11" + " comments");
-
         /** votes up/dpwn btns **/
-        getActivity().findViewById(R.id.forumQstUpVote).setOnClickListener(new View.OnClickListener() {
+        getActivity().findViewById(R.id.upVoteContainer).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().findViewById(R.id.forumQstUpVote).setEnabled(false);
@@ -116,10 +121,10 @@ public class ForumQuestionFragment extends Fragment {
                         });
             }
         });
-        getActivity().findViewById(R.id.forumQstnDownArrow).setOnClickListener(new View.OnClickListener() {
+        getActivity().findViewById(R.id.downVoteContainer).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().findViewById(R.id.forumQstnDownArrow).setEnabled(false);
+                getActivity().findViewById(R.id.forumQstnDownVote).setEnabled(false);
                 ForumsServices.getInstance().downvoteForumPost("dZb3TxK1x5dqQJkq7ve0d683VoA3",
                         getContext(), currentQuestion.getId(), new ServerCallbacks() {
                             @Override
@@ -132,19 +137,19 @@ public class ForumQuestionFragment extends Fragment {
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                getActivity().findViewById(R.id.forumQstnDownArrow).setEnabled(true);
+                                getActivity().findViewById(R.id.forumQstnDownVote).setEnabled(true);
                             }
 
                             @Override
                             public void onError(VolleyError result) {
                                 Toast.makeText(getContext(), "Server problem ", Toast.LENGTH_SHORT).show();
-                                getActivity().findViewById(R.id.forumQstnDownArrow).setEnabled(true);
+                                getActivity().findViewById(R.id.forumQstnDownVote).setEnabled(true);
                             }
 
                             @Override
                             public void onWrong(JSONObject result) {
                                 loadForum();
-                                getActivity().findViewById(R.id.forumQstnDownArrow).setEnabled(true);
+                                getActivity().findViewById(R.id.forumQstnDownVote).setEnabled(true);
                             }
                         });
             }
@@ -193,42 +198,24 @@ public class ForumQuestionFragment extends Fragment {
         getActivity().findViewById(R.id.addCommentBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final View dialogView = ((LayoutInflater) getActivity().getSystemService(getContext().LAYOUT_INFLATER_SERVICE)).inflate(R.layout.comment_add_view,null);
-                new MaterialStyledDialog.Builder(getActivity())
-                        .setTitle("Drop your answer/comment here")
-                        //.setStyle(Style.HEADER_WITH_ICON)
-                       // .withIconAnimation(false)
-                        .setCancelable(true)
-                        .withDialogAnimation(true)
-                        .setHeaderColor(R.color.float_transparent)
-                        //.setHeaderColor(R.color.baseColor1)
-                       // .setHeaderScaleType(ImageView.ScaleType.CENTER_CROP)
-                        .setCustomView( dialogView, 10, 30, 10, 10)
-                        //.setIcon(R.drawable.ic_action_add_comment)
-                        .setPositiveText("Post")
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                final String answerContent = ((TextView) dialogView.findViewById(R.id.answerToPostContent)).getText().toString().trim();
-                                ForumsServices.getInstance().addForumPostAnswer(getContext(), answerContent, currentQuestion.getId(), "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
-                                    @Override
-                                    public void onSuccess(JSONObject result) {
-                                        loadComments(0);
-                                    }
+                final String answerContent = ((TextView)getActivity().findViewById(R.id.commentToForumContent)).getText().toString().trim();
+                ForumsServices.getInstance().addForumPostAnswer(getContext(), answerContent, currentQuestion.getId(), Statics.auth.getCurrentUser().getUid(), new ServerCallbacks() {
+                    @Override
+                    public void onSuccess(JSONObject result) {
+                        loadComments(0);
+                        ((EditText)getActivity().findViewById(R.id.commentToForumContent)).setText("");
+                    }
 
-                                    @Override
-                                    public void onError(VolleyError result) {
-                                        Toast.makeText(getContext(), "Server problem+++" +result.getClass().getName(), Toast.LENGTH_SHORT).show();
-                                    }
+                    @Override
+                    public void onError(VolleyError result) {
+                        Toast.makeText(getContext(), "Server problem+++" +result.getClass().getName(), Toast.LENGTH_SHORT).show();
+                    }
 
-                                    @Override
-                                    public void onWrong(JSONObject result) {
-                                        Toast.makeText(getContext(), "Problem while posting, please retry", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        })
-                        .show();
+                    @Override
+                    public void onWrong(JSONObject result) {
+                        Toast.makeText(getContext(), "Problem while posting, please retry", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
@@ -268,26 +255,29 @@ public class ForumQuestionFragment extends Fragment {
                             }
                             /** All the work will be here **/
                             if (goShow) {
-                                ((TextView) getActivity().findViewById(R.id.commentsNbTv)).setText("No comments ...");
                                 getActivity().findViewById(R.id.commentsContainer).setVisibility(View.VISIBLE);
                                 if (loaded_length == 0) {
                                     adapter = new CommentsAdapter(listComments, getContext());
                                     ((RecyclerView) getActivity().findViewById(R.id.commentsContainer)).setAdapter(adapter);
+                                    if(listComments.size()==0)
+                                        ((TextView) getActivity().findViewById(R.id.commentsNbTv)).setText("No answers/comments yet..");
+                                    if(listComments.size()==1)
+                                        ((TextView) getActivity().findViewById(R.id.commentsNbTv)).setText("1 comment");
+                                    if(listComments.size()!=0)
+                                        ((TextView) getActivity().findViewById(R.id.commentsNbTv)).setText(listComments.size()+" comments");
                                 } else {
                                     adapter.notifyItemChanged(layoutManager.getChildCount());
                                 }
 
-                                //addCalculated
+
                                 if (loaded_length == 0) loaded_length += 10;
                                 else
                                     loaded_length += 8;
 
                             } else {
-                                getActivity().findViewById(R.id.commentsNbTv).setVisibility(View.VISIBLE);
                                 getActivity().findViewById(R.id.commentsContainer).setVisibility(View.GONE);
                             }
                             if (listComments.size() == 0) {
-                                getActivity().findViewById(R.id.commentsNbTv).setVisibility(View.VISIBLE);
                                 getActivity().findViewById(R.id.commentsContainer).setVisibility(View.GONE);
                             }
                             ((SwipeRefreshLayout) getActivity().findViewById(R.id.commentsRefreshLayout)).setRefreshing(false);
@@ -297,7 +287,6 @@ public class ForumQuestionFragment extends Fragment {
 
                         @Override
                         public void onError(VolleyError result) {
-                            getActivity().findViewById(R.id.commentsNbTv).setVisibility(View.VISIBLE);
                             getActivity().findViewById(R.id.commentsContainer).setVisibility(View.GONE);
                             ((SwipeRefreshLayout) getActivity().findViewById(R.id.commentsRefreshLayout)).setRefreshing(false);
                             loading = false;
@@ -305,7 +294,6 @@ public class ForumQuestionFragment extends Fragment {
 
                         @Override
                         public void onWrong(JSONObject result) {
-                            getActivity().findViewById(R.id.commentsNbTv).setVisibility(View.VISIBLE);
                             getActivity().findViewById(R.id.commentsContainer).setVisibility(View.GONE);
                             Toast.makeText(getContext(), "Problem , please report!", Toast.LENGTH_SHORT).show();
                             ((SwipeRefreshLayout) getActivity().findViewById(R.id.commentsRefreshLayout)).setRefreshing(false);
@@ -313,7 +301,6 @@ public class ForumQuestionFragment extends Fragment {
                         }
                     });
         else {
-            getActivity().findViewById(R.id.commentsNbTv).setVisibility(View.VISIBLE);
             getActivity().findViewById(R.id.commentsContainer).setVisibility(View.GONE);
             ((SwipeRefreshLayout) getActivity().findViewById(R.id.commentsRefreshLayout)).setRefreshing(false);
             loading = false;
@@ -322,6 +309,30 @@ public class ForumQuestionFragment extends Fragment {
     }
 
     private void loadForum() {
+        UsersServices.getInstance().getUserById(Statics.auth.getCurrentUser().getUid(), getActivity(), new ServerCallbacks() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                try {
+                    if (result.getString("picture") != null) {
+                        Picasso.with(getActivity()).load(Uri.parse(result.getString("picture"))).into((ImageView) getActivity().findViewById(R.id.currentUserPic));
+                    }
+                    if (result.getString("picture").isEmpty())
+                        ((ImageView) getActivity().findViewById(R.id.currentUserPic)).setImageDrawable(Statics.getPlaceholderProfilePic(result.getString("username")));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(VolleyError result) {
+                Toast.makeText(getActivity(), "error class" + result.getClass().getName(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onWrong(JSONObject result) {
+                Toast.makeText(getActivity(), "error----" + result.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
         ForumsServices.getInstance().getForumPost("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), currentQuestion.getId(),
                 new ServerCallbacks() {
                     @Override
@@ -362,14 +373,14 @@ public class ForumQuestionFragment extends Fragment {
                                 for (String s : array) {
                                     TextView t = new TextView(getActivity());
                                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                    lp.setMargins(5, 5, 5, 5);
+                                    lp.setMargins(5,5,5,5);
                                     t.setLayoutParams(lp);
                                     t.setText(s);
-                                    t.setBackgroundColor(getActivity().getResources().getColor(R.color.material_deep_teal_50));
+                                    t.setBackgroundResource(R.drawable.button_background2);
                                     t.setTextColor(getActivity().getResources().getColor(R.color.cardview_light_background));
                                     t.setGravity(View.TEXT_ALIGNMENT_CENTER);
-                                    t.setPaddingRelative(5, 3, 5, 3);
-                                    t.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
+                                    t.setPadding(12,5,12,5);
+                                    t.setTextSize(TypedValue.COMPLEX_UNIT_DIP ,11);
 
                                     ((FlowLayout) getActivity().findViewById(R.id.forumQstTags)).addView(t);
                                 }
@@ -432,14 +443,11 @@ public class ForumQuestionFragment extends Fragment {
 
     private void setVotesBtnColor() {
         if (selfVote == 1) {
-            getActivity().findViewById(R.id.forumQstUpVote).setBackgroundColor(getActivity().getResources().getColor(R.color.baseColor2));
-            getActivity().findViewById(R.id.forumQstnDownArrow).setBackgroundColor(getActivity().getResources().getColor(R.color.float_transparent));
+            getActivity().findViewById(R.id.forumQstUpVote).setBackgroundResource(R.drawable.ic_arrow_up_selected);
+            getActivity().findViewById(R.id.forumQstnDownVote).setBackgroundResource(R.drawable.ic_arrow_down);
         } else if (selfVote == -1) {
-            getActivity().findViewById(R.id.forumQstnDownArrow).setBackgroundColor(getActivity().getResources().getColor(R.color.baseColor2));
-            getActivity().findViewById(R.id.forumQstUpVote).setBackgroundColor(getContext().getResources().getColor(R.color.float_transparent));
-        } else {
-            getActivity().findViewById(R.id.forumQstUpVote).setBackgroundColor(getActivity().getResources().getColor(R.color.float_transparent));
-            getActivity().findViewById(R.id.forumQstnDownArrow).setBackgroundColor(getActivity().getResources().getColor(R.color.float_transparent));
+            getActivity().findViewById(R.id.forumQstnDownVote).setBackgroundResource(R.drawable.ic_arrow_down_selected);
+            getActivity().findViewById(R.id.forumQstUpVote).setBackgroundResource(R.drawable.ic_arrow_up);
         }
     }
 

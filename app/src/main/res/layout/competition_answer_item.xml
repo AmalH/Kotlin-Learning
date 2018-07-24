@@ -8,33 +8,33 @@
     card_view:cardUseCompatPadding="true">
 
     <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp">
 
         <TextView
-            android:id="@+id/competitionAnswerTitle"
+            android:id="@+id/competeanswer_postTile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="How to build android app in 1 month"
-            android:layout_toRightOf="@id/competePostedByImg"
             android:layout_marginLeft="5dp"
+            android:fontFamily="@fonts/graublau_slab"
             android:textSize="15dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/competitionAnswerTitle"
+            android:layout_below="@+id/competeanswer_postTile"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="4dp"
-            android:layout_toRightOf="@id/competePostedByImg"
             android:orientation="horizontal">
-
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:text="Level"
+                android:fontFamily="@fonts/graublau_slab"
                 />
 
             <TextView
@@ -44,7 +44,8 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="3"
-                android:textSize="14dp"/>
+                android:textSize="14dp"
+                android:fontFamily="@fonts/graublau_slab"/>
 
 
             <ImageView
@@ -59,7 +60,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="4 days"
-                android:textSize="10dp"/>
+                android:textSize="10dp"
+                android:fontFamily="@fonts/graublau_slab"/>
 
         </LinearLayout>
 

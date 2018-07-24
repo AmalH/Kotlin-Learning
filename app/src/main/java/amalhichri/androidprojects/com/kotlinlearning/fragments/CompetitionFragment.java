@@ -60,133 +60,19 @@ public class CompetitionFragment extends Fragment {
         progressDialog = new ProgressDialog(getActivity());
         loadCompetition();
         loadAnswer();
-        attachAddListener();
 
-    }
-
-
-    public void loadCompetition() {
-        CompetitionsServices.getInstance().getCompetition("dZb3TxK1x5dqQJkq7ve0d683VoA3",
-                getContext(), competition.getId(), new ServerCallbacks() {
-                    @Override
-                    public void onSuccess(JSONObject result) {
-                        try {
-                            competition = CompetitionsServices.jsonToCompetition(result.getJSONArray("resp").getJSONObject(0));
-                            fillCompetition();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(VolleyError result) {
-                        Toast.makeText(getContext(), "error", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onWrong(JSONObject result) {
-                        Toast.makeText(getContext(), "wrong", Toast.LENGTH_LONG).show();
-                    }
-                });
-    }
-
-    public void fillCompetition() {
-
-        ((TextView)getActivity().findViewById(R.id.competeSubject)).setText(competition.getTitle());
-        ((TextView)getActivity().findViewById(R.id.competeSolvedTxt)).setText(competition.getSolvedString());
-        ((TextView)getActivity().findViewById(R.id.competeShowContent)).setText(competition.getContent());
-        ((TextView)getActivity().findViewById(R.id.competeShowUsername)).setText(competition.getUsername());
-        ((TextView)getActivity().findViewById(R.id.competeShowCreated)).setText(competition.getCreated_string());
-
-        if (competition.getProfile_picture() != null)
-            Picasso.with(getContext()).load(Uri.parse(competition.getProfile_picture())).into((CircleImageView)getActivity().findViewById(R.id.competeShowUserPicture));
-        else {
-            ((ImageView)getActivity().findViewById(R.id.competeShowUserPicture)).setImageDrawable(Statics.getPlaceholderProfilePic(competition.getUsername()));
-        }
-    }
-
-    public void loadAnswer() {
-        progressDialog.setMessage("Loading your answer, please wait.");
-        progressDialog.show();
-        CompetitionsServices.getInstance().getCompetitionAnswer("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), competition.getId(), new ServerCallbacks() {
-            @Override
-            public void onSuccess(JSONObject result) {
-                getActivity().findViewById(R.id.competeAnswerCodeView).setVisibility(View.VISIBLE);
-                getActivity().findViewById(R.id.competeLayoutAnswered).setVisibility(View.VISIBLE);
-                getActivity().findViewById(R.id.competeAddAnswer).setVisibility(View.GONE);
-                getActivity().findViewById(R.id.competeAddContent).setVisibility(View.GONE);
-                try {
-                    if (result.getJSONArray("resp").length() > 0) {
-                        answer = CompetitionsServices.jsonToCompetitionAnswer(result.getJSONArray("resp").getJSONObject(0));
-                        fillanswer();
-                    } else {
-                        getActivity().findViewById(R.id.competeAnswerCodeView).setVisibility(View.GONE);
-                        getActivity().findViewById(R.id.competeLayoutAnswered).setVisibility(View.GONE);
-                        getActivity().findViewById(R.id.competeAddAnswer).setVisibility(View.VISIBLE);
-                        getActivity().findViewById(R.id.competeAddContent).setVisibility(View.VISIBLE);
-                        Toast.makeText(getContext(), "Not solved yet", Toast.LENGTH_LONG).show();
-                    }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if (progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onError(VolleyError result) {
-                getActivity().findViewById(R.id.competeAnswerCodeView).setVisibility(View.GONE);
-                getActivity().findViewById(R.id.competeLayoutAnswered).setVisibility(View.GONE);
-                getActivity().findViewById(R.id.competeAddAnswer).setVisibility(View.GONE);
-                getActivity().findViewById(R.id.competeAddContent).setVisibility(View.GONE);
-                Toast.makeText(getContext(), "error", Toast.LENGTH_LONG).show();
-                if (progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onWrong(JSONObject result) {
-                getActivity().findViewById(R.id.competeAnswerCodeView).setVisibility(View.GONE);
-                getActivity().findViewById(R.id.competeLayoutAnswered).setVisibility(View.GONE);
-                getActivity().findViewById(R.id.competeAddAnswer).setVisibility(View.VISIBLE);
-                getActivity().findViewById(R.id.competeAddContent).setVisibility(View.VISIBLE);
-                Toast.makeText(getContext(), "wrong", Toast.LENGTH_LONG).show();
-                if (progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
-            }
-        });
-    }
-
-    public void fillanswer() {
-        answer.setCreated(Calendar.getInstance());
-        ((TextView)getActivity().findViewById(R.id.answerDate)).setText(answer.getCreated_string());
-        ((TextView)getActivity().findViewById(R.id.competeAddContent)).setText(answer.getContent());
-        if (answer.getContent() != null) {
-            ((CodeView)getActivity().findViewById(R.id.competeAnswerCodeView)).setOptions(Options.Default.get(getContext())
-                    .withLanguage("java")
-                    .withCode(answer.getContent())
-                    .withTheme(ColorTheme.DEFAULT));
-        }
-    }
-
-    public void attachAddListener() {
-        getActivity().findViewById(R.id.competeAddAnswer).setOnClickListener(new View.OnClickListener() {
+        /** add answer btn **/
+        getActivity().findViewById(R.id.competitionAddAnswer).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 progressDialog.setMessage("Saving your answer, please wait.");
                 progressDialog.show();
-                //add
-                if (((TextView)getActivity().findViewById(R.id.competeAddContent)).getText() != null)
-                    if (((TextView)getActivity().findViewById(R.id.competeAddContent)).getText().toString().trim().length() > 0) {
+                if (((TextView) getActivity().findViewById(R.id.compete_add_content)).getText() != null)
+                    if (((TextView) getActivity().findViewById(R.id.compete_add_content)).getText().toString().trim().length() > 0) {
                         if (!editnow) {
                             answer = new CompetitionAnswer();
                             answer.setId_competition(competition.getId());
-                            answer.setContent(((TextView)getActivity().findViewById(R.id.competeAddContent)).getText().toString().replaceAll("[\r\n]", "\n"));
+                            answer.setContent(((TextView) getActivity().findViewById(R.id.compete_add_content)).getText().toString().replaceAll("[\r\n]", "\n"));
                             CompetitionsServices.getInstance().addAnswer(getContext(), answer, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
                                 @Override
                                 public void onSuccess(JSONObject result) {
@@ -214,14 +100,14 @@ public class CompetitionFragment extends Fragment {
                             });
                         } else {
                             editnow = false;
-                            answer.setContent(((TextView)getActivity().findViewById(R.id.competeAddContent)).getText().toString().replaceAll("[\r\n]", "\n"));
+                            answer.setContent(((TextView) getActivity().findViewById(R.id.compete_add_content)).getText().toString().replaceAll("[\r\n]", "\n"));
                             CompetitionsServices.getInstance().editAnswer(getContext(), answer, "dZb3TxK1x5dqQJkq7ve0d683VoA3", new ServerCallbacks() {
                                 @Override
                                 public void onSuccess(JSONObject result) {
-                                    getActivity().findViewById(R.id.competeAnswerCodeView).setVisibility(View.GONE);
-                                    getActivity().findViewById(R.id.competeLayoutAnswered).setVisibility(View.GONE);
-                                    getActivity().findViewById(R.id.competeAddAnswer).setVisibility(View.VISIBLE);
-                                    getActivity().findViewById(R.id.competeAddContent).setVisibility(View.VISIBLE);
+                                    getActivity().findViewById(R.id.competitionAnswerCodeView).setVisibility(View.GONE);
+                                    getActivity().findViewById(R.id.competitionAnswered).setVisibility(View.GONE);
+                                    getActivity().findViewById(R.id.competitionAddAnswer).setVisibility(View.VISIBLE);
+                                    getActivity().findViewById(R.id.compete_add_content).setVisibility(View.VISIBLE);
                                     answer.setCreated(Calendar.getInstance());
                                     loadAnswer();
                                     if (progressDialog.isShowing()) {
@@ -250,26 +136,28 @@ public class CompetitionFragment extends Fragment {
             }
         });
 
-        getActivity().findViewById(R.id.competeEditAnswer).setOnClickListener(new View.OnClickListener() {
+        /** edit answer btn **/
+        getActivity().findViewById(R.id.competitionEditAnswer).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().findViewById(R.id.competeAnswerCodeView).setVisibility(View.GONE);
-                getActivity().findViewById(R.id.competeLayoutAnswered).setVisibility(View.GONE);
-                getActivity().findViewById(R.id.competeAddAnswer).setVisibility(View.VISIBLE);
-                getActivity().findViewById(R.id.competeAddContent).setVisibility(View.VISIBLE);
-                ((TextView)getActivity().findViewById(R.id.competeAddContent)).setText(answer.getContent());
+                getActivity().findViewById(R.id.competitionAnswerCodeView).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.competitionAnswered).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.competitionAddAnswer).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.compete_add_content).setVisibility(View.VISIBLE);
+                ((TextView) getActivity().findViewById(R.id.compete_add_content)).setText(answer.getContent());
                 editnow = true;
             }
         });
 
-        getActivity().findViewById(R.id.competeRun).setOnClickListener(new View.OnClickListener() {
+        /** compile code btn **/
+        getActivity().findViewById(R.id.competitionRun).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().findViewById(R.id.competeRun).setEnabled(false);
+                getActivity().findViewById(R.id.competitionRun).setEnabled(false);
                 progressDialog.setMessage("Running code, please wait.");
                 progressDialog.show();
-                final String s=((TextView)getActivity().findViewById(R.id.competeAddContent)).getText().toString().replaceAll("[\r\n]", "\n");
-               // s=s.replaceAll("\\s+","+");
+                final String s = ((TextView) getActivity().findViewById(R.id.compete_add_content)).getText().toString().replaceAll("[\r\n]", "\n");
+                // s=s.replaceAll("\\s+","+");
                 Map<String, String> m = new HashMap<String, String>();
                 m.put("text", s);
                 m.put("name", "ikotlinrun.kt");
@@ -280,97 +168,97 @@ public class CompetitionFragment extends Fragment {
                 JSONObject FullBody = new JSONObject();
                 try {
                     FullBody.put("files", jsonArray);
-                    FullBody.put("args", ((TextView)getActivity().findViewById(R.id.competeArguments)).getText().toString());
+                    FullBody.put("args", ((TextView) getActivity().findViewById(R.id.competitionArgs)).getText().toString());
                     CompetitionsServices.getInstance().compileCode(getContext(), FullBody, new StringCallbacks() {
                         @Override
                         public void onSuccess(String result) {
-                            getActivity().findViewById(R.id.competeRun).setEnabled(true);
-                            getActivity().findViewById(R.id.competeResponse).setVisibility(View.VISIBLE);
+                            getActivity().findViewById(R.id.competitionRun).setEnabled(true);
+                            getActivity().findViewById(R.id.competitionResponse).setVisibility(View.VISIBLE);
                             //Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
-                            JSONObject jsOResponse,subs;
+                            JSONObject jsOResponse, subs;
                             JSONArray subsar;
-                            String err="";
+                            String err = "";
                             try {
-                               jsOResponse =new JSONObject(result);
+                                jsOResponse = new JSONObject(result);
                                 //Log.d("tryko",jsOResponse.toString());
-                               if(jsOResponse.has("text")){
-                                   ((TextView)getActivity().findViewById(R.id.competeResponse)).setText(jsOResponse.get("text").toString().replaceAll("<[^>]+>", ""));
-                                   getActivity().findViewById(R.id.competeResponse).setBackgroundColor(getActivity().getResources().getColor(R.color.successBackground));
-                               }
-                                else {
-                                   //Log.d("tryko",jsOResponse.toString());
-                                   if(jsOResponse.has("errors")) {
-                                       subs= (JSONObject) jsOResponse.get("errors");
-                                       if (subs.has("ikotlinrun.kt")) {
-                                            String line="",chr="",severity="",msg="";
+                                if (jsOResponse.has("text")) {
+                                    ((TextView) getActivity().findViewById(R.id.competitionResponse)).setText(jsOResponse.get("text").toString().replaceAll("<[^>]+>", ""));
+                                    getActivity().findViewById(R.id.competitionResponse).setBackgroundColor(getActivity().getResources().getColor(R.color.successBackground));
+                                } else {
+                                    //Log.d("tryko",jsOResponse.toString());
+                                    if (jsOResponse.has("errors")) {
+                                        subs = (JSONObject) jsOResponse.get("errors");
+                                        if (subs.has("ikotlinrun.kt")) {
+                                            String line = "", chr = "", severity = "", msg = "";
                                             JSONObject ln;
-                                           subsar= subs.getJSONArray("ikotlinrun.kt");
-                                           subs=subsar.getJSONObject(0);
-                                           if(subs.has("interval")) {
-                                               JSONObject subsinterval= (JSONObject) subs.get("interval");
-                                               if(subsinterval.has("start")) {
-                                                   ln= (JSONObject) subsinterval.get("start");
-                                                   line=ln.getString("line");
-                                                   chr=ln.getString("ch");
-                                               }
-                                           }
+                                            subsar = subs.getJSONArray("ikotlinrun.kt");
+                                            subs = subsar.getJSONObject(0);
+                                            if (subs.has("interval")) {
+                                                JSONObject subsinterval = (JSONObject) subs.get("interval");
+                                                if (subsinterval.has("start")) {
+                                                    ln = (JSONObject) subsinterval.get("start");
+                                                    line = ln.getString("line");
+                                                    chr = ln.getString("ch");
+                                                }
+                                            }
 
-                                           if(subs.has("message")) {
-                                               msg=subs.getString("message");
-                                           }
+                                            if (subs.has("message")) {
+                                                msg = subs.getString("message");
+                                            }
 
-                                           if(subs.has("severity")){
-                                               severity=subs.getString("severity");
-                                           }
+                                            if (subs.has("severity")) {
+                                                severity = subs.getString("severity");
+                                            }
 
-                                           //read intervals
-                                           if(severity.length()>0) err = severity+" : \n";
-                                           err = "Error : \n";
+                                            //read intervals
+                                            if (severity.length() > 0) err = severity + " : \n";
+                                            err = "Error : \n";
 
-                                           if(msg.length()>0) err+="\n\tMessage  : "+msg;
-                                           if(line.length()>0) err+="\n\tIn line : "+line;
-                                           if(chr.length()>0) err+="\n\tCharacter: "+chr;
+                                            if (msg.length() > 0) err += "\n\tMessage  : " + msg;
+                                            if (line.length() > 0) err += "\n\tIn line : " + line;
+                                            if (chr.length() > 0) err += "\n\tCharacter: " + chr;
 
-                                           ((TextView)getActivity().findViewById(R.id.competeResponse)).setText(err);
-                                       } else
-                                           ((TextView)getActivity().findViewById(R.id.competeResponse)).setText("Compilation error !");
-                                       getActivity().findViewById(R.id.competeResponse).setBackgroundColor(getActivity().getResources().getColor(R.color.errorBackground));
-                                   }
-                               }
-                            //Log.d("tryko",jsOResponse.toString());
-                               if(jsOResponse.has("exception")){
-                                   if(!jsOResponse.getString("exception").equals("null")) {
-                                       String name="",method="",line="",cause="";
-                                       subs= (JSONObject) jsOResponse.get("exception");
-                                       if(subs.has("fullName")) name=subs.getString("fullName");
-                                       if(subs.has("cause")) name=subs.getString("cause");
-                                       if(subs.has("stackTrace")){
-                                           subsar=subs.getJSONArray("stackTrace");
-                                           subs=subsar.getJSONObject(0);
-                                           if(subs.has("methodName")) method=subs.getString("methodName");
-                                           if(subs.has("lineNumber")) line=subs.getString("lineNumber");
-                                       }
+                                            ((TextView) getActivity().findViewById(R.id.competitionResponse)).setText(err);
+                                        } else
+                                            ((TextView) getActivity().findViewById(R.id.competitionResponse)).setText("Compilation error !");
+                                        getActivity().findViewById(R.id.competitionResponse).setBackgroundColor(getActivity().getResources().getColor(R.color.errorBackground));
+                                    }
+                                }
+                                //Log.d("tryko",jsOResponse.toString());
+                                if (jsOResponse.has("exception")) {
+                                    if (!jsOResponse.getString("exception").equals("null")) {
+                                        String name = "", method = "", line = "", cause = "";
+                                        subs = (JSONObject) jsOResponse.get("exception");
+                                        if (subs.has("fullName")) name = subs.getString("fullName");
+                                        if (subs.has("cause")) name = subs.getString("cause");
+                                        if (subs.has("stackTrace")) {
+                                            subsar = subs.getJSONArray("stackTrace");
+                                            subs = subsar.getJSONObject(0);
+                                            if (subs.has("methodName"))
+                                                method = subs.getString("methodName");
+                                            if (subs.has("lineNumber"))
+                                                line = subs.getString("lineNumber");
+                                        }
 
 
-                                       if(err.length()>0) err+="\n";
+                                        if (err.length() > 0) err += "\n";
 
-                                       err+="Exception : \n";
-                                       if(name.length()>0) err+="\n\tReason(s) : "+name;
-                                       if(method.length()>0)err+="\n\tMethod : "+method;
-                                       if(line.length()>0)err+="\n\tIn line  : "+line;
-                                       if(cause.length()>0)err+="\n\tCause   : "+cause;
+                                        err += "Exception : \n";
+                                        if (name.length() > 0) err += "\n\tReason(s) : " + name;
+                                        if (method.length() > 0) err += "\n\tMethod : " + method;
+                                        if (line.length() > 0) err += "\n\tIn line  : " + line;
+                                        if (cause.length() > 0) err += "\n\tCause   : " + cause;
 
-                                       ((TextView)getActivity().findViewById(R.id.competeResponse)).setText(err);
-                                       (getActivity().findViewById(R.id.competeResponse)).setBackgroundColor(getActivity().getResources().getColor(R.color.errorBackground));
-                                   }
-                               }
+                                        ((TextView) getActivity().findViewById(R.id.competitionResponse)).setText(err);
+                                        (getActivity().findViewById(R.id.competitionResponse)).setBackgroundColor(getActivity().getResources().getColor(R.color.errorBackground));
+                                    }
+                                }
 
-                                Log.d("kotlinResponse",jsOResponse.toString());
+                                Log.d("kotlinResponse", jsOResponse.toString());
                             } catch (JSONException e) {
-                                ((TextView)getActivity().findViewById(R.id.competeResponse)).setText("Parsing error !");
-                                getActivity().findViewById(R.id.competeResponse).setBackgroundColor(getActivity().getResources().getColor(R.color.paperBackground));
+                                ((TextView) getActivity().findViewById(R.id.competitionResponse)).setText("Parsing error !");
+                                getActivity().findViewById(R.id.competitionResponse).setBackgroundColor(getActivity().getResources().getColor(R.color.paperBackground));
                             }
-
 
 
                             if (progressDialog.isShowing()) {
@@ -380,16 +268,16 @@ public class CompetitionFragment extends Fragment {
 
                         @Override
                         public void onError(VolleyError result) {
-                            getActivity().findViewById(R.id.competeRun).setEnabled(true);
-                            ((TextView)getActivity().findViewById(R.id.competeResponse)).setText("Please retry...");
-                            getActivity().findViewById(R.id.competeResponse).setBackgroundColor(getActivity().getResources().getColor(R.color.paperBackground));
+                            getActivity().findViewById(R.id.competitionRun).setEnabled(true);
+                            ((TextView) getActivity().findViewById(R.id.competitionResponse)).setText("Please retry...");
+                            getActivity().findViewById(R.id.competitionResponse).setBackgroundColor(getActivity().getResources().getColor(R.color.paperBackground));
                             if (progressDialog.isShowing()) {
                                 progressDialog.dismiss();
                             }
                         }
                     });
                 } catch (JSONException e) {
-                    getActivity().findViewById(R.id.competeRun).setEnabled(true);
+                    getActivity().findViewById(R.id.competitionRun).setEnabled(true);
                     e.printStackTrace();
                     Toast.makeText(getContext(), "Error while running on server\n Please report", Toast.LENGTH_SHORT).show();
                     if (progressDialog.isShowing()) {
@@ -402,9 +290,110 @@ public class CompetitionFragment extends Fragment {
 
     }
 
+
+    private void loadCompetition() {
+        CompetitionsServices.getInstance().getCompetition("dZb3TxK1x5dqQJkq7ve0d683VoA3",
+                getContext(), competition.getId(), new ServerCallbacks() {
+                    @Override
+                    public void onSuccess(JSONObject result) {
+                        try {
+                            competition = CompetitionsServices.jsonToCompetition(result.getJSONArray("resp").getJSONObject(0));
+
+                            ((TextView) getActivity().findViewById(R.id.competitionSubject)).setText(competition.getTitle());
+                            ((TextView) getActivity().findViewById(R.id.competeSolvedTxt)).setText(competition.getSolvedString());
+                            ((TextView) getActivity().findViewById(R.id.competitionContent)).setText(competition.getContent());
+                            ((TextView) getActivity().findViewById(R.id.competitionUsername)).setText(competition.getUsername());
+                            ((TextView) getActivity().findViewById(R.id.competitionCreated)).setText(competition.getCreated_string());
+
+                            if (competition.getProfile_picture() != null)
+                                Picasso.with(getContext()).load(Uri.parse(competition.getProfile_picture())).into((CircleImageView) getActivity().findViewById(R.id.competitionUserPicture));
+                            else {
+                                ((ImageView) getActivity().findViewById(R.id.competitionUserPicture)).setImageDrawable(Statics.getPlaceholderProfilePic(competition.getUsername()));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(VolleyError result) {
+                        Toast.makeText(getContext(), "COMPETITION ERROR " + result.toString(), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onWrong(JSONObject result) {
+                        Toast.makeText(getContext(), "wrong", Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+    private void loadAnswer() {
+        progressDialog.setMessage("Loading your answer, please wait.");
+        progressDialog.show();
+        CompetitionsServices.getInstance().getCompetitionAnswer("dZb3TxK1x5dqQJkq7ve0d683VoA3", getContext(), competition.getId(), new ServerCallbacks() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                getActivity().findViewById(R.id.competitionAnswerCodeView).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.competitionAnswered).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.competitionAddAnswer).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.compete_add_content).setVisibility(View.GONE);
+                try {
+                    if (result.getJSONArray("resp").length() > 0) {
+                        answer = CompetitionsServices.jsonToAnswer(result.getJSONArray("resp").getJSONObject(0));
+                        answer.setCreated(Calendar.getInstance());
+                        ((TextView) getActivity().findViewById(R.id.competitionAnswerDate)).setText(answer.getCreated_string());
+                        ((TextView) getActivity().findViewById(R.id.compete_add_content)).setText(answer.getContent());
+                        if (answer.getContent() != null) {
+                            ((CodeView) getActivity().findViewById(R.id.competitionAnswerCodeView)).setOptions(Options.Default.get(getContext())
+                                    .withLanguage("java")
+                                    .withCode(answer.getContent())
+                                    .withTheme(ColorTheme.DEFAULT));
+                        }
+                    } else {
+                        getActivity().findViewById(R.id.competitionAnswerCodeView).setVisibility(View.GONE);
+                        getActivity().findViewById(R.id.competitionAnswered).setVisibility(View.GONE);
+                        getActivity().findViewById(R.id.competitionAddAnswer).setVisibility(View.VISIBLE);
+                        getActivity().findViewById(R.id.compete_add_content).setVisibility(View.VISIBLE);
+                        Toast.makeText(getContext(), "Not solved yet", Toast.LENGTH_LONG).show();
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onError(VolleyError result) {
+                getActivity().findViewById(R.id.competitionAnswerCodeView).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.competitionAnswered).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.competitionAddAnswer).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.compete_add_content).setVisibility(View.GONE);
+                Toast.makeText(getContext(), "ANSWSER ERROR " + competition.getId(), Toast.LENGTH_LONG).show();
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onWrong(JSONObject result) {
+                getActivity().findViewById(R.id.competitionAnswerCodeView).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.competitionAnswered).setVisibility(View.GONE);
+                getActivity().findViewById(R.id.competitionAddAnswer).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.compete_add_content).setVisibility(View.VISIBLE);
+                Toast.makeText(getContext(), "wrong", Toast.LENGTH_LONG).show();
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+            }
+        });
+    }
+
+
     public void setCompetition(Competition competition) {
         this.competition = competition;
     }
 
 }
-

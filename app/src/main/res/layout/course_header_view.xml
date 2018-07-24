@@ -10,7 +10,7 @@
 
         android:id="@+id/cardView"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         android:elevation="2dp"
@@ -25,6 +25,7 @@
         android:id="@+id/courseHeaderContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
         android:layout_marginBottom="4dp">
     <ImageView
                 android:id="@+id/courseIcon"
@@ -81,8 +82,8 @@
                 android:orientation="horizontal"
                 android:layout_below="@id/courseDescription"
                 android:layout_toEndOf="@id/courseIcon"
-                android:layout_marginLeft="5px"
-                android:paddingTop="10dp">
+        android:layout_marginTop="5dp"
+                android:layout_marginLeft="5px">
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -111,7 +112,8 @@
                         android:layout_below="@id/iconsLayout1"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="5dp"
-                        android:text="completed chapters"
+                        android:paddingBottom="5dp"
+                        android:text="Chapters finished"
                         android:textStyle="bold"
                         fontPath="fonts/open_sans_regular.ttf"
                         android:textSize="11dp"
@@ -146,7 +148,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/iconsLayout2"
                         android:layout_marginTop="5dp"
-                        android:text="badges earned"
+                        android:paddingBottom="5dp"
+                        android:text="Badges earned"
                         android:layout_centerHorizontal="true"
                         android:textStyle="bold"
                         fontPath="fonts/open_sans_regular.ttf"
@@ -182,7 +185,8 @@
                         android:layout_below="@id/iconsLayout3"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="5dp"
-                        android:text="minutes"
+                        android:paddingBottom="5dp"
+                        android:text="Minutes"
                         android:textStyle="bold"
                         fontPath="fonts/open_sans_regular.ttf"
                         android:textSize="11dp"

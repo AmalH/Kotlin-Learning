@@ -24,7 +24,7 @@
         android:text="How to build android app in 1 month"
         android:textSize="15dp"
         android:textStyle="bold"
-        android:textColor="#7e7e7e"
+        android:textColor="#212121"
         fontPath="fonts/open_sans_regular.ttf"
         tools:ignore="MissingPrefix" />
 

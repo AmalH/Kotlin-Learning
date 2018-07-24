@@ -86,14 +86,13 @@ public class ShareFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 orderby=i+1;
-                //load forum
                 if(Configuration.isOnline(getContext()))
                 {
                     loadForumQuestions(0,((SearchView)getActivity().findViewById(R.id.searchViewShare)).getQuery().toString());
                 }
                 else
                     forumQustsRecyclerView.setVisibility(View.GONE);
-                getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
+               // getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -196,20 +195,6 @@ public class ShareFragment extends Fragment {
     }
 
 
-   /* @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            if(Configuration.isOnline(getContext()) && forumQustsRecyclerView.getChildCount()==0) {
-                Log.d("2222 ------visible---","-----");
-                nbOfLoadedQuestions = 0;
-                getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.GONE);
-                loadForumQuestions(0, ((SearchView)getActivity().findViewById(R.id.searchViewShare)).getQuery().toString());
-
-            }
-        }
-    }*/
-
     private synchronized void loadForumQuestions(final int start_at, String query){
         if(start_at==0)
         {
@@ -243,7 +228,7 @@ public class ShareFragment extends Fragment {
                             }
                             /** if there is data to display **/
                             if(showLoadedData) {
-                                getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.GONE);
+                               // getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.GONE);
                                 if(nbOfLoadedQuestions ==0){
                                     adapter=new ShareListAdapter(forumQuestionsList,getContext());
                                     forumQustsRecyclerView.setAdapter(adapter);
@@ -261,13 +246,13 @@ public class ShareFragment extends Fragment {
                                     nbOfLoadedQuestions +=10;
                             }
                             else{
-                                getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
+                               // getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
                                 forumQustsRecyclerView.setVisibility(View.GONE);
                             }
 
                             /** if there is no data to display **/
                             if(forumQuestionsList.size()==0){
-                                getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
+                                //getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
                                 forumQustsRecyclerView.setVisibility(View.GONE);
                             }
                             ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setRefreshing(false);
@@ -276,7 +261,7 @@ public class ShareFragment extends Fragment {
 
                         @Override
                         public void onError(VolleyError result) {
-                            getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
+                            //getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
                             forumQustsRecyclerView.setVisibility(View.GONE);
                             ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setRefreshing(false);
                             loading=false;
@@ -284,7 +269,7 @@ public class ShareFragment extends Fragment {
 
                         @Override
                         public void onWrong(JSONObject result) {
-                            getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
+                          //  getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
                             forumQustsRecyclerView.setVisibility(View.GONE);
                             ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setRefreshing(false);
                             loading=false;

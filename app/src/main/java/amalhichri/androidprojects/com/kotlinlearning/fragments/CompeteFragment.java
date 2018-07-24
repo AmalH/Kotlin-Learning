@@ -172,7 +172,7 @@ public class CompeteFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(dy > 0) //check for scroll down
+                if(dy > 0)
                 {
                     visibleItemCount = layoutCompetition.getChildCount();
                     totalItemCount = layoutCompetition.getItemCount();
@@ -184,9 +184,9 @@ public class CompeteFragment extends Fragment {
                         {
                             loading=true;
                             if(competitionAdapter!=null)
-                                //Log.d("loaded",loaded_length+"by search");
+
                                 LoadList();
-                            // //Log.d("loading","loading_more");
+
                         }
                     }
                 }
@@ -312,32 +312,29 @@ public class CompeteFragment extends Fragment {
                                 Toast.makeText(getContext(),"Server error while loading competitions , please report", Toast.LENGTH_SHORT).show();
                                 goShow=false;
                             }
-                           // Log.d("loaded",result+"");Log.d("loaded",""+loadedLengthAnswers);
-                            //Log.d("loaded",array.toString());
+
                             if(array.length()==0) goShow=false;
-                            //Log.d("loaded",goShow+"");
+
                             for(int i = 0 ; i < array.length() ; i++){
                                 try {
                                     /** parse forum and add it to the arraylist**/
-                                    //Log.d("compet",CompetitionsServices.jsonToCompetitionAnswer(array.getJSONObject(i)).toString());
-                                    answersList.add(CompetitionsServices.jsonToCompetitionAnswer(array.getJSONObject(i)));
+
+                                    answersList.add(CompetitionsServices.jsonToAnswer(array.getJSONObject(i)));
                                 } catch (JSONException e) {
                                     Toast.makeText(getContext(),"Application error while loading competition , please report", Toast.LENGTH_SHORT).show();
                                     goShow=false;
                                 }
                             }
-                            //Log.d("loaded",goShow+"");
+
                             /** All the work will be here **/
                             if(goShow) {
                                 competeAnswerSwipeRefresh.setVisibility(View.VISIBLE);
                                 competeSwipeRefresh.setVisibility(View.GONE);
                                 if(loadedLengthAnswers ==0){
-                                    //Log.d("loaded",answersList.toString());
                                     answersAdapter=new CompetitionAnswerAdapter(answersList,getContext());
                                     answersRecyclerView.setAdapter(answersAdapter);
                                 }
                                 else{
-                                    //Log.d("loaded",loadedLengthCompetition+"old load : "+loadedLengthCompetition+"     "+forumRececyclerView+"   "+adapter);
                                     if(answersAdapter==null){
                                         answersAdapter=new CompetitionAnswerAdapter(answersList,getContext());
                                         answersRecyclerView.setAdapter(answersAdapter);
@@ -345,7 +342,8 @@ public class CompeteFragment extends Fragment {
                                     else
                                         answersAdapter.notifyDataSetChanged();
                                 }
-                                //addCalculated
+
+
                                 if(loadedLengthAnswers ==0) loadedLengthAnswers +=array.length();
                                 else
                                     loadedLengthAnswers +=10;
