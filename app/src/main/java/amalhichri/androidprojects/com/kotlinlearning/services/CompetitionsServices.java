@@ -290,7 +290,7 @@ public class CompetitionsServices {
         m.put("id", id);
         m.put("title", competition.getTitle());
         m.put("content", competition.getContent());
-        m.put("level", competition.getLevel()+"");
+        m.put("level", "1");
         final JSONObject jsonBody = new JSONObject(m);
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest

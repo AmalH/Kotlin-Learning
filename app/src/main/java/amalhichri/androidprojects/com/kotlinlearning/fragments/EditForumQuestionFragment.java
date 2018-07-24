@@ -144,12 +144,11 @@ public class EditForumQuestionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 new AlertDialog.Builder(getActivity())
-                        .setTitle("Delete")
-                        .setMessage("Do you want to Delete")
-                        .setIcon(R.drawable.ic_delete_post)
-                        .setPositiveButton("Delete now", new DialogInterface.OnClickListener() {
+                        .setTitle("Remove post")
+                        .setMessage("Are you sure you want to remove this post ?")
+                        .setPositiveButton("Remove", new DialogInterface.OnClickListener() {
                             public void onClick(final DialogInterface dialog, int whichButton) {
-                                progressDialog.setMessage("Deleting");
+                                progressDialog.setMessage("Removing...");
                                 progressDialog.show();
                                 ForumsServices.getInstance().deleteForumPost(Statics.auth.getCurrentUser().getUid(), getContext(), question.getId(), new ServerCallbacks() {
                                     @Override
@@ -158,7 +157,7 @@ public class EditForumQuestionFragment extends Fragment {
                                         if(progressDialog.isShowing())
                                             progressDialog.dismiss();
                                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.root_share_fragment,new ShareFragment()).commit();
-                                        Toast.makeText(getActivity(),"Deleted", Toast.LENGTH_SHORT).show();
+                                       // Toast.makeText(getActivity(),"Deleted", Toast.LENGTH_SHORT).show();
                                     }
                                     @Override
                                     public void onError(VolleyError result) {

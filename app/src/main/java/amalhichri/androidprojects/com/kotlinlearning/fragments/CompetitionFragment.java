@@ -84,7 +84,7 @@ public class CompetitionFragment extends Fragment {
 
                                 @Override
                                 public void onError(VolleyError result) {
-                                    Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(),result.getClass().getName(), Toast.LENGTH_SHORT).show();
                                     if (progressDialog.isShowing()) {
                                         progressDialog.dismiss();
                                     }
@@ -92,7 +92,7 @@ public class CompetitionFragment extends Fragment {
 
                                 @Override
                                 public void onWrong(JSONObject result) {
-                                    Toast.makeText(getContext(), "Wrong", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), result.toString(), Toast.LENGTH_SHORT).show();
                                     if (progressDialog.isShowing()) {
                                         progressDialog.dismiss();
                                     }

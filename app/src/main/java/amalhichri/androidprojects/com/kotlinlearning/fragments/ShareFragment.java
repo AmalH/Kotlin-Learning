@@ -249,7 +249,6 @@ public class ShareFragment extends Fragment {
 
                             /** if there is no data to display **/
                             if(forumQuestionsList.size()==0){
-                                //getActivity().findViewById(R.id.noConnectionTextView).setVisibility(View.VISIBLE);
                                 forumQustsRecyclerView.setVisibility(View.GONE);
                             }
                             ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setRefreshing(false);

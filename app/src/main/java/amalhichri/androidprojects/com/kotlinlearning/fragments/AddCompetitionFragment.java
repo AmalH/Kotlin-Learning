@@ -56,12 +56,11 @@ public class AddCompetitionFragment extends Fragment {
                         c.setContent(((EditText)getActivity().findViewById(R.id.competeAddContent)).getText().toString());
 
                         new AlertDialog.Builder(getActivity())
-                                .setTitle("Post problemset")
+                                .setTitle("New contest")
                                 .setMessage("this action could not be undone")
-                                .setIcon(R.drawable.ic_action_add_forum)
-                                .setPositiveButton("Confirm adding", new DialogInterface.OnClickListener() {
+                                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                                     public void onClick(final DialogInterface dialog, int whichButton) {
-                                        progressDialog.setMessage("Posting...");
+                                        progressDialog.setMessage("Adding...");
                                         progressDialog.show();
                                         CompetitionsServices.getInstance().addCompetition(getContext(),c, Statics.auth.getCurrentUser().getUid(), new ServerCallbacks() {
                                             @Override
@@ -89,7 +88,7 @@ public class AddCompetitionFragment extends Fragment {
                                     }
 
                                 })
-                                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
 
                                         dialog.dismiss();
