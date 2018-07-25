@@ -21,7 +21,7 @@
         android:layout_marginLeft="3.5dp"
         android:layout_toRightOf="@id/forum_postedBy_img"
         android:text="How to build android app in 1 month"
-        android:textSize="15dp"
+        android:textSize="14dp"
         android:textStyle="bold"
         android:textColor="#212121"
         fontPath="fonts/open_sans_regular.ttf"

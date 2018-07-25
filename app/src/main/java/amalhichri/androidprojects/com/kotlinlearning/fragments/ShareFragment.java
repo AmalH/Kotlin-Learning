@@ -68,6 +68,8 @@ public class ShareFragment extends Fragment {
         adapter = new ShareListAdapter(new ArrayList<ForumQuestion>(),getActivity());
         forumQustsRecyclerView.setAdapter(adapter);
 
+        /** setting spinner ui **/
+        (getActivity().findViewById(R.id.orderbySpinnerShare)).setPadding(0, 0,0,0);
 
        /** adding a forum question **/
         getActivity().findViewById(R.id.addFormQuestionBtn).setOnClickListener(new View.OnClickListener() {

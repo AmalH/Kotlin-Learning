@@ -68,7 +68,6 @@ public class AddCompetitionFragment extends Fragment {
                                                 dialog.dismiss();
                                                 if(progressDialog.isShowing())
                                                     progressDialog.dismiss();
-
                                                 getActivity().getSupportFragmentManager().popBackStack();
                                                 Toast.makeText(getActivity(),"Posted", Toast.LENGTH_SHORT).show();
                                             }
@@ -90,17 +89,16 @@ public class AddCompetitionFragment extends Fragment {
                                 })
                                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-
                                         dialog.dismiss();
                                     }
                                 })
                                 .show();
 
                     }
-                    else Toast.makeText(getContext(),"Empty fields !", Toast.LENGTH_LONG).show();
+                    else Toast.makeText(getContext(),"Please fill all fields.", Toast.LENGTH_LONG).show();
                 }
                 else
-                    Toast.makeText(getContext(),"Empty fields !", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),"Please fill all fields.", Toast.LENGTH_LONG).show();
 
 
             }

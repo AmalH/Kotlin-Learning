@@ -6,74 +6,72 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:weightSum="100"
                 android:layout_margin="8dp"
-                >
-                <android.support.v7.widget.CardView
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:weightSum="100">
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    card_view:cardCornerRadius="2dp"
                     android:layout_marginBottom="10dp"
+                    card_view:cardCornerRadius="2dp"
                     card_view:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="100"
                         android:layout_marginLeft="4dp"
                         android:layout_marginRight="4dp"
-                        >
+                        android:orientation="horizontal"
+                        android:weightSum="100">
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dp"
+                            android:layout_marginLeft="2dp"
                             android:layout_weight="98"
                             android:orientation="vertical"
-                            android:layout_marginLeft="2dp"
-                            android:layout_marginBottom="3dp"
-                            android:paddingLeft="5dp"
-                            >
+                            android:paddingLeft="5dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_marginTop="5dp"
                                 android:layout_marginBottom="5dp"
-                                >
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal">
+
                                 <TextView
                                     android:id="@+id/competitionSubject"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:text="subject..."
-                                    android:textSize="15dp"
                                     android:layout_weight="75"
-                                    />
+                                    android:text="subject..."
+                                    android:textSize="15dp" />
+
                                 <ImageView
                                     android:layout_width="20dp"
                                     android:layout_height="20dp"
-                                    android:src="@drawable/ic_briefcase"
-                                    android:layout_gravity="center"/>
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_briefcase" />
+
                                 <TextView
                                     android:id="@+id/competeSolvedTxt"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="13dp"
-                                    android:text="0"
                                     android:layout_gravity="center"
-                                    tools:ignore="MissingPrefix"
-                                    />
+                                    android:text="0"
+                                    android:textSize="13dp"
+                                    tools:ignore="MissingPrefix" />
 
                             </LinearLayout>
 
@@ -81,103 +79,98 @@
                                 android:id="@+id/competitionContent"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="content"
                                 android:layout_marginBottom="5dp"
-                                />
+                                android:text="content" />
 
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_gravity="end|bottom">
+                                android:layout_gravity="end|bottom"
+                                android:orientation="horizontal">
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    >
+                                    android:orientation="vertical">
+
                                     <TextView
                                         android:id="@+id/competitionUsername"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:layout_gravity="end"
                                         android:text="name"
                                         android:textSize="12dp"
-                                        android:layout_gravity="end"
-                                        tools:ignore="MissingPrefix"
-                                        />
+                                        tools:ignore="MissingPrefix" />
+
                                     <TextView
                                         android:id="@+id/competitionCreated"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:layout_gravity="end"
                                         android:text="created"
                                         android:textSize="11dp"
-                                        android:layout_gravity="end"
-                                        tools:ignore="MissingPrefix"
-                                        />
+                                        tools:ignore="MissingPrefix" />
                                 </LinearLayout>
+
                                 <de.hdodenhof.circleimageview.CircleImageView
                                     android:id="@+id/competitionUserPicture"
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"
-                                    android:layout_marginLeft="5dp"
-                                    />
+                                    android:layout_marginLeft="5dp" />
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
 
                 </android.support.v7.widget.CardView>
 
-                <android.support.v7.widget.CardView
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/competitionAnswer"
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     card_view:cardCornerRadius="2dp"
-                    card_view:cardUseCompatPadding="true"
-                    >
+                    card_view:cardUseCompatPadding="true">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        >
+                        android:orientation="vertical">
 
 
                         <LinearLayout
                             android:id="@+id/competitionAnswered"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            >
+                            android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Resolved ! "
                                 android:layout_margin="10dp"
-                                />
+                                android:text="Resolved ! " />
+
                             <com.rey.material.widget.ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
+                                android:layout_marginLeft="110dp"
                                 android:layout_marginTop="10dp"
-                                android:layout_marginLeft="140dp"
-                                android:src="@drawable/ic_calendar"
-                                />
+                                android:src="@drawable/ic_calendar" />
+
                             <TextView
                                 android:id="@+id/competitionAnswerDate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
+                                android:text="date" />
 
-                                android:text="date"
-                                />
                             <ImageButton
                                 android:id="@+id/competitionEditAnswer"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_edit"
-                                android:background="@color/float_transparent"
                                 android:layout_marginTop="8dp"
-                                />
+                                android:background="@color/float_transparent"
+                                android:src="@drawable/ic_edit"
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
@@ -185,99 +178,97 @@
                             android:id="@+id/competitionAnswerCodeView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            >
-                        </io.github.kbiakov.codeview.CodeView>
+                            android:layout_margin="10dp"></io.github.kbiakov.codeview.CodeView>
+
                         <EditText
                             android:id="@+id/compete_add_content"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_margin="10dp"
                             android:ems="10"
                             android:inputType="textMultiLine"
-                            android:layout_margin="10dp"
-                            android:visibility="gone"
-                            />
+                            android:visibility="gone" />
+
                         <Button
                             android:id="@+id/competitionAddAnswer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Save"
                             android:layout_gravity="end"
-                            android:visibility="gone"
                             android:background="@color/float_transparent"
-                            />
+                            android:text="Save"
+                            android:visibility="gone" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
+                    android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Arguments "
                         android:layout_margin="4dp"
-                        android:textSize="13dp"
-                        />
+                        android:text="Arguments "
+                        android:textSize="13dp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="(Arguments must be separated with spaces)"
                         android:layout_margin="3dp"
+                        android:text="(Arguments must be separated with spaces)"
 
                         android:textColor="@color/liv_gray_active_icon"
-                        android:textSize="11dp"
-                        />
+                        android:textSize="11dp" />
                 </LinearLayout>
 
                 <EditText
                     android:id="@+id/competitionArgs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint=" Args..."
                     android:layout_margin="4dp"
-                    android:textSize="14sp"
-                    android:padding="10dp"
                     android:background="@color/paperBackground"
-                    />
+                    android:hint=" Args..."
+                    android:padding="10dp"
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:id="@+id/competitionRun"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_gravity="end"
+                    android:layout_marginRight="5dp"
                     android:gravity="center_vertical"
-                    android:layout_marginRight="5dp">
+                    android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Run"
-                        android:textSize="7pt"
-                        android:textStyle="bold"
                         android:layout_marginRight="3dp"
-                        android:paddingTop="10dp"/>
+                        android:text="Run"
+                        android:textAllCaps="true"
+                        android:textSize="7pt"
+                        android:textStyle="bold" />
+
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_run"/>
+                        android:src="@drawable/ic_run" />
                 </LinearLayout>
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/competitionResponse"
-                android:gravity="left"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:padding="10dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="6dp"
-                android:editable="false"
-                android:textSize="14sp"
                 android:background="@color/paperBackground"
-                android:visibility="gone"
-                />
+                android:editable="false"
+                android:gravity="left"
+                android:padding="10dp"
+                android:textSize="14sp"
+                android:visibility="gone" />
         </LinearLayout>
 
 

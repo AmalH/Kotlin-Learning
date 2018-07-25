@@ -9,5 +9,4 @@
     android:textColor="@color/baseColor1"
     fontPath="fonts/open_sans_regular.ttf"
     tools:ignore="MissingPrefix"
-    android:padding="7dip"
     />

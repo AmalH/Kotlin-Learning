@@ -144,7 +144,7 @@ public class EditForumQuestionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 new AlertDialog.Builder(getActivity())
-                        .setTitle("Remove post")
+                        .setTitle("Remove post ?")
                         .setMessage("Are you sure you want to remove this post ?")
                         .setPositiveButton("Remove", new DialogInterface.OnClickListener() {
                             public void onClick(final DialogInterface dialog, int whichButton) {

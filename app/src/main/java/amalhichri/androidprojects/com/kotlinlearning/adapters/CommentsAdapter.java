@@ -38,16 +38,16 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
     private Context context;
     private ProgressDialog progressDialog;
 
-    public CommentsAdapter(ArrayList<ForumAnswer> forum_list, Context context){
-        this.forumAnswersList=forum_list;
-        this.context=context;
+    public CommentsAdapter(ArrayList<ForumAnswer> forum_list, Context context) {
+        this.forumAnswersList = forum_list;
+        this.context = context;
     }
 
     @Override
     public CommentsAdapter.CommentItem_ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.share_comment_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.share_comment_item, parent, false);
         CommentsAdapter.CommentItem_ViewHolder shareItem_viewHolder = new CommentsAdapter.CommentItem_ViewHolder(view);
-        progressDialog=new ProgressDialog(context);
+        progressDialog = new ProgressDialog(context);
         return shareItem_viewHolder;
     }
 
@@ -59,24 +59,22 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         holder.rating.setText(forumAnswersList.get(position).getRatingString());
         holder.createed.setText(forumAnswersList.get(position).getCreated_string());
 
-        if(forumAnswersList.get(position).getUserpicture()!=null)
+        if (forumAnswersList.get(position).getUserpicture() != null)
             Picasso.with(context).load(Uri.parse(forumAnswersList.get(position).getUserpicture())).into(holder.user_picture);
-        else
-        {
-            String item=forumAnswersList.get(position).getUsername();
+        else {
+            String item = forumAnswersList.get(position).getUsername();
         }
 
-        if((Statics.auth.getCurrentUser().getUid()).equals(forumAnswersList.get(position).getUserid())){
+        if ((Statics.auth.getCurrentUser().getUid()).equals(forumAnswersList.get(position).getUserid())) {
             holder.delete.setVisibility(View.VISIBLE);
         }
 
         //view content
-      /**  holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AppCompatActivity activity=(AppCompatActivity) context;
-                Toast.makeText(context,forumAnswersList.get(position).toString(),Toast.LENGTH_LONG).show();
-            }
+        /**  holder.itemView.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View view) {
+        AppCompatActivity activity=(AppCompatActivity) context;
+        Toast.makeText(context,forumAnswersList.get(position).toString(),Toast.LENGTH_LONG).show();
+        }
         });*/
 
         holder.upvote.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +86,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
                             public void onSuccess(JSONObject result) {
                                 try {
                                     holder.rating.setText(
-                                            (result.getInt("resp")>0?"+"+result.getInt("resp"):result.getInt("resp")+"")
+                                            (result.getInt("resp") > 0 ? "+" + result.getInt("resp") : result.getInt("resp") + "")
                                     );
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -97,14 +95,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
                             @Override
                             public void onError(VolleyError result) {
-                                Toast.makeText(context,"Server Problem", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Server Problem", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onWrong(JSONObject result) {
                                 try {
                                     holder.rating.setText(
-                                            (result.getInt("resp")>0?"+"+result.getInt("resp"):result.getInt("resp")+"")
+                                            (result.getInt("resp") > 0 ? "+" + result.getInt("resp") : result.getInt("resp") + "")
                                     );
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -125,7 +123,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
                             public void onSuccess(JSONObject result) {
                                 try {
                                     holder.rating.setText(
-                                            (result.getInt("resp")>0?"+"+result.getInt("resp"):result.getInt("resp")+"")
+                                            (result.getInt("resp") > 0 ? "+" + result.getInt("resp") : result.getInt("resp") + "")
                                     );
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -134,14 +132,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
                             @Override
                             public void onError(VolleyError result) {
-                                Toast.makeText(context,"Server Problem", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Server Problem", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onWrong(JSONObject result) {
                                 try {
                                     holder.rating.setText(
-                                            (result.getInt("resp")>0?"+"+result.getInt("resp"):result.getInt("resp")+"")
+                                            (result.getInt("resp") > 0 ? "+" + result.getInt("resp") : result.getInt("resp") + "")
                                     );
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -164,28 +162,28 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
                                 ForumsServices.getInstance().deleteComment(
                                         Statics.auth.getCurrentUser().getUid(), context, forumAnswersList.get(position).getId(), new ServerCallbacks() {
-                                    @Override
-                                    public void onSuccess(JSONObject result) {
-                                        if(progressDialog.isShowing())
-                                        progressDialog.dismiss();
-                                        forumAnswersList.remove(position);
-                                        notifyDataSetChanged();
-                                    }
+                                            @Override
+                                            public void onSuccess(JSONObject result) {
+                                                if (progressDialog.isShowing())
+                                                    progressDialog.dismiss();
+                                                forumAnswersList.remove(position);
+                                                notifyDataSetChanged();
+                                            }
 
-                                    @Override
-                                    public void onError(VolleyError result) {
-                                        if(progressDialog.isShowing())
-                                        progressDialog.dismiss();
-                                        Toast.makeText(context,result.getClass().getName(),Toast.LENGTH_SHORT).show();
-                                    }
+                                            @Override
+                                            public void onError(VolleyError result) {
+                                                if (progressDialog.isShowing())
+                                                    progressDialog.dismiss();
+                                                Toast.makeText(context, result.getClass().getName(), Toast.LENGTH_SHORT).show();
+                                            }
 
-                                    @Override
-                                    public void onWrong(JSONObject result) {
-                                        if(progressDialog.isShowing())
-                                        progressDialog.dismiss();
-                                        Toast.makeText(context,result.toString(),Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                                            @Override
+                                            public void onWrong(JSONObject result) {
+                                                if (progressDialog.isShowing())
+                                                    progressDialog.dismiss();
+                                                Toast.makeText(context, result.toString(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                             }
 
                         })
@@ -205,21 +203,21 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         return forumAnswersList.size();
     }
 
-    public static class CommentItem_ViewHolder extends RecyclerView.ViewHolder  {
+    public static class CommentItem_ViewHolder extends RecyclerView.ViewHolder {
         CircleImageView user_picture;
-        TextView content,user_name,rating,createed;
-        ImageButton upvote,downvote,delete;
+        TextView content, user_name, rating, createed;
+        ImageButton upvote, downvote, delete;
 
         public CommentItem_ViewHolder(View itemView) {
             super(itemView);
-            user_picture= itemView.findViewById(R.id.commentPostedByImg);
-            content= itemView.findViewById(R.id.commentContent);
-            user_name=itemView.findViewById(R.id.commentPostedByName);
-            rating=itemView.findViewById(R.id.commentRating);
-            createed=itemView.findViewById(R.id.commentCreated);
-            upvote=itemView.findViewById(R.id.commentUpVote);
-            downvote=itemView.findViewById(R.id.commentDownVote);
-            delete=itemView.findViewById(R.id.deleteCommentBtn);
+            user_picture = itemView.findViewById(R.id.commentPostedByImg);
+            content = itemView.findViewById(R.id.commentContent);
+            user_name = itemView.findViewById(R.id.commentPostedByName);
+            rating = itemView.findViewById(R.id.commentRating);
+            createed = itemView.findViewById(R.id.commentCreated);
+            upvote = itemView.findViewById(R.id.commentUpVote);
+            downvote = itemView.findViewById(R.id.commentDownVote);
+            delete = itemView.findViewById(R.id.deleteCommentBtn);
         }
 
     }
