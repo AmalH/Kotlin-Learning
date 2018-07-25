@@ -8,7 +8,6 @@ You can fork or clone this repo to implement similar or the following :
 
 * ### User registration with firebase + Facebook and Linkedin APIs
 <p align="center">
-<img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/userRegistration1.gif"/>
  <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/userRegistration2.png"/>
 </p>
 
@@ -49,8 +48,5 @@ You can fork or clone this repo to implement similar or the following :
 <p align="center">
 <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/ui4.png"/>
 <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/ui5.png"/>
-</p>
-<p align="center">
-<img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/ui6.png"/>
 <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/ui7.png"/>
 </p>
