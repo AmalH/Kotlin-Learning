@@ -12,14 +12,6 @@ You can fork or clone this repo to implement similar or the following :
  <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/userRegistration2.png"/>
 </p>
 
-* ### Various ui components / libraries usage 
-  Expandit: [AmalH/expandit](https://github.com/AmalH/expandit) / Paralloid: [AmalH/Paralloid](https://github.com/AmalH/Paralloid) / Calligraphy: [chrisjenx/Calligraphy](https://github.com/InflationX/Calligraphy) / EditTag: [qiugang/EditTag](https://github.com/qiugang/EditTag) / more..
-<p align="center">
-<img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/ui1.png"/>
-<img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/ui2.png"/>
-<img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/ui3.png"/>
-</p>
-
 * ### Managing fragments and working with listviews 
   Expandit: [AmalH/expandit](https://github.com/AmalH/expandit) / Paralloid: [AmalH/Paralloid](https://github.com/AmalH/Paralloid) / Calligraphy: [chrisjenx/Calligraphy](https://github.com/InflationX/Calligraphy) / EditTag: [qiugang/EditTag](https://github.com/qiugang/EditTag) / more..
 <p align="center">
@@ -36,7 +28,7 @@ You can fork or clone this repo to implement similar or the following :
 <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/restapisNetwokcalls3.png"/>
 </p>
 
-* ### Using (kotlin server for code compilation ) more on network calls ...
+* ### Various ui components / libraries usage 
   Expandit: [AmalH/expandit](https://github.com/AmalH/expandit) / Paralloid: [AmalH/Paralloid](https://github.com/AmalH/Paralloid) / Calligraphy: [chrisjenx/Calligraphy](https://github.com/InflationX/Calligraphy) / EditTag: [qiugang/EditTag](https://github.com/qiugang/EditTag) / more..
 <p align="center">
 <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/ui1.png"/>
