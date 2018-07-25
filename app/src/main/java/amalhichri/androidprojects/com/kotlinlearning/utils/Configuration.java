@@ -10,7 +10,7 @@ import android.net.NetworkInfo;
 
 public class Configuration {
 
-    public final static String IP="http://192.168.43.166/ikotlinBackEnd/web/";
+    public final static String IP="http://192.168.1.6/ikotlinBackEnd/web/";
 
     public static boolean isOnline(Context context) {
         ConnectivityManager connectivityManager

@@ -7,9 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -26,27 +25,18 @@ import me.originqiu.library.EditTag;
 
 public class AddForumFragment extends Fragment {
 
-    TextView subject;
-    TextView content;
-    EditTag tags;
-    Button submitButton;
-    ToggleButton toggleCode;
-    TextView code_content;
-    TextView static_code_contetnt;
-
-    ProgressDialog progressDialog;
-    boolean add_code_to_forum;
-    boolean isCodeEmpty;
+    private ProgressDialog progressDialog;
+    private boolean add_code_to_forum;
+    private boolean isCodeEmpty;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        add_code_to_forum=false;
-        isCodeEmpty=false;
-//        FirebaseAuth.getInstance().getCurrentUser().reload();
-        progressDialog=new ProgressDialog(getActivity());
-        // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_add_forum, container, false);
+        add_code_to_forum = false;
+        isCodeEmpty = false;
+        //FirebaseAuth.getInstance().getCurrentUser().reload();
+        progressDialog = new ProgressDialog(getActivity());
+        View v = inflater.inflate(R.layout.fragment_add_forum, container, false);
         return v;
     }
 
@@ -54,80 +44,62 @@ public class AddForumFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        subject=getActivity().findViewById(R.id.add_forum_subject);
-        content=getActivity().findViewById(R.id.addForumContent);
-        tags=getActivity().findViewById(R.id.addQuestionTagsInput);
-        submitButton=getActivity().findViewById(R.id.addForumSubmit);
-        toggleCode=getActivity().findViewById(R.id.forumAddTooggleCode);
-        code_content=getActivity().findViewById(R.id.forumAddCodeEditor);
-        static_code_contetnt=getActivity().findViewById(R.id.forumAddCodeStatic);
-
-        submitButton.setOnClickListener(new View.OnClickListener() {
+        getActivity().findViewById(R.id.addForumSubmit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ForumQuestion f= new ForumQuestion();
-                f.setSubject(subject.getText().toString());
-                f.setContent(content.getText().toString());
+                ForumQuestion f = new ForumQuestion();
+                f.setSubject(((EditText) getActivity().findViewById(R.id.add_forum_subject)).getText().toString());
+                f.setContent(((EditText) getActivity().findViewById(R.id.addForumContent)).getText().toString());
                 f.setTags("");
-                for(String s : tags.getTagList()){
-                    f.setTags(f.getTags()+s+",");
+                for (String s : ((EditTag) getActivity().findViewById(R.id.addQuestionTagsInput)).getTagList()) {
+                    f.setTags(f.getTags() + s + ",");
                 }
                 progressDialog.setMessage("Posting, please wait.");
                 progressDialog.show();
-                //adding
-                if(add_code_to_forum){
-                    String code=code_content.getText().toString().replaceAll("[\r\n]+", "\n");
-                    if(!code.trim().isEmpty()){
+                if (add_code_to_forum) {
+                    String code = ((EditText) getActivity().findViewById(R.id.forumAddCodeEditor)).getText().toString().replaceAll("[\r\n]+", "\n");
+                    if (!code.trim().isEmpty()) {
                         f.setCode(code);
-                        isCodeEmpty=false;
-                    }
-                    else {
-                        Toast.makeText(getContext(),"Empty code", Toast.LENGTH_SHORT).show();
-                        isCodeEmpty=true;
+                        isCodeEmpty = false;
+                    } else {
+                        Toast.makeText(getContext(), "Empty code", Toast.LENGTH_SHORT).show();
+                        isCodeEmpty = true;
                     }
                 }
 
-               if(!isCodeEmpty && !f.getContent().isEmpty() && !f.getTags().isEmpty() && !f.getSubject().isEmpty()){
-                   // if(Configuration.isOnline(getContext()) && UsersServices.getInstance().is_verified(getContext()))
-                        ForumsServices.getInstance().addForumPost(getContext(), f, Statics.auth.getCurrentUser().getUid(), new ServerCallbacks() {
-                            @Override
-                            public void onSuccess(JSONObject result) {
-                                Toast.makeText(getContext(),"Submitted...", Toast.LENGTH_SHORT).show();
-                                getFragmentManager().popBackStack();
-                                if (progressDialog.isShowing()) {
-                                    progressDialog.dismiss();
-                                }
+                if (!isCodeEmpty && !f.getContent().isEmpty() && !f.getTags().isEmpty() && !f.getSubject().isEmpty()) {
+                    ForumsServices.getInstance().addForumPost(getContext(), f, Statics.auth.getCurrentUser().getUid(), new ServerCallbacks() {
+                        @Override
+                        public void onSuccess(JSONObject result) {
+                            Toast.makeText(getContext(), "Submitted...", Toast.LENGTH_SHORT).show();
+                            getFragmentManager().popBackStack();
+                            if (progressDialog.isShowing()) {
+                                progressDialog.dismiss();
                             }
-
-                            @Override
-                            public void onError(VolleyError result) {
-                                Toast.makeText(getContext(),"Server problem...", Toast.LENGTH_SHORT).show();
-                                if (progressDialog.isShowing()) {
-                                    progressDialog.dismiss();
-                                }
-                            }
-
-                            @Override
-                            public void onWrong(JSONObject result) {
-                                Toast.makeText(getContext(),"Oups...", Toast.LENGTH_SHORT).show();
-                                if (progressDialog.isShowing()) {
-                                    progressDialog.dismiss();
-                                }
-                            }
-                        });
-                    /*else{
-                        if (progressDialog.isShowing()) {
-                            progressDialog.dismiss();
                         }
-                        if(!Configuration.isOnline(getContext())) Toast.makeText(getContext(),"No connection", Toast.LENGTH_SHORT).show();
-                    }*/
 
-                }
-                else {
+                        @Override
+                        public void onError(VolleyError result) {
+                            Toast.makeText(getContext(), "Server problem...", Toast.LENGTH_SHORT).show();
+                            if (progressDialog.isShowing()) {
+                                progressDialog.dismiss();
+                            }
+                        }
+
+                        @Override
+                        public void onWrong(JSONObject result) {
+                            Toast.makeText(getContext(), "Oups...", Toast.LENGTH_SHORT).show();
+                            if (progressDialog.isShowing()) {
+                                progressDialog.dismiss();
+                            }
+                        }
+                    });
+
+                } else {
                     if (progressDialog.isShowing()) {
                         progressDialog.dismiss();
                     }
-                    Toast.makeText(getContext(),"Empty fields", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Empty fields", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -136,18 +108,17 @@ public class AddForumFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        toggleCode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        ((ToggleButton) getActivity().findViewById(R.id.forumAddTooggleCode)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean ischecked) {
-                if(ischecked){
-                    add_code_to_forum=true;
-                    code_content.setVisibility(View.VISIBLE);
-                    static_code_contetnt.setVisibility(View.VISIBLE);
-                }
-                else {
-                    add_code_to_forum=false;
-                    code_content.setVisibility(View.GONE);
-                    static_code_contetnt.setVisibility(View.GONE);
+                if (ischecked) {
+                    add_code_to_forum = true;
+                    (getActivity().findViewById(R.id.forumAddCodeEditor)).setVisibility(View.VISIBLE);
+                    getActivity().findViewById(R.id.forumAddCodeStatic).setVisibility(View.VISIBLE);
+                } else {
+                    add_code_to_forum = false;
+                    (getActivity().findViewById(R.id.forumAddCodeEditor)).setVisibility(View.GONE);
+                    getActivity().findViewById(R.id.forumAddCodeStatic).setVisibility(View.GONE);
                 }
             }
         });

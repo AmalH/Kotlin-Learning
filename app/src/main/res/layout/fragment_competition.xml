@@ -22,7 +22,7 @@
                     xmlns:card_view="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    card_view:cardCornerRadius="4dp"
+                    card_view:cardCornerRadius="2dp"
                     android:layout_marginBottom="10dp"
                     card_view:cardUseCompatPadding="true">
 
@@ -42,14 +42,14 @@
                             android:orientation="vertical"
                             android:layout_marginLeft="2dp"
                             android:layout_marginBottom="3dp"
+                            android:paddingLeft="5dp"
                             >
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
-                                android:weightSum="100"
-                                android:layout_marginTop="2dp"
+                                android:layout_marginTop="5dp"
                                 android:layout_marginBottom="5dp"
                                 >
                                 <TextView
@@ -133,7 +133,7 @@
                     xmlns:card_view="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    card_view:cardCornerRadius="4dp"
+                    card_view:cardCornerRadius="2dp"
                     card_view:cardUseCompatPadding="true"
                     >
                     <LinearLayout
@@ -152,14 +152,14 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Answered "
+                                android:text="Resolved ! "
                                 android:layout_margin="10dp"
                                 />
                             <com.rey.material.widget.ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_marginTop="10dp"
-                                android:layout_marginLeft="80dp"
+                                android:layout_marginLeft="140dp"
                                 android:src="@drawable/ic_calendar"
                                 />
                             <TextView
@@ -174,9 +174,9 @@
                                 android:id="@+id/competitionEditAnswer"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_action_edit"
+                                android:src="@drawable/ic_edit"
                                 android:background="@color/float_transparent"
-                                android:layout_marginLeft="20dp"
+                                android:layout_marginTop="8dp"
                                 />
 
                         </LinearLayout>
@@ -256,7 +256,8 @@
                         android:text="Run"
                         android:textSize="7pt"
                         android:textStyle="bold"
-                        android:layout_marginRight="3dp"/>
+                        android:layout_marginRight="3dp"
+                        android:paddingTop="10dp"/>
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -8,221 +8,222 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="90">
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/commentsRefreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp">
 
-        <ScrollView
-            android:id="@+id/forumQstnScrollView"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/commentsRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp">
 
-            <LinearLayout
+            <ScrollView
+                android:id="@+id/forumQstnScrollView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:weightSum="100">
-
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#fff"
-                    android:orientation="horizontal"
-                    android:paddingRight="10dp"
+                    android:orientation="vertical"
                     android:weightSum="100">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="5dp"
-                        android:orientation="vertical">
-
-
-                        <LinearLayout
-                            android:id="@+id/upVoteContainer"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp">
-
-                            <ImageView
-                                android:id="@+id/forumQstUpVote"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-                        </LinearLayout>
-
-
-                        <TextView
-                            android:id="@+id/forumQstRatingShow"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:text="0"
-                            android:textStyle="bold" />
-
-                        <LinearLayout
-                            android:id="@+id/downVoteContainer"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp">
-
-                            <ImageView
-                                android:id="@+id/forumQstnDownVote"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-                        </LinearLayout>
-
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginLeft="2dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginTop="5dp"
-                            android:orientation="horizontal"
-                            android:paddingRight="10dp">
-
-                            <TextView
-                                android:id="@+id/forumQstSubject"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="75"
-                                android:text="subject..."
-                                android:textColor="#212121"
-                                android:textSize="15dp" />
-
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_views_share" />
-
-                            <TextView
-                                android:id="@+id/forumQstViews"
-                                fontPath="fonts/graublau_slab.ttf"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:text="0"
-                                android:textSize="13dp"
-                                tools:ignore="MissingPrefix" />
-
-                            <ImageButton
-                                android:id="@+id/forumQstEditBtn"
-                                android:layout_width="25dp"
-                                android:layout_height="29dp"
-                                android:layout_marginLeft="20dp"
-                                android:background="@color/float_transparent"
-                                android:src="@drawable/ic_action_edit"
-                                android:visibility="gone" />
-
-                        </LinearLayout>
-
-
-                        <me.originqiu.library.FlowLayout
-                            android:id="@+id/forumQstTags"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginTop="2dp"
-                            android:orientation="horizontal">
-
-                        </me.originqiu.library.FlowLayout>
-
-                        <TextView
-                            android:id="@+id/forumQstnContent"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:text="currentQuestion" />
-
-                        <io.github.kbiakov.codeview.CodeView
-                            android:id="@+id/codeViewerInQstn"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:layout_marginTop="3dp" />
-
+                        android:background="#fff"
+                        android:orientation="horizontal"
+                        android:paddingRight="10dp"
+                        android:weightSum="100">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="end|bottom"
-                            android:orientation="horizontal">
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="5dp"
+                            android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/forumQstnShowEdited"
+
+                            <LinearLayout
+                                android:id="@+id/upVoteContainer"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="bottom"
-                                android:layout_marginBottom="2dp"
-                                android:layout_marginRight="20dp"
-                                android:text="Edited 2/2/2"
-                                android:textSize="11dp"
-                                android:visibility="gone" />
+                                android:padding="8dp">
+
+                                <ImageView
+                                    android:id="@+id/forumQstUpVote"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+
+
+                            <TextView
+                                android:id="@+id/forumQstRatingShow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:text="0"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:id="@+id/downVoteContainer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="8dp">
+
+                                <ImageView
+                                    android:id="@+id/forumQstnDownVote"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dp"
+                            android:layout_marginLeft="2dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:layout_marginTop="5dp"
+                                android:orientation="horizontal"
+                                android:paddingRight="10dp">
+
+                                <TextView
+                                    android:id="@+id/forumQstSubject"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="75"
+                                    android:text="subject..."
+                                    android:textColor="#212121"
+                                    android:textSize="15dp" />
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_views_share" />
+
+                                <TextView
+                                    android:id="@+id/forumQstViews"
+                                    fontPath="fonts/graublau_slab.ttf"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="0"
+                                    android:textSize="13dp"
+                                    tools:ignore="MissingPrefix" />
+
+                                <ImageButton
+                                    android:id="@+id/forumQstEditBtn"
+                                    android:layout_width="25dp"
+                                    android:layout_height="29dp"
+                                    android:layout_marginLeft="20dp"
+                                    android:background="@color/float_transparent"
+                                    android:src="@drawable/ic_edit"
+                                    android:visibility="gone" />
+
+                            </LinearLayout>
+
+
+                            <me.originqiu.library.FlowLayout
+                                android:id="@+id/forumQstTags"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:layout_marginTop="2dp"
+                                android:orientation="horizontal">
+
+                            </me.originqiu.library.FlowLayout>
+
+                            <TextView
+                                android:id="@+id/forumQstnContent"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:text="currentQuestion" />
+
+                            <io.github.kbiakov.codeview.CodeView
+                                android:id="@+id/codeViewerInQstn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:layout_marginTop="3dp" />
+
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical">
+                                android:layout_gravity="end|bottom"
+                                android:orientation="horizontal">
 
                                 <TextView
-                                    android:id="@+id/forumQstnUsername"
+                                    android:id="@+id/forumQstnShowEdited"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="end"
-                                    android:text="name"
-                                    android:textColor="@color/baseColor1"
-                                    android:textSize="13dp" />
+                                    android:layout_gravity="bottom"
+                                    android:layout_marginBottom="2dp"
+                                    android:layout_marginRight="20dp"
+                                    android:text="Edited 2/2/2"
+                                    android:textSize="11dp"
+                                    android:visibility="gone" />
 
-                                <TextView
-                                    android:id="@+id/forumQstnCreated"
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="end"
-                                    android:text="created"
-                                    android:textSize="12dp"/>
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/forumQstnUsername"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="end"
+                                        android:text="name"
+                                        android:textColor="@color/baseColor1"
+                                        android:textSize="13dp" />
+
+                                    <TextView
+                                        android:id="@+id/forumQstnCreated"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="end"
+                                        android:text="created"
+                                        android:textSize="12dp" />
+                                </LinearLayout>
+
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/forumQuestionUserPic"
+                                    android:layout_width="45dp"
+                                    android:layout_height="45dp"
+                                    android:layout_marginLeft="5dp" />
                             </LinearLayout>
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/forumQuestionUserPic"
-                                android:layout_width="45dp"
-                                android:layout_height="45dp"
-                                android:layout_marginLeft="5dp" />
                         </LinearLayout>
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/commentsNbTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/commentsContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="80"
+                        android:background="#fff"
+                        android:scrollbars="vertical" />
+
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/commentsNbTv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:textStyle="bold"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/commentsContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="80"
-                    android:background="#fff"
-                    android:scrollbars="vertical" />
-
-            </LinearLayout>
-        </ScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+            </ScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 
 
@@ -230,25 +231,26 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingRight="10dp"
-        >
+        android:orientation="horizontal"
+        android:paddingRight="10dp">
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/currentUserPic"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_marginLeft="5dp" />
+
         <EditText
             android:id="@+id/commentToForumContent"
             android:layout_width="0dp"
-            android:layout_weight="50"
             android:layout_height="wrap_content"
-            android:hint="write your comment/answer here"/>
+            android:layout_weight="50"
+            android:hint="write your comment/answer here" />
+
         <ImageView
             android:id="@+id/addCommentBtn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </LinearLayout>

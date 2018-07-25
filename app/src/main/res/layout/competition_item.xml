@@ -1,61 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    card_view:cardCornerRadius="3dp"
+    android:layout_marginBottom="5dp"
+    card_view:cardCornerRadius="2dp"
     card_view:cardUseCompatPadding="true">
 
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp">
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:background="#fff">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/competePostedByImg"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="4dp"
-            android:layout_alignParentTop="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
-            />
+            android:layout_alignParentTop="true"
+            android:layout_margin="4dp" />
 
         <TextView
             android:id="@+id/competePostTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="How to build android app in 1 month"
-            android:layout_toRightOf="@id/competePostedByImg"
             android:layout_marginLeft="5dp"
-            android:textSize="15dp"/>
-        <TextView
-            android:id="@+id/postedbyPassive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/competePostedByName"
-            android:layout_alignStart="@+id/competePostTitle"
-            android:text="Posted by: "
-            android:textSize="11.5dp"
-            android:layout_marginLeft="2dp"/>
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@id/competePostedByImg"
+            android:text="How to build android app in 1 month"
+            android:textColor="#212121"
+            android:textSize="15dp" />
 
         <TextView
             android:id="@+id/competePostedByName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/competePostTitle"
-            android:layout_marginStart="1dp"
-            android:layout_toEndOf="@+id/postedbyPassive"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@id/competePostedByImg"
             android:text="username"
             android:textColor="#696969"
             android:textSize="12dp" />
 
         <LinearLayout
+            android:id="@+id/detailsContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/postedbyPassive"
+            android:layout_below="@+id/competePostedByName"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="4dp"
             android:layout_toRightOf="@id/competePostedByImg"
@@ -73,7 +68,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="3"
-                android:textSize="14dp"/>
+                android:textSize="14dp" />
 
 
             <ImageView
@@ -88,9 +83,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="4 days"
-                android:textSize="10dp"/>
+                android:textSize="10dp" />
 
         </LinearLayout>
 
     </RelativeLayout>
+
 </android.support.v7.widget.CardView>

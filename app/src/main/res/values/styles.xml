@@ -3,15 +3,11 @@
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
         <item name="colorPrimary">@color/baseColor1</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
-        <!--<item name="android:actionOverflowButtonStyle">@style/MyCustomTheme.OverFlow</item>-->
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlActivated">@color/baseColor2</item>
+        <item name="colorControlHighlight">@color/baseColor2</item>
     </style>
 
-  <!--  <style name="MyCustomTheme" parent="Theme.AppCompat.Light">
-        <item name="android:actionOverflowButtonStyle">@style/MyCustomTheme.OverFlow</item>
-    </style>
-    <style name="MyCustomTheme.OverFlow">
-        <item name="android:src">@drawable/ic_main_menu</item>
-    </style>-->
 
     <style name="cursorStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorControlActivated">@color/baseColor2</item>

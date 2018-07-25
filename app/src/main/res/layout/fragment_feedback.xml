@@ -14,8 +14,8 @@
         android:id="@+id/cardView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"
         android:elevation="8dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="0.0px"
@@ -102,8 +102,7 @@
                 app:et_labelTextSize="15dp"
                 app:et_dividerHeight="2dp"
                 android:maxLength="2048"
-                android:hint="Please provide your feedback here"
-                card_view:et_dividerColor="@color/baseColor1" />
+                android:hint="Please provide your feedback here" />
             <TextView
                 android:id="@+id/maxFeedbackText"
                 android:layout_width="wrap_content"
