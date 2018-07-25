@@ -44,15 +44,12 @@ This repo contains clean, well-commented code for many Android utilit. You can f
 </p>
 
 * ### Using (kotlin server for code compilation ) more on network calls ...
-  - Back to the network calls, if you need to compile Kotlin code on your app, this repo will help you ! It is as simple as performing a POST call on kotlinlang.org's services as shown in the second screenshot:
+  - Back to the network calls, if you need to compile Kotlin code on your app, this repo will help you ! It is as simple as performing a POST call on kotlinlang.org's services as shown in [CompetitionServices.java](https://github.com/AmalH/Kotlin-Learning/blob/master/app/src/main/java/amalhichri/androidprojects/com/kotlinlearning/services/CompetitionsServices.java)'s compileCode() .
 <p align="center">
 <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/kotlinlangServer1.png"/>
 <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/kotlinlangServer2.png"/>
 <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/kotlinlangServer3.png"/>
 </p>
-<p align="center">
-<img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/comptServiceCode.png"/>
- </p>
 
 * ### More cool ui components / libraries used 
     - Using webviews to load html/css/js content from in-app assets.
