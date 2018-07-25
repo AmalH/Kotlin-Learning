@@ -8,7 +8,9 @@ You can fork or clone this repo to implement similar or the following :
 
 * ### User registration with firebase + Facebook and Linkedin APIs
 <p align="center">
- <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/userRegistration2.png"/>
+ <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/userRegistration1.png"/>
+  <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/userRegistration2.png"/>
+ <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/userRegistration3.png"/>
 </p>
 
 * ### Managing fragments and working with listviews 
