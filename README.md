@@ -1,6 +1,6 @@
-# KotlinLearning
+# iKotlin
 
-KotlinLearning is a simple Kotlin language learning app. ( Yet, it written in Java :D )
+iKotlin is a simple Kotlin language learning app. ( But it's written in Java :D )
 
 ## Description
 
@@ -10,7 +10,7 @@ You can fork or clone this repo to implement similar or the following :
 <p align="center">
  <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/userRegistration1.png"/>
   <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/userRegistration2.png"/>
- <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/userRegistration3.png"/>
+ <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/userregistration3.png"/>
 </p>
 
 * ### Managing fragments and working with listviews 
