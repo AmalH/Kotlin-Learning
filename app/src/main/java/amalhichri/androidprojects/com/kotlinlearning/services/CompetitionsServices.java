@@ -164,12 +164,10 @@ public class CompetitionsServices {
                         serverCallbacks.onError(error);
                     }
                 });
-
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
                 5000,//timeout
                 3,//retry
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        //Log.d("compet",jsObjRequest.toString());
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "getCompetitionsAnswers");
     }
 
@@ -246,8 +244,6 @@ public class CompetitionsServices {
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AddAnswer");
     }
 
-
-
     public void editAnswer (Context context, CompetitionAnswer answer, String id, final ServerCallbacks serverCallbacks){
         Map<String, String> m = new HashMap<String, String>();
         m.put("id", id);
@@ -288,37 +284,10 @@ public class CompetitionsServices {
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AddCompetition");
     }
 
-    public void compileCode(final Context context, final JSONObject jsb, final StringCallbacks stringCallbacks) throws JSONException {
+    public void compileCode(final Context context, final JSONObject jsonBdy, final StringCallbacks stringCallbacks) throws JSONException {
         final JSONObject jsonBody = new JSONObject();
-        jsonBody.put("project",jsb);
+        jsonBody.put("project", jsonBdy);
         jsonBody.put("filename","ikotlinrun.kt");
-
-      /*  JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, URL_TRY_KOTLIN, jsonBody, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        if (!response.has("Error")){
-                            //ok
-                            serverCallbacks.onSuccess(response);
-                        }
-                        else{
-                            //wrong entries
-                            serverCallbacks.onWrong(response);
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //connection problem
-                        serverCallbacks.onError(error);
-                    }
-                }){
-            @Override
-            public String getBodyContentType() {
-                return "application/x-www-form-urlencoded; charset=UTF-8";
-            }
-        };*/
-
         StringRequest jsonObjRequest = new StringRequest(Request.Method.POST,
                "https://try.kotlinlang.org/kotlinServer?type=run&runConf=java",
                 new Response.Listener<String>() {
@@ -342,7 +311,7 @@ public class CompetitionsServices {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("project",jsb.toString().trim());
+                params.put("project", jsonBdy.toString().trim());
                 params.put("filename","ikotlinrun.kt");
                 return params;
             }

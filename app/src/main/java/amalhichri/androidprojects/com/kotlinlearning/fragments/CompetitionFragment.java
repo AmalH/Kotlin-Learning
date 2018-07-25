@@ -84,7 +84,7 @@ public class CompetitionFragment extends Fragment {
 
                                 @Override
                                 public void onError(VolleyError result) {
-                                    Toast.makeText(getContext(),result.getClass().getName(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), result.getClass().getName(), Toast.LENGTH_SHORT).show();
                                     if (progressDialog.isShowing()) {
                                         progressDialog.dismiss();
                                     }
@@ -156,15 +156,11 @@ public class CompetitionFragment extends Fragment {
                 getActivity().findViewById(R.id.competitionRun).setEnabled(false);
                 progressDialog.setMessage("Running code, please wait.");
                 progressDialog.show();
-                final String s = ((TextView) getActivity().findViewById(R.id.compete_add_content)).getText().toString().replaceAll("[\r\n]", "\n");
-                // s=s.replaceAll("\\s+","+");
                 Map<String, String> m = new HashMap<String, String>();
-                m.put("text", s);
+                m.put("text", ((TextView) getActivity().findViewById(R.id.compete_add_content)).getText().toString().replaceAll("[\r\n]", "\n"));
                 m.put("name", "ikotlinrun.kt");
-                final JSONObject jsonBody = new JSONObject(m);
-                m.clear();
                 final JSONArray jsonArray = new JSONArray();
-                jsonArray.put(jsonBody);
+                jsonArray.put(new JSONObject(m));
                 JSONObject FullBody = new JSONObject();
                 try {
                     FullBody.put("files", jsonArray);
@@ -174,18 +170,15 @@ public class CompetitionFragment extends Fragment {
                         public void onSuccess(String result) {
                             getActivity().findViewById(R.id.competitionRun).setEnabled(true);
                             getActivity().findViewById(R.id.competitionResponse).setVisibility(View.VISIBLE);
-                            //Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
                             JSONObject jsOResponse, subs;
                             JSONArray subsar;
                             String err = "";
                             try {
                                 jsOResponse = new JSONObject(result);
-                                //Log.d("tryko",jsOResponse.toString());
                                 if (jsOResponse.has("text")) {
                                     ((TextView) getActivity().findViewById(R.id.competitionResponse)).setText(jsOResponse.get("text").toString().replaceAll("<[^>]+>", ""));
                                     getActivity().findViewById(R.id.competitionResponse).setBackgroundColor(getActivity().getResources().getColor(R.color.successBackground));
                                 } else {
-                                    //Log.d("tryko",jsOResponse.toString());
                                     if (jsOResponse.has("errors")) {
                                         subs = (JSONObject) jsOResponse.get("errors");
                                         if (subs.has("ikotlinrun.kt")) {
@@ -224,7 +217,6 @@ public class CompetitionFragment extends Fragment {
                                         getActivity().findViewById(R.id.competitionResponse).setBackgroundColor(getActivity().getResources().getColor(R.color.errorBackground));
                                     }
                                 }
-                                //Log.d("tryko",jsOResponse.toString());
                                 if (jsOResponse.has("exception")) {
                                     if (!jsOResponse.getString("exception").equals("null")) {
                                         String name = "", method = "", line = "", cause = "";
@@ -326,6 +318,7 @@ public class CompetitionFragment extends Fragment {
                     }
                 });
     }
+
     private void loadAnswer() {
         progressDialog.setMessage("Loading your answer, please wait.");
         progressDialog.show();
