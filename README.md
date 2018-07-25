@@ -59,6 +59,6 @@ This repo contains clean, well-commented code for many Android utilit. You can f
     - Implementing vertical TabLayouts, custom prgress bars and more.
 <p align="center">
 <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/ui4.png"/>
-<img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/ui6.png"/>
+<img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/ui8.png"/>
 <img src="https://raw.githubusercontent.com/AmalH/Kotlin-Learning/master/screenshots/ui7.png"/>
 </p>
