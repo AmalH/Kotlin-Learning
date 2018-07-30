@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,15 +63,15 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
         holder.createed.setText(forumQuestionsList.get(position).getCreated_string());
 
         /** user data **/
-        if(forumQuestionsList.get(position).getId_User().equals(userid))
+        if(forumQuestionsList.get(position).getUserId().equals(userid))
             holder.user_name.setText("me");
         else
             holder.user_name.setText(forumQuestionsList.get(position).getUser_name_captalized());
 
-        if(forumQuestionsList.get(position).getUser_picture_url()!=null)
-            Picasso.with(context).load(Uri.parse(forumQuestionsList.get(position).getUser_picture_url())).into(holder.user_picture);
+        if(forumQuestionsList.get(position).getUserPictureUrl()!=null)
+            Picasso.with(context).load(Uri.parse(forumQuestionsList.get(position).getUserPictureUrl())).into(holder.user_picture);
         else{
-            String item=forumQuestionsList.get(position).getUser_name();
+            String item=forumQuestionsList.get(position).getUserName();
             holder.user_picture.setImageDrawable(Statics.getPlaceholderProfilePic(item));
         }
         /** tags **/
@@ -102,7 +103,6 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
                         context, forumQuestionsList.get(position).getId(), new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {
-                                // Toast.makeText(context,"marked ",Toast.LENGTH_LONG).show();
                                 try {
                                     if(result.getInt("resp")>0){
                                         holder.nbviews.setText(String.valueOf(result.getInt("resp")));
@@ -114,12 +114,12 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
 
                             @Override
                             public void onError(VolleyError result) {
-                                //  Toast.makeText(context,"not marked",Toast.LENGTH_LONG).show();
+                                  Toast.makeText(context,"Error ! Please check you internet connection.",Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public void onWrong(JSONObject result) {
-                                //  Toast.makeText(context,"not marked",Toast.LENGTH_LONG).show();
+                                Toast.makeText(context,"Error ! Please try again later !",Toast.LENGTH_LONG).show();
                             }
                         });
                 activity.getSupportFragmentManager().beginTransaction()

@@ -1,6 +1,8 @@
 package amalhichri.androidprojects.com.kotlinlearning.fragments;
 
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -32,7 +34,6 @@ import amalhichri.androidprojects.com.kotlinlearning.models.Competition;
 import amalhichri.androidprojects.com.kotlinlearning.models.CompetitionAnswer;
 import amalhichri.androidprojects.com.kotlinlearning.services.CompetitionsServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
-import amalhichri.androidprojects.com.kotlinlearning.utils.Configuration;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 
 public class CompeteFragment extends Fragment {
@@ -94,7 +95,8 @@ public class CompeteFragment extends Fragment {
         competeSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if(Configuration.isOnline(getContext())){
+                if((((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo())
+                        != null && (((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo()).isConnected()){
                     loadedLengthCompetition =0;
                     LoadList();
                 }
@@ -108,7 +110,8 @@ public class CompeteFragment extends Fragment {
         competeAnswerSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if(Configuration.isOnline(getContext())){
+                if((((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo())
+                        != null && (((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo()).isConnected()){
                     loadedLengthAnswers =0;
                     LoadList();
                 }
@@ -179,7 +182,8 @@ public class CompeteFragment extends Fragment {
                     totalItemCount = layoutCompetition.getItemCount();
                     pastVisiblesItems = ((LinearLayoutManager)layoutCompetition).findFirstVisibleItemPosition();
 
-                    if (Configuration.isOnline(getContext())&& !loading)
+                    if((((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo())
+                            != null && (((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo()).isConnected())
                     {
                         if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount-4)
                         {
@@ -207,7 +211,8 @@ public class CompeteFragment extends Fragment {
                     totalItemCount = layoutAnswer.getItemCount();
                     pastVisiblesItems = ((LinearLayoutManager)layoutAnswer).findFirstVisibleItemPosition();
 
-                    if (Configuration.isOnline(getContext())&& !loading)
+                    if((((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo())
+                            != null && (((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo()).isConnected())
                     {
                         if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount-4)
                         {
@@ -223,7 +228,8 @@ public class CompeteFragment extends Fragment {
     }
 
     private synchronized void LoadList(){
-        if (Configuration.isOnline(getContext())){
+        if((((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo())
+                != null && (((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo()).isConnected()){
 
             switch (toggle){
                 case 0:

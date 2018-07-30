@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 
 import amalhichri.androidprojects.com.kotlinlearning.R;
-import amalhichri.androidprojects.com.kotlinlearning.utils.MenuBean;
 import q.rorbin.verticaltablayout.TabAdapter;
 import q.rorbin.verticaltablayout.widget.QTabView;
 
@@ -87,4 +86,17 @@ public class ConnectTabsAdapter extends PagerAdapter implements TabAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
     }
+
+    private class MenuBean {
+        public int mSelectIcon;
+        public int mNormalIcon;
+        public String mTitle;
+
+        public MenuBean(int mSelectIcon, int mNormalIcon, String mTitle) {
+            this.mSelectIcon = mSelectIcon;
+            this.mNormalIcon = mNormalIcon;
+            this.mTitle = mTitle;
+        }
+    }
+
 }

@@ -3,7 +3,6 @@ package amalhichri.androidprojects.com.kotlinlearning.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,7 +113,6 @@ public class BadgesFragment extends Fragment {
             @Override
             public void onSuccess(JSONObject result) {
                 try {
-                    Log.d("SUCCESS ","-------"+result.getJSONArray("badges").length());
                     if(!(result.getJSONArray("badges").length()==0)){
                         deactivatedBadgesIcons.remove(badgeIndic);
                         deactivatedBadgesIcons.add(badgeIndic,activatedBadgesIcons.get(badgeIndic));
@@ -129,12 +127,10 @@ public class BadgesFragment extends Fragment {
 
             @Override
             public void onError(VolleyError result) {
-                Log.d("ERROR ","----"+result.getClass().getName());
             }
 
             @Override
             public void onWrong(JSONObject result) {
-                Log.d("SUCCESS ","-----"+result.toString());
             }
         });
     }
@@ -148,16 +144,4 @@ public class BadgesFragment extends Fragment {
         controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
         return controller;
     }
-
-/*private ImageView generateImageView(int icon){
-        ImageView iv = new ImageView(getContext());
-        iv.setTag(icon);
-       //iv.setImageResource(icon);
-        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-       iv.setLayoutParams(lp);
-    ColorMatrix matrix = new ColorMatrix();
-        matrix.setSaturation(0);
-        iv.setColorFilter(new ColorMatrixColorFilter(matrix));
-        return iv;
-    }*/
 }

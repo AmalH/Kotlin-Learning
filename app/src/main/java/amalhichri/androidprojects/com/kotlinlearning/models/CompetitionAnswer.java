@@ -7,14 +7,15 @@ import java.util.Calendar;
  */
 
 public class CompetitionAnswer {
+
     private int id;
-    private String id_user;
+    private String userId;
     private String content;
     private Calendar created;
-    private int id_competition;
-    private int competiton_level;
-    private String competition_title;
-    private String profile_picture;
+    private int competitionId;
+    private int competitionLevel;
+    private String competitionTitle;
+    private String profilePicture;
     private String username;
 
 
@@ -34,12 +35,8 @@ public class CompetitionAnswer {
         this.id = id;
     }
 
-    public String getId_user() {
-        return id_user;
-    }
-
-    public void setId_user(String id_user) {
-        this.id_user = id_user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getContent() {
@@ -58,36 +55,32 @@ public class CompetitionAnswer {
         this.created = created;
     }
 
-    public int getId_competition() {
-        return id_competition;
+    public int getCompetitionId() {
+        return competitionId;
     }
 
-    public void setId_competition(int id_competition) {
-        this.id_competition = id_competition;
+    public void setCompetitionId(int competitionId) {
+        this.competitionId = competitionId;
     }
 
-    public int getCompetiton_level() {
-        return competiton_level;
+    public int getCompetitionLevel() {
+        return competitionLevel;
     }
 
-    public void setCompetiton_level(int competiton_level) {
-        this.competiton_level = competiton_level;
+    public void setCompetitionLevel(int competitionLevel) {
+        this.competitionLevel = competitionLevel;
     }
 
-    public String getCompetition_title() {
-        return competition_title;
+    public String getCompetitionTitle() {
+        return competitionTitle;
     }
 
-    public void setCompetition_title(String competition_title) {
-        this.competition_title = competition_title;
+    public void setCompetitionTitle(String competitionTitle) {
+        this.competitionTitle = competitionTitle;
     }
 
-    public String getProfile_picture() {
-        return profile_picture;
-    }
-
-    public void setProfile_picture(String profile_picture) {
-        this.profile_picture = profile_picture;
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     public String getUsername() {
@@ -113,13 +106,13 @@ public class CompetitionAnswer {
     public String toString() {
         return "CompetitionAnswer{" +
                 "id=" + id +
-                ", id_user='" + id_user + '\'' +
+                ", userId='" + userId + '\'' +
                 ", content='" + content + '\'' +
                 ", created=" + created +
-                ", id_competition=" + id_competition +
-                ", competiton_level=" + competiton_level +
-                ", competition_title='" + competition_title + '\'' +
-                ", profile_picture='" + profile_picture + '\'' +
+                ", competitionId=" + competitionId +
+                ", competitionLevel=" + competitionLevel +
+                ", competitionTitle='" + competitionTitle + '\'' +
+                ", profilePicture='" + profilePicture + '\'' +
                 ", username='" + username + '\'' +
                 '}';
     }

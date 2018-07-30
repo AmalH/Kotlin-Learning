@@ -42,15 +42,6 @@
                         android:gravity="center_horizontal"
                         android:textSize="8.5pt"
                         tools:ignore="MissingPrefix" />
-                   <!-- <me.biubiubiu.justifytext.library.JustifyTextView
-                        android:id="@+id/chapterDescription"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="chapter 1 description goes here"
-                        android:textStyle="italic"
-                        android:textSize="14dp"
-                        android:layout_below="@id/chapterTitle"
-                        android:layout_centerHorizontal="true"/>-->
                     <LinearLayout
                         android:id="@+id/chapterInfoLayout"
                         android:layout_width="wrap_content"

@@ -22,8 +22,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.rey.material.app.Dialog;
 
 import org.json.JSONObject;
@@ -46,18 +44,11 @@ import amalhichri.androidprojects.com.kotlinlearning.services.UsersServices;
 
 public class Statics {
 
-    /**
-     * to keep all static references
-     * to avoid instanciating them 2+ times in diffrents activitis/fragments
-     */
-
     public static FirebaseAuth auth = FirebaseAuth.getInstance();
-    public static DatabaseReference usersTable = FirebaseDatabase.getInstance().getReference("users");
     static List<String> courses=new ArrayList<>();
     static HashMap<String,List> chapters= new HashMap<>();
 
 
-    /** user signup **/
     public static void signUp(final String email, String password, final String fullName, final String pictureUrl, final Activity activity) {
         Statics.auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -85,7 +76,6 @@ public class Statics {
                         public void onError(VolleyError result) {
                             auth.getCurrentUser().delete();
                             Toast.makeText(activity,"----"+result.getClass(),Toast.LENGTH_SHORT).show();
-                            //Toast.makeText(activity,"Error while registring please retry",Toast.LENGTH_LONG).show();
                         }
                         @Override
                         public void onWrong(JSONObject result) {
@@ -106,10 +96,9 @@ public class Statics {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(activity, "logged in", Toast.LENGTH_LONG).show();
                             activity.startActivity(new Intent(activity, HomeActivity.class));
                         } else {
-                            Toast.makeText(activity, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(activity, "ERROR ! "+task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });

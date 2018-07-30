@@ -3,7 +3,6 @@ package amalhichri.androidprojects.com.kotlinlearning.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 public class ChapterFragment extends Fragment {
 
     private ChapterAdapter chapter_adapter;
-    //public static Alerter engagedInBadgeUnlockedAltert;
 
     public static ChapterFragment newInstance(int courseNb, int chapterNb) {
 
@@ -40,23 +38,21 @@ public class ChapterFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         /** assign engagedIn badge**/
         UsersServices.getInstance().assignBadge(Statics.auth.getCurrentUser().getUid(), String.valueOf(1),getActivity(), new ServerCallbacks() {
             @Override
             public void onSuccess(JSONObject result) {
-                Log.d("------","--+ "+result.toString());
                 Toast.makeText(getActivity(),"SUCCESS "+result.toString(),Toast.LENGTH_SHORT);
             }
 
             @Override
             public void onError(VolleyError result) {
-                Log.d("------","--+ "+result.getClass().getName());
                 Toast.makeText(getActivity(),"FAILURE 1 "+result.getClass().getName(),Toast.LENGTH_SHORT);
             }
 
             @Override
             public void onWrong(JSONObject result) {
-                Log.d("------","--+ "+result.toString());
                 Toast.makeText(getActivity(),"FAILURE 2 "+result.toString(),Toast.LENGTH_SHORT);
             }
         });
@@ -64,8 +60,6 @@ public class ChapterFragment extends Fragment {
     }
 
     /** will change this **/
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

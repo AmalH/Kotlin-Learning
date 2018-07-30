@@ -1,7 +1,6 @@
 package amalhichri.androidprojects.com.kotlinlearning.services;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -148,11 +147,9 @@ public class CompetitionsServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -160,13 +157,12 @@ public class CompetitionsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "getCompetitionsAnswers");
     }
@@ -181,11 +177,9 @@ public class CompetitionsServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -193,23 +187,20 @@ public class CompetitionsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
-        //Log.d("request",jsObjRequest.toString());
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        //Log.d("compet",jsObjRequest.toString());
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "getCompetitionsAnswers");
     }
 
     public void addAnswer(Context context, CompetitionAnswer answer, String id, final ServerCallbacks serverCallbacks){
         Map<String, String> m = new HashMap<String, String>();
         m.put("id", id);
-        m.put("competitionid", answer.getId_competition()+"");
+        m.put("competitionid", answer.getCompetitionId()+"");
         m.put("content", answer.getContent());
         final JSONObject jsonBody = new JSONObject(m);
 
@@ -220,11 +211,9 @@ public class CompetitionsServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -232,13 +221,12 @@ public class CompetitionsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AddAnswer");
@@ -247,7 +235,7 @@ public class CompetitionsServices {
     public void editAnswer (Context context, CompetitionAnswer answer, String id, final ServerCallbacks serverCallbacks){
         Map<String, String> m = new HashMap<String, String>();
         m.put("id", id);
-        m.put("competitionid", answer.getId_competition()+"");
+        m.put("competitionid", answer.getCompetitionId()+"");
         m.put("content", answer.getContent());
         m.put("answerid", answer.getId()+"");
         final JSONObject jsonBody = new JSONObject(m);
@@ -259,11 +247,9 @@ public class CompetitionsServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -271,14 +257,12 @@ public class CompetitionsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
-        //Log.d("compet",jsonBody.toString());
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AddCompetition");
@@ -317,12 +301,10 @@ public class CompetitionsServices {
             }
 
         };
-        // Log.e("kotlinResponse",jsonBody.toString());
-        // Log.e("kotlinResponse",jsonObjRequest.toString());
 
         jsonObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                10000,//timeout
-                20,//retry
+                10000,
+                20,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsonObjRequest, "runCode");
@@ -348,12 +330,11 @@ public class CompetitionsServices {
             competition = new Competition(o.getInt("id"),o.getString("user_id"),content,
                     cal,o.getInt("level"),o.getString("title"),o.getString("user_name"));
 
-            if(o.has("user_picture")) competition.setProfile_picture(o.getString("user_picture"));
+            if(o.has("user_picture")) competition.setProfilePicture(o.getString("user_picture"));
             if(o.has("solved")) competition.setSolved(o.getLong("solved")); else competition.setSolved(0);
 
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d("parsing_Compete_problem",o.toString());
         }
         return competition;
     }
@@ -378,18 +359,17 @@ public class CompetitionsServices {
             if(o.has("content")) content=o.getString("content");
 
             a = new CompetitionAnswer(o.getInt("id"),cal);
-            if(o.has("idcompetition")) a.setId_competition(o.getInt("idcompetition"));
-            if(o.has("competitiontitle")) a.setCompetition_title(o.getString("competitiontitle"));
-            if(o.has("competitionlevel")) a.setCompetiton_level(o.getInt("competitionlevel"));
-            if(o.has("user_id")) a.setId_user(o.getString("user_id"));
+            if(o.has("idcompetition")) a.setCompetitionId(o.getInt("idcompetition"));
+            if(o.has("competitiontitle")) a.setCompetitionTitle(o.getString("competitiontitle"));
+            if(o.has("competitionlevel")) a.setCompetitionLevel(o.getInt("competitionlevel"));
+            if(o.has("user_id")) a.setUserId(o.getString("user_id"));
             if(o.has("user_name")) a.setUsername(o.getString("user_name"));
-            if(o.has("user_picture")) a.setProfile_picture(o.getString("user_picture"));
+            if(o.has("user_picture")) a.setProfilePicture(o.getString("user_picture"));
             a.setContent(content);
 
 
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d("parsing_Compete_problem",o.toString());
         }
         return a;
     }

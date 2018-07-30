@@ -3,7 +3,6 @@ package amalhichri.androidprojects.com.kotlinlearning.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,6 @@ public class RootFragment_learn extends Fragment {
         CoursesServices.getInstance().getAllUserCourses(Statics.auth.getCurrentUser().getUid(), getContext(), new ServerCallbacks() {
             @Override
             public void onSuccess(JSONObject result) {
-                Log.d("RES ","---------"+result.toString());
                 try {
                     if(result.getJSONArray("courses").length()==0)
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.root_learFragment,new LearnFragment_nocourses()).commitAllowingStateLoss();
@@ -41,12 +39,12 @@ public class RootFragment_learn extends Fragment {
 
             @Override
             public void onError(VolleyError result) {
-                Toast.makeText(getContext(),"ERROR! "+result.getMessage(),Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(),"ERROR ! Please check you internet connection."+result.getMessage(),Toast.LENGTH_SHORT);
             }
 
             @Override
             public void onWrong(JSONObject result) {
-                Toast.makeText(getContext(),"ERROR 2"+result.toString(),Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(),"ERROR ! Please try again later ."+result.toString(),Toast.LENGTH_SHORT);
             }
         });
     }

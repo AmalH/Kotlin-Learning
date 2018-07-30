@@ -13,9 +13,7 @@ public class RootFragment_share extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.root_share_fragment,new ShareFragment()).commitAllowingStateLoss();
-        //Log.d("pager","root created");
         return inflater.inflate(R.layout.fragment_root_share, container, false);
     }
 

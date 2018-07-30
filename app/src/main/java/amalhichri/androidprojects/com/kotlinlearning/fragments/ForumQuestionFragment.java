@@ -1,6 +1,7 @@
 package amalhichri.androidprojects.com.kotlinlearning.fragments;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -38,7 +39,6 @@ import amalhichri.androidprojects.com.kotlinlearning.models.ForumQuestion;
 import amalhichri.androidprojects.com.kotlinlearning.services.ForumsServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
 import amalhichri.androidprojects.com.kotlinlearning.services.UsersServices;
-import amalhichri.androidprojects.com.kotlinlearning.utils.Configuration;
 import amalhichri.androidprojects.com.kotlinlearning.utils.Statics;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.github.kbiakov.codeview.CodeView;
@@ -167,7 +167,8 @@ public class ForumQuestionFragment extends Fragment {
         ((SwipeRefreshLayout) getActivity().findViewById(R.id.commentsRefreshLayout)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (Configuration.isOnline(getContext())) {
+                if((((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo())
+                        != null && (((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo()).isConnected()) {
                     FirebaseAuth.getInstance().getCurrentUser().reload();
                     loaded_length = 0;
                     loadComments(0);
@@ -190,7 +191,8 @@ public class ForumQuestionFragment extends Fragment {
                     visibleItemCount = layoutManager.getChildCount();
                     totalItemCount = layoutManager.getItemCount();
                     pastVisiblesItems = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
-                    if (Configuration.isOnline(getContext()) && !loading) {
+                    if((((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo())
+                            != null && (((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo()).isConnected() && !loading) {
                         if ((visibleItemCount + pastVisiblesItems) >= totalItemCount - 3) {
                             loading = true;
                             loadComments(loaded_length);
@@ -256,7 +258,8 @@ public class ForumQuestionFragment extends Fragment {
         }
 
         ((SwipeRefreshLayout) getActivity().findViewById(R.id.commentsRefreshLayout)).setRefreshing(true);
-        if (Configuration.isOnline(getContext()))
+        if((((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo())
+                != null && (((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo()).isConnected())
             ForumsServices.getInstance().getForumPostComments(Statics.auth.getCurrentUser().getUid(),
                     getContext(), start_at, currentQuestion.getId(), new ServerCallbacks() {
                         @Override
@@ -372,7 +375,7 @@ public class ForumQuestionFragment extends Fragment {
                             } else
                                 selfVote = 0;
                             if (getContext() != null) {
-                                if (currentQuestion.getId_User().equals(Statics.auth.getCurrentUser().getUid()))
+                                if (currentQuestion.getUserId().equals(Statics.auth.getCurrentUser().getUid()))
                                     mine = true;
                                 ((TextView) getActivity().findViewById(R.id.forumQstRatingShow)).setText((currentQuestion.getRating() > 0 ? "+" + currentQuestion.getRating() : currentQuestion.getRating() + ""));
                                 ((TextView) getActivity().findViewById(R.id.forumQstViews)).setText(currentQuestion.getViews() + "");
@@ -380,16 +383,16 @@ public class ForumQuestionFragment extends Fragment {
                                 ((TextView) getActivity().findViewById(R.id.forumQstnContent)).setText(currentQuestion.getContent());
 
                                 if (!mine)
-                                    ((TextView) getActivity().findViewById(R.id.forumQstnUsername)).setText(currentQuestion.getUser_name());
+                                    ((TextView) getActivity().findViewById(R.id.forumQstnUsername)).setText(currentQuestion.getUserName());
                                 else
                                     ((TextView) getActivity().findViewById(R.id.forumQstnUsername)).setText("By me ");
 
                                 ((TextView) (getActivity().findViewById(R.id.forumQstnCreated))).setText(currentQuestion.getCreated_string());
 
-                                if (currentQuestion.getUser_picture_url() != null)
-                                    Picasso.with(getContext()).load(Uri.parse(currentQuestion.getUser_picture_url())).into(picture);
+                                if (currentQuestion.getUserPictureUrl() != null)
+                                    Picasso.with(getContext()).load(Uri.parse(currentQuestion.getUserPictureUrl())).into(picture);
                                 else {
-                                    String item = currentQuestion.getUser_name();
+                                    String item = currentQuestion.getUserName();
                                     ((ImageView) getActivity().findViewById(R.id.forumQuestionUserPic)).setImageDrawable(Statics.getPlaceholderProfilePic(item));
                                 }
 

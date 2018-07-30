@@ -88,7 +88,7 @@ public class LearnFragment_currentUserCourses extends Fragment {
                     boolean showLoadedData = true;
                     try {
                         if (!(result.getJSONArray("courses").length() == 0))
-                            currentUserCourses.clear(); // will switch this to a better solution later on !
+                            currentUserCourses.clear();
                             for (int i = 0; i < result.getJSONArray("courses").length(); i++) {
                                 currentUserCourses.add(AllCourses.getCourse(Integer.parseInt(((JSONObject) result.getJSONArray("courses").get(i)).getString("courseindic"))));
                             }

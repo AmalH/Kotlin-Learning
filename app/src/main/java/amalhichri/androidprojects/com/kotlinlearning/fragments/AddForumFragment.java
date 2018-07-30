@@ -34,7 +34,6 @@ public class AddForumFragment extends Fragment {
                              Bundle savedInstanceState) {
         add_code_to_forum = false;
         isCodeEmpty = false;
-        //FirebaseAuth.getInstance().getCurrentUser().reload();
         progressDialog = new ProgressDialog(getActivity());
         View v = inflater.inflate(R.layout.fragment_add_forum, container, false);
         return v;

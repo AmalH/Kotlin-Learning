@@ -46,22 +46,6 @@ public class User {
         this.username = username;
     }
 
-    public String getEmail() {
-        return emailAddress;
-    }
-
-    public void setEmail(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
-
-    public String getPictureURL() {
-        return pictureUrl;
-    }
-
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
-    }
-
     public Calendar getCreated() {
         return created;
     }
@@ -70,81 +54,4 @@ public class User {
         this.created = created;
     }
 
-    public Calendar getLast_loggued() {
-        return last_loggued;
-    }
-
-    public void setLast_loggued(Calendar last_loggued) {
-        this.last_loggued = last_loggued;
-    }
-
-    public boolean isConfirmed() {
-        return confirmed;
-    }
-
-    public void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
-    }
-
-    public int getSkill_learner() {
-        return skill_learner;
-    }
-
-    public void setSkill_learner(int skill_learner) {
-        this.skill_learner = skill_learner;
-    }
-
-    public int getSkill_challenger() {
-        return skill_challenger;
-    }
-
-    public void setSkill_challenger(int skill_challenger) {
-        this.skill_challenger = skill_challenger;
-    }
-
-    public int getSkill_coder() {
-        return skill_coder;
-    }
-
-    public void setPicUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setSkill_coder(int skill_coder) {
-        this.skill_coder = skill_coder;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", username='" + username + '\'' +
-                ", emailAddress='" + emailAddress + '\'' +
-                ", pictureUrl='" + pictureUrl + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", created=" + created +
-                ", last_loggued=" + last_loggued +
-                ", confirmed=" + confirmed +
-                ", skill_learner=" + skill_learner +
-                ", skill_challenger=" + skill_challenger +
-                ", skill_coder=" + skill_coder +
-                '}';
-    }
 }

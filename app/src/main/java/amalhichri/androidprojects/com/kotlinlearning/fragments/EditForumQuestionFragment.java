@@ -30,9 +30,8 @@ import me.originqiu.library.EditTag;
 
 public class EditForumQuestionFragment extends Fragment {
     
-    ProgressDialog progressDialog;
-    boolean addCodeToForum,isCodeEmpty=false;
-
+    private ProgressDialog progressDialog;
+    private boolean addCodeToForum,isCodeEmpty=false;
     private ForumQuestion question;
 
     public void setForum(ForumQuestion question){

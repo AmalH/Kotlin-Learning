@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -161,7 +160,7 @@ public class SignupActivity extends Activity {
             mLoginManager.logInWithReadPermissions(SignupActivity.this, Arrays.asList("public_profile"));
         }
     }
-    // to initialize facebook api + retrieve user info
+
     private void facebookApiInit() {
         FacebookSdk.sdkInitialize(getApplicationContext());
         mLoginManager = LoginManager.getInstance();
@@ -199,7 +198,6 @@ public class SignupActivity extends Activity {
                                                 "https://graph.facebook.com/v3.0"+String.valueOf(object.getInt("id"))+"/picture?type=large",
                                                 SignupActivity.this);
                                 } catch (JSONException e) {
-                                  Log.d("ERROR","---------- "+e.getMessage());
                                 }
                             }
                         });
@@ -216,16 +214,13 @@ public class SignupActivity extends Activity {
                 try {
                     t.join();
                 } catch (InterruptedException e) {
-                    Log.d("ERROR",e.getMessage());
                 }
-                Log.d("Test",request.toString());
             }
             @Override
             public void onCancel() {
             }
             @Override
             public void onError(FacebookException error) {
-                Log.d("ERROR","--------- "+error.toString());
             }
         });
     }

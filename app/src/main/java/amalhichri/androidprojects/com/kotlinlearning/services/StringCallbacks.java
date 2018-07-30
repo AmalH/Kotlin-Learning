@@ -3,7 +3,7 @@ package amalhichri.androidprojects.com.kotlinlearning.services;
 import com.android.volley.VolleyError;
 
 /**
- * Created by Odil on 18/01/2018.
+ * Created by Amal on 18/01/2018.
  */
 
 public interface StringCallbacks {

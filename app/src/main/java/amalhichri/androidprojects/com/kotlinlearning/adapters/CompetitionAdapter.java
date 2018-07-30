@@ -47,13 +47,13 @@ public class CompetitionAdapter extends RecyclerView.Adapter<CompetitionAdapter.
         holder.solved.setText(CompetitionsList.get(position).getSolvedString());
         holder.createed.setText(CompetitionsList.get(position).getCreated_string());
 
-        if(CompetitionsList.get(position).getId_user().equals(Statics.auth.getCurrentUser().getUid()))
+        if(CompetitionsList.get(position).getUserId().equals(Statics.auth.getCurrentUser().getUid()))
             holder.user_name.setText("me");
         else
             holder.user_name.setText(CompetitionsList.get(position).getUser_name_captalized());
 
-        if(CompetitionsList.get(position).getProfile_picture()!=null)
-            Picasso.with(context).load(Uri.parse(CompetitionsList.get(position).getProfile_picture())).into(holder.user_picture);
+        if(CompetitionsList.get(position).getProfilePicture()!=null)
+            Picasso.with(context).load(Uri.parse(CompetitionsList.get(position).getProfilePicture())).into(holder.user_picture);
         else{
             String item=CompetitionsList.get(position).getUsername();
             holder.user_picture.setImageDrawable(Statics.getPlaceholderProfilePic(item));

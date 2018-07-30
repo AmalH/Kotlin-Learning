@@ -12,25 +12,17 @@ public class ForumQuestion {
     private int id;
     private String subject;
     private int rating;
-    private String tags;     // in database its one string for many tags !!;
+    private String tags;
     private Calendar created;
 
-    // will not be used !! to be deleted from database !
     private String content;
     private int views;
 
-    private String id_User;
-    private String user_name;
-    private String user_picture_url;
+    private String userId;
+    private String userName;
+    private String userPictureUrl;
     private String code;
     private Calendar edited;
-
-    // to get from user ID
-    //private String postedBy;
-   // private String postedBy_picUrl;
-
-    // to get from created
-    //private int postedSince;
 
     public ForumQuestion(){}
 
@@ -44,9 +36,9 @@ public class ForumQuestion {
         this.created = created;
         this.content = content;
         this.views = views;
-        this.id_User = id_User;
-        this.user_name = user_name;
-        this.user_picture_url = user_picture_url;
+        this.userId = id_User;
+        this.userName = user_name;
+        this.userPictureUrl = user_picture_url;
     }
 
     public int getId() {
@@ -75,9 +67,6 @@ public class ForumQuestion {
         return String.valueOf(rating);
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
 
     public String getTags() {
         return tags;
@@ -118,43 +107,28 @@ public class ForumQuestion {
         return views;
     }
 
-    public void setViews(int views) {
-        this.views = views;
+
+    public String getUserId() {
+        return userId;
     }
 
-    public String getId_User() {
-        return id_User;
+
+    public String getUserName() {
+        return userName;
     }
 
-    public void setId_User(String id_User) {
-        this.id_User = id_User;
+    public String getUser_name_captalized(){return userName.substring(0, 1).toUpperCase() + userName.substring(1);}
+
+
+    public String getUserPictureUrl() {
+        return userPictureUrl;
     }
 
-    public String getUser_name() {
-        return user_name;
-    }
-
-    public String getUser_name_captalized(){return user_name.substring(0, 1).toUpperCase() + user_name.substring(1);}
-
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
-    }
-
-    public String getUser_picture_url() {
-        return user_picture_url;
-    }
-
-    public void setUser_picture_url(String user_picture_url) {
-        this.user_picture_url = user_picture_url;
-    }
 
     public String getViews_string() {
         return views+"";
     }
 
-    public String getRating_string() {
-        return rating+"";
-    }
 
     public String getCode() {
         return code;
@@ -183,21 +157,5 @@ public class ForumQuestion {
         this.edited = edited;
     }
 
-    @Override
-    public String toString() {
-        return "ForumQuestion{" +
-                "id=" + id +
-                ", subject='" + subject + '\'' +
-                ", rating=" + rating +
-                ", tags='" + tags + '\'' +
-                ", created=" + created +
-                ", content='" + content + '\'' +
-                ", views=" + views +
-                ", id_User='" + id_User + '\'' +
-                ", user_name='" + user_name + '\'' +
-                ", user_picture_url='" + user_picture_url + '\'' +
-                ", code='" + code + '\'' +
-                ", edited=" + edited +
-                '}';
-    }
+
 }

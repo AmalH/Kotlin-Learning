@@ -17,7 +17,7 @@ public class FaqsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.fragment_faqs, container, false);
-        ((ExpandableListView)v.findViewById(R.id.faqsListView)).setAdapter(new FaqsListAdapter(getContext()));
+        ((ExpandableListView)v.findViewById(R.id.faqsListView)).setAdapter(new FaqsListAdapter(getActivity()));
         return v;
     }
 

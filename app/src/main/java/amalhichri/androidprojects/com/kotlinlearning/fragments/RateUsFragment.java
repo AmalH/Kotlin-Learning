@@ -24,10 +24,7 @@ public class RateUsFragment extends Fragment {
         (v.findViewById(R.id.submitBtn)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri uri = Uri.parse("market://details?id=" + getActivity().getApplicationContext().getPackageName());
-                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-                // To count with Play market backstack, After pressing back button,
-                // to taken back to our application, we need to add following flags to intent.
+                Intent goToMarket = new Intent(Intent.ACTION_VIEW,  Uri.parse("market://details?id=" + getActivity().getApplicationContext().getPackageName()));
                 goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
                         Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
                         Intent.FLAG_ACTIVITY_MULTIPLE_TASK);

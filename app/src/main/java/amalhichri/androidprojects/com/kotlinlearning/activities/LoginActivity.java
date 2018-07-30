@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -82,7 +81,7 @@ public class LoginActivity extends Activity {
     /** Password recovery **/
     public void resetPassword(View v) {
         if (((EditText)findViewById(R.id.emailLoginTxt)).getText().toString().isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Please provide your email\nto send you password recovery info.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Please enter your email", Toast.LENGTH_LONG).show();
         } else {
             FirebaseAuth.getInstance().sendPasswordResetEmail(((EditText)findViewById(R.id.emailLoginTxt)).getText().toString())
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -99,7 +98,6 @@ public class LoginActivity extends Activity {
 
     /** Facebook login **/
     public void loginWithFacebook(View v) {
-        Log.d("FROM INIT","FROM THERE");
         isFacebook = true;
         if (AccessToken.getCurrentAccessToken() != null) {
             mLoginManager.logOut();
@@ -126,9 +124,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 isFacebook=true;
-                Log.d("facebook_token", "handleFacebookAccessToken:" + loginResult.getAccessToken());
                 AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
-                Log.d("CREDENTIALS:",credential.toString());
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
@@ -188,7 +184,7 @@ public class LoginActivity extends Activity {
 
             @Override
             public void onApiError(LIApiError liApiError) {
-                // Toast.makeText(getApplicationContext(), "cant connect to linkedin" + error.toString(), Toast.LENGTH_LONG).show();
+                 Toast.makeText(getApplicationContext(), "Can not connect to Linkedin !" , Toast.LENGTH_LONG).show();
             }
         });
     }

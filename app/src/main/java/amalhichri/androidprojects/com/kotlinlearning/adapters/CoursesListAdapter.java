@@ -3,7 +3,6 @@ package amalhichri.androidprojects.com.kotlinlearning.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -104,13 +103,11 @@ public class CoursesListAdapter extends BaseExpandableListAdapter {
                     CoursesServices.getInstance().hasStartedAcourse(Statics.auth.getCurrentUser().getUid(), String.valueOf(groupPosition), context, new ServerCallbacks() {
                                 @Override
                                 public void onSuccess(JSONObject result) {
-                                    Log.d("RES 2 ","---------"+groupPosition);
                                     try {
                                         if(result.getJSONArray("courses").length()==0){
                                             CoursesServices.getInstance().addCourseToUser(Statics.auth.getCurrentUser().getUid(), String.valueOf(groupPosition), context, new ServerCallbacks() {
                                                 @Override
                                                 public void onSuccess(JSONObject result) {
-                                                    Log.d("RES 3 ","---------"+result.toString());
                                                     // update ui
                                                     LearnFragment_currentUserCourses currentUserCourses = new LearnFragment_currentUserCourses();
                                                     currentUserCourses.currentUserCourses.add(AllCourses.getCourse(groupPosition));

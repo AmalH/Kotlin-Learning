@@ -1,7 +1,6 @@
 package amalhichri.androidprojects.com.kotlinlearning.services;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -75,7 +74,6 @@ public class ForumsServices {
         m.put("tags", forumQuestion.getTags());
         if(forumQuestion.getCode()!=null) m.put("code", forumQuestion.getCode());
         final JSONObject jsonBody = new JSONObject(m);
-        Log.d("body",jsonBody.toString());
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.POST, "http://192.168.1.6/ikotlinBackEnd/web/forums/addQuestion", jsonBody, new Response.Listener<JSONObject>() {
 
@@ -83,11 +81,9 @@ public class ForumsServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -95,13 +91,12 @@ public class ForumsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AddForumFragment");
@@ -124,11 +119,9 @@ public class ForumsServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -136,7 +129,6 @@ public class ForumsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
@@ -158,11 +150,9 @@ public class ForumsServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -170,13 +160,12 @@ public class ForumsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "getForums");
@@ -188,7 +177,6 @@ public class ForumsServices {
         m.put("questionId", String.valueOf(questionId));
         m.put("commentcontent", content);
         final JSONObject jsonBody = new JSONObject(m);
-        Log.d("body",jsonBody.toString());
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.POST, "http://192.168.1.6/ikotlinBackEnd/web/forums/addComment", jsonBody, new Response.Listener<JSONObject>() {
 
@@ -196,11 +184,9 @@ public class ForumsServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -208,13 +194,12 @@ public class ForumsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
             jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "AddAnswerFragment");
@@ -229,7 +214,6 @@ public class ForumsServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             try {
                                 if(!response.getString("resp").equals("no"))
                                 serverCallbacks.onSuccess(response);
@@ -239,7 +223,6 @@ public class ForumsServices {
                             }
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -247,13 +230,12 @@ public class ForumsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "getForums");
@@ -268,7 +250,6 @@ public class ForumsServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             try {
                                 if(!response.getString("resp").equals("no"))
                                     serverCallbacks.onSuccess(response);
@@ -278,7 +259,6 @@ public class ForumsServices {
                             }
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -286,13 +266,12 @@ public class ForumsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "getForums");
@@ -308,7 +287,7 @@ public class ForumsServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
+
                             try {
                                 if(!response.getString("resp").equals("no"))
                                     serverCallbacks.onSuccess(response);
@@ -318,7 +297,6 @@ public class ForumsServices {
                             }
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -326,13 +304,12 @@ public class ForumsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "getForums");
@@ -347,7 +324,6 @@ public class ForumsServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             try {
                                 if(!response.getString("resp").equals("no"))
                                     serverCallbacks.onSuccess(response);
@@ -357,7 +333,6 @@ public class ForumsServices {
                             }
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -365,13 +340,12 @@ public class ForumsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "getForums");
@@ -386,11 +360,9 @@ public class ForumsServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -398,13 +370,12 @@ public class ForumsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "markforumView");
@@ -419,11 +390,9 @@ public class ForumsServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -431,13 +400,12 @@ public class ForumsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "getForumPost");
@@ -452,11 +420,9 @@ public class ForumsServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -464,13 +430,12 @@ public class ForumsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "deleteForum");
@@ -485,11 +450,9 @@ public class ForumsServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -497,13 +460,12 @@ public class ForumsServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,//timeout
-                3,//retry
+                5000,
+                3,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         AppSingleton.getInstance(context).addToRequestQueue(jsObjRequest, "deleteComment");
@@ -523,7 +485,6 @@ public class ForumsServices {
         String content="";
 
         try {
-            ///Log.d("forum",o.toString());
             if(o.has("content")) content=o.getString("content");
 
             if(o.has("user_picture"))
@@ -554,7 +515,6 @@ public class ForumsServices {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d("parsing_forum","Problem parsing data from server, please report");
         }
         return f;
     }
@@ -575,10 +535,8 @@ public class ForumsServices {
                 a = new ForumAnswer(o.getInt("id"),o.getString("content"),cal,o.getLong("rating"),o.getString("user_id"),o.getString("user_name"),o.getString("user_picture"));
             else
                 a = new ForumAnswer(o.getInt("id"),o.getString("content"),cal,o.getLong("rating"),o.getString("user_id"),o.getString("user_name"));
-            //Log.d("parsing_forum",f.getId()+"");
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.d("parsing_forum","Problem parsing data from server, please report");
         }
         return a;
     }

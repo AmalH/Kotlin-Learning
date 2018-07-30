@@ -62,20 +62,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         if (forumAnswersList.get(position).getUserpicture() != null)
             Picasso.with(context).load(Uri.parse(forumAnswersList.get(position).getUserpicture())).into(holder.user_picture);
         else {
-            String item = forumAnswersList.get(position).getUsername();
+            holder.user_picture.setImageDrawable(Statics.getPlaceholderProfilePic(forumAnswersList.get(position).getUser_name_captalized()));
+
         }
 
         if ((Statics.auth.getCurrentUser().getUid()).equals(forumAnswersList.get(position).getUserid())) {
             holder.delete.setVisibility(View.VISIBLE);
         }
-
-        //view content
-        /**  holder.itemView.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View view) {
-        AppCompatActivity activity=(AppCompatActivity) context;
-        Toast.makeText(context,forumAnswersList.get(position).toString(),Toast.LENGTH_LONG).show();
-        }
-        });*/
 
         holder.upvote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,8 +109,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
             @Override
             public void onClick(View view) {
 
-                //FirebaseAuth.getInstance().getCurrentUser().getUid()
-                ForumsServices.getInstance().downvoteForumPostComment("ljDQhORWgjaxrZcHZbpLR1vyfaF2",
+                ForumsServices.getInstance().downvoteForumPostComment(Statics.auth.getCurrentUser().getUid(),
                         context, forumAnswersList.get(position).getId(), new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {

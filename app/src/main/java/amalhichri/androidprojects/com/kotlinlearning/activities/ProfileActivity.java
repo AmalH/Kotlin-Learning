@@ -64,8 +64,6 @@ public class ProfileActivity extends AppCompatActivity {
             });
         }
 
-
-
         (findViewById(R.id.logoutBtn)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

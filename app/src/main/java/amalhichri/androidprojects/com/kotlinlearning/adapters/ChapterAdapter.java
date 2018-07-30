@@ -3,7 +3,6 @@ package amalhichri.androidprojects.com.kotlinlearning.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.ColorMatrix;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,33 +79,27 @@ public class ChapterAdapter extends BaseAdapter {
                         String.valueOf(coursePosition), context, new ServerCallbacks() {
                             @Override
                             public void onSuccess(JSONObject result) {
-                                Log.d("YES---","----"+result.toString());
                             }
 
                             @Override
                             public void onError(VolleyError result) {
-                                Log.d("NO---","----  "+result.getClass().getName());
                             }
 
                             @Override
                             public void onWrong(JSONObject result) {
-                                Log.d("NOO---","----"+result.toString());
                             }
                         });
                 CoursesServices.getInstance().incrementEarnedBadgesNumber(Statics.auth.getCurrentUser().getUid(), String.valueOf(coursePosition), context, new ServerCallbacks() {
                     @Override
                     public void onSuccess(JSONObject result) {
-                        Log.d("Succeded---","----"+result.toString());
                     }
 
                     @Override
                     public void onError(VolleyError result) {
-                        Log.d("Failed---","----  "+result.getClass().getName());
                     }
 
                     @Override
                     public void onWrong(JSONObject result) {
-                        Log.d("Wrong---","----"+result.toString());
                     }
                 });
             }

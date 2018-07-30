@@ -8,13 +8,13 @@ import java.util.Calendar;
 
 public class Competition {
     private int id;
-    private String id_user;
+    private String userId;
     private String content;
     private long solved;
     private Calendar created;
     private int level;
     private String title;
-    private String profile_picture;
+    private String profilePicture;
     private String username;
 
     public Competition() {
@@ -22,7 +22,7 @@ public class Competition {
 
     public Competition(int id, String id_user, String content, Calendar created, int level, String title, String username) {
         this.id = id;
-        this.id_user = id_user;
+        this.userId = id_user;
         this.content = content;
         this.created = created;
         this.level = level;
@@ -38,12 +38,8 @@ public class Competition {
         this.id = id;
     }
 
-    public String getId_user() {
-        return id_user;
-    }
-
-    public void setId_user(String id_user) {
-        this.id_user = id_user;
+    public String getUserId() {
+        return userId;
     }
 
     public String getContent() {
@@ -52,10 +48,6 @@ public class Competition {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public long getSolved() {
-        return solved;
     }
 
     public void setSolved(long solved) {
@@ -86,12 +78,12 @@ public class Competition {
         this.title = title;
     }
 
-    public String getProfile_picture() {
-        return profile_picture;
+    public String getProfilePicture() {
+        return profilePicture;
     }
 
-    public void setProfile_picture(String profile_picture) {
-        this.profile_picture = profile_picture;
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     public String getUsername() {
@@ -124,13 +116,13 @@ public class Competition {
     public String toString() {
         return "Competition{" +
                 "id=" + id +
-                ", id_user=" + id_user +
+                ", userId=" + userId +
                 ", content='" + content + '\'' +
                 ", solved=" + solved +
                 ", created=" + created +
                 ", level=" + level +
                 ", title='" + title + '\'' +
-                ", profile_picture='" + profile_picture + '\'' +
+                ", profilePicture='" + profilePicture + '\'' +
                 ", username='" + username + '\'' +
                 '}';
     }

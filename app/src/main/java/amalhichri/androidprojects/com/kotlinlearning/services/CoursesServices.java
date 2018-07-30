@@ -30,11 +30,9 @@ public class CoursesServices {
                     @Override
                     public void onResponse(JSONObject response) {
                         if (!response.has("Error")){
-                            //
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -58,11 +56,9 @@ public class CoursesServices {
                     @Override
                     public void onResponse(JSONObject response) {
                         if (!response.has("Error")){
-                            //
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -86,11 +82,9 @@ public class CoursesServices {
                     @Override
                     public void onResponse(JSONObject response) {
                         if (!response.has("Error")){
-                            //
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -116,11 +110,9 @@ public class CoursesServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -128,7 +120,6 @@ public class CoursesServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });
@@ -148,11 +139,9 @@ public class CoursesServices {
                     public void onResponse(JSONObject response) {
 
                         if (!response.has("Error")){
-                            //ok
                             serverCallbacks.onSuccess(response);
                         }
                         else{
-                            //wrong entries
                             serverCallbacks.onWrong(response);
                         }
                     }
@@ -160,7 +149,6 @@ public class CoursesServices {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //connection problem
                         serverCallbacks.onError(error);
                     }
                 });

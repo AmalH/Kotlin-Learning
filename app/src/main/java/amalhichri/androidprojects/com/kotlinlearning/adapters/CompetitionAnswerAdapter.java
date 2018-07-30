@@ -38,15 +38,15 @@ public class CompetitionAnswerAdapter extends RecyclerView.Adapter<CompetitionAn
 
     @Override
     public void onBindViewHolder(final CompetitionAnswerAdapter.CompetitionAnswerItem_ViewHolder holder, final int position) {
-        holder.title.setText(CompetitionsList.get(position).getCompetition_title());
+        holder.title.setText(CompetitionsList.get(position).getCompetitionTitle());
         holder.createed.setText(CompetitionsList.get(position).getCreated_string());
-        holder.level.setText(CompetitionsList.get(position).getCompetiton_level() + "");
+        holder.level.setText(CompetitionsList.get(position).getCompetitionLevel() + "");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Competition competition = new Competition();
-                competition.setId(CompetitionsList.get(position).getId_competition());
+                competition.setId(CompetitionsList.get(position).getCompetitionId());
                 CompetitionFragment competitionFragment = new CompetitionFragment();
                 competitionFragment.setCompetition(competition);
 

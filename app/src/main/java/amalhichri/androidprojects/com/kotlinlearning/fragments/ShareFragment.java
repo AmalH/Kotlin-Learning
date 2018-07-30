@@ -1,5 +1,7 @@
 package amalhichri.androidprojects.com.kotlinlearning.fragments;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -30,7 +32,6 @@ import amalhichri.androidprojects.com.kotlinlearning.adapters.ShareListAdapter;
 import amalhichri.androidprojects.com.kotlinlearning.models.ForumQuestion;
 import amalhichri.androidprojects.com.kotlinlearning.services.ForumsServices;
 import amalhichri.androidprojects.com.kotlinlearning.services.ServerCallbacks;
-import amalhichri.androidprojects.com.kotlinlearning.utils.Configuration;
 
 
 public class ShareFragment extends Fragment {
@@ -88,7 +89,8 @@ public class ShareFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 orderby=i+1;
-                if(Configuration.isOnline(getContext()))
+                if((((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo())
+                        != null && (((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo()).isConnected())
                 {
                     loadForumQuestions(0,((SearchView)getActivity().findViewById(R.id.searchViewShare)).getQuery().toString());
                 }
@@ -107,7 +109,8 @@ public class ShareFragment extends Fragment {
         ((SearchView)getActivity().findViewById(R.id.searchViewShare)).setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                if(Configuration.isOnline(getContext())){
+                if((((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo())
+                        != null && (((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo()).isConnected()){
 
                     loadForumQuestions(0,s.trim().toLowerCase());
 
@@ -121,7 +124,8 @@ public class ShareFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                if(Configuration.isOnline(getContext())&& !s.trim().isEmpty() && loadWhileEmpty){
+                if((((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo())
+                        != null && (((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo()).isConnected()&& !s.trim().isEmpty() && loadWhileEmpty){
                     forumQuestionsList.clear();
                     nbOfLoadedQuestions =0;
                     forumQustsRecyclerView.removeAllViews();
@@ -146,7 +150,8 @@ public class ShareFragment extends Fragment {
         ((SwipeRefreshLayout)getActivity().findViewById(R.id.swipeRefreshShare)).setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                 if(Configuration.isOnline(getContext())){
+                if((((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo())
+                        != null && (((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo()).isConnected()){
                     nbOfLoadedQuestions =0;
                     loadForumQuestions(0,((SearchView)getActivity().findViewById(R.id.searchViewShare)).getQuery().toString());
                 }
@@ -173,7 +178,8 @@ public class ShareFragment extends Fragment {
                     totalItemCount = layoutManager.getItemCount();
                     pastVisiblesItems = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
 
-                    if (Configuration.isOnline(getContext())&& !loading)
+                    if((((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo())
+                            != null && (((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo()).isConnected()&& !loading)
                     {
                         if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount-4)
                         {

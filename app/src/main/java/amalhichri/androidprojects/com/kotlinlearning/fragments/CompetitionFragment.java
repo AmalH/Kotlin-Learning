@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +70,7 @@ public class CompetitionFragment extends Fragment {
                     if (((TextView) getActivity().findViewById(R.id.compete_add_content)).getText().toString().trim().length() > 0) {
                         if (!editnow) {
                             answer = new CompetitionAnswer();
-                            answer.setId_competition(competition.getId());
+                            answer.setCompetitionId(competition.getId());
                             answer.setContent(((TextView) getActivity().findViewById(R.id.compete_add_content)).getText().toString().replaceAll("[\r\n]", "\n"));
                             CompetitionsServices.getInstance().addAnswer(getContext(), answer, Statics.auth.getCurrentUser().getUid(), new ServerCallbacks() {
                                 @Override
@@ -245,9 +244,7 @@ public class CompetitionFragment extends Fragment {
                                         (getActivity().findViewById(R.id.competitionResponse)).setBackgroundColor(getActivity().getResources().getColor(R.color.errorBackground));
                                     }
                                 }
-
-                                Log.d("kotlinResponse", jsOResponse.toString());
-                            } catch (JSONException e) {
+                                } catch (JSONException e) {
                                 ((TextView) getActivity().findViewById(R.id.competitionResponse)).setText("Parsing error !");
                                 getActivity().findViewById(R.id.competitionResponse).setBackgroundColor(getActivity().getResources().getColor(R.color.paperBackground));
                             }
@@ -297,8 +294,8 @@ public class CompetitionFragment extends Fragment {
                             ((TextView) getActivity().findViewById(R.id.competitionUsername)).setText(competition.getUsername());
                             ((TextView) getActivity().findViewById(R.id.competitionCreated)).setText(competition.getCreated_string());
 
-                            if (competition.getProfile_picture() != null)
-                                Picasso.with(getContext()).load(Uri.parse(competition.getProfile_picture())).into((CircleImageView) getActivity().findViewById(R.id.competitionUserPicture));
+                            if (competition.getProfilePicture() != null)
+                                Picasso.with(getContext()).load(Uri.parse(competition.getProfilePicture())).into((CircleImageView) getActivity().findViewById(R.id.competitionUserPicture));
                             else {
                                 ((ImageView) getActivity().findViewById(R.id.competitionUserPicture)).setImageDrawable(Statics.getPlaceholderProfilePic(competition.getUsername()));
                             }
@@ -383,7 +380,6 @@ public class CompetitionFragment extends Fragment {
             }
         });
     }
-
 
     public void setCompetition(Competition competition) {
         this.competition = competition;

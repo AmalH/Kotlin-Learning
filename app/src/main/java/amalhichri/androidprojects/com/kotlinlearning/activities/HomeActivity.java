@@ -2,7 +2,6 @@ package amalhichri.androidprojects.com.kotlinlearning.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -86,9 +84,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case 2:
                     tab.getIcon().clearColorFilter();
-                        SharedPreferences loggedUserPrefs = getSharedPreferences("loggedUserPrefs",0);
 
-                    Log.d("USER","----"+loggedUserPrefs.getString("loggedUserPrefs",""));
                     ((TextView)v.findViewById(R.id.actionBarTitle)).setText("Compete");
                     break;
                     case 3:
