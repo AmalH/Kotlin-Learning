@@ -184,7 +184,7 @@ public class LoginActivity extends Activity {
 
             @Override
             public void onApiError(LIApiError liApiError) {
-                 Toast.makeText(getApplicationContext(), "Can not connect to Linkedin !" , Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(), "Can not connect to Linkedin !" , Toast.LENGTH_LONG).show();
             }
         });
     }

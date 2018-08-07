@@ -115,7 +115,7 @@ public class ForumQuestionFragment extends Fragment {
 
                             @Override
                             public void onError(VolleyError result) {
-                                Toast.makeText(getContext(), "Server problem ", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Please check internet connection !", Toast.LENGTH_SHORT).show();
                                 getActivity().findViewById(R.id.forumQstUpVote).setEnabled(true);
                             }
 
@@ -148,7 +148,7 @@ public class ForumQuestionFragment extends Fragment {
 
                             @Override
                             public void onError(VolleyError result) {
-                                Toast.makeText(getContext(), "Server problem ", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Please check internet connection !", Toast.LENGTH_SHORT).show();
                                 getActivity().findViewById(R.id.forumQstnDownVote).setEnabled(true);
                             }
 
@@ -238,12 +238,12 @@ public class ForumQuestionFragment extends Fragment {
 
                     @Override
                     public void onError(VolleyError result) {
-                        Toast.makeText(getContext(), "Server problem+++" +result.getClass().getName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Please check internet connection !" +result.getClass().getName(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onWrong(JSONObject result) {
-                        Toast.makeText(getContext(), "Problem while posting, please retry", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Please check internet connection !", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -272,7 +272,7 @@ public class ForumQuestionFragment extends Fragment {
                             try {
                                 array = result.getJSONArray("comments");
                             } catch (JSONException e) {
-                                Toast.makeText(getContext(), "Server error while loading forum , please report", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Please check internet connection !", Toast.LENGTH_SHORT).show();
                                 goShow = false;
                             }
                             for (int i = 0; i < array.length(); i++) {
@@ -280,7 +280,7 @@ public class ForumQuestionFragment extends Fragment {
                                     /** parse forum and add it to the arraylist**/
                                     listComments.add(ForumsServices.jsonToForumAnswer(array.getJSONObject(i)));
                                 } catch (JSONException e) {
-                                    Toast.makeText(getContext(), "Application error while loading forum , please report", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "Please check internet connection !", Toast.LENGTH_SHORT).show();
                                     goShow = false;
                                 }
                             }
@@ -326,7 +326,7 @@ public class ForumQuestionFragment extends Fragment {
                         @Override
                         public void onWrong(JSONObject result) {
                             getActivity().findViewById(R.id.commentsContainer).setVisibility(View.GONE);
-                            Toast.makeText(getContext(), "Problem , please report!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Please check internet connection !", Toast.LENGTH_SHORT).show();
                             ((SwipeRefreshLayout) getActivity().findViewById(R.id.commentsRefreshLayout)).setRefreshing(false);
                             loading = false;
                         }
@@ -356,12 +356,12 @@ public class ForumQuestionFragment extends Fragment {
 
             @Override
             public void onError(VolleyError result) {
-                Toast.makeText(getActivity(), "error class" + result.getClass().getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Please check internet connection !", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onWrong(JSONObject result) {
-                Toast.makeText(getActivity(), "error----" + result.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Please check internet connection !", Toast.LENGTH_SHORT).show();
             }
         });
         ForumsServices.getInstance().getForumPost(Statics.auth.getCurrentUser().getUid(), getContext(), currentQuestion.getId(),
@@ -462,12 +462,12 @@ public class ForumQuestionFragment extends Fragment {
 
                     @Override
                     public void onError(VolleyError result) {
-                        Toast.makeText(getContext(), "error loading", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please check internet connection !", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onWrong(JSONObject result) {
-                        Toast.makeText(getContext(), "wrong loading", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please check internet connection !", Toast.LENGTH_LONG).show();
                     }
                 });
     }

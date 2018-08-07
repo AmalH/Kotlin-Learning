@@ -76,8 +76,8 @@ public class BadgesFragment extends Fragment {
         }};
 
         deactivatedBadgesIcons = new ArrayList<Integer>() {{
-            add(R.drawable.ic_badge_accountverified_unlocked);add(R.drawable.ic_badge_engaged);add(R.drawable.ic_badge_acheiver);add(R.drawable.ic_badge_gettingstarted_unlocked);
-            add(R.drawable.ic_badge_course_master_unlocked);add(R.drawable.ic_badge_coder);add(R.drawable.ic_badge_good_question_unlocked);add(R.drawable.ic_badge_master_unlocked);
+            add(R.drawable.ic_badge_accountverified_unlocked);add(R.drawable.ic_badge_engaged_unlocked);add(R.drawable.ic_badge_acheiver_unlocked);add(R.drawable.ic_badge_gettingstarted_unlocked);
+            add(R.drawable.ic_badge_course_master_unlocked);add(R.drawable.ic_badge_coder_unlocked);add(R.drawable.ic_badge_good_question_unlocked);add(R.drawable.ic_badge_master_unlocked);
             add(R.drawable.ic_badge_top_question_unlocked);add(R.drawable.ic_badge_coder_unlocked);add(R.drawable.ic_badge_guru_unlocked);add(R.drawable.ic_badge_question_master_unlocked);
             add(R.drawable.ic_badge_self_learne_unlockedr);add(R.drawable.ic_badge_coder_unlocked);add(R.drawable.ic_badge_developer_unlocked);add(R.drawable.ic_badge_contributor_unlocked);
             add(R.drawable.ic_badge_teacher_unlocked);add(R.drawable.ic_badge_coder_unlocked);add(R.drawable.ic_badge_popular_answer_unlocked);add(R.drawable.ic_badge_code_ninja_unlocked);

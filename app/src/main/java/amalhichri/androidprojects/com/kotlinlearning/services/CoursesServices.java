@@ -26,7 +26,7 @@ public class CoursesServices {
 
     public void getAllUserCourses(String id, Context context, final ServerCallbacks serverCallbacks){
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.1.6/ikotlinBackEnd/web/courses/getAllCourses?id="+id,  new JSONObject(), new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://ikotlin.pragmatictheories.tech/web/courses/getAllCourses?id="+id,  new JSONObject(), new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         if (!response.has("Error")){
@@ -52,7 +52,7 @@ public class CoursesServices {
 
     public void hasStartedAcourse(String id,String courseIndic, Context context, final ServerCallbacks serverCallbacks){
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.1.6/iKotlinbackend/Web/courses/courseStarted?id="+id+"&courseindic="+courseIndic,  new JSONObject(), new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://ikotlin.pragmatictheories.tech/Web/courses/courseStarted?id="+id+"&courseindic="+courseIndic,  new JSONObject(), new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         if (!response.has("Error")){
@@ -78,7 +78,7 @@ public class CoursesServices {
 
     public void addCourseToUser(String id,String courseIndic, Context context, final ServerCallbacks serverCallbacks){
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.1.6/iKotlinbackend/Web/courses/addCourse?id="+id+"&courseindic="+courseIndic,  new JSONObject(), new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://ikotlin.pragmatictheories.tech/Web/courses/addCourse?id="+id+"&courseindic="+courseIndic,  new JSONObject(), new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         if (!response.has("Error")){
@@ -104,7 +104,7 @@ public class CoursesServices {
 
     public void incrementEarnedBadgesNumber(String id,String courseindic, Context context,final ServerCallbacks serverCallbacks){
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.1.6:80/iKotlinbackend/Web/courses/earnedBadges?id="+id+"&courseindic="+courseindic, new JSONObject(), new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://ikotlin.pragmatictheories.tech:80/iKotlinbackend/Web/courses/earnedBadges?id="+id+"&courseindic="+courseindic, new JSONObject(), new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -133,7 +133,7 @@ public class CoursesServices {
 
     public static void incrementFinishedChaptersNumber(String id, String courseindic, Context context, final ServerCallbacks serverCallbacks){
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.1.6:80/iKotlinbackend/Web/courses/finishedChapter?id="+id+"&courseindic="+courseindic, new JSONObject(), new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://ikotlin.pragmatictheories.tech:80/iKotlinbackend/Web/courses/finishedChapter?id="+id+"&courseindic="+courseindic, new JSONObject(), new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {

@@ -72,23 +72,18 @@ public class HomeActivity extends AppCompatActivity {
         tablayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
+                tab.getIcon().clearColorFilter();
                 switch(tablayout.getSelectedTabPosition()) {
                     case 0:
-                        tab.getIcon().clearColorFilter();
                         ((TextView)v.findViewById(R.id.actionBarTitle)).setText("Learn");
                         break;
                     case 1:
-                        tab.getIcon().clearColorFilter();
                         ((TextView)v.findViewById(R.id.actionBarTitle)).setText("Share");
                         break;
                     case 2:
-                    tab.getIcon().clearColorFilter();
-
                     ((TextView)v.findViewById(R.id.actionBarTitle)).setText("Compete");
                     break;
                     case 3:
-                        tab.getIcon().clearColorFilter();
                         ((TextView)v.findViewById(R.id.actionBarTitle)).setText("Connect");
                         break;
                 }

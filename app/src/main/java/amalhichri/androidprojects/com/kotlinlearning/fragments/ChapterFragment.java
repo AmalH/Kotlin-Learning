@@ -43,17 +43,17 @@ public class ChapterFragment extends Fragment {
         UsersServices.getInstance().assignBadge(Statics.auth.getCurrentUser().getUid(), String.valueOf(1),getActivity(), new ServerCallbacks() {
             @Override
             public void onSuccess(JSONObject result) {
-                Toast.makeText(getActivity(),"SUCCESS "+result.toString(),Toast.LENGTH_SHORT);
+                Toast.makeText(getActivity(),"Please check internet connection !",Toast.LENGTH_SHORT);
             }
 
             @Override
             public void onError(VolleyError result) {
-                Toast.makeText(getActivity(),"FAILURE 1 "+result.getClass().getName(),Toast.LENGTH_SHORT);
+                Toast.makeText(getActivity(),"Please check internet connection !",Toast.LENGTH_SHORT);
             }
 
             @Override
             public void onWrong(JSONObject result) {
-                Toast.makeText(getActivity(),"FAILURE 2 "+result.toString(),Toast.LENGTH_SHORT);
+                Toast.makeText(getActivity(),"Please check internet connection !",Toast.LENGTH_SHORT);
             }
         });
 

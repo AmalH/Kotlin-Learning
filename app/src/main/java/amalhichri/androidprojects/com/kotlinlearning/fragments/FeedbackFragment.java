@@ -54,11 +54,11 @@ public class FeedbackFragment extends Fragment {
             }
             @Override
             public void onError(VolleyError result) {
-                Toast.makeText(container.getContext(),"error class"+result.getClass().getName(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(container.getContext(),"Please check internet connection !",Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onWrong(JSONObject result) {
-                Toast.makeText(getActivity(),"error----"+result.toString(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),"Please check internet connection !",Toast.LENGTH_SHORT).show();
             }
         });
 

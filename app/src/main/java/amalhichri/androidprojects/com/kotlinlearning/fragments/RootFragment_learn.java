@@ -33,13 +33,13 @@ public class RootFragment_learn extends Fragment {
                     else
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.root_learFragment,new LearnFragment_currentUserCourses()).commitAllowingStateLoss();
                 } catch (JSONException e) {
-                    Toast.makeText(getContext(),"Server error "+e.getMessage(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"Please check internet connection !",Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onError(VolleyError result) {
-                Toast.makeText(getContext(),"ERROR ! Please check you internet connection."+result.getMessage(),Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(),"ERROR ! Please check your internet connection."+result.getMessage(),Toast.LENGTH_SHORT);
             }
 
             @Override

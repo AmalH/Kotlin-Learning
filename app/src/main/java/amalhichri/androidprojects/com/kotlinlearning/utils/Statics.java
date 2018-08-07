@@ -75,16 +75,16 @@ public class Statics {
                         @Override
                         public void onError(VolleyError result) {
                             auth.getCurrentUser().delete();
-                            Toast.makeText(activity,"----"+result.getClass(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity,"Registration error ! ",Toast.LENGTH_SHORT).show();
                         }
                         @Override
                         public void onWrong(JSONObject result) {
                             auth.getCurrentUser().delete();
-                            Toast.makeText(activity,"Error"+"-------- "+result.toString(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(activity,"Registration error ! ",Toast.LENGTH_LONG).show();
                         }
                     });
                 } else {
-                    Toast.makeText(activity, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, "Registration error ! ", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -98,7 +98,7 @@ public class Statics {
                         if (task.isSuccessful()) {
                             activity.startActivity(new Intent(activity, HomeActivity.class));
                         } else {
-                            Toast.makeText(activity, "ERROR ! "+task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(activity, "Signin error !", Toast.LENGTH_LONG).show();
                         }
                     }
                 });

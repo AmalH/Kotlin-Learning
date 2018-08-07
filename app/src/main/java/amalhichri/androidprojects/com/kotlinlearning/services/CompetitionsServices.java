@@ -43,7 +43,7 @@ public class CompetitionsServices {
         final JSONObject jsonBody = new JSONObject();
 
         final JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.1.6/ikotlinBackEnd/web/competitions/getcompetitions?id=" + id + "&start=" + start + "&order=" + orderby + "&level=" + level, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://ikotlin.pragmatictheories.tech/web/competitions/getcompetitions?id=" + id + "&start=" + start + "&order=" + orderby + "&level=" + level, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -79,7 +79,7 @@ public class CompetitionsServices {
         final JSONObject jsonBody = new JSONObject(m);
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.1.6/ikotlinBackEnd/web/competitions/addcompetition", jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://ikotlin.pragmatictheories.tech/web/competitions/addcompetition", jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -110,7 +110,7 @@ public class CompetitionsServices {
         final JSONObject jsonBody = new JSONObject();
 
         final JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET,  "http://192.168.1.6/ikotlinBackEnd/web/competitions/getanswers?id=" + id + "&start=" + start + "&level=" + level, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET,  "http://ikotlin.pragmatictheories.tech/web/competitions/getanswers?id=" + id + "&start=" + start + "&level=" + level, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -141,7 +141,7 @@ public class CompetitionsServices {
         final JSONObject jsonBody = new JSONObject();
 
         final JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET,  "http://192.168.1.6/ikotlinBackEnd/web/competitions/getcompetition?id=" + id + "&idcompetition=" +idcompetition, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET,  "http://ikotlin.pragmatictheories.tech/web/competitions/getcompetition?id=" + id + "&idcompetition=" +idcompetition, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -171,7 +171,7 @@ public class CompetitionsServices {
         final JSONObject jsonBody = new JSONObject();
 
         final JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.1.6/ikotlinBackEnd/web/competitions/getanswer?id=" + id + "&idanswer=" +idanswer, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://ikotlin.pragmatictheories.tech/web/competitions/getanswer?id=" + id + "&idanswer=" +idanswer, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -205,7 +205,7 @@ public class CompetitionsServices {
         final JSONObject jsonBody = new JSONObject(m);
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.1.6/ikotlinBackEnd/web/competitions/addanswer", jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://ikotlin.pragmatictheories.tech/web/competitions/addanswer", jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -241,7 +241,7 @@ public class CompetitionsServices {
         final JSONObject jsonBody = new JSONObject(m);
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.1.6/ikotlinBackEnd/web/competitions/editanswer", jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://ikotlin.pragmatictheories.tech/web/competitions/editanswer", jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {

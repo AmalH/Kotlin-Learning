@@ -25,7 +25,6 @@ public class AllCourses {
                 chapters.add(AllChapters.course1_chapter3);
                 chapters.add(AllChapters.course1_chapter4);
                 course=new Course(chapters,"Overview","This course introduces the 4 major applications of Kotlin programming language.", 40,R.drawable.ic_overview);
-                // just testing
                 course.setAdvancement(40);
                 break;
             case 1:
@@ -33,7 +32,6 @@ public class AllCourses {
                 chapters.add(AllChapters.course2_chapter2);
                 chapters.add(AllChapters.course2_chapter3);
                 course=new Course(chapters,"Getting started","Basic syntax and the coding conventions of Kotlin language.",60,R.drawable.ic_start);
-                // just testing
                 course.setAdvancement(20);
                 break;
             case 2:

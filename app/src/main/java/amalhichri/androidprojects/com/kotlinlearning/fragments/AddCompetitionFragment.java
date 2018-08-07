@@ -69,7 +69,6 @@ public class AddCompetitionFragment extends Fragment {
                                                 if(progressDialog.isShowing())
                                                     progressDialog.dismiss();
                                                 getActivity().getSupportFragmentManager().popBackStack();
-                                                Toast.makeText(getActivity(),"Posted", Toast.LENGTH_SHORT).show();
                                             }
 
                                             @Override

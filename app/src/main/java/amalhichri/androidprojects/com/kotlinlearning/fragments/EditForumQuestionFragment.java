@@ -156,7 +156,6 @@ public class EditForumQuestionFragment extends Fragment {
                                         if(progressDialog.isShowing())
                                             progressDialog.dismiss();
                                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.root_share_fragment,new ShareFragment()).commit();
-                                       // Toast.makeText(getActivity(),"Deleted", Toast.LENGTH_SHORT).show();
                                     }
                                     @Override
                                     public void onError(VolleyError result) {

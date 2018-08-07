@@ -111,7 +111,7 @@ public class LearnFragment_currentUserCourses extends Fragment {
                                 nbOfLoadedCourses += 10;
                         }
                     } catch (JSONException e) {
-                        Toast.makeText(getContext(), "Server error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Please check internet connection !", Toast.LENGTH_SHORT).show();
                     }
                 }
 

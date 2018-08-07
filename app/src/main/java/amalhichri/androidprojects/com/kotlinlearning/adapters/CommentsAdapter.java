@@ -88,7 +88,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
                             @Override
                             public void onError(VolleyError result) {
-                                Toast.makeText(context, "Server Problem", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Cant update votes ! Please check internet connection !", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -124,7 +124,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
 
                             @Override
                             public void onError(VolleyError result) {
-                                Toast.makeText(context, "Server Problem", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context,"Cant update votes ! Please check internet connection !", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -166,14 +166,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
                                             public void onError(VolleyError result) {
                                                 if (progressDialog.isShowing())
                                                     progressDialog.dismiss();
-                                                Toast.makeText(context, result.getClass().getName(), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(context, "Please check internet connection !", Toast.LENGTH_SHORT).show();
                                             }
 
                                             @Override
                                             public void onWrong(JSONObject result) {
                                                 if (progressDialog.isShowing())
                                                     progressDialog.dismiss();
-                                                Toast.makeText(context, result.toString(), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(context, "Please check internet connection !", Toast.LENGTH_SHORT).show();
                                             }
                                         });
                             }

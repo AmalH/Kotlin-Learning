@@ -35,7 +35,7 @@ public class UsersServices {
         m.put("pictureUrl", pictureUrl);
         final JSONObject jsonBody = new JSONObject(m);
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.1.6/ikotlinBackEnd/web/users/register", jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://ikotlin.pragmatictheories.tech/web/users/register", jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -65,7 +65,7 @@ public class UsersServices {
     public void getUserById(String id, Context context, final ServerCallbacks serverCallbacks){
         final JSONObject jsonBody = new JSONObject();
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.1.6/ikotlinBackEnd/web/users/getUser?id="+id, jsonBody, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://ikotlin.pragmatictheories.tech/web/users/getUser?id="+id, jsonBody, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -94,7 +94,7 @@ public class UsersServices {
 
     public void assignBadge(String id,String badgeindic, Context context, final ServerCallbacks serverCallbacks){
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, "http://192.168.1.6/IkotlinBackend/web/users/addBadge?id="+id+"&badgeindic="+badgeindic, new JSONObject(), new Response.Listener<JSONObject>() {
+                (Request.Method.POST, "http://ikotlin.pragmatictheories.tech/web/users/addBadge?id="+id+"&badgeindic="+badgeindic, new JSONObject(), new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -122,7 +122,7 @@ public class UsersServices {
 
     public void isHasBadge(String id,String badgeindic,Context context, final ServerCallbacks serverCallbacks){
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://192.168.1.6/IkotlinBackend/web/users/hasBadge?id="+id+"&badgeindic="+badgeindic, new JSONObject(), new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://ikotlin.pragmatictheories.tech/web/users/hasBadge?id="+id+"&badgeindic="+badgeindic, new JSONObject(), new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {

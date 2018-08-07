@@ -61,7 +61,7 @@ public class AddForumFragment extends Fragment {
                         f.setCode(code);
                         isCodeEmpty = false;
                     } else {
-                        Toast.makeText(getContext(), "Empty code", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "No code snippet added !", Toast.LENGTH_SHORT).show();
                         isCodeEmpty = true;
                     }
                 }
@@ -70,7 +70,6 @@ public class AddForumFragment extends Fragment {
                     ForumsServices.getInstance().addForumPost(getContext(), f, Statics.auth.getCurrentUser().getUid(), new ServerCallbacks() {
                         @Override
                         public void onSuccess(JSONObject result) {
-                            Toast.makeText(getContext(), "Submitted...", Toast.LENGTH_SHORT).show();
                             getFragmentManager().popBackStack();
                             if (progressDialog.isShowing()) {
                                 progressDialog.dismiss();
@@ -79,7 +78,7 @@ public class AddForumFragment extends Fragment {
 
                         @Override
                         public void onError(VolleyError result) {
-                            Toast.makeText(getContext(), "Server problem...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Please check internet connection !", Toast.LENGTH_SHORT).show();
                             if (progressDialog.isShowing()) {
                                 progressDialog.dismiss();
                             }
@@ -87,7 +86,7 @@ public class AddForumFragment extends Fragment {
 
                         @Override
                         public void onWrong(JSONObject result) {
-                            Toast.makeText(getContext(), "Oups...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),"Please check internet connection !", Toast.LENGTH_SHORT).show();
                             if (progressDialog.isShowing()) {
                                 progressDialog.dismiss();
                             }

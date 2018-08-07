@@ -221,7 +221,7 @@ public class ShareFragment extends Fragment {
                             try {
                                 array = result.getJSONArray("forum");
                             } catch (JSONException e) {
-                                Toast.makeText(getContext(),"Server error while loading forum , please report",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(),"Please check internet connection !",Toast.LENGTH_SHORT).show();
                                 showLoadedData=false;
                             }
                             for(int i = 0 ; i < array.length() ; i++){
@@ -229,7 +229,7 @@ public class ShareFragment extends Fragment {
                                     /** parse forum and add it to the arraylist**/
                                     forumQuestionsList.add(ForumsServices.jsonToForumQuestion(array.getJSONObject(i)));
                                 } catch (JSONException e) {
-                                    Toast.makeText(getContext(),"Application error while loading forum , please report",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(),"Please check internet connection !",Toast.LENGTH_SHORT).show();
                                     showLoadedData=false;
                                 }
                             }

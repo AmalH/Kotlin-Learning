@@ -114,7 +114,7 @@ public class ShareListAdapter extends RecyclerView.Adapter<ShareListAdapter.Shar
 
                             @Override
                             public void onError(VolleyError result) {
-                                  Toast.makeText(context,"Error ! Please check you internet connection.",Toast.LENGTH_LONG).show();
+                                  Toast.makeText(context,"Error ! Please check your internet connection.",Toast.LENGTH_LONG).show();
                             }
 
                             @Override

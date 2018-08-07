@@ -116,12 +116,12 @@ public class CoursesListAdapter extends BaseExpandableListAdapter {
 
                                                 @Override
                                                 public void onError(VolleyError result) {
-                                                    Toast.makeText(context,"Error "+result.getClass().getName(),Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(context,"Please check internet connection !",Toast.LENGTH_SHORT).show();
                                                 }
 
                                                 @Override
                                                 public void onWrong(JSONObject result) {
-                                                    Toast.makeText(context,"Error "+result.toString(),Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(context,"Please check internet connection !",Toast.LENGTH_SHORT).show();
                                                 }
                                             });
 
@@ -129,18 +129,18 @@ public class CoursesListAdapter extends BaseExpandableListAdapter {
                                         else
                                             Toast.makeText( context, "You already started this course.", Toast.LENGTH_SHORT).show();
                                     } catch (JSONException e) {
-                                        Toast.makeText(context,"Server error "+e.getMessage(),Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context,"Please check internet connection !",Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
                                 @Override
                                 public void onError(VolleyError result) {
-                                    Toast.makeText(context,"Error "+result.getMessage(),Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context,"Please check internet connection !",Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
                                 public void onWrong(JSONObject result) {
-                                    Toast.makeText(context,"Error "+result.toString(),Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context,"Please check internet connection !",Toast.LENGTH_SHORT).show();
                                 }
                             });
                 }

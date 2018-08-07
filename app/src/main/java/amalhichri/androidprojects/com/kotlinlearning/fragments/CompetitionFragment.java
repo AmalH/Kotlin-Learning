@@ -83,7 +83,7 @@ public class CompetitionFragment extends Fragment {
 
                                 @Override
                                 public void onError(VolleyError result) {
-                                    Toast.makeText(getContext(), result.getClass().getName(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "Please check internet connection !", Toast.LENGTH_SHORT).show();
                                     if (progressDialog.isShowing()) {
                                         progressDialog.dismiss();
                                     }
@@ -91,7 +91,7 @@ public class CompetitionFragment extends Fragment {
 
                                 @Override
                                 public void onWrong(JSONObject result) {
-                                    Toast.makeText(getContext(), result.toString(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "Please check internet connection !", Toast.LENGTH_SHORT).show();
                                     if (progressDialog.isShowing()) {
                                         progressDialog.dismiss();
                                     }
@@ -268,7 +268,7 @@ public class CompetitionFragment extends Fragment {
                 } catch (JSONException e) {
                     getActivity().findViewById(R.id.competitionRun).setEnabled(true);
                     e.printStackTrace();
-                    Toast.makeText(getContext(), "Error while running on server\n Please report", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please check internet connection !", Toast.LENGTH_SHORT).show();
                     if (progressDialog.isShowing()) {
                         progressDialog.dismiss();
                     }
@@ -306,12 +306,12 @@ public class CompetitionFragment extends Fragment {
 
                     @Override
                     public void onError(VolleyError result) {
-                        Toast.makeText(getContext(), "COMPETITION ERROR " + result.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please check internet connection !" + result.toString(), Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onWrong(JSONObject result) {
-                        Toast.makeText(getContext(), "wrong", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Please check internet connection !", Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -373,7 +373,7 @@ public class CompetitionFragment extends Fragment {
                 getActivity().findViewById(R.id.competitionAnswered).setVisibility(View.GONE);
                 getActivity().findViewById(R.id.competitionAddAnswer).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.compete_add_content).setVisibility(View.VISIBLE);
-                Toast.makeText(getContext(), "wrong", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Please check internet connection !", Toast.LENGTH_LONG).show();
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }

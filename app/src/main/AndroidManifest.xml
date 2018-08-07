@@ -2,7 +2,9 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="amalhichri.androidprojects.com.kotlinlearning">
+    package="amalhichri.androidprojects.com.kotlinlearning"
+    android:versionCode="1"
+    android:versionName="1.0">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

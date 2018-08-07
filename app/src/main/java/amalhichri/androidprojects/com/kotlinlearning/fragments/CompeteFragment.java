@@ -250,7 +250,7 @@ public class CompeteFragment extends Fragment {
                                 try {
                                     competitionList.add(CompetitionsServices.jsonToCompetition((result.getJSONArray("competitions")).getJSONObject(i)));
                                 } catch (JSONException e) {
-                                    Toast.makeText(getContext(),"Application error while loading competition , please report", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(),"Please check internet connection !", Toast.LENGTH_SHORT).show();
                                     showLoadedData =false;
                                 }
                             }
@@ -277,7 +277,7 @@ public class CompeteFragment extends Fragment {
                             competeSwipeRefresh.setRefreshing(false);
                             loading=false;
                             } catch (JSONException e) {
-                                Toast.makeText(getContext(),"Server error while loading competitions , please report", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(),"Please check internet connection !", Toast.LENGTH_SHORT).show();
                                 //showLoadedData =false;
                             }
                         }
@@ -314,7 +314,7 @@ public class CompeteFragment extends Fragment {
                             try {
                                 array = result.getJSONArray("competitions");
                             } catch (JSONException e) {
-                                Toast.makeText(getContext(),"Server error while loading competitions , please report", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(),"Please check internet connection !", Toast.LENGTH_SHORT).show();
                                 goShow=false;
                             }
 
@@ -326,7 +326,7 @@ public class CompeteFragment extends Fragment {
 
                                     answersList.add(CompetitionsServices.jsonToAnswer(array.getJSONObject(i)));
                                 } catch (JSONException e) {
-                                    Toast.makeText(getContext(),"Application error while loading competition , please report", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(),"Please check internet connection !", Toast.LENGTH_SHORT).show();
                                     goShow=false;
                                 }
                             }
