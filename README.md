@@ -1,6 +1,6 @@
 # iKotlin
 
-iKotlin is a simple Kotlin language learning app. ( But it's written in Java :D )
+iKotlin is a simple Kotlin language learning app. ( But it's written in Java :D ) . <a href="https://play.google.com/store/apps/details?id=amalhichri.androidprojects.com.kotlinlearning" target="blank_"> Check it out on Google Play !</a>
 
 ## Description
 
